@@ -1,48 +1,48 @@
-# Nav2 Debugging Guide
+# Nav2 调试手册
 
-## Goal
+## 目标
 
-Build the ability to explain and debug the full navigation chain:
+具备解释和调试完整导航链路的能力：
 
 ```text
-Goal -> Behavior Tree -> Planner -> Global Costmap -> Controller ->
-Local Costmap -> cmd_vel -> Base Controller -> MCU -> Motor -> Odom
+目标点 -> 行为树 -> 全局规划器 -> 全局代价地图 -> 控制器 ->
+局部代价地图 -> cmd_vel -> 底盘控制器 -> MCU -> 电机 -> 里程计
 ```
 
-## Nav2 execution chain
+## Nav2 执行链路
 
 ```mermaid
 flowchart TD
-    goal["NavigateToPose Goal"] --> btNavigator["BT Navigator"]
+    goal["NavigateToPose 目标"] --> btNavigator["BT Navigator"]
     btNavigator --> plannerServer["Planner Server"]
-    plannerServer --> globalCostmap["Global Costmap"]
-    plannerServer --> globalPath["Global Path"]
+    plannerServer --> globalCostmap["全局代价地图"]
+    plannerServer --> globalPath["全局路径"]
     globalPath --> controllerServer["Controller Server"]
-    controllerServer --> localCostmap["Local Costmap"]
+    controllerServer --> localCostmap["局部代价地图"]
     controllerServer --> cmdVel["cmd_vel"]
-    cmdVel --> baseController["Base Controller"]
+    cmdVel --> baseController["底盘控制器"]
     baseController --> mcu["MCU"]
-    mcu --> motor["Motor"]
-    motor --> odom["Odometry"]
-    odom --> localization["Localization"]
+    mcu --> motor["电机"]
+    motor --> odom["里程计"]
+    odom --> localization["定位"]
     localization --> btNavigator
 ```
 
-## Key modules
+## 关键模块
 
-| Module | Responsibility | Evidence to inspect |
+| 模块 | 职责 | 需要查看的证据 |
 | --- | --- | --- |
-| BT Navigator | Orchestrates navigation behavior | action feedback, BT logs |
-| Planner Server | Computes global path | global path topic, planner logs |
-| Controller Server | Tracks path and emits velocity | `/cmd_vel`, controller logs |
-| Global Costmap | Represents map-level obstacles | costmap topic/RViz |
-| Local Costmap | Represents nearby dynamic obstacles | local costmap topic/RViz |
-| Behavior Server | Recovery behaviors | recovery logs |
-| Lifecycle Manager | Starts/stops Nav2 nodes | lifecycle state |
+| BT Navigator | 编排导航行为 | action feedback、BT 日志 |
+| Planner Server | 计算全局路径 | global path topic、planner 日志 |
+| Controller Server | 跟踪路径并输出速度 | `/cmd_vel`、controller 日志 |
+| Global Costmap | 表示地图级障碍物 | costmap topic/RViz |
+| Local Costmap | 表示近距离动态障碍物 | local costmap topic/RViz |
+| Behavior Server | 执行恢复行为 | recovery 日志 |
+| Lifecycle Manager | 启停 Nav2 节点 | lifecycle 状态 |
 
-## Standard evidence bundle
+## 标准证据包
 
-For every navigation failure, collect:
+每次导航失败都要采集：
 
 ```bash
 ros2 action list -t
@@ -56,7 +56,7 @@ ros2 param dump /global_costmap/global_costmap
 ros2 param dump /local_costmap/local_costmap
 ```
 
-Record a rosbag with:
+录制 rosbag 时包含：
 
 - `/tf`
 - `/tf_static`
@@ -67,100 +67,100 @@ Record a rosbag with:
 - global costmap topic
 - local costmap topic
 - global path topic
-- goal topic/action feedback if available
+- goal topic/action feedback，如果可用
 
-## Failure diagnosis table
+## 故障诊断表
 
-| Symptom | Most likely area | First checks |
+| 现象 | 最可能区域 | 首先检查 |
 | --- | --- | --- |
-| Goal rejected | Action server / BT navigator | action info, lifecycle state |
-| Goal accepted but no path | Planner / map / global costmap | map, global costmap, planner logs |
-| Path exists but no movement | Controller / local costmap / TF | `/cmd_vel`, local costmap, TF |
-| `/cmd_vel` exists but robot still | Base controller / MCU / motor | MCU logs, odom, serial/CAN |
-| Robot rotates in place | Orientation, local planner, TF, odom | yaw error, odom direction, controller logs |
-| Robot hits obstacle | local costmap, inflation, sensor frame | `/scan`, costmap layers, TF |
-| Robot avoids too much | inflation radius or footprint too large | footprint, costmap params |
-| Robot oscillates | controller tuning, velocity limits | controller params, `/cmd_vel` profile |
-| Recovery repeats | upstream failure not fixed | BT status, recovery reason |
-| Works on RDK X5 but not target SoC | timing/performance/platform | topic rate, CPU, DDS, logs |
+| 目标被拒绝 | Action server / BT navigator | action info、lifecycle 状态 |
+| 目标接收但没有路径 | Planner / map / global costmap | map、global costmap、planner 日志 |
+| 有路径但不动 | Controller / local costmap / TF | `/cmd_vel`、local costmap、TF |
+| `/cmd_vel` 有输出但机器人不动 | Base controller / MCU / motor | MCU 日志、odom、串口/CAN |
+| 机器人原地旋转 | 朝向、local planner、TF、odom | yaw error、odom 方向、controller 日志 |
+| 机器人撞障碍 | local costmap、inflation、sensor frame | `/scan`、costmap layers、TF |
+| 机器人避障过度 | inflation radius 或 footprint 过大 | footprint、costmap 参数 |
+| 机器人振荡 | controller 调参、速度限制 | controller 参数、`/cmd_vel` 曲线 |
+| Recovery 反复执行 | 上游故障未解决 | BT 状态、recovery 原因 |
+| RDK X5 正常但目标 SoC 异常 | 时序/性能/平台 | topic rate、CPU、DDS、日志 |
 
-## Costmap checklist
+## Costmap 检查清单
 
 ### Frames
 
-- `global_frame` should match the intended global reference, often `map`.
-- `robot_base_frame` should match `base_link` or the project-defined base.
-- Sensor observations must transform into the costmap frame.
+- `global_frame` 应该匹配期望的全局参考系，通常是 `map`。
+- `robot_base_frame` 应该匹配 `base_link` 或项目定义的底盘 frame。
+- 传感器观测必须能变换到 costmap frame。
 
 ### Footprint
 
-- Footprint must match the real robot body.
-- Include protruding sensors or bumper if they affect collision.
-- Too small: collision risk.
-- Too large: cannot pass narrow spaces.
+- footprint 必须匹配机器人真实外形。
+- 如果外凸传感器或保险杠会影响碰撞，需要纳入。
+- 过小：有碰撞风险。
+- 过大：过不去窄通道。
 
 ### Obstacle layer
 
-Check:
+检查：
 
-- Source topic name.
-- Sensor frame.
-- Marking and clearing flags.
-- Obstacle range and raytrace range.
-- QoS compatibility.
+- source topic 名称。
+- sensor frame。
+- marking 和 clearing 开关。
+- obstacle range 与 raytrace range。
+- QoS 兼容性。
 
 ### Inflation layer
 
-Check:
+检查：
 
-- Inflation radius.
-- Cost scaling factor.
-- Whether narrow passages become blocked.
+- inflation radius。
+- cost scaling factor。
+- 窄通道是否被膨胀层堵死。
 
-## Controller tuning checklist
+## Controller 调参清单
 
-Record baseline values before changes:
+改动前先记录基线：
 
-| Parameter group | What it affects | Failure when wrong |
+| 参数组 | 影响 | 错误时的现象 |
 | --- | --- | --- |
-| Velocity limits | Max linear/angular speed | too slow, unsafe, oscillation |
-| Acceleration limits | Smoothness and motor feasibility | jerky movement, overshoot |
-| Goal tolerances | When goal is considered reached | never succeeds, inaccurate stop |
-| Path alignment critic | Preference to follow path | cuts corners or overcorrects |
-| Obstacle critic | Obstacle avoidance | collision or overly conservative path |
+| 速度限制 | 最大线速度/角速度 | 太慢、不安全、振荡 |
+| 加速度限制 | 平滑性与电机可执行性 | 运动突兀、过冲 |
+| 目标容差 | 何时认为到达目标 | 永远不成功、停止不准 |
+| Path alignment critic | 路径跟随倾向 | 抄近路或过度修正 |
+| Obstacle critic | 障碍物避让 | 碰撞或过度保守 |
 
-Rules:
+规则：
 
-- Tune on a fixed test map.
-- Use the same start and goal points.
-- Keep rosbag and video for comparison.
-- Check whether odom and physical movement match before tuning controller.
+- 在固定测试地图上调参。
+- 使用相同起点和目标点。
+- 保留 rosbag 和视频进行对比。
+- 调 controller 之前，先确认 odom 与真实运动一致。
 
-## Behavior Tree review
+## Behavior Tree 检查点
 
-Questions to answer:
+需要回答：
 
-- Which BT XML is loaded?
-- Which recovery behaviors are enabled?
-- What is the retry policy?
-- What conditions trigger clearing costmap?
-- Does the BT distinguish planning failure and control failure?
-- Are recovery actions safe for the physical robot?
+- 加载的是哪个 BT XML？
+- 启用了哪些 recovery behavior？
+- 重试策略是什么？
+- 什么条件触发 clear costmap？
+- BT 是否区分 planning failure 和 control failure？
+- recovery action 对真实机器人是否安全？
 
-## Scenario tests
+## 场景测试
 
-| Scenario | Purpose | Pass criteria |
+| 场景 | 目的 | 通过标准 |
 | --- | --- | --- |
-| Straight goal | Basic controller and odom | Smooth movement, reaches goal |
-| Turn-in-place | Angular control | No oscillation, no TF error |
-| Narrow passage | Footprint/costmap | Passes safely or rejects correctly |
-| Dynamic obstacle | local costmap | Stops/avoids without collision |
-| Blocked path | recovery behavior | Recovers or reports failure clearly |
-| Long route | planner and localization | No lost pose, stable path |
+| 直线目标点 | 基础 controller 与 odom | 平滑运动并到达目标 |
+| 原地转向 | 角速度控制 | 不振荡、无 TF 错误 |
+| 窄通道 | Footprint/costmap | 安全通过或正确拒绝 |
+| 动态障碍 | local costmap | 能停车/避让且不碰撞 |
+| 路径被堵 | recovery behavior | 能恢复或清晰报告失败 |
+| 长路线 | planner 与定位 | 不丢定位，路径稳定 |
 
-## Deliverables
+## 交付物
 
-- Nav2 execution chain diagram for the actual project.
-- Parameter baseline for planner, controller, costmaps, and BT.
-- Navigation failure troubleshooting manual.
-- Test report with at least five scenarios and measured results.
+- 实际项目的 Nav2 执行链路图。
+- Planner、controller、costmap、BT 的参数基线。
+- 导航故障排查手册。
+- 至少五个场景的测试报告和实测结果。

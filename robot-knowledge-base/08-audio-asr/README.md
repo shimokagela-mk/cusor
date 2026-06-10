@@ -1,24 +1,23 @@
-# Audio and ASR Notes
+# 音频与 ASR 笔记
 
-Use this directory to record audio, ASR, intent, and task-manager integration
-contracts.
+这个目录用于记录音频、ASR、意图识别和任务管理的集成契约。
 
-Even if audio is owned by another teammate, navigation depends on this chain:
+即使音频由其他同事负责，导航也依赖下面这条链路：
 
 ```text
 Mic -> ASR -> Intent -> Task Manager -> Nav2 Action -> Controller -> MCU
 ```
 
-Minimum interface questions:
+最小接口问题：
 
-- What topic or service carries ASR text?
-- What topic or service carries intent?
-- How does an intent become a navigation goal?
-- Is the task one-shot, cancellable, or continuous?
-- How are failures reported to the user?
-- How does the system avoid repeated command execution?
+- 哪个 topic 或 service 承载 ASR 文本？
+- 哪个 topic 或 service 承载 intent？
+- intent 如何变成导航目标？
+- 任务是一次性的、可取消的，还是连续的？
+- 失败如何反馈给用户？
+- 系统如何避免重复执行同一条命令？
 
-Recommended evidence:
+推荐证据：
 
 ```bash
 ros2 topic list -t
@@ -28,5 +27,4 @@ ros2 topic echo /intent_topic --once
 ros2 action info /navigate_to_pose
 ```
 
-Keep this directory focused on the interface from voice commands to robot
-behavior. ASR model training details are lower priority for the navigation owner.
+这个目录只关注语音命令到机器人行为的接口。ASR 模型训练细节对导航负责人来说优先级较低。

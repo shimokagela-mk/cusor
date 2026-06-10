@@ -1,22 +1,21 @@
-# Performance Baseline Template
+# 性能基线模板
 
-Use this template whenever comparing RDK X5 and the target SoC, or before and
-after an optimization.
+当你需要对比 RDK X5 与目标 SoC，或者对比优化前后效果时，使用这个模板。
 
-## Test metadata
+## 测试元信息
 
-- Date:
-- Tester:
-- Platform:
-- Hardware revision:
-- OS image:
-- ROS2 distro:
-- Git commit/package version:
-- Map:
-- Scenario:
-- Launch command:
+- 日期：
+- 测试人：
+- 平台：
+- 硬件版本：
+- OS 镜像：
+- ROS2 发行版：
+- Git commit/软件包版本：
+- 地图：
+- 场景：
+- 启动命令：
 
-## System information
+## 系统信息
 
 ```bash
 uname -a
@@ -26,31 +25,31 @@ free -h
 df -h
 ```
 
-Record:
+记录：
 
-| Item | Value |
+| 项目 | 值 |
 | --- | --- |
-| CPU cores |  |
+| CPU 核数 |  |
 | CPU governor |  |
-| Memory |  |
-| Storage |  |
+| 内存 |  |
+| 存储 |  |
 | NPU runtime |  |
-| ROS2 distro |  |
-| DDS implementation |  |
+| ROS2 发行版 |  |
+| DDS 实现 |  |
 
-## ROS2 graph baseline
+## ROS2 Graph 基线
 
-| Metric | Value |
+| 指标 | 值 |
 | --- | --- |
-| Node count |  |
-| Topic count |  |
-| Action count |  |
-| Service count |  |
-| Critical lifecycle states |  |
+| Node 数量 |  |
+| Topic 数量 |  |
+| Action 数量 |  |
+| Service 数量 |  |
+| 关键 lifecycle 状态 |  |
 
-Critical topic rates:
+关键 topic 频率：
 
-| Topic | Expected rate | Actual rate | Bandwidth | QoS notes |
+| Topic | 期望频率 | 实测频率 | 带宽 | QoS 备注 |
 | --- | --- | --- | --- | --- |
 | `/scan` |  |  |  |  |
 | `/odom` |  |  |  |  |
@@ -60,9 +59,9 @@ Critical topic rates:
 | detection topic |  |  |  |  |
 | depth topic |  |  |  |  |
 
-## Resource usage
+## 资源占用
 
-| Process/node | CPU avg | CPU max | Memory avg | Memory max | Threads | Notes |
+| 进程/节点 | CPU 平均 | CPU 峰值 | 内存平均 | 内存峰值 | 线程数 | 备注 |
 | --- | --- | --- | --- | --- | --- | --- |
 | SLAM |  |  |  |  |  |  |
 | Localization |  |  |  |  |  |  |
@@ -72,7 +71,7 @@ Critical topic rates:
 | YOLO/NPU node |  |  |  |  |  |  |
 | ASR node |  |  |  |  |  |  |
 
-Commands:
+命令：
 
 ```bash
 pidstat -durh 1 60
@@ -80,31 +79,31 @@ vmstat 1 60
 iostat -xz 1 60
 ```
 
-## Latency and behavior
+## 延迟与行为
 
-| Chain | Measurement | Baseline | Optimized | Notes |
+| 链路 | 测量方式 | 基线 | 优化后 | 备注 |
 | --- | --- | --- | --- | --- |
-| lidar to SLAM |  |  |  |  |
-| localization to Nav2 |  |  |  |  |
-| Nav2 goal to path |  |  |  |  |
-| path to `/cmd_vel` |  |  |  |  |
-| `/cmd_vel` to odom response |  |  |  |  |
-| camera to detection |  |  |  |  |
-| detection to task |  |  |  |  |
+| lidar 到 SLAM |  |  |  |  |
+| localization 到 Nav2 |  |  |  |  |
+| Nav2 goal 到 path |  |  |  |  |
+| path 到 `/cmd_vel` |  |  |  |  |
+| `/cmd_vel` 到 odom 响应 |  |  |  |  |
+| camera 到 detection |  |  |  |  |
+| detection 到 task |  |  |  |  |
 
-## Stability results
+## 稳定性结果
 
-| Test | Duration | Result | Failures | Logs |
+| 测试 | 持续时间 | 结果 | 失败现象 | 日志 |
 | --- | --- | --- | --- | --- |
-| Idle |  |  |  |  |
-| Mapping |  |  |  |  |
-| Localization |  |  |  |  |
-| Repeated navigation goals |  |  |  |  |
-| Full stack with AI and ASR |  |  |  |  |
+| 空闲 |  |  |  |  |
+| 建图 |  |  |  |  |
+| 定位 |  |  |  |  |
+| 重复导航目标 |  |  |  |  |
+| AI + ASR 全栈 |  |  |  |  |
 
-## Conclusion
+## 结论
 
-- Main bottleneck:
-- Biggest migration risk:
-- Recommended optimization:
-- Follow-up owner:
+- 主要瓶颈：
+- 最大迁移风险：
+- 推荐优化方向：
+- 后续负责人：

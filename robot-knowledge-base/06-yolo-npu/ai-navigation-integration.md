@@ -1,45 +1,42 @@
-# YOLO, NPU, Depth Camera, and Navigation Integration
+# YOLO、NPU、深度相机与导航集成
 
-## Goal
+## 目标
 
-Understand how AI perception enters robot behavior. The owner of mapping and
-navigation does not need to own model training, but must understand the system
-contract among camera, YOLO/NPU, depth, task manager, and navigation.
+理解 AI 感知如何进入机器人行为闭环。负责建图和导航的人不一定要负责模型训练，但必须理解相机、YOLO/NPU、深度、任务管理和导航之间的系统契约。
 
-## Data flow
+## 数据流
 
 ```mermaid
 flowchart TD
-    camera["Depth Camera"] --> imageTopic["RGB Image Topic"]
-    camera --> depthTopic["Depth Image or PointCloud Topic"]
-    imageTopic --> preprocess["Preprocess"]
-    preprocess --> npu["NPU Inference"]
-    npu --> postprocess["Postprocess NMS"]
-    postprocess --> detectionTopic["Object Detection Topic"]
-    depthTopic --> fusion["Depth Fusion"]
+    camera["深度相机"] --> imageTopic["RGB 图像 Topic"]
+    camera --> depthTopic["深度图或点云 Topic"]
+    imageTopic --> preprocess["预处理"]
+    preprocess --> npu["NPU 推理"]
+    npu --> postprocess["后处理 NMS"]
+    postprocess --> detectionTopic["目标检测 Topic"]
+    depthTopic --> fusion["深度融合"]
     detectionTopic --> fusion
-    fusion --> objectPose["Object Pose or Distance"]
-    objectPose --> decision["Decision or Task Manager"]
-    decision --> nav2["Nav2 Goal or Behavior"]
+    fusion --> objectPose["目标位姿或距离"]
+    objectPose --> decision["决策或任务管理"]
+    decision --> nav2["Nav2 目标或行为"]
 ```
 
-## Interface contract
+## 接口契约
 
-Define the contract before debugging behavior.
+调试行为之前，先定义接口契约。
 
-| Interface | Required fields | Questions |
+| 接口 | 必要字段 | 需要回答的问题 |
 | --- | --- | --- |
-| RGB image | timestamp, frame_id, encoding, width, height | Is timestamp close to capture time? |
-| Depth image/point cloud | timestamp, frame_id, depth unit, camera info | Is depth aligned with RGB? |
-| Detection output | class, confidence, bbox, timestamp, frame_id | Is bbox from original or resized image? |
-| Object pose | x/y/z, frame_id, covariance or confidence | Which frame is used? |
-| Task event | object id/type, action, priority | Is it one-shot or continuous? |
-| Nav2 goal | pose, frame_id, behavior constraints | Is goal reachable and safe? |
+| RGB image | timestamp, frame_id, encoding, width, height | 时间戳是否接近采集时间？ |
+| Depth image/point cloud | timestamp, frame_id, depth unit, camera info | 深度是否与 RGB 对齐？ |
+| Detection output | class, confidence, bbox, timestamp, frame_id | bbox 来自原图还是 resize 后图像？ |
+| Object pose | x/y/z, frame_id, covariance 或 confidence | 使用哪个坐标系？ |
+| Task event | object id/type, action, priority | 是一次性事件还是连续事件？ |
+| Nav2 goal | pose, frame_id, behavior constraints | 目标是否可达且安全？ |
 
-## Suggested detection message fields
+## 推荐 Detection 消息字段
 
-If the project does not already define a message, evaluate whether these fields
-are enough:
+如果项目还没有定义消息，可以评估下面字段是否足够：
 
 ```text
 std_msgs/Header header
@@ -58,29 +55,28 @@ Detection:
   geometry_msgs/PoseStamped object_pose
 ```
 
-Rules:
+规则：
 
-- Always include `header.stamp`.
-- Always include `header.frame_id`.
-- Clarify whether bounding boxes are in original image coordinates.
-- Publish confidence and class id/name.
-- Keep inference latency as a metric, not a hidden log.
+- 必须包含 `header.stamp`。
+- 必须包含 `header.frame_id`。
+- 明确 bounding box 是否使用原始图像坐标。
+- 发布 confidence 和 class id/name。
+- 推理延迟应该作为指标暴露，而不是只藏在日志里。
 
-## Time and frame alignment
+## 时间与坐标系对齐
 
-AI results are only useful for navigation if time and frame semantics are clear.
+AI 结果只有在时间和坐标语义清楚时，才对导航有价值。
 
-Checklist:
+检查清单：
 
-- RGB and depth timestamps are close enough for the robot speed.
-- Detection timestamp refers to image capture time, not publish time, or the
-  difference is recorded.
-- Object pose is transformed into `base_link`, `odom`, or `map` before decision.
-- TF has camera extrinsics: `base_link -> camera_link`.
-- Depth unit is known and documented.
-- Inference latency is measured and exposed.
+- RGB 和 depth 时间戳对当前机器人速度来说足够接近。
+- Detection 时间戳指的是图像采集时间，而不是发布时间；如果不是，需要记录差值。
+- Object pose 在进入决策前，要能变换到 `base_link`、`odom` 或 `map`。
+- TF 中存在相机外参：`base_link -> camera_link`。
+- 深度单位明确并写入文档。
+- 推理延迟有测量和暴露。
 
-Commands:
+命令：
 
 ```bash
 ros2 topic hz /camera/color/image_raw
@@ -90,63 +86,60 @@ ros2 topic echo /detections --once
 ros2 run tf2_ros tf2_echo base_link camera_link
 ```
 
-## Latency budget
+## 延迟预算
 
-| Segment | Metric | Target | Actual | Notes |
+| 环节 | 指标 | 目标 | 实测 | 备注 |
 | --- | --- | --- | --- | --- |
-| Camera capture | frame interval | TBD | TBD | sensor driver |
-| Image transport | publish to subscribe | TBD | TBD | DDS/QoS |
-| Preprocess | ms/frame | TBD | TBD | resize/normalize |
-| NPU inference | ms/frame | TBD | TBD | model/runtime |
-| Postprocess | ms/frame | TBD | TBD | NMS/boxes |
-| Depth fusion | ms/frame | TBD | TBD | bbox to depth |
-| Decision | ms/event | TBD | TBD | task manager |
-| Nav2 response | ms/goal | TBD | TBD | action accept |
+| Camera capture | frame interval | 待补充 | 待补充 | sensor driver |
+| Image transport | publish to subscribe | 待补充 | 待补充 | DDS/QoS |
+| Preprocess | ms/frame | 待补充 | 待补充 | resize/normalize |
+| NPU inference | ms/frame | 待补充 | 待补充 | model/runtime |
+| Postprocess | ms/frame | 待补充 | 待补充 | NMS/boxes |
+| Depth fusion | ms/frame | 待补充 | 待补充 | bbox to depth |
+| Decision | ms/event | 待补充 | 待补充 | task manager |
+| Nav2 response | ms/goal | 待补充 | 待补充 | action accept |
 
-A slow detector can still be acceptable for semantic goals, but may be unsafe
-for fast obstacle avoidance. Do not use delayed AI output as a hard real-time
-collision-avoidance source unless the latency and failure modes are proven.
+慢速检测器可以用于语义目标，但未必适合快速避障。除非延迟和失效模式已经被证明，否则不要把延迟较大的 AI 输出作为硬实时避障来源。
 
-## How AI results can influence navigation
+## AI 结果如何影响导航
 
-| Use case | AI role | Navigation interface | Risk |
+| 使用场景 | AI 角色 | 导航接口 | 风险 |
 | --- | --- | --- | --- |
-| Object finding | Detect target object | Send Nav2 goal near object | false positives, bad depth |
-| Person following | Track person | Velocity command or local goal | latency, safety |
-| Semantic navigation | Identify room/object | Task manager selects waypoint | stale detection |
-| Dynamic obstacle hint | Detect obstacle type | Costmap layer or behavior | delayed obstacle update |
-| Docking/approach | Detect marker/object | short-range control behavior | frame calibration |
+| 寻找物体 | 检测目标物体 | 发送靠近物体的 Nav2 goal | 误检、深度错误 |
+| 跟随人 | 跟踪人 | 速度指令或局部目标 | 延迟、安全 |
+| 语义导航 | 识别房间/物体 | Task manager 选择 waypoint | 过期检测 |
+| 动态障碍提示 | 检测障碍物类别 | Costmap layer 或行为 | 障碍物更新延迟 |
+| 回桩/靠近 | 检测标记或物体 | 近距离控制行为 | 坐标系标定 |
 
-For safety-critical obstacle avoidance, prefer lidar/depth-based costmap as the
-primary source and use YOLO as semantic context.
+对安全关键的避障，优先使用 lidar/depth-based costmap 作为主来源，YOLO 作为语义上下文。
 
-## Failure diagnosis table
+## 故障诊断表
 
-| Symptom | Likely cause | Evidence |
+| 现象 | 可能原因 | 证据 |
 | --- | --- | --- |
-| Detection appears but task does nothing | Interface mismatch, task filter, topic name | detection topic, task logs |
-| Object distance is wrong | RGB-depth alignment, depth unit, bbox scaling | camera info, depth sample |
-| Object pose jumps | timestamp mismatch, TF, noisy depth | header stamps, tf echo |
-| Navigation target is unreachable | bad object-to-map transform or unsafe goal | RViz, costmap, goal pose |
-| Nav2 reacts late to AI result | inference latency or task scheduling | latency budget, CPU load |
-| Works alone but fails with navigation | resource contention | CPU/NPU/memory, topic hz |
+| 检测结果存在但任务无动作 | 接口不匹配、任务过滤、topic 名错误 | detection topic、task logs |
+| 物体距离错误 | RGB-depth 未对齐、深度单位错误、bbox 缩放错误 | camera info、depth sample |
+| 物体位姿跳变 | 时间戳不匹配、TF、深度噪声 | header stamps、tf echo |
+| 导航目标不可达 | object 到 map 的变换错误或目标不安全 | RViz、costmap、goal pose |
+| Nav2 对 AI 结果反应慢 | 推理延迟或任务调度延迟 | latency budget、CPU load |
+| 单独运行正常，和导航一起运行失败 | 资源竞争 | CPU/NPU/内存、topic hz |
 
-## Collaboration questions for teammate A
+## 与同事 A 的协作问题
 
-Ask these early:
+尽早确认：
 
-- Which model, input size, and runtime are used?
-- What are the output topic names and message types?
-- Does detection timestamp use capture time or publish time?
-- Is depth aligned to RGB?
-- What is the measured inference latency and FPS on target SoC?
-- Does NPU execution block CPU threads?
-- How are dropped frames handled?
-- Is there a confidence threshold and class filter?
+- 使用哪个模型、输入尺寸和 runtime？
+- 输出 topic 名称和消息类型是什么？
+- Detection 时间戳使用采集时间还是发布时间？
+- depth 是否与 RGB 对齐？
+- 目标 SoC 上实测推理延迟和 FPS 是多少？
+- NPU 执行是否会阻塞 CPU 线程？
+- 掉帧如何处理？
+- confidence threshold 和 class filter 是什么？
 
-## Deliverables
+## 交付物
 
-- Perception-to-decision interface document.
-- Detection/depth/pose topic inventory.
-- AI latency budget.
-- One end-to-end test: object detection triggers a task or navigation behavior.
+- 感知到决策的接口文档。
+- Detection/depth/pose topic 盘点。
+- AI 延迟预算。
+- 一个端到端测试：物体检测触发任务或导航行为。

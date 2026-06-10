@@ -1,68 +1,66 @@
-# SLAM Selection Report Template
+# SLAM 技术选型报告模板
 
-Use this template after the current `slam_toolbox` solution is understood. The
-goal is not to chase every algorithm, but to build selection judgment.
+在理解当前 `slam_toolbox` 方案之后，再使用这个模板。目标不是追逐所有算法，而是建立方案判断力。
 
-## Selection question
+## 选型问题
 
-Which SLAM/localization solution best fits this robot product on the target ARM
-CPU + NPU SoC?
+哪一种 SLAM/定位方案最适合这款运行在目标 ARM CPU + NPU SoC 上的机器人产品？
 
-## Product constraints
+## 产品约束
 
-| Constraint | Requirement |
+| 约束 | 要求 |
 | --- | --- |
-| Environment | indoor / outdoor / mixed |
-| Robot speed |  |
-| Sensor set | lidar / depth camera / IMU / wheel odom |
-| CPU budget |  |
-| Memory budget |  |
-| Power budget |  |
-| Map size |  |
-| Dynamic obstacle level |  |
-| Cost sensitivity |  |
-| Maintenance ability |  |
+| 环境 | 室内 / 室外 / 混合 |
+| 机器人速度 |  |
+| 传感器组合 | lidar / depth camera / IMU / wheel odom |
+| CPU 预算 |  |
+| 内存预算 |  |
+| 功耗预算 |  |
+| 地图大小 |  |
+| 动态障碍程度 |  |
+| 成本敏感度 |  |
+| 维护能力 |  |
 
-## Candidate comparison
+## 候选方案对比
 
-| Candidate | Sensor input | Strength | Weakness | Compute cost | Integration cost | Fit |
+| 候选方案 | 传感器输入 | 优势 | 劣势 | 计算成本 | 集成成本 | 适配度 |
 | --- | --- | --- | --- | --- | --- | --- |
-| slam_toolbox | 2D lidar + odom | ROS2-friendly, practical indoor mapping | depends on lidar/odom quality | low-medium | low | TBD |
-| Cartographer | 2D/3D lidar + IMU | mature pose graph, good mapping | heavier and more complex | medium-high | medium | TBD |
-| ORB-SLAM3 | camera/IMU | visual SLAM capability | sensitive to texture/light, integration cost | medium-high | high | TBD |
-| RTAB-Map | RGB-D/stereo/lidar | practical RGB-D mapping | resource pressure | medium-high | medium-high | TBD |
-| FAST-LIO | lidar + IMU | strong lidar-inertial odometry | needs suitable lidar/IMU | medium | high | TBD |
+| slam_toolbox | 2D lidar + odom | ROS2 友好，室内建图实用 | 依赖 lidar/odom 质量 | 低-中 | 低 | 待补充 |
+| Cartographer | 2D/3D lidar + IMU | 成熟 pose graph，建图效果好 | 更重、更复杂 | 中-高 | 中 | 待补充 |
+| ORB-SLAM3 | camera/IMU | 具备视觉 SLAM 能力 | 受纹理/光照影响，集成成本高 | 中-高 | 高 | 待补充 |
+| RTAB-Map | RGB-D/stereo/lidar | RGB-D 建图较实用 | 资源压力较大 | 中-高 | 中-高 | 待补充 |
+| FAST-LIO | lidar + IMU | 激光惯导里程计能力强 | 需要合适 lidar/IMU | 中 | 高 | 待补充 |
 
-## Evaluation scenarios
+## 评估场景
 
-| Scenario | Why it matters | Metric |
+| 场景 | 为什么重要 | 指标 |
 | --- | --- | --- |
-| Corridor | Feature-poor mapping | map drift |
-| Narrow passage | Navigation usability | pass/fail, map quality |
-| Loop route | Loop closure | closure error |
-| Dynamic people | Real environment | robustness |
-| Low light | Visual methods | failure rate |
-| Long run | Stability | CPU, memory, pose drift |
+| 走廊 | 特征较少的建图环境 | 地图漂移 |
+| 窄通道 | 导航可用性 | 通过/失败、地图质量 |
+| 回环路线 | 回环能力 | 闭环误差 |
+| 动态人群 | 真实环境 | 鲁棒性 |
+| 低光照 | 视觉方案 | 失败率 |
+| 长时间运行 | 稳定性 | CPU、内存、位姿漂移 |
 
-## Metrics
+## 指标
 
-- Mapping success rate.
-- Localization stability.
-- CPU usage.
-- Memory usage.
-- Sensor dependency.
-- Integration difficulty.
-- Debuggability.
-- Commercial maintainability.
+- 建图成功率。
+- 定位稳定性。
+- CPU 占用。
+- 内存占用。
+- 传感器依赖。
+- 集成难度。
+- 可调试性。
+- 商业维护性。
 
-## Recommendation
+## 推荐结论
 
-Recommended solution:
+推荐方案：
 
-Reason:
+理由：
 
-Risks:
+风险：
 
-Fallback:
+备选方案：
 
-Next experiment:
+下一步实验：

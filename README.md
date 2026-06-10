@@ -1,14 +1,13 @@
-# Smart Robot Growth Plan
+# 智能机器人项目成长计划
 
-This repository contains a structured knowledge base for growing a smart robot
-migration project into reusable robot system engineering assets.
+这个仓库用于沉淀智能机器人平台迁移项目中的知识、问题复盘、调试方法和系统架构资产，目标是把项目经验转化为可复用的机器人系统工程能力。
 
-Start here:
+建议从这里开始阅读：
 
-- [Robot Knowledge Base](robot-knowledge-base/README.md)
-- [System Map](robot-knowledge-base/01-system-architecture/system-map.md)
-- [ROS2 Navigation Debugging](robot-knowledge-base/02-ros2/ros2-navigation-debugging.md)
-- [SLAM and Localization Guide](robot-knowledge-base/03-slam/slam-localization-guide.md)
-- [Nav2 Debugging Guide](robot-knowledge-base/05-nav2/nav2-debugging-guide.md)
-- [SoC Migration and Performance Baseline](robot-knowledge-base/09-soc-porting/soc-migration-performance.md)
-- [AI and Navigation Integration](robot-knowledge-base/06-yolo-npu/ai-navigation-integration.md)
+- [机器人知识库总览](robot-knowledge-base/README.md)
+- [系统架构地图](robot-knowledge-base/01-system-architecture/system-map.md)
+- [ROS2 导航调试手册](robot-knowledge-base/02-ros2/ros2-navigation-debugging.md)
+- [SLAM 与定位指南](robot-knowledge-base/03-slam/slam-localization-guide.md)
+- [Nav2 调试手册](robot-knowledge-base/05-nav2/nav2-debugging-guide.md)
+- [SoC 迁移与性能基线](robot-knowledge-base/09-soc-porting/soc-migration-performance.md)
+- [AI 感知与导航集成](robot-knowledge-base/06-yolo-npu/ai-navigation-integration.md)

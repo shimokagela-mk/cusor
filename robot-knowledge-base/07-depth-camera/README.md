@@ -1,17 +1,17 @@
-# Depth Camera Notes
+# 深度相机笔记
 
-Use this directory to record depth camera integration details and issues.
+这个目录用于记录深度相机集成细节和问题。
 
-Key topics to capture:
+需要重点记录：
 
-- RGB image topic name, type, rate, and QoS.
-- Depth image or point cloud topic name, type, rate, and QoS.
-- Camera info topic and calibration state.
-- RGB-depth alignment method.
-- `base_link -> camera_link` static transform.
-- Frame drop, timestamp, and bandwidth behavior on the target SoC.
+- RGB image topic 名称、类型、频率和 QoS。
+- Depth image 或 point cloud topic 名称、类型、频率和 QoS。
+- Camera info topic 与标定状态。
+- RGB-depth 对齐方式。
+- `base_link -> camera_link` 静态坐标变换。
+- 目标 SoC 上的掉帧、时间戳和带宽表现。
 
-Recommended evidence:
+推荐证据：
 
 ```bash
 ros2 topic list -t | grep camera
@@ -22,5 +22,4 @@ ros2 topic info /camera/depth/image_raw --verbose
 ros2 run tf2_ros tf2_echo base_link camera_link
 ```
 
-Keep this directory focused on camera data quality and integration contracts.
-YOLO/NPU model details belong in `../06-yolo-npu/`.
+这个目录只关注相机数据质量和集成契约。YOLO/NPU 模型细节放在 `../06-yolo-npu/`。

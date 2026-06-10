@@ -1,57 +1,55 @@
-# Problem Review Template
+# 问题复盘模板
 
-Use this template for every meaningful robot issue. The goal is to preserve the
-debugging process, not only the final fix.
+每个有价值的机器人问题都使用这个模板记录。目标不是只保存最终修复方案，而是保存完整排查过程。
 
-## Summary
+## 摘要
 
-- Title:
-- Date:
-- Owner:
-- Platform: RDK X5 / target SoC / both
-- Module: hardware / driver / ROS2 / TF / SLAM / localization / Nav2 / MCU /
-  AI / ASR / task manager
-- Severity:
-- Status: open / mitigated / fixed / cannot reproduce
+- 标题：
+- 日期：
+- 负责人：
+- 平台：RDK X5 / 目标 SoC / 两者都有
+- 模块：hardware / driver / ROS2 / TF / SLAM / localization / Nav2 / MCU / AI / ASR / task manager
+- 严重级别：
+- 状态：open / mitigated / fixed / cannot reproduce
 
-## Symptom
+## 问题现象
 
-Describe what happened in observable terms:
+用可观察事实描述：
 
-- What did the robot do?
-- What was expected?
-- Is the issue stable or intermittent?
-- Does it happen on RDK X5, target SoC, or both?
+- 机器人实际做了什么？
+- 期望行为是什么？
+- 问题稳定复现还是偶发？
+- 发生在 RDK X5、目标 SoC，还是两个平台都有？
 
-## Reproduction steps
+## 复现步骤
 
 1.
 2.
 3.
 
-Environment:
+环境：
 
-- Map:
-- Start pose:
-- Goal pose:
-- Launch command:
-- Hardware setup:
-- Battery/power state:
+- 地图：
+- 起点位姿：
+- 目标位姿：
+- 启动命令：
+- 硬件连接：
+- 电池/供电状态：
 
-## Evidence
+## 证据
 
-Attach or link:
+附件或链接：
 
-- rosbag path:
-- logs:
-- screenshots/video:
-- parameter dumps:
-- TF tree:
-- topic rates:
-- CPU/memory records:
-- MCU/CAN/UART logs:
+- rosbag 路径：
+- 日志：
+- 截图/视频：
+- 参数 dump：
+- TF 树：
+- topic 频率：
+- CPU/内存记录：
+- MCU/CAN/UART 日志：
 
-Minimum commands:
+最小命令：
 
 ```bash
 ros2 node list
@@ -63,47 +61,46 @@ dmesg -T | tail -n 200
 journalctl -b --no-pager | tail -n 300
 ```
 
-## Initial hypotheses
+## 初始假设
 
-| Hypothesis | Layer | Evidence for | Evidence against | Next check |
+| 假设 | 层级 | 支持证据 | 反证 | 下一步检查 |
 | --- | --- | --- | --- | --- |
 |  |  |  |  |  |
 
-## Debug process
+## 排查过程
 
-Record the path, including failed attempts.
+记录排查路径，包括失败尝试。
 
-| Step | Action | Result | Conclusion |
+| 步骤 | 动作 | 结果 | 结论 |
 | --- | --- | --- | --- |
 | 1 |  |  |  |
 
-## Root cause
+## 根因
 
-State the root cause in one or two sentences.
+用一到两句话描述根因。
 
-Good format:
+推荐格式：
 
 ```text
-Because <condition>, <module> produced <wrong behavior>, which caused
-<observable robot symptom>.
+由于 <条件>，<模块> 产生了 <错误行为>，最终导致 <可观察的机器人现象>。
 ```
 
-## Fix
+## 修复方案
 
-- Code/config change:
-- Parameter change:
-- Hardware change:
-- Operational workaround:
+- 代码/配置修改：
+- 参数修改：
+- 硬件修改：
+- 临时规避方案：
 
-## Verification
+## 验证结果
 
-| Test | Before | After | Pass/Fail |
+| 测试 | 修复前 | 修复后 | 通过/失败 |
 | --- | --- | --- | --- |
 |  |  |  |  |
 
-## Lessons
+## 经验沉淀
 
-- What signal would have found this faster?
-- Which checklist should be updated?
-- Does this issue expose a missing interface contract?
-- Does this issue affect the migration white paper?
+- 哪个信号本可以更快定位这个问题？
+- 哪个检查清单需要更新？
+- 这个问题是否暴露了接口契约缺失？
+- 这个问题是否应该写进迁移白皮书？

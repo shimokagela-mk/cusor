@@ -1,21 +1,20 @@
-# Localization Notes
+# 定位专题笔记
 
-Use this directory for localization-specific notes that should not be mixed with
-general SLAM documentation.
+这个目录用于沉淀定位相关内容，避免和通用 SLAM 文档混在一起。
 
-Recommended files to add during the project:
+项目过程中建议继续补充：
 
 - `amcl-or-localizer-params.md`
 - `pose-drift-cases.md`
 - `map-to-odom-analysis.md`
 - `localization-test-report.md`
 
-Minimum evidence for each localization issue:
+每个定位问题至少需要保留这些证据：
 
-- `/tf` and `/tf_static`
+- `/tf` 和 `/tf_static`
 - `/odom`
 - `/scan`
-- map file
-- initial pose
-- robot video or RViz screenshot
-- whether the issue reproduces on RDK X5, target SoC, or both
+- 地图文件
+- 初始位姿
+- 机器人视频或 RViz 截图
+- 问题是在 RDK X5、目标 SoC，还是两个平台都能复现

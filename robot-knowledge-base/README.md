@@ -1,19 +1,16 @@
-# Robot Knowledge Base
+# 机器人知识库
 
-This knowledge base turns the smart robot migration project into reusable
-engineering assets. The goal is to grow from embedded Linux / SoC platform work
-into ROS2 robot system engineering.
+这个知识库用于把智能机器人平台迁移项目沉淀为可复用的工程资产。目标是从嵌入式 Linux / SoC 平台能力，升级到 ROS2 机器人系统工程能力。
 
-## Project context
+## 项目背景
 
-- Source platform: RDK X5
-- Target platform: company ARM CPU + NPU SoC
-- OS/runtime: Ubuntu + ROS2 + DDS
-- Main responsibility: mapping, localization, Nav2, ROS2 navigation chain, and
-  target SoC adaptation
-- Adjacent modules: YOLO/NPU/depth camera, audio/ASR, MCU base controller
+- 原始平台：RDK X5
+- 目标平台：公司自研 ARM CPU + NPU SoC
+- 系统与运行环境：Ubuntu + ROS2 + DDS
+- 你的主要职责：建图、定位、Nav2、ROS2 导航链路、目标 SoC 平台适配
+- 相关模块：YOLO/NPU/深度相机、音频/ASR、MCU 底板控制器
 
-## Directory map
+## 目录地图
 
 ```text
 robot-knowledge-base/
@@ -31,31 +28,25 @@ robot-knowledge-base/
   12-selection-reports/
 ```
 
-## Weekly operating rhythm
+## 每周工作节奏
 
-Each week should produce:
+每周至少沉淀：
 
-1. One technical note.
-2. One problem review.
-3. One architecture or data-flow update.
-4. One reproducible case, preferably backed by logs, rosbag, screenshots, or
-   command output.
+1. 一篇技术笔记。
+2. 一次问题复盘。
+3. 一次架构图或数据流更新。
+4. 一个可复现案例，最好包含日志、rosbag、截图或命令输出。
 
-## Growth checkpoints
+## 成长检查点
 
-Use these checkpoints to decide whether the project is producing career value:
+用下面的问题判断这个项目是否正在产生职业成长价值：
 
-- Can I explain the full path from a navigation command to motor movement?
-- Can I identify whether a failure belongs to perception, localization,
-  planning, control, MCU communication, or SoC adaptation?
-- Can I replay a problem with rosbag2 and isolate the responsible module?
-- Can I quantify CPU, memory, bandwidth, latency, temperature, and stability
-  differences between RDK X5 and the target SoC?
-- Can I define interfaces between YOLO/depth camera results and navigation or
-  task management?
+- 我能不能讲清楚导航指令从下发到电机转动的完整路径？
+- 我能不能判断一个故障属于感知、定位、规划、控制、MCU 通信还是 SoC 适配？
+- 我能不能用 rosbag2 复现问题，并隔离出责任模块？
+- 我能不能量化 RDK X5 和目标 SoC 在 CPU、内存、带宽、延迟、温度、稳定性上的差异？
+- 我能不能定义 YOLO/深度相机结果与导航或任务管理之间的接口？
 
-## Documentation rule
+## 文档规则
 
-For every important issue, record evidence before conclusions. A useful note
-must contain command output, topic names, node names, message types, timing
-data, parameters, or reproduction steps.
+所有重要问题都要先记录证据，再给结论。一篇有价值的笔记必须包含命令输出、话题名、节点名、消息类型、时序数据、参数或复现步骤。

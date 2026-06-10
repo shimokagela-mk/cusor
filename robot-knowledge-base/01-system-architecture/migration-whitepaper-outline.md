@@ -1,58 +1,56 @@
-# Robot Platform Migration White Paper Outline
+# 机器人平台迁移白皮书大纲
 
-## Purpose
+## 目的
 
-This white paper should summarize the migration from RDK X5 to the company ARM
-CPU + NPU SoC in a way that is useful for project delivery, future maintenance,
-and career presentation.
+本文档用于总结从 RDK X5 到公司自研 ARM CPU + NPU SoC 的迁移过程。它既服务项目交付、后续维护，也服务你的职业表达。
 
-## 1. Executive summary
+## 1. 摘要
 
-- Why the migration was needed.
-- What was migrated.
-- Final system capability.
-- Main risks and how they were solved.
+- 为什么需要迁移。
+- 迁移了哪些模块。
+- 迁移完成后的系统能力。
+- 主要风险以及解决方式。
 
-## 2. Hardware architecture
+## 2. 硬件架构
 
-Include:
+需要包含：
 
-- Target SoC.
-- MCU base board.
-- Lidar.
-- Depth camera.
-- Microphone/audio path.
-- Motor, encoder, power.
-- UART/CAN communication.
+- 目标 SoC。
+- MCU 底板。
+- 激光雷达。
+- 深度相机。
+- 麦克风/音频链路。
+- 电机、编码器、电源。
+- UART/CAN 通信。
 
-Diagram:
+架构图：
 
 ```mermaid
 flowchart TD
-    soc["Target ARM CPU + NPU SoC"] -->|"UART/CAN"| mcu["MCU Base Board"]
-    mcu --> motor["Motor"]
-    mcu --> encoder["Encoder"]
-    lidar["Lidar"] --> soc
-    depthCamera["Depth Camera"] --> soc
-    mic["Mic"] --> soc
+    soc["目标 ARM CPU + NPU SoC"] -->|"UART/CAN"| mcu["MCU 底板"]
+    mcu --> motor["电机"]
+    mcu --> encoder["编码器"]
+    lidar["激光雷达"] --> soc
+    depthCamera["深度相机"] --> soc
+    mic["麦克风"] --> soc
 ```
 
-## 3. Software architecture
+## 3. 软件架构
 
-Include:
+需要包含：
 
-- Ubuntu image.
-- ROS2 distribution.
-- DDS implementation.
-- SLAM/localization.
-- Nav2.
-- YOLO/NPU.
-- ASR/task manager.
-- Base controller and MCU protocol.
+- Ubuntu 镜像。
+- ROS2 发行版。
+- DDS 实现。
+- SLAM/定位。
+- Nav2。
+- YOLO/NPU。
+- ASR/任务管理。
+- 底盘控制器与 MCU 协议。
 
-## 4. Migration scope
+## 4. 迁移范围
 
-| Module | RDK X5 state | Target SoC state | Owner | Status |
+| 模块 | RDK X5 状态 | 目标 SoC 状态 | 负责人 | 状态 |
 | --- | --- | --- | --- | --- |
 | SLAM |  |  |  |  |
 | Localization |  |  |  |  |
@@ -63,99 +61,94 @@ Include:
 | ASR |  |  |  |  |
 | MCU communication |  |  |  |  |
 
-## 5. Interface contracts
+## 5. 接口契约
 
-Document:
+需要记录：
 
-- Topic names and message types.
-- QoS requirements.
-- TF frames.
-- Action/service APIs.
-- MCU protocol.
-- AI detection message.
-- Task manager inputs/outputs.
+- Topic 名称与消息类型。
+- QoS 要求。
+- TF 坐标系。
+- Action/Service API。
+- MCU 协议。
+- AI 检测消息。
+- Task Manager 输入与输出。
 
-## 6. Platform differences
+## 6. 平台差异
 
-Summarize measured differences:
+总结实测差异：
 
-- CPU.
-- Memory.
-- NPU runtime.
-- Driver behavior.
-- ROS2 package compatibility.
-- DDS behavior.
-- Sensor timestamp behavior.
-- Thermal and power.
+- CPU。
+- 内存。
+- NPU runtime。
+- 驱动行为。
+- ROS2 包兼容性。
+- DDS 行为。
+- 传感器时间戳行为。
+- 温度与功耗。
 
-## 7. Key problems and solutions
+## 7. 关键问题与解决方案
 
-Use short case studies:
+用短案例记录：
 
-| Problem | Layer | Root cause | Fix | Evidence |
+| 问题 | 层级 | 根因 | 修复方案 | 证据 |
 | --- | --- | --- | --- | --- |
 |  |  |  |  |  |
 
-## 8. Performance baseline
+## 8. 性能基线
 
-Include:
+需要包含：
 
-- Node CPU/memory.
-- Topic rates.
-- SLAM/Nav2 latency.
-- YOLO FPS and latency.
-- Long-run stability.
-- RDK X5 vs target SoC comparison.
+- 节点 CPU/内存。
+- Topic 频率。
+- SLAM/Nav2 延迟。
+- YOLO FPS 与延迟。
+- 长稳测试。
+- RDK X5 与目标 SoC 对比。
 
-## 9. Navigation validation
+## 9. 导航验证
 
-Include:
+需要包含：
 
-- Test map.
-- Test scenarios.
-- Success/failure criteria.
-- Pass rate.
-- Known limitations.
+- 测试地图。
+- 测试场景。
+- 成功/失败标准。
+- 通过率。
+- 已知限制。
 
-## 10. AI and task integration
+## 10. AI 与任务集成
 
-Include:
+需要包含：
 
-- YOLO output contract.
-- Depth fusion method.
-- Object-to-task conversion.
-- AI latency impact on navigation.
-- Safety boundaries.
+- YOLO 输出契约。
+- 深度融合方式。
+- Object 到 Task 的转换。
+- AI 延迟对导航的影响。
+- 安全边界。
 
-## 11. Remaining risks
+## 11. 剩余风险
 
-Examples:
+示例：
 
-- Sensor driver stability.
-- CPU/NPU contention.
-- Localization drift in specific scenes.
-- TF/time synchronization.
-- MCU communication reliability.
-- Long-run memory growth.
+- 传感器驱动稳定性。
+- CPU/NPU 资源竞争。
+- 特定场景下的定位漂移。
+- TF/时间同步。
+- MCU 通信可靠性。
+- 长时间运行内存增长。
 
-## 12. Next iteration roadmap
+## 12. 下一轮迭代路线
 
-Separate:
+分开记录：
 
-- Must fix before release.
-- Performance optimization.
-- Architecture cleanup.
-- Future AI/robotics features.
+- 发布前必须修复。
+- 性能优化。
+- 架构清理。
+- 未来 AI/机器人功能。
 
-## Career summary paragraph
+## 职业表达示例
 
-Use this paragraph as a resume/interview seed:
+可以作为简历或面试表达的起点：
 
 ```text
-Participated in migration of a ROS2 robot software stack from RDK X5 to a
-company ARM CPU + NPU SoC platform. Owned mapping, localization, Nav2 navigation
-chain, ROS2 graph analysis, and platform adaptation issues. Built system-level
-debugging assets covering TF, Topic/Action/Service flows, SLAM/Nav2 failure
-diagnosis, performance baselines, long-run stability, and AI perception
-integration boundaries.
+参与 ROS2 机器人软件栈从 RDK X5 到公司自研 ARM CPU + NPU SoC 平台的迁移。负责建图、定位、Nav2 导航链路、ROS2 Graph 分析和平台适配问题定位。沉淀了覆盖 TF、Topic/Action/Service 链路、SLAM/Nav2 故障诊断、性能基线、长稳测试和 AI 感知集成边界的系统级调试资产。
 ```

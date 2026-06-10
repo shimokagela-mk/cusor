@@ -1,30 +1,28 @@
-# SoC Migration and Performance Baseline
+# SoC 迁移与性能基线
 
-## Goal
+## 目标
 
-Turn the RDK X5 to target ARM CPU + NPU SoC migration into measurable platform
-engineering work. The key is to distinguish platform limitations from ROS2,
-SLAM, Nav2, AI, and MCU issues.
+把从 RDK X5 到目标 ARM CPU + NPU SoC 的迁移变成可量化的平台工程工作。关键是区分平台限制、ROS2、SLAM、Nav2、AI 和 MCU 问题。
 
-## Migration comparison matrix
+## 迁移对比矩阵
 
-| Area | RDK X5 | Target SoC | Difference | Risk | Evidence |
+| 领域 | RDK X5 | 目标 SoC | 差异 | 风险 | 证据 |
 | --- | --- | --- | --- | --- | --- |
-| CPU architecture | TBD | TBD | TBD | Scheduling/perf | `lscpu` |
-| CPU frequency/governor | TBD | TBD | TBD | Latency/power | `cpufreq-info`, sysfs |
-| Memory | TBD | TBD | TBD | SLAM/Nav2/camera pressure | `free -h`, `vmstat` |
-| Storage | TBD | TBD | TBD | logs, map load, bag write | `iostat` |
-| NPU runtime | TBD | TBD | TBD | YOLO latency | NPU SDK logs |
-| Camera driver | TBD | TBD | TBD | frame drop/timestamp | `dmesg`, topic hz |
-| Lidar driver | TBD | TBD | TBD | scan loss | `dmesg`, topic hz |
-| UART/CAN to MCU | TBD | TBD | TBD | control delay | bus logs |
-| Ubuntu version | TBD | TBD | TBD | dependency compatibility | `lsb_release -a` |
-| ROS2 distro | TBD | TBD | TBD | package compatibility | package list |
-| DDS implementation | TBD | TBD | TBD | QoS/latency | env and packages |
+| CPU 架构 | 待补充 | 待补充 | 待补充 | 调度/性能 | `lscpu` |
+| CPU 频率/governor | 待补充 | 待补充 | 待补充 | 延迟/功耗 | `cpufreq-info`, sysfs |
+| 内存 | 待补充 | 待补充 | 待补充 | SLAM/Nav2/相机压力 | `free -h`, `vmstat` |
+| 存储 | 待补充 | 待补充 | 待补充 | 日志、地图加载、bag 写入 | `iostat` |
+| NPU runtime | 待补充 | 待补充 | 待补充 | YOLO 延迟 | NPU SDK logs |
+| 相机驱动 | 待补充 | 待补充 | 待补充 | 掉帧/时间戳 | `dmesg`, topic hz |
+| 雷达驱动 | 待补充 | 待补充 | 待补充 | scan 丢失 | `dmesg`, topic hz |
+| UART/CAN 到 MCU | 待补充 | 待补充 | 待补充 | 控制延迟 | bus logs |
+| Ubuntu 版本 | 待补充 | 待补充 | 待补充 | 依赖兼容性 | `lsb_release -a` |
+| ROS2 发行版 | 待补充 | 待补充 | 待补充 | 包兼容性 | package list |
+| DDS 实现 | 待补充 | 待补充 | 待补充 | QoS/延迟 | env and packages |
 
-## Performance baseline script checklist
+## 性能基线采集清单
 
-Collect these values before optimization:
+优化前先采集这些值：
 
 ```bash
 date
@@ -39,7 +37,7 @@ ros2 topic list -t
 ros2 doctor --report
 ```
 
-Runtime sampling:
+运行时采样：
 
 ```bash
 top -b -n 1
@@ -50,7 +48,7 @@ dmesg -T | tail -n 200
 journalctl -b --no-pager | tail -n 300
 ```
 
-ROS2 sampling:
+ROS2 采样：
 
 ```bash
 ros2 topic hz /scan
@@ -62,94 +60,91 @@ ros2 topic info /scan --verbose
 ros2 topic info /tf --verbose
 ```
 
-## Critical latency chain
+## 关键延迟链路
 
 ```mermaid
 flowchart TD
-    sensorInput["Sensor Input"] --> driver["Linux Driver"]
-    driver --> rosNode["ROS2 Driver Node"]
-    rosNode --> dds["DDS Transport"]
-    dds --> slamNav["SLAM/Nav2 Processing"]
+    sensorInput["传感器输入"] --> driver["Linux 驱动"]
+    driver --> rosNode["ROS2 驱动节点"]
+    rosNode --> dds["DDS 传输"]
+    dds --> slamNav["SLAM/Nav2 处理"]
     slamNav --> cmdVel["cmd_vel"]
-    cmdVel --> baseController["Base Controller Node"]
+    cmdVel --> baseController["底盘控制节点"]
     baseController --> uartCan["UART/CAN"]
     uartCan --> mcu["MCU"]
-    mcu --> motor["Motor"]
-    motor --> encoder["Encoder"]
-    encoder --> odom["Odometry"]
+    mcu --> motor["电机"]
+    motor --> encoder["编码器"]
+    encoder --> odom["里程计"]
     odom --> slamNav
 ```
 
-Measure each edge when possible:
+尽可能测量每条边：
 
-| Segment | Measurement method | Common issue |
+| 链路 | 测量方式 | 常见问题 |
 | --- | --- | --- |
-| Sensor to driver | kernel timestamps, driver logs | dropped frames/scans |
-| Driver to ROS node | node logs, message timestamps | timestamp mismatch |
-| DDS transport | topic hz/bw, rosbag | QoS mismatch, congestion |
-| SLAM/Nav2 processing | node CPU, logs, callback timing | CPU saturation |
-| `/cmd_vel` to base controller | topic echo and node log | callback delay |
-| Base controller to MCU | UART/CAN log | packet loss/retry |
-| MCU to odom | odom rate and encoder log | unit or direction mismatch |
+| Sensor 到 driver | kernel 时间戳、driver 日志 | 掉帧/丢 scan |
+| Driver 到 ROS node | node 日志、消息时间戳 | 时间戳不匹配 |
+| DDS transport | topic hz/bw、rosbag | QoS 不匹配、拥塞 |
+| SLAM/Nav2 processing | 节点 CPU、日志、callback 耗时 | CPU 饱和 |
+| `/cmd_vel` 到 base controller | topic echo 和节点日志 | callback 延迟 |
+| Base controller 到 MCU | UART/CAN 日志 | 丢包/重试 |
+| MCU 到 odom | odom 频率和编码器日志 | 单位或方向错误 |
 
-## Long-run stability plan
+## 长稳测试计划
 
-Minimum long-run tests:
+最低长稳测试：
 
-| Test | Duration target | Evidence | Failure criteria |
+| 测试 | 目标时长 | 证据 | 失败标准 |
 | --- | --- | --- | --- |
-| Idle ROS graph | TBD | CPU/memory logs | Memory growth, node crash |
-| Mapping loop | TBD | map, rosbag, CPU/memory | map corruption, CPU runaway |
-| Nav2 repeated goals | TBD | success rate, cmd_vel, odom | failed goals, recovery loop |
-| Camera + YOLO + navigation | TBD | FPS, inference latency, nav result | delayed control, dropped topics |
-| Voice + task + navigation | TBD | task logs, action result | wrong task or stuck state |
+| 空闲 ROS graph | 待补充 | CPU/内存日志 | 内存增长、节点崩溃 |
+| 建图循环 | 待补充 | map、rosbag、CPU/内存 | 地图异常、CPU 失控 |
+| Nav2 重复目标点 | 待补充 | 成功率、cmd_vel、odom | 目标失败、recovery 循环 |
+| 相机 + YOLO + 导航 | 待补充 | FPS、推理延迟、导航结果 | 控制延迟、topic 掉帧 |
+| 语音 + 任务 + 导航 | 待补充 | task 日志、action 结果 | 任务错误或状态卡死 |
 
-Track:
+跟踪：
 
-- Node crashes.
-- Memory growth.
-- CPU thermal throttling.
-- Topic rate degradation.
-- TF extrapolation frequency.
-- MCU communication errors.
-- DDS warnings.
+- 节点崩溃。
+- 内存增长。
+- CPU 温度降频。
+- Topic 频率下降。
+- TF extrapolation 频率。
+- MCU 通信错误。
+- DDS 警告。
 
-## Optimization rules
+## 优化规则
 
-1. Define a baseline before changing anything.
-2. Change one variable per experiment.
-3. Keep the same route, map, goal, and load profile.
-4. Record before/after metrics.
-5. Separate performance, stability, and functional correctness.
+1. 改动前先定义基线。
+2. 每次实验只改一个变量。
+3. 保持相同路线、地图、目标点和负载。
+4. 记录优化前后指标。
+5. 分开看性能、稳定性和功能正确性。
 
-## Common target SoC risks
+## 目标 SoC 常见风险
 
-| Risk | Why it matters | Evidence | Mitigation |
+| 风险 | 为什么重要 | 证据 | 缓解方式 |
 | --- | --- | --- | --- |
-| Lower CPU single-thread perf | SLAM and Nav2 callbacks may lag | CPU flame/perf/top | reduce rate, tune executor, optimize node |
-| Memory bandwidth pressure | Camera + NPU + SLAM compete | FPS drop, system load | reduce resolution, isolate pipelines |
-| DDS behavior difference | Topics may disappear or lag | verbose topic info | align QoS, test DDS config |
-| Timestamp mismatch | TF extrapolation and localization failure | message headers | unify time source |
-| Driver maturity | sensors unstable on new SoC | dmesg, node restart | driver fixes, retry strategy |
-| NPU runtime blocking CPU | Navigation loop jitter | pidstat/perf | async inference, thread isolation |
-| Thermal throttling | long-run performance drops | temp/frequency logs | cooling, governor, workload tuning |
+| CPU 单线程性能较低 | SLAM 和 Nav2 callback 可能滞后 | CPU flame/perf/top | 降频率、调 executor、优化节点 |
+| 内存带宽压力 | 相机 + NPU + SLAM 争抢资源 | FPS 下降、系统负载升高 | 降分辨率、隔离 pipeline |
+| DDS 行为差异 | Topic 可能消失或延迟 | verbose topic info | 对齐 QoS，测试 DDS 配置 |
+| 时间戳不匹配 | TF extrapolation 与定位失败 | message headers | 统一时间源 |
+| 驱动成熟度不足 | 新 SoC 上传感器不稳定 | dmesg、节点重启 | 修驱动、增加重试策略 |
+| NPU runtime 阻塞 CPU | 导航控制环抖动 | pidstat/perf | 异步推理、线程隔离 |
+| 温度降频 | 长稳性能下降 | 温度/频率日志 | 散热、governor、负载调优 |
 
-## Platform issue vs algorithm issue
+## 平台问题与算法问题的区分
 
-Use this separation rule:
+使用下面规则：
 
-- If the same rosbag fails on both platforms, suspect algorithm/config/data.
-- If the same rosbag fails only on target SoC, suspect runtime, DDS, CPU, package,
-  or dependency differences.
-- If live data fails but rosbag replay succeeds, suspect driver, sensor timing,
-  MCU link, or hardware environment.
-- If `/cmd_vel` is normal but robot does not move, suspect base controller, MCU,
-  motor, power, or odom feedback.
+- 同一个 rosbag 在两个平台都失败，优先怀疑算法、配置或数据。
+- 同一个 rosbag 只在目标 SoC 失败，优先怀疑 runtime、DDS、CPU、软件包或依赖差异。
+- 实时数据失败但 rosbag 回放成功，优先怀疑驱动、传感器时序、MCU 链路或硬件环境。
+- `/cmd_vel` 正常但机器人不动，优先怀疑底盘控制器、MCU、电机、电源或 odom 反馈。
 
-## Deliverables
+## 交付物
 
-- RDK X5 and target SoC baseline report.
-- Platform difference matrix.
-- Latency chain measurement notes.
-- Long-run stability report.
-- Optimization record with before/after data.
+- RDK X5 与目标 SoC 基线报告。
+- 平台差异矩阵。
+- 延迟链路测量记录。
+- 长稳测试报告。
+- 带优化前后数据的优化记录。

@@ -1,39 +1,38 @@
-# SLAM and Localization Guide
+# SLAM 与定位指南
 
-## Goal
+## 目标
 
-Understand the current `slam_toolbox` based solution deeply enough to debug
-mapping and localization failures on the target SoC.
+深入理解当前基于 `slam_toolbox` 的方案，能够在目标 SoC 上定位建图与定位异常。
 
-## Core data flow
+## 核心数据流
 
 ```mermaid
 flowchart TD
-    lidar["Lidar LaserScan"] --> scanFilter["Optional Scan Filter"]
+    lidar["激光雷达 LaserScan"] --> scanFilter["可选 Scan Filter"]
     scanFilter --> scanMatcher["Scan Matching"]
-    odom["Wheel Odometry"] --> scanMatcher
-    scanMatcher --> poseGraph["Pose Graph"]
-    poseGraph --> loopClosure["Loop Closure"]
-    loopClosure --> optimizer["Graph Optimization"]
-    optimizer --> map["Occupancy Grid Map"]
-    optimizer --> mapToOdom["map to odom TF"]
+    odom["轮式里程计"] --> scanMatcher
+    scanMatcher --> poseGraph["位姿图"]
+    poseGraph --> loopClosure["回环检测"]
+    loopClosure --> optimizer["图优化"]
+    optimizer --> map["栅格地图"]
+    optimizer --> mapToOdom["map 到 odom 的 TF"]
 ```
 
-## Minimum concepts
+## 最小概念集
 
-| Concept | What to understand | Project symptom when wrong |
+| 概念 | 需要理解什么 | 出错时的项目现象 |
 | --- | --- | --- |
-| LaserScan | Angle range, range limits, frame, timestamp | Map distortion, missing obstacles |
-| Odometry | Wheel-based short-term motion estimate | Drift, localization instability |
-| Scan matching | Align current scan with previous/map data | Pose jump, failed tracking |
-| Pose graph | Nodes are robot poses, edges are constraints | Map accumulates error |
-| Loop closure | Detect revisited places | Long-loop map does not close |
-| Optimization | Correct accumulated pose graph error | Map bends or overlaps |
-| TF | Relationship among map, odom, base, laser | Extrapolation errors, no localization |
+| LaserScan | 角度范围、距离范围、frame、时间戳 | 地图畸变、障碍物缺失 |
+| Odometry | 基于轮子的短期运动估计 | 漂移、定位不稳定 |
+| Scan matching | 将当前 scan 与历史/地图数据对齐 | 位姿跳变、跟踪失败 |
+| Pose graph | 节点是机器人位姿，边是约束 | 地图误差累积 |
+| Loop closure | 检测是否回到已访问区域 | 大回环无法闭合 |
+| Optimization | 修正位姿图累计误差 | 地图弯曲或重影 |
+| TF | map、odom、base、laser 的关系 | extrapolation error、无法定位 |
 
-## Data quality checklist
+## 数据质量检查清单
 
-Before changing SLAM parameters, check data quality.
+调 SLAM 参数之前，先确认数据质量。
 
 ### LaserScan
 
@@ -43,13 +42,13 @@ ros2 topic echo /scan --once
 ros2 topic info /scan --verbose
 ```
 
-Check:
+检查：
 
-- `header.frame_id` equals the laser frame in TF.
-- `angle_min`, `angle_max`, `angle_increment` are reasonable.
-- `range_min` and `range_max` match the lidar.
-- Rate is stable.
-- No long gaps during movement.
+- `header.frame_id` 与 TF 中的 laser frame 一致。
+- `angle_min`、`angle_max`、`angle_increment` 合理。
+- `range_min` 和 `range_max` 与激光雷达规格一致。
+- 频率稳定。
+- 运动过程中没有长时间间隙。
 
 ### Odometry
 
@@ -59,12 +58,12 @@ ros2 topic echo /odom --once
 ros2 run tf2_ros tf2_echo odom base_link
 ```
 
-Check:
+检查：
 
-- Linear and angular velocity directions match real robot movement.
-- Odom does not jump when robot is still.
-- `odom -> base_link` is continuous.
-- Wheel radius, wheel base, encoder direction, and units are correct.
+- 线速度和角速度方向与机器人真实运动一致。
+- 机器人静止时 odom 不跳变。
+- `odom -> base_link` 连续。
+- 轮径、轮距、编码器方向和单位正确。
 
 ### TF
 
@@ -74,78 +73,77 @@ ros2 run tf2_ros tf2_echo map base_link
 ros2 run tf2_ros tf2_echo base_link laser
 ```
 
-Check:
+检查：
 
-- No missing static transform.
-- No duplicate TF publishers for the same frame pair.
-- No timestamp drift or future timestamp.
+- 没有缺失的静态变换。
+- 同一 frame pair 没有重复 TF 发布者。
+- 没有时间戳漂移或未来时间戳。
 
-## Mapping failure table
+## 建图故障表
 
-| Symptom | Likely layer | First checks | Typical fixes |
+| 现象 | 可能层级 | 首先检查 | 常见修复 |
 | --- | --- | --- | --- |
-| Map is rotated or mirrored | TF / mounting | `base_link -> laser`, odom direction | Fix static TF or encoder direction |
-| Map has double walls | Odom / scan matching | `/odom`, `/scan`, scan matcher logs | Calibrate odom, tune scan params |
-| Map drifts in corridor | Feature-poor scene | scan quality, loop closure | Add landmarks, adjust params, improve odom |
-| Loop closure fails | SLAM params / environment | pose graph, scan overlap | Tune loop closure thresholds |
-| Map stops updating | ROS2/data | `/scan` rate, node logs | Fix driver/QoS/lifecycle |
-| CPU spikes during mapping | SoC performance | CPU, memory, scan rate | Reduce scan rate/resolution, tune optimizer |
+| 地图旋转或镜像 | TF / 安装方向 | `base_link -> laser`、odom 方向 | 修正静态 TF 或编码器方向 |
+| 地图有双墙 | Odom / scan matching | `/odom`、`/scan`、scan matcher 日志 | 校准 odom，调整 scan 参数 |
+| 走廊场景地图漂移 | 特征少 | scan 质量、回环 | 增加特征、调参、改善 odom |
+| 回环失败 | SLAM 参数 / 环境 | pose graph、scan 重叠度 | 调整回环阈值 |
+| 地图停止更新 | ROS2 / 数据 | `/scan` 频率、节点日志 | 修驱动/QoS/lifecycle |
+| 建图时 CPU 突增 | SoC 性能 | CPU、内存、scan 频率 | 降低 scan 频率/分辨率，调整优化器 |
 
-## Localization failure table
+## 定位故障表
 
-| Symptom | Likely cause | Evidence |
+| 现象 | 可能原因 | 证据 |
 | --- | --- | --- |
-| Robot pose jumps | Bad scan match, TF issue, odom jump | `/tf`, `/odom`, SLAM logs |
-| Robot lost after fast turn | Controller/odom mismatch, scan lag | `/cmd_vel`, `/odom`, `/scan` timestamps |
-| Localization works on RDK X5 but not target SoC | Timing, DDS, CPU load, driver | topic hz/bw, CPU, rosbag replay |
-| Local costmap shifted | TF frame mismatch | frame tree and costmap global frame |
-| Localization delayed | CPU load or callback blocking | perf/top, topic timestamps |
+| 机器人位姿跳变 | scan match 失败、TF 问题、odom 跳变 | `/tf`、`/odom`、SLAM 日志 |
+| 快速转向后丢定位 | 控制/odom 不匹配、scan 延迟 | `/cmd_vel`、`/odom`、`/scan` 时间戳 |
+| RDK X5 正常但目标 SoC 异常 | 时序、DDS、CPU 负载、驱动 | topic hz/bw、CPU、rosbag 回放 |
+| local costmap 偏移 | TF frame 不匹配 | frame tree 和 costmap global frame |
+| 定位延迟 | CPU 负载或 callback 阻塞 | perf/top、topic 时间戳 |
 
-## Parameter study template
+## 参数实验模板
 
-| Parameter | Baseline | Test value | Scenario | Result | Keep? |
+| 参数 | 基线 | 测试值 | 场景 | 结果 | 是否保留 |
 | --- | --- | --- | --- | --- | --- |
-| scan rate | TBD | TBD | Corridor | TBD | TBD |
-| map resolution | TBD | TBD | Full map | TBD | TBD |
-| loop closure threshold | TBD | TBD | Return loop | TBD | TBD |
-| scan matcher search window | TBD | TBD | Fast turn | TBD | TBD |
-| transform timeout | TBD | TBD | Target SoC | TBD | TBD |
+| scan rate | 待补充 | 待补充 | 走廊 | 待补充 | 待补充 |
+| map resolution | 待补充 | 待补充 | 完整地图 | 待补充 | 待补充 |
+| loop closure threshold | 待补充 | 待补充 | 回环路线 | 待补充 | 待补充 |
+| scan matcher search window | 待补充 | 待补充 | 快速转向 | 待补充 | 待补充 |
+| transform timeout | 待补充 | 待补充 | 目标 SoC | 待补充 | 待补充 |
 
-Rules:
+规则：
 
-- Change one variable at a time.
-- Record rosbag before and after.
-- Use the same route for comparisons.
-- Record CPU, memory, map quality, and localization stability.
+- 一次只改一个变量。
+- 修改前后都录 rosbag。
+- 对比时使用同一条路线。
+- 记录 CPU、内存、地图质量和定位稳定性。
 
-## Scenario test matrix
+## 场景测试矩阵
 
-| Scenario | Purpose | Required evidence |
+| 场景 | 目的 | 必要证据 |
 | --- | --- | --- |
-| Straight corridor | Odom and scan consistency | map image, `/odom`, `/scan` |
-| Narrow passage | Costmap and scan precision | costmap, map, robot video |
-| Fast rotation | TF/timestamp/odom robustness | `/tf`, `/odom`, `/scan` |
-| Loop route | Loop closure | pose graph/map result |
-| Dynamic obstacles | Mapping robustness | rosbag and map changes |
-| Long run | Drift and resource stability | CPU/memory/map over time |
+| 直线走廊 | Odom 与 scan 一致性 | map image、`/odom`、`/scan` |
+| 狭窄通道 | Costmap 与 scan 精度 | costmap、map、机器人视频 |
+| 快速旋转 | TF/时间戳/odom 鲁棒性 | `/tf`、`/odom`、`/scan` |
+| 回环路线 | Loop closure | pose graph/map 结果 |
+| 动态障碍 | 建图鲁棒性 | rosbag 和地图变化 |
+| 长时间运行 | 漂移与资源稳定性 | CPU/内存/地图随时间变化 |
 
-## Source learning path
+## 源码学习路径
 
-Study `slam_toolbox` in this order:
+按这个顺序学习 `slam_toolbox`：
 
-1. Node input/output interfaces.
-2. Parameters and launch files.
-3. Scan callback and pose update path.
-4. Map publication path.
-5. Serialization/save-map path.
-6. Loop closure and optimization entry points.
+1. 节点输入/输出接口。
+2. 参数和 launch 文件。
+3. scan callback 与位姿更新路径。
+4. 地图发布路径。
+5. 序列化/保存地图路径。
+6. 回环检测与优化入口。
 
-Do not start with full-source reading. Start from the runtime data path and only
-enter source code to answer specific questions.
+不要一上来通读源码。先从运行时数据路径入手，只在回答具体问题时进入源码。
 
-## Deliverables
+## 交付物
 
-- SLAM data-flow diagram for the actual project.
-- Mapping failure case collection.
-- Localization issue checklist.
-- Parameter tuning log with before/after evidence.
+- 实际项目的 SLAM 数据流图。
+- 建图失败案例集合。
+- 定位问题检查清单。
+- 带修改前后证据的参数调优日志。
