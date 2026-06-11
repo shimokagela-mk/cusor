@@ -14,6 +14,7 @@
 
 ```text
 robot-knowledge-base/
+  00-learning-roadmap/
   01-system-architecture/
   02-ros2/
   03-slam/
@@ -27,6 +28,16 @@ robot-knowledge-base/
   11-performance/
   12-selection-reports/
 ```
+
+## 推荐阅读顺序
+
+1. [细颗粒度学习执行路线](00-learning-roadmap/detailed-learning-roadmap.md)
+2. [系统架构地图](01-system-architecture/system-map.md)
+3. [ROS2 导航调试手册](02-ros2/ros2-navigation-debugging.md)
+4. [SLAM 与定位指南](03-slam/slam-localization-guide.md)
+5. [Nav2 调试手册](05-nav2/nav2-debugging-guide.md)
+6. [SoC 迁移与性能基线](09-soc-porting/soc-migration-performance.md)
+7. [AI 感知与导航集成](06-yolo-npu/ai-navigation-integration.md)
 
 ## 每周工作节奏
 
