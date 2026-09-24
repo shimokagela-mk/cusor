@@ -1,0 +1,6 @@
+<import src="../../templates/day-body.wxml" />
+<view class="page empty" wx:if="{{ready && !hasPlan}}">
+  <view class="hero-title">还没有计划</view>
+  <button class="btn" bindtap="onCreate">去制定</button>
+</view>
+<template wx:if="{{ready && hasPlan}}" is="dayBody" data="{{...vm}}" />

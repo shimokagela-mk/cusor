@@ -1,0 +1,4 @@
+{
+  "desc": "期练",
+  "rules": [{ "action": "allow", "page": "*" }]
+}

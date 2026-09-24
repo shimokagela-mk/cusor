@@ -1,0 +1,30 @@
+<view class="page">
+  <view class="options">
+    <view class="option {{mode === 'search' ? 'on' : ''}}" data-mode="search" bindtap="onMode">搜索</view>
+    <view class="option {{mode === 'recent' ? 'on' : ''}}" data-mode="recent" bindtap="onMode">最近</view>
+    <view class="option {{mode === 'manual' ? 'on' : ''}}" data-mode="manual" bindtap="onMode">手填</view>
+  </view>
+  <block wx:if="{{mode === 'search'}}">
+    <input class="field" placeholder="搜索，例如鸡胸肉、盖饭" value="{{query}}" bindinput="onQuery" />
+    <view class="line" wx:for="{{results}}" wx:key="id" data-id="{{item.id}}" bindtap="onPick">{{item.name}} · {{item.per100g.kcal}}千卡/100克</view>
+  </block>
+  <block wx:if="{{mode === 'recent'}}">
+    <view class="muted" wx:if="{{!recent.length}}">还没有最近吃过的食物。</view>
+    <view class="line" wx:for="{{recent}}" wx:key="name" data-id="{{item.foodId}}" data-name="{{item.name}}" bindtap="onPick">{{item.name}}</view>
+  </block>
+  <block wx:if="{{mode === 'manual'}}">
+    <input class="field" placeholder="食物名称" data-field="name" bindinput="onManual" />
+    <input class="field" type="digit" placeholder="份量（克）" data-field="grams" bindinput="onManual" />
+    <input class="field" type="digit" placeholder="热量（千卡）" data-field="kcal" bindinput="onManual" />
+    <input class="field" type="digit" placeholder="蛋白质（克）" data-field="protein" bindinput="onManual" />
+    <input class="field" type="digit" placeholder="碳水（克）" data-field="carbs" bindinput="onManual" />
+    <input class="field" type="digit" placeholder="脂肪（克）" data-field="fat" bindinput="onManual" />
+    <button class="btn" bindtap="onSaveManual">记入这一餐</button>
+  </block>
+  <view class="card" wx:if="{{picked}}">
+    <view class="card-title">{{picked.name}}</view>
+    <view class="muted">{{picked.unitHint}}</view>
+    <input class="field" type="digit" value="{{grams}}" bindinput="onGrams" />
+    <button class="btn" bindtap="onSavePicked">按这个份量记入</button>
+  </view>
+</view>
