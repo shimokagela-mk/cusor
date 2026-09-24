@@ -1,0 +1,8 @@
+<import src="../../templates/day-body.wxml" />
+<view class="page empty" wx:if="{{ready && !hasPlan}}">
+  <view class="kicker">期练</view>
+  <view class="hero-title">长期计划，落到今天</view>
+  <view class="muted">先选减脂或增肌。程序会排出周期、阶段、每周训练，以及每天的菜谱和热量额度。</view>
+  <view class="actions"><button class="btn" bindtap="onCreate">开始制定计划</button></view>
+</view>
+<template wx:if="{{ready && hasPlan}}" is="dayBody" data="{{...vm}}" />

@@ -1,0 +1,51 @@
+const FOODS = [
+  { id: 'rice', name: '米饭', aliases: ['白米饭', '米'], per100g: { kcal: 130, protein: 2.7, carbs: 28, fat: 0.3 }, roles: ['carb'], tags: ['home'], excludeWhen: [], unitHint: '一碗约 200 克', defaultGrams: 200 },
+  { id: 'oats', name: '燕麦片', aliases: ['燕麦'], per100g: { kcal: 379, protein: 13.5, carbs: 67, fat: 6.5 }, roles: ['carb'], tags: ['fitness', 'home'], excludeWhen: [], unitHint: '一小碗约 40 克', defaultGrams: 50 },
+  { id: 'bread', name: '全麦面包', aliases: ['面包'], per100g: { kcal: 246, protein: 13, carbs: 41, fat: 4.2 }, roles: ['carb'], tags: ['fitness', 'home'], excludeWhen: [], unitHint: '一片约 35 克', defaultGrams: 70 },
+  { id: 'sweet_potato', name: '红薯', aliases: ['地瓜'], per100g: { kcal: 86, protein: 1.6, carbs: 20, fat: 0.1 }, roles: ['carb'], tags: ['home', 'fitness'], excludeWhen: [], unitHint: '一个中等约 150 克', defaultGrams: 150 },
+  { id: 'potato', name: '土豆', aliases: ['马铃薯'], per100g: { kcal: 77, protein: 2, carbs: 17, fat: 0.1 }, roles: ['carb'], tags: ['home'], excludeWhen: [], unitHint: '一个中等约 150 克', defaultGrams: 150 },
+  { id: 'soba', name: '荞麦面', aliases: ['面条'], per100g: { kcal: 114, protein: 4.6, carbs: 23, fat: 1 }, roles: ['carb'], tags: ['fitness', 'home'], excludeWhen: [], unitHint: '一碗熟面约 250 克', defaultGrams: 250 },
+  { id: 'egg', name: '鸡蛋', aliases: ['蛋', '煮蛋'], per100g: { kcal: 144, protein: 13, carbs: 1.1, fat: 9.5 }, roles: ['protein', 'fat'], tags: ['home', 'fitness'], excludeWhen: [], unitHint: '一个约 50 克', defaultGrams: 100 },
+  { id: 'egg_white', name: '鸡蛋白', aliases: ['蛋白'], per100g: { kcal: 52, protein: 11, carbs: 0.7, fat: 0.2 }, roles: ['protein'], tags: ['fitness'], excludeWhen: [], unitHint: '一个蛋白约 33 克', defaultGrams: 100 },
+  { id: 'chicken', name: '鸡胸肉', aliases: ['鸡胸', '健身鸡胸'], per100g: { kcal: 165, protein: 31, carbs: 0, fat: 3.6 }, roles: ['protein'], tags: ['fitness', 'home'], excludeWhen: ['vegetarian'], unitHint: '掌心大小约 100 克', defaultGrams: 150 },
+  { id: 'beef', name: '牛里脊', aliases: ['牛肉'], per100g: { kcal: 155, protein: 22, carbs: 0, fat: 7 }, roles: ['protein'], tags: ['home'], excludeWhen: ['vegetarian', 'beef'], unitHint: '掌心大小约 100 克', defaultGrams: 120 },
+  { id: 'pork', name: '猪里脊', aliases: ['猪肉'], per100g: { kcal: 143, protein: 21, carbs: 0, fat: 6 }, roles: ['protein'], tags: ['home'], excludeWhen: ['vegetarian', 'pork'], unitHint: '掌心大小约 100 克', defaultGrams: 120 },
+  { id: 'salmon', name: '三文鱼', aliases: ['鲑鱼'], per100g: { kcal: 208, protein: 20, carbs: 0, fat: 13 }, roles: ['protein', 'fat'], tags: ['fitness'], excludeWhen: ['vegetarian', 'seafood'], unitHint: '一块约 120 克', defaultGrams: 120 },
+  { id: 'shrimp', name: '虾仁', aliases: ['虾'], per100g: { kcal: 99, protein: 24, carbs: 0.2, fat: 0.3 }, roles: ['protein'], tags: ['home', 'fitness'], excludeWhen: ['vegetarian', 'seafood'], unitHint: '一小把约 100 克', defaultGrams: 120 },
+  { id: 'tofu', name: '北豆腐', aliases: ['豆腐'], per100g: { kcal: 81, protein: 8.1, carbs: 4.2, fat: 3.7 }, roles: ['protein'], tags: ['home'], excludeWhen: [], unitHint: '一块约 150 克', defaultGrams: 150 },
+  { id: 'milk', name: '牛奶', aliases: ['纯牛奶'], per100g: { kcal: 61, protein: 3.2, carbs: 4.8, fat: 3.3 }, roles: ['fat'], tags: ['home'], excludeWhen: ['lactose'], unitHint: '一杯约 250 克', defaultGrams: 250 },
+  { id: 'yogurt', name: '无糖希腊酸奶', aliases: ['酸奶', '希腊酸奶'], per100g: { kcal: 59, protein: 10, carbs: 3.6, fat: 0.4 }, roles: ['protein'], tags: ['fitness'], excludeWhen: ['lactose'], unitHint: '一小杯约 150 克', defaultGrams: 150 },
+  { id: 'whey', name: '乳清蛋白粉', aliases: ['蛋白粉'], per100g: { kcal: 380, protein: 75, carbs: 8, fat: 5 }, roles: ['protein'], tags: ['fitness'], excludeWhen: ['lactose'], unitHint: '一勺约 30 克', defaultGrams: 30 },
+  { id: 'soy_milk', name: '无糖豆浆', aliases: ['豆浆'], per100g: { kcal: 31, protein: 3, carbs: 1.2, fat: 1.6 }, roles: ['protein'], tags: ['home'], excludeWhen: [], unitHint: '一杯约 300 克', defaultGrams: 300 },
+  { id: 'broccoli', name: '西兰花', aliases: ['花菜'], per100g: { kcal: 34, protein: 2.8, carbs: 7, fat: 0.4 }, roles: ['veg'], tags: ['home', 'fitness'], excludeWhen: [], unitHint: '一小碟约 150 克', defaultGrams: 150 },
+  { id: 'tomato', name: '番茄', aliases: ['西红柿'], per100g: { kcal: 18, protein: 0.9, carbs: 3.9, fat: 0.2 }, roles: ['veg'], tags: ['home'], excludeWhen: [], unitHint: '一个约 120 克', defaultGrams: 120 },
+  { id: 'cucumber', name: '黄瓜', aliases: [], per100g: { kcal: 16, protein: 0.7, carbs: 3.6, fat: 0.1 }, roles: ['veg'], tags: ['home', 'fitness'], excludeWhen: [], unitHint: '一根约 150 克', defaultGrams: 150 },
+  { id: 'spinach', name: '菠菜', aliases: [], per100g: { kcal: 23, protein: 2.9, carbs: 3.6, fat: 0.4 }, roles: ['veg'], tags: ['home'], excludeWhen: [], unitHint: '一小把约 100 克', defaultGrams: 120 },
+  { id: 'banana', name: '香蕉', aliases: [], per100g: { kcal: 89, protein: 1.1, carbs: 23, fat: 0.3 }, roles: ['carb'], tags: ['home', 'fitness'], excludeWhen: [], unitHint: '一根约 100 克', defaultGrams: 100 },
+  { id: 'apple', name: '苹果', aliases: [], per100g: { kcal: 52, protein: 0.3, carbs: 14, fat: 0.2 }, roles: ['carb'], tags: ['home'], excludeWhen: [], unitHint: '一个约 180 克', defaultGrams: 150 },
+  { id: 'nuts', name: '混合坚果', aliases: ['坚果'], per100g: { kcal: 607, protein: 20, carbs: 21, fat: 54 }, roles: ['fat'], tags: ['fitness'], excludeWhen: [], unitHint: '一小把约 20 克', defaultGrams: 20 },
+  { id: 'peanut', name: '花生酱', aliases: [], per100g: { kcal: 588, protein: 25, carbs: 20, fat: 50 }, roles: ['fat'], tags: ['home'], excludeWhen: [], unitHint: '一汤匙约 16 克', defaultGrams: 16 },
+  { id: 'avocado', name: '牛油果', aliases: [], per100g: { kcal: 160, protein: 2, carbs: 9, fat: 15 }, roles: ['fat'], tags: ['fitness'], excludeWhen: [], unitHint: '半个约 70 克', defaultGrams: 70 },
+  { id: 'tomato_egg', name: '番茄炒蛋', aliases: ['西红柿炒蛋'], per100g: { kcal: 97, protein: 6.5, carbs: 4, fat: 6.5 }, roles: ['dish', 'protein'], tags: ['home'], excludeWhen: [], unitHint: '一盘约 250 克', defaultGrams: 250 },
+  { id: 'kungpao', name: '宫保鸡丁', aliases: ['宫爆鸡丁'], per100g: { kcal: 187, protein: 13, carbs: 9, fat: 11 }, roles: ['dish', 'protein'], tags: ['home', 'takeout'], excludeWhen: ['vegetarian', 'spicy'], unitHint: '一盘约 250 克', defaultGrams: 250 },
+  { id: 'beef_rice', name: '牛肉盖饭', aliases: ['盖饭', '外卖牛肉盖饭'], per100g: { kcal: 160, protein: 8, carbs: 20, fat: 5 }, roles: ['dish'], tags: ['takeout'], excludeWhen: ['vegetarian', 'beef'], unitHint: '一份约 450 克', defaultGrams: 450 },
+  { id: 'mapo', name: '麻婆豆腐', aliases: [], per100g: { kcal: 128, protein: 7, carbs: 5, fat: 9 }, roles: ['dish', 'protein'], tags: ['home', 'takeout'], excludeWhen: ['vegetarian', 'pork', 'spicy'], unitHint: '一盘约 300 克', defaultGrams: 300 },
+  { id: 'chicken_salad', name: '鸡胸沙拉', aliases: ['沙拉', '轻食沙拉'], per100g: { kcal: 92, protein: 10, carbs: 5, fat: 3.5 }, roles: ['dish', 'protein'], tags: ['fitness', 'takeout'], excludeWhen: ['vegetarian'], unitHint: '一盒约 350 克', defaultGrams: 350 },
+  { id: 'malatang', name: '麻辣烫', aliases: [], per100g: { kcal: 118, protein: 6, carbs: 10, fat: 6 }, roles: ['dish'], tags: ['takeout'], excludeWhen: ['spicy'], unitHint: '一份约 500 克', defaultGrams: 450 },
+  { id: 'fitness_box', name: '健身餐鸡胸配饭', aliases: ['健身餐', '鸡胸配饭'], per100g: { kcal: 140, protein: 12, carbs: 16, fat: 3 }, roles: ['dish', 'protein'], tags: ['fitness', 'takeout'], excludeWhen: ['vegetarian'], unitHint: '一盒约 400 克', defaultGrams: 400 },
+  { id: 'congee', name: '小米粥', aliases: ['粥'], per100g: { kcal: 46, protein: 1.4, carbs: 9, fat: 0.3 }, roles: ['carb'], tags: ['home'], excludeWhen: [], unitHint: '一碗约 300 克', defaultGrams: 300 },
+  { id: 'veg_stir', name: '清炒时蔬', aliases: ['青菜', '炒蔬菜'], per100g: { kcal: 45, protein: 2, carbs: 5, fat: 2 }, roles: ['veg'], tags: ['home'], excludeWhen: [], unitHint: '一碟约 150 克', defaultGrams: 150 },
+  { id: 'fried_rice', name: '蛋炒饭', aliases: ['炒饭'], per100g: { kcal: 176, protein: 5, carbs: 26, fat: 6 }, roles: ['dish'], tags: ['home', 'takeout'], excludeWhen: [], unitHint: '一份约 350 克', defaultGrams: 350 },
+  { id: 'dumpling', name: '猪肉水饺', aliases: ['水饺', '饺子'], per100g: { kcal: 220, protein: 9, carbs: 28, fat: 8 }, roles: ['dish'], tags: ['home', 'takeout'], excludeWhen: ['vegetarian', 'pork'], unitHint: '10 只约 200 克', defaultGrams: 200 },
+  { id: 'bun', name: '猪肉包', aliases: ['包子'], per100g: { kcal: 227, protein: 8, carbs: 34, fat: 7 }, roles: ['dish'], tags: ['takeout', 'home'], excludeWhen: ['vegetarian', 'pork'], unitHint: '一个约 120 克', defaultGrams: 120 },
+  { id: 'tuna', name: '水浸金枪鱼', aliases: ['金枪鱼', '金枪鱼罐头'], per100g: { kcal: 116, protein: 26, carbs: 0, fat: 1 }, roles: ['protein'], tags: ['fitness'], excludeWhen: ['vegetarian', 'seafood'], unitHint: '一小罐约 100 克', defaultGrams: 100 },
+  { id: 'spicy_chicken', name: '辣子鸡', aliases: [], per100g: { kcal: 210, protein: 16, carbs: 6, fat: 14 }, roles: ['dish', 'protein'], tags: ['home', 'takeout'], excludeWhen: ['vegetarian', 'spicy'], unitHint: '一盘约 220 克', defaultGrams: 220 },
+  { id: 'salad_bowl', name: '轻食沙拉碗', aliases: ['轻食'], per100g: { kcal: 96, protein: 6, carbs: 8, fat: 4 }, roles: ['dish', 'protein'], tags: ['fitness', 'takeout'], excludeWhen: [], unitHint: '一盒约 380 克', defaultGrams: 380 },
+  { id: 'corn', name: '玉米', aliases: [], per100g: { kcal: 96, protein: 3.4, carbs: 21, fat: 1.5 }, roles: ['carb'], tags: ['home'], excludeWhen: [], unitHint: '一根约 180 克', defaultGrams: 180 }
+]
+
+function foodById(id) {
+  return FOODS.find((food) => food.id === id) || null
+}
+
+module.exports = { FOODS, foodById }

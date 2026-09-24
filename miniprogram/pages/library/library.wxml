@@ -1,0 +1,10 @@
+<view class="page">
+  <input class="field" placeholder="搜索动作" bindinput="onQuery" />
+  <button class="tiny" bindtap="onToggle">{{onlyDoable ? '显示全部动作' : '只看我能做的'}}</button>
+  <view class="card" wx:for="{{items}}" wx:key="id">
+    <view class="card-title">{{item.name}}</view>
+    <view class="muted">{{item.muscles}} · {{item.equipmentText}}</view>
+    <view>{{item.cue}}</view>
+    <view class="muted" wx:if="{{item.avoidText}}">{{item.avoidText}}不适时会避开</view>
+  </view>
+</view>

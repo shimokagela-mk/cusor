@@ -1,0 +1,54 @@
+{
+  "pages": [
+    "pages/day/day",
+    "pages/week/week",
+    "pages/plan/plan",
+    "pages/mine/mine",
+    "pages/wizard/wizard",
+    "pages/day-view/day-view",
+    "pages/workout/workout",
+    "pages/food/food",
+    "pages/photo/photo",
+    "pages/library/library"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#f4f1eb",
+    "navigationBarTitleText": "期练",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f4f1eb"
+  },
+  "tabBar": {
+    "color": "#7a716a",
+    "selectedColor": "#1f7a4d",
+    "backgroundColor": "#fffcf8",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/day/day",
+        "text": "今日",
+        "iconPath": "assets/tab-day.png",
+        "selectedIconPath": "assets/tab-day-on.png"
+      },
+      {
+        "pagePath": "pages/week/week",
+        "text": "本周",
+        "iconPath": "assets/tab-week.png",
+        "selectedIconPath": "assets/tab-week-on.png"
+      },
+      {
+        "pagePath": "pages/plan/plan",
+        "text": "计划",
+        "iconPath": "assets/tab-plan.png",
+        "selectedIconPath": "assets/tab-plan-on.png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的",
+        "iconPath": "assets/tab-mine.png",
+        "selectedIconPath": "assets/tab-mine-on.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

@@ -1,0 +1,26 @@
+<view class="page empty" wx:if="{{ready && !hasPlan}}">
+  <view class="hero-title">还没有长期计划</view>
+  <view class="muted">填写身体数据和目标后，生成阶段、每周训练日、每日热量和三餐加餐菜谱。</view>
+  <button class="btn" bindtap="onCreate">制定计划</button>
+</view>
+<view class="page" wx:if="{{ready && hasPlan}}">
+  <view class="kicker">第 {{weekNum}} 周 · 共 {{weeks}} 周</view>
+  <view class="hero-title">{{goal}}</view>
+  <view class="muted">{{range}}</view>
+  <view class="muted">维持热量约 {{tdee}} 千卡。下面的额度会随阶段变化。</view>
+  <view class="card" wx:for="{{phases}}" wx:key="index">
+    <view class="card-title">{{item.name}} · 第 {{item.startWeek}}–{{item.endWeek}} 周</view>
+    <view>{{item.focus}}</view>
+    <view class="muted">每天 {{item.targets.kcal}} 千卡 · 蛋白质 {{item.targets.protein}} 克 · 碳水 {{item.targets.carbs}} 克 · 脂肪 {{item.targets.fat}} 克</view>
+  </view>
+  <view class="card">
+    <view class="card-title">每周节奏</view>
+    <view class="line" wx:for="{{rhythm}}" wx:key="*this">{{item}}</view>
+  </view>
+  <view class="card" wx:if="{{warnings.length}}">
+    <view class="card-title">关于目标速度</view>
+    <view wx:for="{{warnings}}" wx:key="*this">{{item}}</view>
+  </view>
+  <view class="muted">菜谱是建议。每天仍要记下实际吃的食物，和当天额度对比。估算用的是 Mifflin-St Jeor 公式，不能代替医生或营养师的建议。</view>
+  <view class="actions"><button class="ghost" bindtap="onCreate">重新制定</button></view>
+</view>

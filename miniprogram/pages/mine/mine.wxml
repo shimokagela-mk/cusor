@@ -1,0 +1,31 @@
+<view class="page">
+  <view class="kicker">当前用户</view>
+  <view class="hero-title">{{nickname}}</view>
+  <view class="muted">计划和饮食都存在这台手机上，按用户分开。换手机不会自动同步。</view>
+  <input class="field" value="{{nicknameDraft}}" bindinput="onNick" placeholder="昵称" />
+  <view class="actions">
+    <button class="btn" bindtap="onSaveNick">保存昵称</button>
+    <button class="ghost" bindtap="onCreateUser">用这个名字新建用户</button>
+  </view>
+  <view class="card">
+    <view class="card-title">切换用户</view>
+    <view class="line" wx:for="{{users}}" wx:key="id" data-id="{{item.id}}" bindtap="onSwitch">
+      {{item.nickname}} <text wx:if="{{item.current}}" class="badge">当前</text>
+    </view>
+  </view>
+  <view class="card">
+    <view class="card-title">最近体重</view>
+    <view class="chart" wx:if="{{bars.length}}">
+      <view class="chart-col" wx:for="{{bars}}" wx:key="date">
+        <view class="chart-bar" style="height: {{item.height}}%;"></view>
+        <view class="chart-label">{{item.date}}</view>
+      </view>
+    </view>
+    <view class="muted" wx:else>记下体重后，这里会显示最近 12 次。</view>
+  </view>
+  <view class="actions">
+    <button class="btn" bindtap="onLibrary">动作库</button>
+    <button class="ghost" bindtap="onPlan">制定或更新计划</button>
+  </view>
+  <view class="muted">拍照识别会先让你确认菜名和份量。配置识别服务后，可以用照片辅助匹配食物库。</view>
+</view>
