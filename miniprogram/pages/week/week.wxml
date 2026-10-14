@@ -1,0 +1,25 @@
+<view class="page empty" wx:if="{{ready && !hasPlan}}">
+  <view class="hero-title">本周还没有安排</view>
+  <view class="muted">制定长期计划后，这里会列出周一到周日的训练和饮食额度。</view>
+  <button class="btn" bindtap="onCreate">开始制定计划</button>
+</view>
+<view class="page" wx:if="{{ready && hasPlan}}">
+  <view class="row">
+    <button class="ghost" bindtap="onPrev">上一周</button>
+    <view>{{label}}</view>
+    <button class="ghost" bindtap="onNext">下一周</button>
+  </view>
+  <view class="card">
+    <view class="week-day" wx:for="{{days}}" wx:key="date">
+      <view class="row" data-date="{{item.date}}" bindtap="onOpen">
+        <view>
+          <view>{{item.label}} · {{item.title}}</view>
+          <view class="muted" wx:if="{{item.kcal}}">额度 {{item.kcal}} 千卡 · {{item.status}}</view>
+          <view class="muted" wx:else>{{item.status}}</view>
+        </view>
+      </view>
+      <button wx:if="{{item.inPlan}}" class="tiny" data-date="{{item.date}}" catchtap="onSwap">调换训练</button>
+    </view>
+  </view>
+  <view class="muted">没完成的日子保持未完成，不会把后面的训练往后推。要改期就在这里调换两天的训练。</view>
+</view>

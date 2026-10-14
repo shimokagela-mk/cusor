@@ -1,0 +1,23 @@
+<view class="page" wx:if="{{workout}}">
+  <view class="hero-title">{{workout.title}}</view>
+  <view class="timer" wx:if="{{restLeft}}">休息 {{restLeft}} 秒</view>
+  <view class="card" wx:for="{{workout.exercises}}" wx:for-index="index" wx:key="instanceId">
+    <view class="card-title">{{item.name}}</view>
+    <view class="muted">{{item.muscles}} · {{item.reps}} · 组间 {{item.restSec}} 秒</view>
+    <view class="muted">{{item.cue}}</view>
+    <view class="muted" wx:if="{{item.last}}">上次重量 {{item.last}} 公斤</view>
+    <view class="set-row" wx:for="{{item.loggedSets}}" wx:for-item="set" wx:for-index="setIndex" wx:key="setIndex">
+      <text>第{{setIndex + 1}}组</text>
+      <input type="number" placeholder="次数" data-index="{{index}}" data-set-index="{{setIndex}}" data-field="reps" value="{{set.reps}}" bindinput="onField" />
+      <input type="digit" placeholder="公斤" data-index="{{index}}" data-set-index="{{setIndex}}" data-field="weightKg" value="{{set.weightKg}}" bindinput="onField" />
+      <button class="tiny" data-index="{{index}}" data-set-index="{{setIndex}}" bindtap="onToggle">{{set.completed ? '已完成' : '完成'}}</button>
+    </view>
+  </view>
+  <view class="actions" wx:if="{{canLog}}">
+    <button class="btn" bindtap="onManual">标记整次训练完成</button>
+    <button class="ghost" bindtap="onLibrary">动作库</button>
+  </view>
+</view>
+<view class="page" wx:else>
+  <view class="muted">这一天没有训练。</view>
+</view>

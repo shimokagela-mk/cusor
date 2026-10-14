@@ -1,0 +1,70 @@
+<template name="dayBody">
+  <view class="page" wx:if="{{inPlan}}">
+    <view class="kicker">{{phaseName}} · 第{{weekNum}}周</view>
+    <view class="hero-title">{{dateLabel}}</view>
+    <view class="status {{statusKind}}">{{statusLabel}}</view>
+    <view class="chips">
+      <view class="chip {{weightDone ? 'on' : ''}}">体重</view>
+      <view class="chip {{trainDone ? 'on' : ''}}" wx:if="{{trainRequired}}">训练</view>
+      <view class="chip on" wx:else>休息</view>
+      <view class="chip {{mealDone ? 'on' : ''}}">饮食</view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">今天的额度</view>
+      <view class="muted">建议菜谱和实际吃的分开记，下面对比的是你记下的食物。</view>
+      <view wx:for="{{macros}}" wx:key="key">
+        <view class="row"><text>{{item.label}}</text><text>{{item.actual}} / {{item.target}}{{item.unit}}</text></view>
+        <view class="bar"><view class="bar-fill {{item.over ? 'over' : ''}}" style="width: {{item.percent}}%;"></view></view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">体重</view>
+      <input class="field" type="digit" placeholder="今日体重，公斤" value="{{weightKg}}" disabled="{{!canLog}}" bindinput="onWeightInput" />
+      <view class="actions" wx:if="{{canLog}}"><button class="btn" bindtap="onSaveWeight">保存体重</button></view>
+    </view>
+
+    <view class="card" wx:if="{{workout}}">
+      <view class="card-title">{{workout.title}}</view>
+      <view class="line" wx:for="{{workout.exercises}}" wx:key="instanceId">{{item.name}} · {{item.sets}} 组 × {{item.reps}}</view>
+      <view class="actions"><button class="btn" bindtap="onOpenWorkout">{{canLog ? '去训练打卡' : '查看训练'}}</button></view>
+    </view>
+    <view class="card" wx:elif="{{rest}}">
+      <view class="card-title">休息日</view>
+      <view class="muted">今天不安排力量训练。饮食额度和体重照常记。</view>
+    </view>
+
+    <view class="card" wx:for="{{meals}}" wx:key="key">
+      <view class="row">
+        <view class="card-title">{{item.label}}<text class="badge" wx:if="{{item.badge}}">{{item.badge}}</text></view>
+        <view class="muted">{{item.loggedKcal}} / {{item.plannedKcal}} 千卡</view>
+      </view>
+      <view class="muted">建议：{{item.name}}</view>
+      <view class="muted" wx:for="{{item.plannedLines}}" wx:for-item="line" wx:key="*this">{{line}}</view>
+      <view wx:if="{{item.skipped}}" class="muted">这餐已跳过</view>
+      <view class="food-line" wx:for="{{item.logged}}" wx:for-item="food" wx:key="id">
+        <view>
+          <view>{{food.name}}</view>
+          <view class="muted">{{food.grams}}克 · {{food.kcal}}千卡 · 蛋白{{food.protein}} 碳{{food.carbs}} 脂{{food.fat}}</view>
+        </view>
+        <view class="stepper" wx:if="{{canLog}}">
+          <button class="tiny" data-meal="{{item.key}}" data-id="{{food.id}}" data-delta="-10" bindtap="onStep">-</button>
+          <button class="tiny" data-meal="{{item.key}}" data-id="{{food.id}}" data-delta="10" bindtap="onStep">+</button>
+          <button class="tiny" data-meal="{{item.key}}" data-id="{{food.id}}" bindtap="onDeleteFood">删除</button>
+        </view>
+      </view>
+      <view class="actions" wx:if="{{canLog}}">
+        <button class="tiny" data-meal="{{item.key}}" bindtap="onUsePlan">按菜谱记入</button>
+        <button class="tiny" data-meal="{{item.key}}" bindtap="onSearch">搜索</button>
+        <button class="tiny" data-meal="{{item.key}}" bindtap="onManual">手填</button>
+        <button class="tiny" data-meal="{{item.key}}" bindtap="onPhoto">拍照</button>
+        <button class="tiny" data-meal="{{item.key}}" data-skipped="{{item.skipped}}" bindtap="onSkipMeal">{{item.skipped ? '恢复这餐' : '不吃这餐'}}</button>
+      </view>
+    </view>
+  </view>
+  <view class="page empty" wx:else>
+    <view class="hero-title">这一天不在计划里</view>
+    <view class="muted">回到今日，或到计划页查看周期范围。</view>
+  </view>
+</template>

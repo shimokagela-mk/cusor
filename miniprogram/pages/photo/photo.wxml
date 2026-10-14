@@ -1,0 +1,14 @@
+<view class="page">
+  <view class="hero-title">识别食物</view>
+  <view class="muted">拍下来之后确认菜名和份量。没有配置图像服务时，输入菜名会从食物库匹配热量。</view>
+  <button class="ghost" bindtap="onChoose">拍照或从相册选择</button>
+  <image wx:if="{{photo}}" class="photo" mode="aspectFill" src="{{photo}}" />
+  <input class="field" placeholder="看起来像什么，例如番茄炒蛋" value="{{hint}}" bindinput="onHint" />
+  <button class="btn" bindtap="onMatch">匹配热量</button>
+  <view class="muted">{{message}}</view>
+  <view class="line {{pickedId === item.id ? 'option on' : ''}}" wx:for="{{items}}" wx:key="id" data-id="{{item.id}}" bindtap="onPick">
+    {{item.name}} · {{item.per100g.kcal}}千卡/100克
+  </view>
+  <input class="field" type="digit" placeholder="份量（克）" value="{{grams}}" bindinput="onGrams" />
+  <button class="btn" bindtap="onSave">确认并记入</button>
+</view>

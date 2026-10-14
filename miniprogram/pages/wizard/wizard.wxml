@@ -1,0 +1,69 @@
+<view class="page">
+  <view class="kicker">第 {{step + 1}} / 5 步</view>
+  <view class="hero-title" wx:if="{{step === 0}}">这次计划的主目标</view>
+  <view class="hero-title" wx:elif="{{step === 1}}">当前身体数据</view>
+  <view class="hero-title" wx:elif="{{step === 2}}">目标与周期</view>
+  <view class="hero-title" wx:elif="{{step === 3}}">训练条件</view>
+  <view class="hero-title" wx:else>饮食和伤病</view>
+
+  <block wx:if="{{step === 0}}">
+    <view class="options">
+      <view class="option {{form.goalType === 'cut' ? 'on' : ''}}" data-field="goalType" data-value="cut" bindtap="onPick">减脂</view>
+      <view class="option {{form.goalType === 'bulk' ? 'on' : ''}}" data-field="goalType" data-value="bulk" bindtap="onPick">增肌</view>
+    </view>
+    <view class="muted">一次计划只选一个。做完可以再生成下一次。</view>
+  </block>
+
+  <block wx:if="{{step === 1}}">
+    <view class="options">
+      <view class="option {{form.gender === 'female' ? 'on' : ''}}" data-field="gender" data-value="female" bindtap="onPick">女</view>
+      <view class="option {{form.gender === 'male' ? 'on' : ''}}" data-field="gender" data-value="male" bindtap="onPick">男</view>
+    </view>
+    <input class="field" type="number" placeholder="年龄" data-field="age" value="{{form.age}}" bindinput="onInput" />
+    <input class="field" type="digit" placeholder="身高（厘米）" data-field="heightCm" value="{{form.heightCm}}" bindinput="onInput" />
+    <input class="field" type="digit" placeholder="当前体重（公斤）" data-field="weightKg" value="{{form.weightKg}}" bindinput="onInput" />
+    <input class="field" type="digit" placeholder="当前体脂（可不填）" data-field="bodyFatPct" value="{{form.bodyFatPct}}" bindinput="onInput" />
+  </block>
+
+  <block wx:if="{{step === 2}}">
+    <input class="field" type="digit" placeholder="目标体重（公斤，可空）" data-field="targetWeightKg" value="{{form.targetWeightKg}}" bindinput="onInput" />
+    <input class="field" type="digit" placeholder="目标体脂（可空）" data-field="targetBodyFatPct" value="{{form.targetBodyFatPct}}" bindinput="onInput" />
+    <input class="field" type="number" placeholder="周期周数，例如 12" data-field="weeks" value="{{form.weeks}}" bindinput="onInput" />
+  </block>
+
+  <block wx:if="{{step === 3}}">
+    <view class="muted">每周哪几天能练</view>
+    <view class="options">
+      <view wx:for="{{weekdays}}" wx:key="value" class="option {{form.trainingWeekdays.indexOf(item.value) >= 0 ? 'on' : ''}}" data-field="trainingWeekdays" data-value="{{item.value}}" bindtap="onToggle">{{item.label}}</view>
+    </view>
+    <view class="options">
+      <view class="option {{form.experience === 'beginner' ? 'on' : ''}}" data-field="experience" data-value="beginner" bindtap="onPick">新手</view>
+      <view class="option {{form.experience === 'intermediate' ? 'on' : ''}}" data-field="experience" data-value="intermediate" bindtap="onPick">有训练经验</view>
+    </view>
+    <view class="options">
+      <view class="option {{form.venue === 'gym' ? 'on' : ''}}" data-field="venue" data-value="gym" bindtap="onPick">健身房</view>
+      <view class="option {{form.venue === 'home' ? 'on' : ''}}" data-field="venue" data-value="home" bindtap="onPick">居家</view>
+    </view>
+    <view class="options" wx:if="{{form.venue === 'home'}}">
+      <view wx:for="{{equipments}}" wx:key="id" class="option {{form.equipment.indexOf(item.id) >= 0 ? 'on' : ''}}" data-field="equipment" data-value="{{item.id}}" bindtap="onToggle">{{item.label}}</view>
+    </view>
+  </block>
+
+  <block wx:if="{{step === 4}}">
+    <view class="muted">伤病部位，选中后会避开相关动作</view>
+    <view class="options">
+      <view wx:for="{{injuries}}" wx:key="id" class="option {{form.injuries.indexOf(item.id) >= 0 ? 'on' : ''}}" data-field="injuries" data-value="{{item.id}}" bindtap="onToggle">{{item.label}}</view>
+    </view>
+    <view class="muted">忌口</view>
+    <view class="options">
+      <view wx:for="{{restrictions}}" wx:key="id" class="option {{form.dietRestrictions.indexOf(item.id) >= 0 ? 'on' : ''}}" data-field="dietRestrictions" data-value="{{item.id}}" bindtap="onToggle">{{item.label}}</view>
+    </view>
+  </block>
+
+  <view class="error" wx:if="{{error}}">{{error}}</view>
+  <view class="pad"></view>
+</view>
+<view class="footer row">
+  <button class="ghost" bindtap="onBack">返回</button>
+  <button class="btn" bindtap="onNext">{{step === 4 ? '生成计划' : '下一步'}}</button>
+</view>
