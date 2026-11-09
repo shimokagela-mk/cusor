@@ -3,25 +3,71 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>下载：公司生活角色卡</title>
+<title>下载：公司生活角色卡 v0.6.8</title>
 <style>
+  :root { color-scheme: dark; }
   body{font-family:"Segoe UI",sans-serif;background:#0b1220;color:#e5eefc;margin:0;min-height:100vh;display:grid;place-items:center}
-  .card{width:min(92vw,420px);background:#121a2b;border:1px solid #243049;border-radius:16px;padding:28px 24px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+  .card{width:min(92vw,440px);background:#121a2b;border:1px solid #243049;border-radius:16px;padding:28px 24px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
   h1{font-size:1.35rem;margin:0 0 8px}
   p{margin:0 0 18px;color:#9fb0c9;line-height:1.6}
-  a{display:block;text-align:center;text-decoration:none;border-radius:10px;padding:14px 16px;margin:10px 0;font-weight:700}
+  button,a.btn{display:block;width:100%;box-sizing:border-box;text-align:center;text-decoration:none;border:0;border-radius:10px;padding:14px 16px;margin:10px 0;font-weight:700;font-size:1rem;cursor:pointer}
   .primary{background:#3b82f6;color:#fff}
   .secondary{background:#1e293b;color:#dbeafe;border:1px solid #334155}
+  .ghost{background:transparent;color:#9fb0c9;border:1px dashed #334155}
   small{display:block;margin-top:14px;color:#7f92ab;font-size:12px;line-height:1.5}
+  .status{min-height:1.2em;margin:8px 0 0;color:#86efac;font-size:13px}
+  .err{color:#fca5a5}
 </style>
 </head>
 <body>
   <div class="card">
-    <h1>公司生活 · 角色卡</h1>
-    <p>点下面按钮下载到手机/电脑。推荐先下 ZIP。</p>
-    <a class="primary" href="company-life-card-v0.6.5.zip" download="company-life-card-v0.6.5.zip">下载 ZIP</a>
-    <a class="secondary" href="公司生活.json" download="公司生活.json">下载 JSON</a>
-    <small>导入 SillyTavern：角色管理 → 导入 → 选 JSON → 开新聊天 → 点「导入表格并开始」。</small>
+    <h1>公司生活 · v0.6.8</h1>
+    <p>点按钮会<strong>强制下载</strong>到手机/电脑（不是打开预览）。推荐先下 ZIP。</p>
+    <button type="button" class="primary" id="dlZip">下载 ZIP（推荐）</button>
+    <button type="button" class="secondary" id="dlJson">下载 JSON</button>
+    <button type="button" class="ghost" id="dlPrompt">下载主提示词 txt</button>
+    <p class="status" id="status"></p>
+    <small>
+      导入 SillyTavern：角色管理 → 导入 → 选 JSON → 开新聊天。<br>
+      Mini 主提示：清空后粘贴 txt 全文（不要追加）。
+    </small>
   </div>
+  <script>
+    async function forceDownload(url, filename) {
+      const status = document.getElementById('status');
+      status.className = 'status';
+      status.textContent = '正在拉取 ' + filename + ' …';
+      try {
+        const res = await fetch(url, { cache: 'no-store' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const blob = await res.blob();
+        const objectUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = objectUrl;
+        a.download = filename;
+        a.rel = 'noopener';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(objectUrl), 1500);
+        status.textContent = '已触发下载：' + filename;
+      } catch (e) {
+        status.className = 'status err';
+        status.textContent = '自动下载失败，请长按备用链接另存为。';
+        console.error(e);
+      }
+    }
+    document.getElementById('dlZip').onclick = () =>
+      forceDownload('company-life-card-v0.6.8.zip', 'company-life-card-v0.6.8.zip');
+    document.getElementById('dlJson').onclick = () =>
+      forceDownload('公司生活.json', '公司生活.json');
+    document.getElementById('dlPrompt').onclick = () =>
+      forceDownload('主提示-替换用-公司生活.txt', '主提示-替换用-公司生活.txt');
+  </script>
+  <noscript>
+    <p style="text-align:center">
+      <a class="btn primary" href="company-life-card-v0.6.8.zip" download>下载 ZIP</a>
+    </p>
+  </noscript>
 </body>
 </html>
