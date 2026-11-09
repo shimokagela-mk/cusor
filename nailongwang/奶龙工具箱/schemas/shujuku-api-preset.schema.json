@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "shujuku API Preset",
+  "type": "object",
+  "required": ["name"],
+  "properties": {
+    "name": { "type": "string" },
+    "apiMode": { "type": "string" },
+    "apiConfig": { "type": "object" },
+    "tavernProfile": { "type": "string" }
+  },
+  "additionalProperties": true
+}

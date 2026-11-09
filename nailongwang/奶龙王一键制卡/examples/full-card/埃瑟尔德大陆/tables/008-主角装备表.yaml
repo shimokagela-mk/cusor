@@ -1,0 +1,84 @@
+uid: sheet_EquipmentHero
+name: 主角装备表
+sourceData:
+  note: |-
+    记录主角拥有的所有装备，一行代表一件装备，包含已装备和未装备装备。
+    【前端协作规则】是否装备列由前端装备系统独占管理，AI填表不得主动修改此列；卸下装备只表示是否装备从1变为0，绝对不等于删除装备。
+
+    - 列0: 装备名称 - 装备的名称，作为剧情识别用名称；允许同名装备存在时用装备描述区分。
+    - 列1: 装备部位 - 数据库统一写后端槽位：头部、颈部、身体、腰部、手部、腿部、足部、饰品。左手、右手、双手都必须写为手部；饰品1、饰品2都必须写为饰品。
+    - 列2: 装备类型 - 推荐填写武器、防具、饰品、护符、腰带、鞋靴之一；特殊装备可写更具体类型，但不得因为类型不确定而删除装备。
+    - 列3: 属性加成 - 装备提供的属性或资源加成，多个加成用分号分隔，例如：力量+2;体质+1;法力+15。没有则填无。
+    - 列4: 特殊效果 - 装备的特殊效果描述，没有则填无。
+    - 列5: 是否装备 - 0=未装备，1=已装备。此列只由前端写入；AI不得擅自改动。
+    - 列6: 装备描述 - 装备的背景、外观、来源、损坏状态或其他补充信息。
+
+    装备删除边界：只有正文明确说明装备被彻底销毁、永久失去、主动丢弃且无法找回时才允许删除；卸下、替换、放入背包、未装备、暂时不用、装备槽位变化都不得删除。
+  initNode: 游戏初始化时，根据主角设定添加初始装备。初始装备的是否装备列可根据开场设定填写0或1；没有明确穿戴状态时填0。
+  deleteNode: |-
+    仅当装备在正文中被彻底销毁、永久失去、主动丢弃且无法找回时删除。禁止因为卸下、替换、未装备、放入背包、装备槽位变化而删除。
+    SQL示例: DELETE FROM protagonist_equipment WHERE row_id = 3 AND equip_name = '已彻底损毁的铁剑';
+  updateNode: |-
+    装备自身属性、特殊效果、描述、损坏状态或鉴定结果变化时更新。AI不得主动更新is_equipped；是否装备只由前端装备系统写入。
+    SQL示例: UPDATE protagonist_equipment SET attribute_bonus = '力量+5;体质+1', special_effect = '破甲', equip_desc = '重新锻造后的铁剑' WHERE row_id = 2;
+    SQL示例(仅描述变化): UPDATE protagonist_equipment SET equip_desc = '剑身出现裂纹，但仍可使用' WHERE row_id = 2;
+  insertNode: |-
+    主角获得新的装备时添加。装备部位写数据库后端槽位：左手/右手/双手统一写手部，饰品1/饰品2统一写饰品。是否装备没有明确穿戴时填0。
+    SQL示例: INSERT INTO protagonist_equipment (row_id, equip_name, equip_slot, equip_type, attribute_bonus, special_effect, is_equipped, equip_desc) VALUES ((SELECT COALESCE(MAX(row_id), 0)+1 FROM protagonist_equipment), '铁剑', '手部', '武器', '力量+3', '无', 0, '普通的铁剑');
+    SQL示例(颈部): INSERT INTO protagonist_equipment (row_id, equip_name, equip_slot, equip_type, attribute_bonus, special_effect, is_equipped, equip_desc) VALUES ((SELECT COALESCE(MAX(row_id), 0)+1 FROM protagonist_equipment), '生命护符', '颈部', '护符', '体质+2;生命+20', '生命恢复+5%', 0, '散发着微弱光芒的护符');
+  ddl: |-
+    CREATE TABLE protagonist_equipment ( -- 主角装备表
+      row_id INTEGER PRIMARY KEY, -- 行号
+      equip_name TEXT NOT NULL, -- 装备名称
+      equip_slot TEXT NOT NULL, -- 装备部位
+      equip_type TEXT NOT NULL, -- 装备类型
+      attribute_bonus TEXT, -- 属性加成
+      special_effect TEXT, -- 特殊效果
+      is_equipped INTEGER NOT NULL DEFAULT 0, -- 是否装备
+      equip_desc TEXT -- 装备描述
+    );
+content:
+  - - row_id
+    - 装备名称
+    - 装备部位
+    - 装备类型
+    - 属性加成
+    - 特殊效果
+    - 是否装备
+    - 装备描述
+updateConfig:
+  uiSentinel: -1
+  contextDepth: -1
+  updateFrequency: -1
+  batchSize: -1
+  skipFloors: -1
+exportConfig:
+  enabled: false
+  splitByRow: false
+  entryName: 主角装备表
+  entryType: constant
+  keywords: ""
+  preventRecursion: true
+  injectionTemplate: ""
+  extraIndexEnabled: false
+  extraIndexEntryName: 主角装备表-索引
+  extraIndexColumns: []
+  extraIndexColumnModes: {}
+  extraIndexInjectionTemplate: ""
+  entryPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 10000
+  extraIndexPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 10010
+  fixedEntryPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 99990
+  fixedIndexPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 99991
+orderNo: 7

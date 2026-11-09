@@ -1,0 +1,83 @@
+{
+  "mate": {
+    "type": "chatSheets",
+    "version": 1,
+    "updateConfigUiSentinel": -1,
+    "globalInjectionConfig": {
+      "readableEntryPlacement": {
+        "position": "before_char",
+        "depth": 2,
+        "order": 99981
+      },
+      "wrapperPlacement": {
+        "position": "before_char",
+        "depth": 2,
+        "order": 99980
+      }
+    }
+  },
+  "sheet_CurrentStatus": {
+    "uid": "sheet_CurrentStatus",
+    "name": "当前状态表",
+    "sourceData": {
+      "note": "记录当前场景的位置、时间和天数。此表有且仅有一行。",
+      "initNode": "故事初始化时插入一条记录。",
+      "deleteNode": "禁止删除。",
+      "updateNode": "每轮更新位置、时间和天数。",
+      "insertNode": "禁止操作。"
+    },
+    "content": [
+      [
+        null,
+        "当前位置",
+        "当前时间",
+        "天数"
+      ]
+    ],
+    "updateConfig": {
+      "uiSentinel": -1,
+      "contextDepth": 2,
+      "updateFrequency": 1,
+      "batchSize": 1,
+      "skipFloors": -1
+    },
+    "exportConfig": {
+      "enabled": false,
+      "splitByRow": false
+    },
+    "orderNo": 1
+  },
+  "sheet_Relationship": {
+    "uid": "sheet_Relationship",
+    "name": "关系状态表",
+    "sourceData": {
+      "note": "记录角色之间的关系状态。",
+      "initNode": "有关联关系的角色登场时插入对应行。",
+      "deleteNode": "禁止删除。",
+      "updateNode": "关系变化时更新对应行。",
+      "insertNode": "新关系建立时插入新行。"
+    },
+    "content": [
+      [
+        null,
+        "角色1",
+        "角色2",
+        "关系",
+        "亲密值",
+        "特殊状态"
+      ]
+    ],
+    "updateConfig": {
+      "uiSentinel": -1,
+      "contextDepth": 2,
+      "updateFrequency": 1,
+      "batchSize": 1,
+      "skipFloors": -1
+    },
+    "exportConfig": {
+      "enabled": false,
+      "splitByRow": false
+    },
+    "orderNo": 1
+  }
+}

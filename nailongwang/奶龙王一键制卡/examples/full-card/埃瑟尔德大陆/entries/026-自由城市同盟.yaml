@@ -1,0 +1,62 @@
+id: 25
+keys:
+  - 自由
+  - 同盟
+secondary_keys: []
+comment: 自由城市同盟
+content: |-
+  # 势力详述：自由城市同盟
+    **核心概览**：位于大陆中部平原与西南沿海交界地带，由数个历史悠久、经济发达且珍视独立的城市组成的防御性政治与经济联盟。并非统一国家，旨在周旋于诺顿王国与洛瑟兰共和国两大强权之间，保持自治与贸易自由。
+    **统治体系**：同盟议会。每个成员城邦派代表（通常为选举产生的市长或商业贵族）参加，重大事务（如宣战、缔约、统一关税）需一致同意或绝对多数通过。无共同元首，日常协调由轮值主席城邦负责。各城邦内政完全自主。
+    **社会文化**：市民意识强烈，商业文化浓厚。社会相对诺顿更平等，比洛瑟兰更传统。重视法律（尤其是商法和城市法）、手工业行会与学术机构（多所知名学院坐落于此）。艺术、哲学与科学技术较为活跃。
+    **军事力量**：无统一常备军。各城邦拥有自己的城市卫队与少量雇佣兵，用于维持治安与城墙防御。战时依靠临时征召的民兵、雇佣兵以及基于盟约的相互支援。防御重心在于坚固的城防体系与灵活的外交。
+    **经济基础**：地处交通要冲，是内陆与沿海贸易的天然中转站。手工业发达，尤以纺织、玻璃、钟表、图书印刷和高级家具闻名。银行业兴起，一些同盟银行开始发行信用券。农业以城郊精耕细作和葡萄酒庄为主。
+    **主要城镇/据点**：
+    - **橡木城 (同盟地理中心，最大城市)**：同盟议会常设地，以宏伟的市政厅、遍布的学院和发达的出版业著称，has(同盟议会大厦，大学区，印刷坊街，中央市场，城市卫队总部)。
+    - **琥珀港 (同盟唯一海港城邦)**：虽小但异常繁荣的深水港，是同盟的海上门户，has(商船码头，海关大楼，琥珀交易所，海堤防线)。
+    - **白桥镇 (位于白河关键渡口)**：连接南北陆路贸易的枢纽，终日车马喧嚣，has(大型货栈，马车行，旅店群，税务所)。
+    - **知识堡 (偏远但重要的城邦)**：以古代图书馆和避世学者聚集闻名，has(大图书馆，天文台，学者塔楼，静谧庭院)。
+    **外交态势**：
+    - **谨慎平衡**：对诺顿王国与洛瑟兰共和国均保持友好但独立的姿态，利用两者竞争获取利益与安全保障。
+    - **紧密经济联系**：与商盟联合会有深入合作，但警惕其经济渗透。
+    - **文化学术交流**：与法师塔有私下联系，接纳各地学者。
+    - **防备对象**：荒原氏族的小股骚扰、影踪会的渗透。
+    - **内部张力**：成员城邦间因商业竞争、政策分歧偶有摩擦，但面对外部压力时通常能团结。
+constant: false
+selective: true
+insertion_order: 35
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: true
+  display_index: 29
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

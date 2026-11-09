@@ -1,0 +1,60 @@
+id: 13
+keys:
+  - 白河
+secondary_keys: []
+comment: 白河城
+content: |-
+  # 白河城详情
+    **核心区域**：
+    城市被白河一分为二，数座石桥相连；东岸是古老的“旧城区”，街道狭窄，建筑多为石木结构，市政厅与大剧院坐落于此；西岸是新兴的“码头区”，拥有庞大的内河港口、连绵的仓库与喧嚣的市场，商盟联合会分部建筑宏伟；连接南北的“国王大道”与东西向的“贸易之路”在此交汇，形成巨大的十字路口广场，人流如织。
+
+  **可能遭遇的重要事件（具体发生取决于主角的冒险轨迹与世界实时动态）**：
+  1.  **自由贸易争端**：诺顿王国与自由城市同盟因关税或某个具体商品（如粮食、布匹）的贸易条款产生摩擦，导致白河城的过境商队大量滞留，码头工人失业，市场萧条。此事件可能引发本地商人游行，甚至酿成小规模骚乱，洛瑟兰共和国的商盟联合会可能趁机施加影响。
+  2.  **河道封锁或污染**：上游（可能源于幽暗密林方向或某处工业）发生事故或恶意投毒，导致白河航道受阻或水质污染，严重影响水运贸易与城市供水。此事件将触发紧急状态，市政厅需组织人手调查源头并解决问题，可能涉及与精灵或其他势力的交涉。
+  3.  **重大庆典与治安挑战**：白河城举办年度“收获祭”或欢迎某位重要人物（如王室成员）的庆典，全城张灯结彩，但也吸引了大量游客、小偷、骗子以及可能混入的影踪会成员或敌国间谍，治安压力巨大，犯罪率上升。
+  4.  **战争后勤压力**：若王国东部或北部边境爆发大规模战事，白河城作为重要的物资集散中心，将承担繁重的军需转运任务。码头日夜不休，军队征用民用仓库和车辆，可能导致民生物资短缺、物价失控，以及厌战情绪滋生。
+
+  **可能碰到的重要人物**：
+  1.  **市长博纳多·韦尔奇**：一位出身商人世家、通过财富跻身贵族行列的政客，擅长平衡各方利益，以维持城市繁荣与稳定为最高目标，但有时显得过于圆滑。
+  2.  **港口管理长官塞德里克**：负责码头区秩序与税收的王国官员，作风强硬，与走私者斗智斗勇，对商盟联合会的扩张心存警惕。
+  3.  **“渡鸦”莉莉安**：码头区地下情报网的接头人之一，经营着一家不起眼的旧书店，消息灵通，只要付得起价，她能提供许多台面下的信息。
+  4.  **自由城市同盟使节（若贸易争端发生）**：一位能言善辩的外交官，代表同盟商人的利益，与诺顿官员展开艰难谈判，态度时而强硬时而怀柔。
+  5.  **流浪剧团团长“金嗓子”马可**：率领一个颇受欢迎的剧团在各城市间巡演，在白河城大剧院驻场时总能吸引全城目光，其表演有时暗含政治隐喻或社会讽刺。
+constant: false
+selective: true
+insertion_order: 13
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: true
+  display_index: 17
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

@@ -1,0 +1,50 @@
+id: 56
+keys: []
+secondary_keys: []
+comment: '核心人物概览: 核心职业简介(战士、骑士、游侠、射手、影行者)'
+content: |-
+  # 埃瑟尔德大陆常见核心职业简介
+    [战士 (Warrior): 近战专家，精通力量与武器，has(重甲、多种近战武器、怒吼、战斗狂热)，核心为体能与韧性突破，强调正面交锋与控制。优势：物理对抗最稳健]
+    [骑士 (Knight): 荣誉与秩序捍卫者，兼具战斗技巧与信仰/信念，has(全覆板甲、骑乘作战、守护光环、誓言能力、军事指挥)，擅长集团作战与守护队友。优势：团队核心与防御]
+    [游侠 (Ranger): 荒野与环境专家，是猎人、追踪者与驯兽师，has(弓箭、双持轻兵器、荒野生存、陷阱、自然盟友)，专精远程游击与追踪。优势：侦察与环境掌控]
+    [射手 (Archer/Sniper): 极致远程杀伤追求者，专注弓箭、弩或其他投射武器，has(精准射击、弱点侦测、远距狙击、快速瞄准)，提供超远距离稳定物理输出。优势：定点狙杀与压制]
+    [影行者 (Shadowdancer): 阴影、情报与隐秘行动专家，潜行者与斥候的代名词，has(高隐秘能力、伏击、开锁、毒药、情报侦察)，擅长先手、突袭和渗透。优势：诡道与灵活性]
+    *注：职业强度与等阶挂钩，一名精英游侠 (Lv 40) 约等于同等级精英战士的综合威胁度，优劣势各有不同。*
+constant: true
+selective: true
+insertion_order: 5
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: false
+  display_index: 60
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

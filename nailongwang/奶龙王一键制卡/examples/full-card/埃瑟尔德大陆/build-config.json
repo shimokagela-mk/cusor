@@ -1,0 +1,9 @@
+{
+  "name": "{{CARD_NAME}}",
+  "plan": "current-plan.yaml",
+  "entriesDir": "entries",
+  "tablesDir": "tables",
+  "tablesFormat": "yaml",
+  "frontendDir": "frontend",
+  "releaseDir": "release"
+}

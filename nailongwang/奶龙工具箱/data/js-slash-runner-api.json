@@ -1,0 +1,815 @@
+{
+    "$schema":  "./js-slash-runner-api.schema.json",
+    "name":  "JS-Slash-Runner API Knowledge Base",
+    "language":  "zh-CN",
+    "updated_at":  "2026-06-09",
+    "sources":  [
+                    "https://github.com/N0VI028/JS-Slash-Runner",
+                    "https://n0vi028.github.io/JS-Slash-Runner-Doc/"
+                ],
+    "source_audit":  {
+                         "checked_at":  "2026-06-08",
+                         "upstream_refs":  [
+                                               "N0VI028/JS-Slash-Runner@a784086a41486afccfc96da9fa5a4256351d6ba1",
+                                               "@types/function/generate.d.ts",
+                                               "@types/iframe/exported.tavernhelper.d.ts"
+                                           ]
+                     },
+    "security_notice":  "酒馆助手允许执行自定义 JavaScript。脚本可访问聊天记录、API 密钥、SillyTavern 设置与网络请求能力；只运行可信脚本。",
+    "runtime":  {
+                     "description":  "JS-Slash-Runner（酒馆助手）是 SillyTavern 扩展，通过 iframe 隔离执行前端界面或脚本库代码，并暴露 SillyTavern 与扩展 API。",
+                     "global_access":  [
+                                           "在脚本库或前端 iframe 内可直接调用多数函数，如 getChatMessages、triggerSlash、eventOn。",
+                                           "脚本常通过 window.TavernHelper.getChatMessages / window.TavernHelper.triggerSlash 访问，实际运行时应先判断 window.TavernHelper 是否存在。",
+                                           "SillyTavern 原生接口可通过 window.SillyTavern 或 SillyTavern 访问，稳定接口请优先参考官方文档。"
+                                       ],
+                     "recommended_guards":  [
+                                                "if (typeof window.TavernHelper === \u0027undefined\u0027) return;",
+                                                "if (window.SillyTavern \u0026\u0026 SillyTavern.getCurrentChatId) { ... }",
+                                                "涉及删除/修改楼层、变量、预设、世界书、角色卡时必须确认作用范围。"
+                                            ]
+                 },
+    "parent_page_dom_access":  {
+                                   "purpose":  "酒馆助手脚本运行在 iframe 内时，用父页面 document/window 操作 SillyTavern 主 UI。",
+                                   "template":  "const doc = window.frameElement ? window.parent.document : document; const win = window.frameElement ? window.parent : window;",
+                                   "use_cases":  [
+                                                     "读取、隐藏、移动或排序 SillyTavern 原生菜单 DOM。",
+                                                     "向主页面 head 注入 scoped style。",
+                                                     "监听主页面 eventSource/event_types、MutationObserver、resize 或 keydown。",
+                                                     "访问主页面 localStorage、toastr 和其他运行时对象。"
+                                                 ],
+                                   "guardrails":  [
+                                                       "所有主页面 DOM 查询统一走 doc，定时器、MutationObserver 和事件源统一走 win。",
+                                                       "移动原生 DOM 时保留恢复路径，停用或重渲染前把节点放回原生容器。",
+                                                       "新增普通脚本按钮优先使用 getButtonEvent/getScriptButtons 系列；原生 UI surface 管理只用于已有界面元素。"
+                                                   ]
+                               },
+    "iframe_bridge_patterns":  {
+                                   "slash_command_bridge":  {
+                                                                "purpose":  "从酒馆助手 iframe 向主页面注册既有 slash command。",
+                                                                "script_type":  "module",
+                                                                "import_path":  "/scripts/slash-commands.js",
+                                                                "api":  "registerSlashCommand",
+                                                                "steps":  [
+                                                                              "在父页面 doc 中 createElement('script')。",
+                                                                              "设置 script.type = 'module'。",
+                                                                              "script.textContent 中 import { registerSlashCommand } from '/scripts/slash-commands.js'。",
+                                                                              "调用 registerSlashCommand(name, callback, args, helpText)。",
+                                                                              "将 script append 到 doc.head。"
+                                                                          ],
+                                                                "boundary":  "该模式用于既有脚本桥接；面向 SillyTavern 原生扩展的新命令注册优先参考 SlashCommandParser.addCommandObject。"
+                                                            }
+                               },
+    "types":  {
+                  "ChatMessage":  {
+                                      "signature":  "{ message_id: number; name: string; role: \u0027system\u0027 | \u0027assistant\u0027 | \u0027user\u0027; is_hidden: boolean; message: string; data: Record\u003cstring, any\u003e; extra: Record\u003cstring, any\u003e; }",
+                                      "description":  "被 AI 使用的单个消息页。"
+                                  },
+                  "ChatMessageSwiped":  {
+                                            "signature":  "{ message_id: number; name: string; role: \u0027system\u0027 | \u0027assistant\u0027 | \u0027user\u0027; is_hidden: boolean; swipe_id: number; swipes: string[]; swipes_data: Record\u003cstring, any\u003e[]; swipes_info: Record\u003cstring, any\u003e[]; }",
+                                            "description":  "包含所有 swipe 消息页的楼层信息。"
+                                        },
+                  "SetChatMessagesOption":  {
+                                                "signature":  "{ refresh?: \u0027none\u0027 | \u0027affected\u0027 | \u0027all\u0027 }",
+                                                "description":  "修改/删除/旋转消息后的页面刷新策略。默认 affected。"
+                                            },
+                  "VariableOption":  {
+                                         "signature":  "{ type: \u0027global\u0027 | \u0027preset\u0027 | \u0027character\u0027 | \u0027chat\u0027 | \u0027message\u0027 | \u0027script\u0027; message_id?: number; script_id?: string }",
+                                         "description":  "变量作用域选择。message 变量通常需要 message_id；script 变量通常需要 script_id。"
+                                     },
+                  "GenerateToolCallResult":  {
+                                                "signature":  "{ content?: string; tool_calls: Array<{ id:string; type:'function'; function:{ name:string; arguments:string }; thought_signature?: string }>; reasoning_signature?: string; }",
+                                                "description":  "generate/generateRaw 在 tools 触发时可能返回的结构化结果。多轮工具调用要保留 thought_signature / reasoning_signature；Gemini 并行 tool call 通常只在第一个 call 上携带签名。"
+                                     }
+              },
+    "apis":  [
+                 {
+                     "name":  "getChatMessages",
+                     "category":  "chat_message",
+                     "signature":  "function getChatMessages(range: string | number, option?: GetChatMessagesOption): ChatMessage[] | ChatMessageSwiped[]",
+                     "description":  "获取聊天消息。range 可为楼层号 14、范围 \u00270-100\u0027、宏范围 \u00270-{{lastMessageId}}\u0027、负数（如 -1 最新楼层）。",
+                     "parameters":  {
+                                        "range":  "number|string：楼层号或楼层范围。",
+                                        "option.role":  "\u0027all\u0027|\u0027system\u0027|\u0027assistant\u0027|\u0027user\u0027，默认 all。",
+                                        "option.hide_state":  "\u0027all\u0027|\u0027hidden\u0027|\u0027unhidden\u0027，默认 all。",
+                                        "option.include_swipes":  "boolean，默认 false；true 时返回 ChatMessageSwiped[]。"
+                                    },
+                     "returns":  "按 message_id 升序排列的 ChatMessage[] 或 ChatMessageSwiped[]；范围内无消息时返回 []。",
+                     "examples":  [
+                                      "const msgs = getChatMessages(\u00270-{{lastMessageId}}\u0027, { include_swipes: false });",
+                                      "const latest = getChatMessages(-1)[0];"
+                                  ],
+                     "source":  "https://n0vi028.github.io/JS-Slash-Runner-Doc/guide/功能详情/楼层消息/获取消息.html"
+                 },
+                 {
+                     "name":  "setChatMessages",
+                     "category":  "chat_message",
+                     "signature":  "function setChatMessages(chat_messages: Array\u003c{ message_id: number } \u0026 (Partial\u003cChatMessage\u003e | Partial\u003cChatMessageSwiped\u003e)\u003e, option?: SetChatMessagesOption): Promise\u003cvoid\u003e",
+                     "description":  "修改聊天消息的数据。必须包含 message_id。",
+                     "parameters":  {
+                                        "chat_messages":  "要修改的楼层数组，每项至少包含 message_id。",
+                                        "option.refresh":  "\u0027none\u0027|\u0027affected\u0027|\u0027all\u0027；默认 affected。"
+                                    },
+                     "examples":  [
+                                      "await setChatMessages([{ message_id: 10, message: \u0027新的消息\u0027 }]);",
+                                      "await setChatMessages([{ message_id: 4 }]); // 仅重新渲染第 4 楼",
+                                      "await setChatMessages([{ message_id: 0, swipe_id: 2 }]);"
+                                  ],
+                     "cautions":  [
+                                      "修改 swipes/swipe_id 会影响消息页选择。",
+                                      "refresh:\u0027all\u0027 会触发 CHAT_CHANGED，开销更大。"
+                                  ]
+                 },
+                 {
+                     "name":  "createChatMessages",
+                     "category":  "chat_message",
+                     "signature":  "function createChatMessages(chat_messages: ChatMessageCreating[], option?: CreateChatMessagesOption): Promise\u003cvoid\u003e",
+                     "description":  "创建聊天消息。每条消息必须包含 role 和 message。",
+                     "parameters":  {
+                                        "chat_messages[].role":  "\u0027system\u0027|\u0027assistant\u0027|\u0027user\u0027",
+                                        "chat_messages[].message":  "string",
+                                        "option.insert_before":  "number|\u0027end\u0027，默认 end。",
+                                        "option.refresh":  "\u0027none\u0027|\u0027affected\u0027|\u0027all\u0027，默认 affected。"
+                                    },
+                     "examples":  [
+                                      "await createChatMessages([{ role: \u0027user\u0027, message: \u0027你好\u0027 }]);",
+                                      "await createChatMessages([{ role: \u0027system\u0027, message: \u0027系统通知\u0027, data: { 阶段: \u0027示例阶段\u0027 }}], { insert_before: 10 });"
+                                  ]
+                 },
+                 {
+                     "name":  "deleteChatMessages",
+                     "category":  "chat_message",
+                     "signature":  "function deleteChatMessages(message_ids: number[], option?: SetChatMessagesOption): Promise\u003cvoid\u003e",
+                     "description":  "删除聊天消息，比 /del 更高效。支持负数楼层引用。",
+                     "examples":  [
+                                      "await deleteChatMessages([10, 15, -2, getLastMessageId()]);",
+                                      "await deleteChatMessages(_.range(getLastMessageId() + 1)); // 删除全部楼层，危险"
+                                  ],
+                     "cautions":  [
+                                      "删除不可逆，脚本中应避免无确认删除大范围楼层。"
+                                  ]
+                 },
+                 {
+                     "name":  "rotateChatMessages",
+                     "category":  "chat_message",
+                     "signature":  "function rotateChatMessages(begin: number, middle: number, end: number, option?: SetChatMessagesOption): Promise\u003cvoid\u003e",
+                     "description":  "调整聊天消息顺序，将 [begin, middle) [middle, end) 旋转为 [middle, end) [begin, middle)。",
+                     "examples":  [
+                                      "await rotateChatMessages(5, getLastMessageId(), getLastMessageId() + 1); // 将最后一楼放到第 5 楼前",
+                                      "await rotateChatMessages(0, 3, getLastMessageId() + 1); // 将前 3 楼放到最后"
+                                  ]
+                 },
+                 {
+                     "name":  "triggerSlash",
+                     "category":  "slash",
+                     "signature":  "function triggerSlash(command: string): Promise\u003cstring\u003e",
+                     "description":  "运行 SillyTavern /STScript 命令，如 /run、/echo、/trigger。命令出错会抛出错误；执行 /abort 或出错可能返回 undefined。",
+                     "examples":  [
+                                      "await triggerSlash(\u0027/echo severity=success 运行成功!\u0027);",
+                                      "await triggerSlash(\u0027/chat-jump 10\u0027);",
+                                      "await triggerSlash(\u0027/trigger\u0027);"
+                                  ],
+                     "preferred_alternatives":  [
+                                                    "弹窗提示优先用 toastr.success/error/info。",
+                                                    "获取最新楼层优先用 getLastMessageId()，不要 /pass {{lastMessageId}}。"
+                                                ]
+                 },
+                 {
+                     "name":  "SillyTavern.executeSlashCommandsWithOptions",
+                     "category":  "sillytavern_native",
+                     "signature":  "function executeSlashCommandsWithOptions(command: string, options?: any): Promise\u003c{ interrupt: boolean; pipe: string; isBreak: boolean; isAborted: boolean; isQuietlyAborted: boolean; abortReason: string; isError: boolean; errorMessage: string; }\u003e",
+                     "description":  "SillyTavern 原生 /STScript 运行函数。triggerSlash 是更常用的封装。"
+                 },
+                 {
+                     "name":  "eventOn",
+                     "category":  "event",
+                     "signature":  "function eventOn\u003cT extends EventType\u003e(event_type: T, listener: ListenerType[T]): { stop: () =\u003e void }",
+                     "description":  "监听事件。当前前端/脚本关闭时自动卸载。重复监听同一 listener 不会重复注册；返回 stop() 便于手动取消监听。",
+                     "examples":  [
+                                      "eventOn(tavern_events.MESSAGE_RECEIVED, () =\u003e toastr.info(\u0027收到消息\u0027));",
+                                      "eventOn(tavern_events.MESSAGE_UPDATED, id =\u003e console.info(\u0027更新楼层\u0027, id));"
+                                  ]
+                 },
+                 {
+                     "name":  "eventMakeLast",
+                     "category":  "event",
+                     "signature":  "function eventMakeLast\u003cT extends EventType\u003e(event_type: T, listener: ListenerType[T]): void",
+                     "description":  "让 listener 在指定事件的监听队列最后运行。"
+                 },
+                 {
+                     "name":  "eventMakeFirst",
+                     "category":  "event",
+                     "signature":  "function eventMakeFirst\u003cT extends EventType\u003e(event_type: T, listener: ListenerType[T]): void",
+                     "description":  "让 listener 在指定事件的监听队列最先运行。"
+                 },
+                 {
+                     "name":  "eventOnce",
+                     "category":  "event",
+                     "signature":  "function eventOnce\u003cT extends EventType\u003e(event_type: T, listener: ListenerType[T]): void",
+                     "description":  "仅监听下一次事件，触发后自动取消。"
+                 },
+                 {
+                     "name":  "eventEmit",
+                     "category":  "event",
+                     "signature":  "function eventEmit\u003cT extends EventType\u003e(event_type: T, ...data: Parameters\u003cListenerType[T]\u003e): Promise\u003cvoid\u003e",
+                     "description":  "发送事件并携带数据；所有监听该事件的 listener 都会收到。",
+                     "examples":  [
+                                      "eventEmit(\u0027存档\u0027, { reason: \u0027manual\u0027 });"
+                                  ]
+                 },
+                 {
+                     "name":  "eventEmitAndWait",
+                     "category":  "event",
+                     "signature":  "function eventEmitAndWait\u003cT extends EventType\u003e(event_type: T, ...data: Parameters\u003cListenerType[T]\u003e): void",
+                     "description":  "发送事件并等待事件处理结束。"
+                 },
+                 {
+                     "name":  "eventRemoveListener",
+                     "category":  "event",
+                     "signature":  "function eventRemoveListener\u003cT extends EventType\u003e(event_type: T, listener: ListenerType[T]): void",
+                     "description":  "取消某个 listener 对某个事件的监听。通常不必手动调用，因为 iframe/脚本关闭时会自动卸载。"
+                 },
+                 {
+                     "name":  "eventClearEvent",
+                     "category":  "event",
+                     "signature":  "function eventClearEvent(event_type: EventType): void",
+                     "description":  "取消当前 iframe/脚本中对指定事件的所有监听。"
+                 },
+                 {
+                     "name":  "eventClearListener",
+                     "category":  "event",
+                     "signature":  "function eventClearListener(listener: Function): void",
+                     "description":  "取消当前 iframe/脚本中该 listener 的所有监听。"
+                 },
+                 {
+                     "name":  "eventClearAll",
+                     "category":  "event",
+                     "signature":  "function eventClearAll(): void",
+                     "description":  "取消当前 iframe/脚本中所有事件监听。"
+                 },
+                 {
+                     "name":  "generate",
+                     "category":  "generation",
+                     "signature":  "function generate(config: GenerateConfig \u0026 { preset_name?: string }): Promise\u003cstring | GenerateToolCallResult\u003e",
+                     "description":  "使用 SillyTavern 当前启用的预设，或通过 preset_name 临时选择其他预设，让 AI 生成文本。支持图片、流式、静默、自定义 API、代理预设、工具调用、JSON schema。preset_name 只使用所选预设的提示词和参数，不使用所选预设的正则或酒馆助手脚本。",
+                     "key_options":  [
+                                         "preset_name?: string",
+                                         "generation_id?: string",
+                                         "user_input?: string",
+                                         "image?: File|string|(File|string)[]",
+                                         "should_stream?: boolean",
+                                         "should_silence?: boolean",
+                                         "overrides?: Overrides",
+                                         "injects?: Omit\u003cInjectionPrompt,\u0027id\u0027\u003e[]",
+                                         "max_chat_history?: \u0027all\u0027|number",
+                                         "custom_api?: CustomApiConfig",
+                                         "tools?: ToolDefinition[]",
+                                         "tool_choice?: ToolChoice",
+                                         "json_schema?: JsonSchema"
+                                     ],
+                     "events":  [
+                                    "iframe_events.GENERATION_STARTED",
+                                    "iframe_events.STREAM_TOKEN_RECEIVED_FULLY",
+                                    "iframe_events.STREAM_TOKEN_RECEIVED_INCREMENTALLY",
+                                    "iframe_events.GENERATION_ENDED"
+                                ],
+                     "examples":  [
+                                      "const result = await generate({ user_input: \u0027你好\u0027 });",
+                                      "const result = await generate({ user_input: \u0027你好\u0027, should_stream: true });",
+                                      "const result = await generate({ user_input: \u0027你好\u0027, custom_api: { proxy_preset: \u0027示例代理预设\u0027, model: \u0027gpt-4\u0027 } });"
+                                  ]
+                 },
+                 {
+                     "name":  "generateRaw",
+                     "category":  "generation",
+                     "signature":  "function generateRaw(config: GenerateRawConfig): Promise\u003cstring | GenerateToolCallResult\u003e",
+                     "description":  "不使用当前预设，按 ordered_prompts 自定义提示词顺序生成。与 generate 共用大部分参数，支持自定义 API、代理预设、工具调用与 JSON schema。",
+                     "examples":  [
+                                      "const result = await generateRaw({ user_input: \u0027你好\u0027, ordered_prompts: [\u0027char_description\u0027, { role: \u0027system\u0027, content: \u0027系统提示\u0027 }, \u0027chat_history\u0027, \u0027user_input\u0027] });"
+                                  ]
+                 },
+                 {
+                     "name":  "getModelList",
+                     "category":  "generation",
+                     "signature":  "function getModelList(custom_api: { apiurl: string; key?: string }): Promise\u003cstring[]\u003e",
+                     "description":  "获取模型列表。"
+                 },
+                 {
+                     "name":  "stopGenerationById",
+                     "category":  "generation",
+                     "signature":  "function stopGenerationById(generationId: string): boolean",
+                     "description":  "按 generation_id 停止特定生成请求。"
+                 },
+                 {
+                     "name":  "stopAllGeneration",
+                     "category":  "generation",
+                     "signature":  "function stopAllGeneration(): boolean",
+                     "description":  "停止所有正在进行的生成请求。"
+                 },
+                 {
+                     "name":  "getVariables",
+                     "category":  "variable",
+                     "signature":  "function getVariables(option: VariableOption): Record\u003cstring, any\u003e",
+                     "description":  "获取变量表。支持 global/preset/character/chat/message/script 等作用域。",
+                     "examples":  [
+                                      "const vars = getVariables({ type: \u0027chat\u0027 });",
+                                      "const msgVars = getVariables({ type: \u0027message\u0027, message_id: -2 });",
+                                      "const scriptVars = getVariables({ type: \u0027script\u0027, script_id: getScriptId() });"
+                                  ]
+                 },
+                 {
+                     "name":  "replaceVariables",
+                     "category":  "variable",
+                     "signature":  "function replaceVariables(variables: Record\u003cstring, any\u003e, option: VariableOption): Record\u003cstring, any\u003e",
+                     "description":  "完全替换变量表。危险：会覆盖整个作用域变量。"
+                 },
+                 {
+                     "name":  "updateVariablesWith",
+                     "category":  "variable",
+                     "signature":  "function updateVariablesWith(updater: (variables: Record\u003cstring, any\u003e) =\u003e Record\u003cstring, any\u003e | Promise\u003cRecord\u003cstring, any\u003e\u003e, option: VariableOption): Record\u003cstring, any\u003e | Promise\u003cRecord\u003cstring, any\u003e\u003e",
+                     "description":  "用函数更新变量表。推荐搭配 lodash 的 _.set / _.update / _.unset。",
+                     "examples":  [
+                                      "updateVariablesWith(v =\u003e _.update(v, \u0027角色A.状态值\u0027, x =\u003e x ? x * 2 : 0), { type: \u0027chat\u0027 });"
+                                  ]
+                 },
+                 {
+                     "name":  "insertOrAssignVariables",
+                     "category":  "variable",
+                     "signature":  "function insertOrAssignVariables(variables: Record\u003cstring, any\u003e, option: VariableOption): Record\u003cstring, any\u003e",
+                     "description":  "插入或修改变量：存在则改，不存在则新增。"
+                 },
+                 {
+                     "name":  "insertVariables",
+                     "category":  "variable",
+                     "signature":  "function insertVariables(variables: Record\u003cstring, any\u003e, option: VariableOption): Record\u003cstring, any\u003e",
+                     "description":  "仅插入新变量；如果变量已存在则不修改。"
+                 },
+                 {
+                     "name":  "deleteVariable",
+                     "category":  "variable",
+                     "signature":  "function deleteVariable(variable_path: string, option: VariableOption): { variables: Record\u003cstring, any\u003e; delete_occurred: boolean }",
+                     "description":  "删除变量路径；不存在则不做事。"
+                 },
+                 {
+                     "name":  "reloadIframe",
+                     "category":  "utility",
+                     "signature":  "function reloadIframe(): void",
+                     "description":  "重新加载当前前端界面或脚本，相当于 window.location.reload()。会让分享到全局的接口失效。"
+                 },
+                 {
+                     "name":  "substitudeMacros",
+                     "category":  "utility",
+                     "signature":  "function substitudeMacros(text: string): string",
+                     "description":  "替换字符串中的 SillyTavern 宏。注意官方文档拼写为 substitudeMacros。",
+                     "examples":  [
+                                      "const text = substitudeMacros(\u0027{{char}} speaks in {{lastMessageId}}\u0027);"
+                                  ]
+                 },
+                 {
+                     "name":  "getLastMessageId",
+                     "category":  "utility",
+                     "signature":  "function getLastMessageId(): number",
+                     "description":  "获取最新楼层号。"
+                 },
+                 {
+                     "name":  "errorCatched",
+                     "category":  "utility",
+                     "signature":  "function errorCatched\u003cT extends any[], U\u003e(fn: (...args: T) =\u003e U): (...args: T) =\u003e U",
+                     "description":  "包装函数，捕获报错并通过酒馆通知显示。"
+                 },
+                 {
+                     "name":  "getIframeName",
+                     "category":  "utility",
+                     "signature":  "function getIframeName(): string",
+                     "description":  "获取当前前端界面或脚本的 iframe 标识名称。楼层界面为 TH-message--楼层号--序号；脚本库为 TH-script--脚本名称--脚本id。"
+                 },
+                 {
+                     "name":  "getMessageId",
+                     "category":  "utility",
+                     "signature":  "function getMessageId(iframe_name: string): number",
+                     "description":  "从楼层前端 iframe 标识名称解析楼层号；对脚本 iframe 使用会抛错。"
+                 },
+                 {
+                     "name":  "getCurrentMessageId",
+                     "category":  "utility",
+                     "signature":  "function getCurrentMessageId(): number",
+                     "description":  "获取当前前端界面所在楼层号；只能在前端界面内使用。"
+                 },
+                 {
+                     "name":  "getScriptId",
+                     "category":  "utility",
+                     "signature":  "function getScriptId(): string",
+                     "description":  "获取脚本库当前脚本 id；只能在脚本内使用。"
+                 },
+                 {
+                     "name":  "toastr",
+                     "category":  "builtin_library",
+                     "signature":  "toastr.success/info/warning/error(message: string, title?: string): void",
+                     "description":  "酒馆助手导出的提示库。优先用 toastr 替代 /echo。",
+                     "examples":  [
+                                      "toastr.success(\u0027导出完成\u0027);",
+                                      "toastr.error(\u0027导出失败\u0027, \u0027聊天记录导出\u0027);"
+                                  ]
+                 },
+                 {
+                     "name":  "lodash / _",
+                     "category":  "builtin_library",
+                     "signature":  "_",
+                     "description":  "内置 Lodash。变量操作中常用 _.get / _.set / _.update / _.unset / _.range。"
+                 },
+                 {
+                     "name":  "jQuery / $",
+                     "category":  "builtin_library",
+                     "signature":  "$",
+                     "description":  "内置 jQuery。常用于 DOM 查询、事件绑定和界面更新。"
+                 },
+                 {
+                     "name":  "zod / z",
+                     "category":  "builtin_library",
+                     "signature":  "z",
+                     "description":  "内置 zod，用于解析 AI 输出或外部输入并做结构校验。"
+                 },
+                 {
+                     "name":  "getProxyPresetNames",
+                     "category":  "generation",
+                     "signature":  "function getProxyPresetNames(): string[]",
+                     "description":  "获取酒馆助手可用于 custom_api.proxy_preset 的代理预设名称列表。",
+                     "examples":  [
+                                      "const names = getProxyPresetNames();"
+                                  ]
+                 },
+                 {
+                     "name":  "getScriptTrees",
+                     "category":  "script_library",
+                     "signature":  "function getScriptTrees(option?: { type?: \"global\"|\"character\"|\"preset\" }): ScriptTree[]",
+                     "description":  "获取酒馆助手脚本列表/脚本树，用于在脚本内读取脚本库结构。",
+                     "source":  "https://n0vi028.github.io/JS-Slash-Runner-Doc/guide/功能详情/酒馆助手脚本/获取脚本.html"
+                 },
+                 {
+                     "name":  "replaceScriptTrees",
+                     "category":  "script_library",
+                     "signature":  "function replaceScriptTrees(script_trees: ScriptTree[], option?: { type?: \"global\"|\"character\"|\"preset\" }): Promise\u003cvoid\u003e",
+                     "description":  "替换酒馆助手脚本列表/脚本树。会改动脚本库数据，调用前应确认作用范围。",
+                     "cautions":  [
+                                      "会覆盖脚本库结构；不要在未确认目标库时批量替换。"
+                                  ]
+                 },
+                 {
+                     "name":  "updateScriptTreesWith",
+                     "category":  "script_library",
+                     "signature":  "function updateScriptTreesWith(updater: (script_trees: ScriptTree[]) =\u003e ScriptTree[] | Promise\u003cScriptTree[]\u003e, option?: { type?: \"global\"|\"character\"|\"preset\" }): Promise\u003cScriptTree[]\u003e",
+                     "description":  "用 updater 函数更新酒馆助手脚本列表/脚本树。比直接 replace 更适合局部修改。"
+                 },
+                 {
+                     "name":  "getButtonEvent",
+                     "category":  "script_button",
+                     "signature":  "function getButtonEvent(button_name: string): string",
+                     "description":  "获取当前脚本按钮对应的事件类型；推荐配合 eventOn(getButtonEvent('按钮名'), handler) 监听按钮点击。只能在脚本中使用。",
+                     "examples":  [
+                                      "eventOn(getButtonEvent('设置'), () => toastr.info('打开设置'));"
+                                  ],
+                     "cautions":  [
+                                      "旧的 eventOnButton 已不推荐；优先使用 eventOn + getButtonEvent。",
+                                      "这是 JS-Slash-Runner 脚本按钮事件，不是 SillyTavern 原生 Quick Reply API。"
+                                  ],
+                     "source":  "N0VI028/JS-Slash-Runner:@types/iframe/script.d.ts"
+                 },
+                 {
+                     "name":  "getScriptButtons",
+                     "category":  "script_button",
+                     "signature":  "function getScriptButtons(): ScriptButton[]",
+                     "description":  "获取当前脚本的按钮列表；只能在脚本中使用。",
+                     "examples":  [
+                                      "const buttons = getScriptButtons();"
+                                  ],
+                     "source":  "N0VI028/JS-Slash-Runner:@types/iframe/script.d.ts"
+                 },
+                 {
+                     "name":  "replaceScriptButtons",
+                     "category":  "script_button",
+                     "signature":  "function replaceScriptButtons(buttons: ScriptButton[]): void",
+                     "description":  "完全替换当前脚本按钮列表，适合根据脚本状态切换按钮组；只能在脚本中使用。",
+                     "examples":  [
+                                      "replaceScriptButtons([{ name: '开始游戏', visible: true }]);"
+                                  ],
+                     "cautions":  [
+                                      "会覆盖当前脚本按钮列表；只追加默认按钮时优先用 appendInexistentScriptButtons。"
+                                  ],
+                     "source":  "N0VI028/JS-Slash-Runner:@types/iframe/script.d.ts"
+                 },
+                 {
+                     "name":  "updateScriptButtonsWith",
+                     "category":  "script_button",
+                     "signature":  "function updateScriptButtonsWith(updater: (buttons: ScriptButton[]) =\u003e ScriptButton[] | Promise\u003cScriptButton[]\u003e): ScriptButton[] | Promise\u003cScriptButton[]\u003e",
+                     "description":  "用 updater 函数更新当前脚本按钮列表，便于脚本内维护按钮配置；只能在脚本中使用。",
+                     "examples":  [
+                                      "await updateScriptButtonsWith(buttons => [...buttons, { name: '新按钮', visible: true }]);"
+                                  ],
+                     "source":  "N0VI028/JS-Slash-Runner:@types/iframe/script.d.ts"
+                 },
+                 {
+                     "name":  "appendInexistentScriptButtons",
+                     "category":  "script_button",
+                     "signature":  "function appendInexistentScriptButtons(buttons: ScriptButton[]): void",
+                     "description":  "向当前脚本按钮列表末尾添加不存在的同名按钮，不会重复添加同名按钮；只能在脚本中使用。",
+                     "examples":  [
+                                      "appendInexistentScriptButtons([{ name: '重新开始', visible: true }]);"
+                                  ],
+                     "source":  "N0VI028/JS-Slash-Runner:@types/iframe/script.d.ts"
+                 },
+                 {
+                     "name":  "getScriptName",
+                     "category":  "utility",
+                     "signature":  "function getScriptName(): string",
+                     "description":  "获取脚本库当前脚本名称；只能在脚本内使用。"
+                 },
+                 {
+                     "name":  "getCurrentCharacterName",
+                     "category":  "utility",
+                     "signature":  "function getCurrentCharacterName(): string",
+                     "description":  "获取当前角色卡名称；比直接读取 SillyTavern.name2 更适合酒馆助手脚本。"
+                 },
+                 {
+                     "name":  "refreshOneMessage",
+                     "category":  "chat_message",
+                     "signature":  "function refreshOneMessage(message_id: number, displayed_message_id?: number): Promise\u003cvoid\u003e",
+                     "description":  "刷新单个楼层的显示，也可将某楼层替换成其他楼层消息显示出来。",
+                     "source":  "https://n0vi028.github.io/JS-Slash-Runner-Doc/guide/功能详情/楼层消息/渲染消息.html#renderonemessage"
+                 },
+                 {
+                     "name":  "builtin.copyText",
+                     "category":  "builtin_library",
+                     "signature":  "function builtin.copyText(text: string): Promise\u003cvoid\u003e",
+                     "description":  "复制文本到剪贴板。适合导出/复制按钮使用。"
+                 }
+             ],
+    "sillytavern_native_common_context":  [
+                                                    {
+                                                        "name":  "SillyTavern.getCurrentChatId",
+                                                        "description":  "获取当前聊天文件 id；常用于按聊天隔离状态或配置。"
+                                                    },
+                                                    {
+                                                        "name":  "SillyTavern.chat",
+                                                        "description":  "当前聊天原始消息数组；常用于只读分析或导出。"
+                                                    },
+                                                    {
+                                                        "name":  "SillyTavern.name1 / SillyTavern.name2",
+                                                        "description":  "玩家名 / 角色名；常用于宏替换或界面显示。"
+                                                    },
+                                                    {
+                                                        "name":  "SillyTavern.chatMetadata",
+                                                        "description":  "当前聊天 metadata；常用于读取聊天级配置。"
+                                                    },
+                                                    {
+                                                        "name":  "SillyTavern.characters / SillyTavern.characterId",
+                                                        "description":  "当前角色信息；常用于读取角色名或角色级设置。"
+                                                    }
+                                                ],
+    "sillytavern_api_connections":  {
+                                        "source":  "https://docs.sillytavern.app/usage/api-connections/",
+                                        "summary":  "SillyTavern 可连接本地与云端 LLM API。API 连接页中的 Chat Completion 与 Text Completion 是提示词组织方式，而不是云端/本地的简单区分。",
+                                        "completion_modes":  [
+                                                                 {
+                                                                     "name":  "Chat Completions",
+                                                                     "description":  "把提示词组织为 User / Assistant / System 消息序列，适合聊天模型；ChatGPT 网站背后就是典型 Chat Completions API。",
+                                                                     "use_for":  [
+                                                                                     "聊天模型",
+                                                                                     "工具调用",
+                                                                                     "多模态模型",
+                                                                                     "OpenAI/Claude/Gemini/OpenRouter 等云端 API"
+                                                                                 ]
+                                                                 },
+                                                                 {
+                                                                     "name":  "Text Completions",
+                                                                     "description":  "把角色描述、世界书、作者注释、聊天历史等拼成一个长字符串，由模型续写文本。",
+                                                                     "use_for":  [
+                                                                                     "续写模型",
+                                                                                     "需要 Instruct Template 的模型",
+                                                                                     "部分本地模型后端"
+                                                                                 ]
+                                                                 }
+                                                             ],
+                                        "local_apis":  [
+                                                           {
+                                                               "name":  "KoboldCpp",
+                                                               "strengths":  [
+                                                                                 "单文件运行",
+                                                                                 "CPU offloading",
+                                                                                 "支持流式",
+                                                                                 "支持 GGUF"
+                                                                             ],
+                                                               "weaknesses":  [
+                                                                                  "比 GPU-only loader 慢"
+                                                                              ],
+                                                               "setup_url":  "https://docs.sillytavern.app/usage/api-connections/koboldcpp/"
+                                                           },
+                                                           {
+                                                               "name":  "llama.cpp",
+                                                               "strengths":  [
+                                                                                 "llama-server 轻量",
+                                                                                 "支持 GGUF",
+                                                                                 "可用预编译或源码编译"
+                                                                             ],
+                                                               "weaknesses":  [
+                                                                                  "偏 CLI/服务端，需要自行配置"
+                                                                              ],
+                                                               "website":  "https://github.com/ggml-org/llama.cpp"
+                                                           },
+                                                           {
+                                                               "name":  "Ollama",
+                                                               "strengths":  [
+                                                                                 "llama.cpp 系最易安装",
+                                                                                 "模型库一键下载",
+                                                                                 "支持 GGUF 封装模型"
+                                                                             ],
+                                                               "website":  "https://ollama.com/"
+                                                           },
+                                                           {
+                                                               "name":  "Oobabooga TextGeneration WebUI",
+                                                               "strengths":  [
+                                                                                 "Gradio UI",
+                                                                                 "支持流式",
+                                                                                 "支持 AWQ/Exl2/GGML/GGUF/GPTQ/FP16"
+                                                                             ],
+                                                               "setup_notes":  [
+                                                                                   "添加 --api 到 CMD_FLAGS.txt",
+                                                                                   "重启服务器",
+                                                                                   "ST 连接 http://localhost:5000/，不要勾 Legacy API，可移除 /v1 后缀"
+                                                                               ],
+                                                               "weaknesses":  [
+                                                                                  "更新频繁，可能破坏 ST 兼容性"
+                                                                              ]
+                                                           },
+                                                           {
+                                                               "name":  "TabbyAPI",
+                                                               "strengths":  [
+                                                                                 "Exllamav2 后端",
+                                                                                 "轻量",
+                                                                                 "支持流式",
+                                                                                 "可通过官方扩展在 ST 中加载/卸载模型"
+                                                                             ],
+                                                               "weaknesses":  [
+                                                                                  "不适合低 VRAM，无 CPU offloading"
+                                                                              ]
+                                                           },
+                                                           {
+                                                               "name":  "KoboldAI Classic",
+                                                               "status":  "deprecated",
+                                                               "boundary":  "仅用于识别既有连接配置，不作为新建默认后端推荐。",
+                                                               "strengths":  [
+                                                                                 "本地私有",
+                                                                                 "生成参数控制直接"
+                                                                             ],
+                                                               "weaknesses":  [
+                                                                                  "需要大量 VRAM",
+                                                                                  "上下文多限制 2k",
+                                                                                  "无流式"
+                                                                              ]
+                                                           }
+                                                       ],
+                                        "cloud_apis":  [
+                                                           {
+                                                               "name":  "AI Horde",
+                                                               "notes":  [
+                                                                             "开箱可用",
+                                                                             "志愿者 GPU",
+                                                                             "等待时间与模型取决于 Worker"
+                                                                         ]
+                                                           },
+                                                           {
+                                                               "name":  "OpenAI",
+                                                               "notes":  [
+                                                                             "易配置",
+                                                                             "需预付费",
+                                                                             "新模型如 GPT-4o 支持多模态"
+                                                                         ]
+                                                           },
+                                                           {
+                                                               "name":  "Claude",
+                                                               "notes":  [
+                                                                             "适合创意写作",
+                                                                             "需预付费",
+                                                                             "Claude 3 支持多模态",
+                                                                             "常需要 prefill 等提示技巧"
+                                                                         ]
+                                                           },
+                                                           {
+                                                               "name":  "Google AI Studio / Vertex AI",
+                                                               "notes":  [
+                                                                             "AI Studio 通常更新快",
+                                                                             "Vertex AI 配置更复杂但更稳定",
+                                                                             "Gemini Flash 有免费层和限速"
+                                                                         ]
+                                                           },
+                                                           {
+                                                               "name":  "Mistral",
+                                                               "notes":  [
+                                                                             "32k-128k 通用上下文，编码模型可到 256k",
+                                                                             "有免费层限速",
+                                                                             "moderation 相对合理"
+                                                                         ]
+                                                           },
+                                                           {
+                                                               "name":  "OpenRouter",
+                                                               "notes":  [
+                                                                             "统一访问多家 LLM",
+                                                                             "按 token 付费",
+                                                                             "有免费模型",
+                                                                             "通常不额外强制 moderation"
+                                                                         ]
+                                                           },
+                                                           {
+                                                               "name":  "DeepSeek",
+                                                               "notes":  [
+                                                                             "deepseek-chat / deepseek-reasoner",
+                                                                             "需购买额度",
+                                                                             "API 无 moderation 但模型可能拒答"
+                                                                         ]
+                                                           },
+                                                           {
+                                                               "name":  "AI21",
+                                                               "notes":  [
+                                                                             "Jamba 系列",
+                                                                             "试用额度后按 token 付费"
+                                                                         ]
+                                                           },
+                                                           {
+                                                               "name":  "Cohere",
+                                                               "notes":  [
+                                                                             "command-r / command-a / Aya 等",
+                                                                             "Trial Keys 免费层"
+                                                                         ]
+                                                           },
+                                                           {
+                                                               "name":  "Perplexity",
+                                                               "notes":  [
+                                                                             "Sonar 在线模型",
+                                                                             "需要计费与额度"
+                                                                         ]
+                                                           },
+                                                           {
+                                                               "name":  "Mancer AI",
+                                                               "notes":  [
+                                                                             "无约束模型托管",
+                                                                             "credits 付费",
+                                                                             "可选择日志以获得折扣"
+                                                                         ]
+                                                           },
+                                                           {
+                                                               "name":  "DreamGen",
+                                                               "notes":  [
+                                                                             "无审查创意写作模型",
+                                                                             "免费月额度与付费订阅"
+                                                                         ]
+                                                           },
+                                                           {
+                                                               "name":  "Pollinations",
+                                                               "notes":  [
+                                                                             "无需配置",
+                                                                             "免费",
+                                                                             "输出偶尔含广告/第三方链接"
+                                                                         ]
+                                                           },
+                                                           {
+                                                               "name":  "NovelAI",
+                                                               "notes":  [
+                                                                             "无内容过滤",
+                                                                             "付费订阅",
+                                                                             "上下文长度取决于订阅档位"
+                                                                         ]
+                                                           },
+                                                           {
+                                                               "name":  "Electron Hub",
+                                                               "notes":  [
+                                                                             "一个 API key 访问多厂商文本/图像模型",
+                                                                             "每日少量免费额度"
+                                                                         ]
+                                                           },
+                                                           {
+                                                               "name":  "AI/ML API",
+                                                               "notes":  [
+                                                                             "统一访问 300+ 模型",
+                                                                             "免费层/订阅/按量付费"
+                                                                         ]
+                                                           }
+                                                       ],
+                                        "usage_notes":  [
+                                                                    "只读聊天工具通常不需要直接连接 LLM API；可读取 SillyTavern 已有聊天数据。",
+                                                                    "如果加入 AI 摘要、章节名生成或前言等功能，应优先走酒馆助手 generate/custom_api，而不是在脚本中硬编码第三方 API key。",
+                                                                    "不要把 OpenAI/Claude/OpenRouter/DeepSeek 等 API key 写入导出的 JSON 或 JS 文件；应使用 SillyTavern 现有 API Connection 或酒馆助手代理预设。",
+                                                                    "如果使用本地模型生成摘要，应在 UI 中明确提示用户：本地 API 安装复杂、模型文件体积大、性能取决于硬件。"
+                                                                ]
+                                    },
+    "usage_notes":  [
+                                "只读读取消息时优先用 TavernHelper.getLastMessageId() + TavernHelper.getChatMessages(\u00270-last\u0027, { include_swipes:false })。",
+                                "跳转楼层可用 TavernHelper.triggerSlash(\u0027/chat-jump \u003cid\u003e\u0027)。",
+                                "导出前检查 window.TavernHelper 是否存在；不存在时返回 [] 或 toastr.warning，而不是抛错。",
+                                "对消息做批量修改、删除或创建时，应要求用户确认作用范围；只读工具默认不启用写操作。",
+                                 "如果需要新增导出后写回变量，可优先使用 updateVariablesWith，而不是 replaceVariables。",
+                                 "generate 支持 preset_name 临时选择其他预设；只使用所选预设的提示词和参数，不使用所选预设的正则或酒馆助手脚本。",
+                                 "自定义生成可先用 getProxyPresetNames 获取代理预设名，再传入 custom_api.proxy_preset。",
+                                 "脚本库管理可用 getScriptTrees / replaceScriptTrees / updateScriptTreesWith；这些函数会影响脚本库数据，默认应谨慎使用。",
+                                 "脚本按钮可用 getButtonEvent / getScriptButtons / replaceScriptButtons / updateScriptButtonsWith / appendInexistentScriptButtons；这些按钮由 JS-Slash-Runner 渲染到 Quick Reply 按钮栏附近，不等同于 SillyTavern 原生 quickReplyApi。",
+                                 "脚本需要操作 SillyTavern 主页面 UI 时，使用 parent_page_dom_access 中的 doc/win 模板访问父页面 document/window。"
+                             ]
+}

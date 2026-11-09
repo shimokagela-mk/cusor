@@ -1,0 +1,85 @@
+uid: sheet_etak47Ve
+name: 任务与事件表
+sourceData:
+  note: |-
+    记录所有当前正在进行、需要追踪或可回收奖励的任务与事件。一行代表一个任务或持续事件。
+    - 列0: 任务名称 - 任务或事件标题，作为业务主键。
+    - 列1: 任务类型 - 推荐填写主线任务、支线任务、委托、个人事件、限时事件等。
+    - 列2: 发布者 - 发布该任务的角色、组织、地点或剧情来源；未知时填未知。
+    - 列3: 详细描述 - 任务目标、约束条件和关键背景。
+    - 列4: 当前进度 - 对任务完成度的当前描述；进展变化时必须更新。
+    - 列5: 任务时限 - 剩余时间、截止时间或无。
+    - 列6: 奖励 - 完成任务可获得的奖励；未知时填未知。
+    - 列7: 惩罚 - 任务失败的后果；没有则填无。
+
+    更新规则：每轮必须检查已有任务是否出现进展、目标变化、时限变化、奖励变化、失败风险变化或完成/失败状态。完成或失败前先更新当前进度，确认任务已结束后才删除。
+  initNode: 游戏初始化时，根据剧情与设定添加初始主线任务或当前正在进行的重要事件。
+  deleteNode: |-
+    任务已明确完成、失败、取消或过期且不再需要追踪时删除。未完成、暂缓、目标变化、线索不足或暂时搁置不得删除，应更新当前进度。
+    SQL示例: DELETE FROM quests_events WHERE quest_name = '已完成的任务';
+  updateNode: |-
+    任务取得关键进展、目标变化、时限变化、奖励惩罚变化、接近失败或阶段完成时更新。
+    SQL示例: UPDATE quests_events SET current_progress = '已找到第一条线索', time_limit = '三天内' WHERE quest_name = '任务名';
+    SQL示例(阶段完成): UPDATE quests_events SET current_progress = current_progress || ';已击败守门人，下一步进入遗迹', reward = '金币100;未知遗物' WHERE quest_name = '任务名';
+    SQL示例(失败风险): UPDATE quests_events SET current_progress = '目标人物失踪，任务失败风险上升', penalty = '发布者好感下降' WHERE quest_name = '任务名';
+  insertNode: |-
+    主角接取、触发或被卷入新的主线、支线、委托、个人事件、限时事件时添加。仅记录需要后续追踪的任务。
+    SQL示例: INSERT INTO quests_events (row_id, quest_name, quest_type, publisher, detailed_desc, current_progress, time_limit, reward, penalty) VALUES ((SELECT COALESCE(MAX(row_id), 0)+1 FROM quests_events), '任务名', '主线任务', '发布者', '任务描述', '刚开始', '无', '100金币', '无');
+  ddl: |-
+    CREATE TABLE quests_events ( -- 任务与事件表
+      row_id INTEGER PRIMARY KEY, -- 行号
+      quest_name TEXT NOT NULL UNIQUE, -- 任务名称
+      quest_type TEXT NOT NULL, -- 任务类型
+      publisher TEXT, -- 发布者
+      detailed_desc TEXT NOT NULL, -- 详细描述
+      current_progress TEXT, -- 当前进度
+      time_limit TEXT, -- 任务时限
+      reward TEXT, -- 奖励
+      penalty TEXT -- 惩罚
+    );
+content:
+  - - row_id
+    - 任务名称
+    - 任务类型
+    - 发布者
+    - 详细描述
+    - 当前进度
+    - 任务时限
+    - 奖励
+    - 惩罚
+updateConfig:
+  uiSentinel: -1
+  contextDepth: -1
+  updateFrequency: -1
+  batchSize: -1
+  skipFloors: -1
+exportConfig:
+  enabled: false
+  splitByRow: false
+  entryName: 任务与事件表
+  entryType: constant
+  keywords: ""
+  preventRecursion: true
+  injectionTemplate: ""
+  extraIndexEnabled: false
+  extraIndexEntryName: 任务与事件表-索引
+  extraIndexColumns: []
+  extraIndexColumnModes: {}
+  extraIndexInjectionTemplate: ""
+  entryPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 10000
+  extraIndexPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 10010
+  fixedEntryPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 99990
+  fixedIndexPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 99991
+orderNo: 5

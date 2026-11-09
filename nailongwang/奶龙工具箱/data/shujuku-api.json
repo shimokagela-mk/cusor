@@ -1,0 +1,709 @@
+{
+    "$schema":  "./shujuku-api.schema.json",
+    "name":  "shujuku / 神·数据库 API Knowledge Base",
+    "language":  "zh-CN",
+    "updated_at":  "2026-06-08",
+    "sources":  [
+                    "https://github.com/AlbusKen/shujuku",
+                    "https://raw.githubusercontent.com/AlbusKen/shujuku/main/API_DOCUMENTATION.md",
+                    "https://raw.githubusercontent.com/AlbusKen/shujuku/main/manifest.json"
+                ],
+    "source_audit":  {
+                         "checked_at":  "2026-06-08",
+                         "upstream_refs":  [
+                                               "AlbusKen/shujuku@1ad19fffafe6a72295c755f8bb6627ad9a80a15b",
+                                               "API_DOCUMENTATION.md",
+                                               "src/presentation/bootstrap/api-groups/sql-api.ts",
+                                               "src/presentation/bootstrap/api-groups/table-crud-api.ts"
+                                           ]
+                     },
+    "scope_note":  "本文件只记录 shujuku（神·数据库 / SP·数据库 III）对外暴露的 window.AutoCardUpdaterAPI 调用接口、数据结构和集成注意事项。不要与 JS-Slash-Runner API 或 SillyTavern 原生扩展 API 混放。",
+    "extension":  {
+                      "repository":  "https://github.com/AlbusKen/shujuku",
+                      "manifest":  {
+                                      "display_name":  "SP·数据库 III",
+                                       "loading_order":  200,
+                                       "js":  "index.js",
+                                       "css":  "",
+                                       "author":  "Cline (AI Assisted)",
+                                       "version":  "2.0.0",
+                                       "auto_update":  false
+                                   },
+                      "global_object":  "window.AutoCardUpdaterAPI",
+                      "availability_check":  "if (window.AutoCardUpdaterAPI) { /* call api */ }"
+                  },
+    "groups":  [
+                   {
+                       "name":  "plot_presets",
+                       "title":  "剧情推进预设管理 API",
+                       "apis":  [
+                                    {
+                                        "name":  "getPlotPresets",
+                                        "signature":  "getPlotPresets(): Array\u003cPlotPreset\u003e",
+                                        "description":  "获取所有剧情预设完整数据，返回深拷贝。",
+                                        "returns":  "Array：预设数组。",
+                                        "example":  "const presets = window.AutoCardUpdaterAPI.getPlotPresets();"
+                                    },
+                                    {
+                                        "name":  "getPlotPresetNames",
+                                        "signature":  "getPlotPresetNames(): string[]",
+                                        "description":  "获取剧情推进预设名称列表。",
+                                        "returns":  "string[]",
+                                        "example":  "const names = window.AutoCardUpdaterAPI.getPlotPresetNames();"
+                                    },
+                                    {
+                                        "name":  "getCurrentPlotPreset",
+                                        "signature":  "getCurrentPlotPreset(): string",
+                                        "description":  "获取当前正在使用的剧情推进预设名称；未选择时返回空字符串。",
+                                        "returns":  "string",
+                                        "example":  "const current = window.AutoCardUpdaterAPI.getCurrentPlotPreset();"
+                                    },
+                                    {
+                                        "name":  "switchPlotPreset",
+                                        "signature":  "switchPlotPreset(presetName: string): boolean",
+                                        "description":  "切换到指定剧情推进预设。切换成功会保存设置并同步已打开设置面板 UI。切换后 $6 占位符只回溯读取带有该预设名称标签的历史数据，实现剧情规划隔离。",
+                                        "parameters":  {
+                                                           "presetName":  "要切换到的预设名称"
+                                                       },
+                                        "returns":  "boolean：是否切换成功。",
+                                        "example":  "const ok = window.AutoCardUpdaterAPI.switchPlotPreset(\u0027战斗场景\u0027);"
+                                    },
+                                    {
+                                        "name":  "injectPlotPresetToCurrentChat",
+                                        "signature":  "injectPlotPresetToCurrentChat(presetName: string): boolean",
+                                        "description":  "仅将指定剧情推进预设注入当前聊天，不修改全局当前剧情预设；传空字符串表示当前聊天跟随全局剧情预设。",
+                                        "parameters":  {
+                                                           "presetName":  "要注入到当前聊天的剧情预设名称；空字符串表示跟随全局剧情预设"
+                                                       },
+                                        "returns":  "boolean：注入是否成功。预设不存在时返回 false。",
+                                        "example":  "const ok = window.AutoCardUpdaterAPI.injectPlotPresetToCurrentChat(\u0027战斗场景\u0027);"
+                                    },
+                                    {
+                                        "name":  "getPlotPresetDetails",
+                                        "signature":  "getPlotPresetDetails(presetName: string): PlotPreset | null",
+                                        "description":  "获取指定预设完整详情，返回深拷贝；未找到返回 null。",
+                                        "parameters":  {
+                                                           "presetName":  "预设名称"
+                                                       },
+                                        "returns":  "PlotPreset|null",
+                                        "example":  "const details = window.AutoCardUpdaterAPI.getPlotPresetDetails(\u0027战斗场景\u0027);"
+                                    },
+                                    {
+                                        "name":  "importPlotPresetFromData",
+                                        "signature":  "importPlotPresetFromData(presetData: object|string, options?: { overwrite?: boolean; switchTo?: boolean }): Promise\u003c{success:boolean,message:string,presetName?:string}\u003e",
+                                        "description":  "无需文件选择器，直接从前端导入单个剧情推进预设。",
+                                        "parameters":  {
+                                                           "presetData":  "预设对象或 JSON 字符串，必须包含 name",
+                                                           "options.overwrite":  "已存在时是否覆盖，默认 false",
+                                                           "options.switchTo":  "导入后是否立即切换，默认 false"
+                                                       },
+                                        "returns":  "Promise\u003c{success,message,presetName?}\u003e"
+                                    },
+                                    {
+                                        "name":  "importPlotPresetsFromData",
+                                        "signature":  "importPlotPresetsFromData(presetsArray: Array\u003cobject\u003e, options?: { overwrite?: boolean }): Promise\u003c{success:boolean,message:string,imported:number,failed:number,details:Array}\u003e",
+                                        "description":  "批量导入多个剧情推进预设。",
+                                        "returns":  "Promise\u003c{success,message,imported,failed,details}\u003e"
+                                    },
+                                    {
+                                        "name":  "exportAllPlotPresets",
+                                        "signature":  "exportAllPlotPresets(): Array\u003cPlotPreset\u003e",
+                                        "description":  "导出所有剧情推进预设深拷贝。",
+                                        "returns":  "Array\u003cPlotPreset\u003e"
+                                    }
+                                ]
+                   },
+                   {
+                       "name":  "table_data",
+                       "title":  "数据导入导出与表格操作 API",
+                       "apis":  [
+                                    {
+                                        "name":  "exportTableAsJson",
+                                        "signature":  "exportTableAsJson(): object",
+                                        "description":  "导出当前合并后的表格数据对象。同步函数。",
+                                        "returns":  "object",
+                                        "example":  "const tableData = window.AutoCardUpdaterAPI.exportTableAsJson();"
+                                    },
+                                    {
+                                        "name":  "importTableAsJson",
+                                        "signature":  "importTableAsJson(jsonString: string): Promise\u003cboolean\u003e",
+                                        "description":  "导入并覆盖当前表格数据。",
+                                        "parameters":  {
+                                                           "jsonString":  "JSON 格式表格数据字符串"
+                                                       },
+                                        "returns":  "Promise\u003cboolean\u003e"
+                                    },
+                                    {
+                                        "name":  "exportJsonData",
+                                        "signature":  "exportJsonData(): Promise\u003cboolean\u003e",
+                                        "description":  "导出当前 JSON 数据到文件，会弹出保存对话框。"
+                                    },
+                                    {
+                                        "name":  "updateCell",
+                                        "signature":  "updateCell(tableName: string, rowIndex: number|string, colIdentifier: string|number, value: any): Promise\u003cboolean\u003e; updateCell({ tableName, rowIndex, colIdentifier, value, skipNotify?, silent? }): Promise\u003cboolean\u003e",
+                                        "description":  "更新指定表格单个单元格。支持列名或列索引；支持对象参数形式。skipNotify: true 或 silent: true 会跳过外部表格更新回调通知，适合批量写入；不会跳过数据写入。",
+                                        "parameters":  {
+                                                           "tableName":  "表格名称",
+                                                           "rowIndex":  "行索引，0 为表头，1 为第一行数据",
+                                                           "colIdentifier":  "列名或列索引",
+                                                           "value":  "新值"
+                                                       },
+                                        "returns":  "Promise\u003cboolean\u003e"
+                                    },
+                                    {
+                                        "name":  "updateRow",
+                                        "signature":  "updateRow(tableName: string, rowIndex: number|string, data: Record\u003cstring, any\u003e): Promise\u003cboolean\u003e; updateRow({ tableName, rowIndex, data, skipNotify?, silent?, isImportMode? }): Promise\u003cboolean\u003e",
+                                        "description":  "按列名-值映射更新整行，只更新 data 指定列。支持对象参数形式；skipNotify/silent 跳过外部更新回调；data.isImportMode 或对象参数 isImportMode 会跳过聊天保存和纪要向量同步；该导入模式仅用于既有导入链路识别，新建默认不启用。",
+                                        "returns":  "Promise\u003cboolean\u003e"
+                                    },
+                                    {
+                                        "name":  "insertRow",
+                                        "signature":  "insertRow(tableName: string, data: Record\u003cstring, any\u003e): Promise\u003cnumber\u003e; insertRow({ tableName, data, skipNotify?, silent? }): Promise\u003cnumber\u003e",
+                                        "description":  "在指定表格表尾插入新行。支持对象参数形式；skipNotify/silent 可跳过外部表格更新回调通知。成功返回新行索引，失败返回 -1。",
+                                        "returns":  "Promise\u003cnumber\u003e"
+                                    },
+                                    {
+                                        "name":  "deleteRow",
+                                        "signature":  "deleteRow(tableName: string, rowIndex: number|string): Promise\u003cboolean\u003e; deleteRow({ tableName, rowIndex, skipNotify?, silent? }): Promise\u003cboolean\u003e",
+                                        "description":  "删除指定表格某行，不能删除表头 rowIndex=0。支持对象参数形式；skipNotify/silent 可跳过外部表格更新回调通知。",
+                                        "returns":  "Promise\u003cboolean\u003e"
+                                    }
+                                ]
+                   },
+                   {
+                       "name":  "settings_update_worldbook",
+                       "title":  "设置、更新与世界书 API",
+                       "apis":  [
+                                    {
+                                        "name":  "openSettings",
+                                        "signature":  "openSettings(): Promise\u003cboolean\u003e",
+                                        "description":  "打开神·数据库设置面板。"
+                                    },
+                                    {
+                                        "name":  "openVisualizer",
+                                        "signature":  "openVisualizer(): void",
+                                        "description":  "打开可视化编辑器。"
+                                    },
+                                    {
+                                        "name":  "manualUpdate",
+                                        "signature":  "manualUpdate(): Promise\u003cboolean\u003e",
+                                        "description":  "立即执行手动更新，等价于点击立即手动更新按钮。"
+                                    },
+                                    {
+                                        "name":  "triggerUpdate",
+                                        "signature":  "triggerUpdate(): Promise\u003cboolean\u003e",
+                                        "description":  "外部触发增量更新。"
+                                    },
+                                    {
+                                        "name":  "setZeroTkOccupyMode",
+                                        "signature":  "setZeroTkOccupyMode(modeEnabled: boolean): Promise\u003cboolean\u003e",
+                                        "description":  "设置 0TK 占用模式。true=世界书条目禁用；false=世界书条目启用。"
+                                    },
+                                    {
+                                        "name":  "setOutlineEntryEnabled",
+                                        "signature":  "setOutlineEntryEnabled(enabled: boolean): Promise\u003cboolean\u003e",
+                                        "description":  "设置总结大纲/总体大纲世界书条目启用状态。推荐使用 setZeroTkOccupyMode 替代。"
+                                    },
+                                    {
+                                        "name":  "syncWorldbookEntries",
+                                        "signature":  "syncWorldbookEntries(options?: { createIfNeeded?: boolean }): Promise\u003cboolean\u003e",
+                                        "description":  "立即同步世界书注入条目；createIfNeeded 默认 true。"
+                                    },
+                                    {
+                                        "name":  "refreshDataAndWorldbook",
+                                        "signature":  "refreshDataAndWorldbook(): Promise\u003cboolean\u003e",
+                                        "description":  "强制刷新数据并重新注入世界书：重新加载聊天记录表格、合并独立表、更新世界书条目、通知 UI 刷新。"
+                                    },
+                                    {
+                                        "name":  "deleteInjectedEntries",
+                                        "signature":  "deleteInjectedEntries(): Promise\u003cboolean\u003e",
+                                        "description":  "删除当前注入目标世界书里的本插件生成条目。"
+                                    }
+                                ]
+                   },
+                   {
+                       "name":  "txt_import",
+                       "title":  "TXT 导入链路 API",
+                       "apis":  [
+                                    {
+                                        "name":  "importTxtAndSplit",
+                                        "signature":  "importTxtAndSplit(): Promise\u003cboolean\u003e",
+                                        "description":  "导入 TXT 文件并分割。"
+                                    },
+                                    {
+                                        "name":  "injectImportedSelected",
+                                        "signature":  "injectImportedSelected(): Promise\u003cboolean\u003e",
+                                        "description":  "注入选中的导入内容。"
+                                    },
+                                    {
+                                        "name":  "injectImportedStandard",
+                                        "signature":  "injectImportedStandard(): Promise\u003cboolean\u003e",
+                                        "description":  "标准方式注入分割条目。"
+                                    },
+                                    {
+                                        "name":  "injectImportedSummary",
+                                        "signature":  "injectImportedSummary(): Promise\u003cboolean\u003e",
+                                        "description":  "以总结方式注入分割条目。"
+                                    },
+                                    {
+                                        "name":  "injectImportedFull",
+                                        "signature":  "injectImportedFull(): Promise\u003cboolean\u003e",
+                                        "description":  "完整注入分割条目。"
+                                    },
+                                    {
+                                        "name":  "deleteImportedEntries",
+                                        "signature":  "deleteImportedEntries(): Promise\u003cboolean\u003e",
+                                        "description":  "删除导入条目。"
+                                    },
+                                    {
+                                        "name":  "clearImportedEntries",
+                                        "signature":  "clearImportedEntries(clearAll?: boolean): Promise\u003cboolean\u003e",
+                                        "description":  "清除导入条目缓存；clearAll 默认 true。"
+                                    },
+                                    {
+                                        "name":  "clearImportCache",
+                                        "signature":  "clearImportCache(clearAll?: boolean): Promise\u003cboolean\u003e",
+                                        "description":  "清除 localStorage 导入缓存；clearAll 默认 true。"
+                                    }
+                                ]
+                   },
+                   {
+                       "name":  "template_management",
+                       "title":  "模板管理 API",
+                       "apis":  [
+                                    {
+                                        "name":  "importTemplate",
+                                        "signature":  "importTemplate(options?: { scope?: \u0027global\u0027|\u0027chat\u0027 }): Promise\u003cboolean\u003e",
+                                        "description":  "通过文件选择器导入模板；scope 默认 global，chat 表示仅注入当前聊天。"
+                                    },
+                                    {
+                                        "name":  "exportTemplate",
+                                        "signature":  "exportTemplate(options?: { scope?: \u0027global\u0027|\u0027chat\u0027 }): Promise\u003cboolean\u003e",
+                                        "description":  "导出模板到文件；scope=chat 时导出当前聊天模板快照。"
+                                    },
+                                    {
+                                        "name":  "resetTemplate",
+                                        "signature":  "resetTemplate(options?: { scope?: \u0027global\u0027|\u0027chat\u0027 }): Promise\u003cboolean\u003e",
+                                        "description":  "重置模板为默认值；scope=chat 时仅重置当前聊天模板。"
+                                    },
+                                    {
+                                        "name":  "resetAllDefaults",
+                                        "signature":  "resetAllDefaults(): Promise\u003cboolean\u003e",
+                                        "description":  "重置所有设置为默认值。"
+                                    },
+                                    {
+                                        "name":  "overrideWithTemplate",
+                                        "signature":  "overrideWithTemplate(): Promise\u003cboolean\u003e",
+                                        "description":  "用模板覆盖最新层数据。"
+                                    },
+                                    {
+                                        "name":  "getTableTemplate",
+                                        "signature":  "getTableTemplate(): object|null",
+                                        "description":  "获取当前运行态实际使用的表格模板：优先聊天级模板覆写，否则当前 profile 全局模板。"
+                                    },
+                                    {
+                                        "name":  "getTemplatePresetNames",
+                                        "signature":  "getTemplatePresetNames(): string[]",
+                                        "description":  "获取全局模板预设名称列表。"
+                                    },
+                                    {
+                                        "name":  "switchTemplatePreset",
+                                        "signature":  "switchTemplatePreset(presetName: string, options?: { scope?: \u0027global\u0027|\u0027chat\u0027 }): Promise\u003c{success:boolean,scope:string,message:string}\u003e",
+                                        "description":  "切换模板预设；presetName 为空表示默认模板；scope 默认 global，chat 表示仅当前聊天。"
+                                    },
+                                    {
+                                        "name":  "injectTemplatePresetToCurrentChat",
+                                        "signature":  "injectTemplatePresetToCurrentChat(presetName: string): Promise\u003c{success:boolean,scope:string,message:string}\u003e",
+                                        "description":  "仅将模板预设注入当前聊天，不修改全局当前模板预设。"
+                                    },
+                                    {
+                                        "name":  "importTemplateFromData",
+                                        "signature":  "importTemplateFromData(templateData: object|string, options?: { scope?: \u0027global\u0027|\u0027chat\u0027; presetName?: string }): Promise\u003c{success:boolean,message:string,scope?:string,presetName?:string}\u003e",
+                                        "description":  "无需文件选择器，直接导入表格模板。模板必须包含 mate.type=\u0027chatSheets\u0027 和至少一个 sheet_*。"
+                                    }
+                                ]
+                   },
+                   {
+                       "name":  "locks_callbacks_config",
+                       "title":  "表格锁定、回调与配置 API",
+                       "apis":  [
+                                    {
+                                        "name":  "getTableLockState",
+                                        "signature":  "getTableLockState(sheetKey: string): {rows:number[],cols:number[],cells:string[]}|null",
+                                        "description":  "获取指定表格锁定状态。"
+                                    },
+                                    {
+                                        "name":  "setTableLockState",
+                                        "signature":  "setTableLockState(sheetKey: string, lockState: {rows:number[],cols:number[],cells:(string|[number,number])[]}, options?: {merge?: boolean}): boolean",
+                                        "description":  "设置表格锁定状态；merge=true 追加，默认覆盖。"
+                                    },
+                                    {
+                                        "name":  "clearTableLocks",
+                                        "signature":  "clearTableLocks(sheetKey: string): boolean",
+                                        "description":  "清空指定表格全部锁定。"
+                                    },
+                                    {
+                                        "name":  "lockTableRow",
+                                        "signature":  "lockTableRow(sheetKey: string, rowIndex: number, locked: boolean): boolean",
+                                        "description":  "锁定/解锁指定行。"
+                                    },
+                                    {
+                                        "name":  "lockTableCol",
+                                        "signature":  "lockTableCol(sheetKey: string, colIndex: number, locked: boolean): boolean",
+                                        "description":  "锁定/解锁指定列。"
+                                    },
+                                    {
+                                        "name":  "lockTableCell",
+                                        "signature":  "lockTableCell(sheetKey: string, rowIndex: number, colIndex: number, locked: boolean): boolean",
+                                        "description":  "锁定/解锁指定单元格。"
+                                    },
+                                    {
+                                        "name":  "toggleTableRowLock",
+                                        "signature":  "toggleTableRowLock(sheetKey: string, rowIndex: number): boolean",
+                                        "description":  "切换指定行锁定状态。"
+                                    },
+                                    {
+                                        "name":  "toggleTableColLock",
+                                        "signature":  "toggleTableColLock(sheetKey: string, colIndex: number): boolean",
+                                        "description":  "切换指定列锁定状态。"
+                                    },
+                                    {
+                                        "name":  "toggleTableCellLock",
+                                        "signature":  "toggleTableCellLock(sheetKey: string, rowIndex: number, colIndex: number): boolean",
+                                        "description":  "切换指定单元格锁定状态。"
+                                    },
+                                    {
+                                        "name":  "getSpecialIndexLockEnabled",
+                                        "signature":  "getSpecialIndexLockEnabled(sheetKey: string): boolean|null",
+                                        "description":  "获取编码索引列特殊锁定状态。"
+                                    },
+                                    {
+                                        "name":  "setSpecialIndexLockEnabled",
+                                        "signature":  "setSpecialIndexLockEnabled(sheetKey: string, enabled: boolean): boolean",
+                                        "description":  "设置编码索引列特殊锁定状态。"
+                                    },
+                                    {
+                                        "name":  "registerTableUpdateCallback",
+                                        "signature":  "registerTableUpdateCallback(callback: (tableData: object) =\u003e void): void",
+                                        "description":  "注册表格更新回调。"
+                                    },
+                                    {
+                                        "name":  "unregisterTableUpdateCallback",
+                                        "signature":  "unregisterTableUpdateCallback(callback: Function): void",
+                                        "description":  "注销表格更新回调。"
+                                    },
+                                    {
+                                        "name":  "registerTableFillStartCallback",
+                                        "signature":  "registerTableFillStartCallback(callback: () =\u003e void): void",
+                                        "description":  "注册填表开始回调。"
+                                    },
+                                    {
+                                        "name":  "getUpdateConfigParams",
+                                        "signature":  "getUpdateConfigParams(): {autoUpdateThreshold:number,autoUpdateFrequency:number,updateBatchSize:number,autoUpdateTokenThreshold:number}",
+                                        "description":  "获取更新配置参数。"
+                                    },
+                                    {
+                                        "name":  "setUpdateConfigParams",
+                                        "signature":  "setUpdateConfigParams(params: Partial\u003cUpdateConfigParams\u003e): boolean",
+                                        "description":  "设置更新配置参数：自动更新阈值、频率、批处理大小、Token 阈值等。"
+                                    },
+                                    {
+                                        "name":  "getManualSelectedTables",
+                                        "signature":  "getManualSelectedTables(): {selectedTables:string[],hasManualSelection:boolean}",
+                                        "description":  "获取手动更新时选择的表格列表。"
+                                    },
+                                    {
+                                        "name":  "setManualSelectedTables",
+                                        "signature":  "setManualSelectedTables(sheetKeys: string[]): boolean",
+                                        "description":  "设置手动更新时选择的表格；无效 key 会过滤并标记 hasManualSelection=true。"
+                                    },
+                                    {
+                                        "name":  "clearManualSelectedTables",
+                                        "signature":  "clearManualSelectedTables(): boolean",
+                                        "description":  "清除手动更新表选择，恢复全选状态。"
+                                    }
+                                ]
+                   },
+                   {
+                       "name":  "api_presets_ai",
+                       "title":  "API 预设管理与 AI 调用 API",
+                       "apis":  [
+                                    {
+                                        "name":  "getApiPresets",
+                                        "signature":  "getApiPresets(): Array\u003cApiPreset\u003e",
+                                        "description":  "获取所有 API 预设深拷贝。"
+                                    },
+                                    {
+                                        "name":  "getTableApiPreset",
+                                        "signature":  "getTableApiPreset(): string",
+                                        "description":  "获取当前填表 API 预设名；空字符串表示使用当前配置。"
+                                    },
+                                    {
+                                        "name":  "setTableApiPreset",
+                                        "signature":  "setTableApiPreset(presetName: string): boolean",
+                                        "description":  "设置填表 API 预设；空字符串表示使用当前配置。"
+                                    },
+                                    {
+                                        "name":  "getPlotApiPreset",
+                                        "signature":  "getPlotApiPreset(): string",
+                                        "description":  "获取当前剧情推进 API 预设名；空字符串表示使用当前配置。"
+                                    },
+                                    {
+                                        "name":  "setPlotApiPreset",
+                                        "signature":  "setPlotApiPreset(presetName: string): boolean",
+                                        "description":  "设置剧情推进 API 预设。"
+                                    },
+                                    {
+                                        "name":  "saveApiPreset",
+                                        "signature":  "saveApiPreset(presetData: ApiPreset): boolean",
+                                        "description":  "保存或更新 API 预设。"
+                                    },
+                                    {
+                                        "name":  "loadApiPreset",
+                                        "signature":  "loadApiPreset(presetName: string): boolean",
+                                        "description":  "加载 API 预设并应用到当前配置。"
+                                    },
+                                    {
+                                        "name":  "deleteApiPreset",
+                                        "signature":  "deleteApiPreset(presetName: string): boolean",
+                                        "description":  "删除 API 预设；若正在被填表或剧情推进使用，相关引用会自动清除。"
+                                    },
+                                    {
+                                        "name":  "callAI",
+                                        "signature":  "callAI(messages: Array\u003c{role:\u0027system\u0027|\u0027user\u0027|\u0027assistant\u0027, content:string}\u003e, options?: { max_tokens?: number|string; maxTokens?: number|string }): Promise\u003cstring|null\u003e",
+                                        "description":  "使用数据库当前配置的 API 调用 AI。options.max_tokens / options.maxTokens 支持 number 或数字字符串，默认使用数据库配置或 4096。"
+                                    },
+                                    {
+                                        "name":  "getStoryContext",
+                                        "signature":  "getStoryContext(maxTurns?: number): string",
+                                        "description":  "获取最近剧情上下文：从聊天记录向前遍历，仅 AI 消息，按时间顺序返回，消息间用双换行分隔。默认 3 轮。"
+                                    }
+                                ]
+                   },
+                   {
+                       "name":  "host_dependencies",
+                       "title":  "SillyTavern / TavernHelper 宿主依赖与本地 mock 面",
+                       "apis":  [
+                                    {
+                                        "name":  "SillyTavern.getContext",
+                                        "signature":  "SillyTavern.getContext(): { chatId, chat, eventSource, eventTypes, saveChat, setChatMessages, stopGeneration, deleteLastMessage, getWorldBooks, extensionSettings, saveSettingsDebounced, getRequestHeaders, ConnectionManagerRequestService }",
+                                        "description":  "shujuku 插件模式下读取宿主状态、事件、聊天保存、设置存储、请求头和 Connection Manager 的主要入口。本地测试基底必须提供动态快照。"
+                                    },
+                                    {
+                                        "name":  "TavernHelper core",
+                                        "signature":  "TavernHelper.{getChatMessages,getLastMessageId,getCharData,getCharLorebooks,getCurrentCharPrimaryLorebook,triggerSlash,generateRaw,generate}",
+                                        "description":  "shujuku 在聊天读取、角色信息、斜杠命令和复用酒馆主 API 生成时依赖的 TavernHelper 能力。"
+                                    },
+                                    {
+                                        "name":  "TavernHelper lorebook CRUD",
+                                        "signature":  "TavernHelper.{getLorebooks,getLorebookEntries,setLorebookEntries,createLorebookEntries,deleteLorebookEntries}",
+                                        "description":  "shujuku 同步世界书注入条目时依赖的世界书 CRUD 能力。本地 mock 应能返回条目快照以供报告展示。"
+                                    },
+                                    {
+                                        "name":  "SillyTavern backend fetch",
+                                        "signature":  "fetch('/api/backends/chat-completions/status|generate', ...)",
+                                        "description":  "shujuku 自定义 API 与模型列表检测路径。默认本地测试使用 fake AI；显式配置 OpenAI-compatible 环境变量时才调用真实模型。"
+                                    },
+                                    {
+                                        "name":  "local visible report",
+                                        "signature":  "output/temp/shujuku-local/*.md + *.html",
+                                        "description":  "本地测试报告必须展示填表变化和填表后表格快照，确保用户能直接看见填表效果。"
+                                    },
+                                    {
+                                        "name":  "local database mode matrix",
+                                        "signature":  "--database-mode native|sqlite|both",
+                                        "description":  "本地测试基底可在 native 与 sqlite 两种 storageMode 下分别加载 shujuku bundle 并执行同一套模板导入、insertRow/updateRow、报告快照验收。sqlite 模式通过 extensionSettings 的 shujuku_v120 profile 设置注入 storageMode。"
+                                    },
+                                    {
+                                        "name":  "local story fill summary",
+                                        "signature":  "--story-text <text> | --story-file <path>",
+                                        "description":  "本地测试可向 mock chat 注入正文，通过 window.AutoCardUpdaterAPI.callAI 生成 native tableEdit 或 sqlite SQL 填表指令，解析后调用 shujuku 表格 API 写入目标表；Markdown/HTML 报告必须展示摘要、AI 指令、目标表、执行方式、填表变化和填表后快照。"
+                                    },
+                                    {
+                                        "name":  "sqlite runtime ddl patch",
+                                        "signature":  "sourceData.ddl runtime enrichment",
+                                        "description":  "当被测模板缺少 sourceData.ddl 时，本地 runner 会为运行时模板临时生成测试用 CREATE TABLE DDL，使 SQLite 模式能建表验收；该补齐不改写源模板。"
+                                    }
+                                ]
+                   },
+                   {
+                       "name":  "template_sql_variables",
+                       "title":  "SQL / ORM 模板与变量条件语法",
+                       "apis":  [
+                                    {
+                                        "name":  "{[db.表名.方法链]}",
+                                        "signature":  "{[db.<table>.where(...).get/list/count/sum/avg/max/min/exists/value/toSQL(...)]}",
+                                        "description":  "SQLite 模式下的 ORM 链式查询模板。支持 where、orWhere、whereIn、whereNotIn、whereBetween、whereNull、whereNotNull、whereLike、groupBy、having、distinct、orderBy、limit、offset。"
+                                    },
+                                    {
+                                        "name":  "{[sql \"SELECT ...\"]}",
+                                        "signature":  "{[sql \"SELECT ...\"]}",
+                                        "description":  "SQLite 模式下执行只读 SELECT 查询，支持子查询、JOIN、CASE、GROUP BY、CTE、窗口函数；不用于 UPDATE/INSERT/DELETE/CREATE。"
+                                    },
+                                    {
+                                        "name":  "db.expr/rand/calc/max/min",
+                                        "signature":  "{[db.expr(\"...\")]} / {[db.rand(min,max)]} / {[db.calc(\"$v:x + 1\")]} / {[db.max(...)]} / {[db.min(...)]}",
+                                        "description":  "SQLite 模式下的静态表达式、随机、变量算术和最值工具。"
+                                    },
+                                    {
+                                        "name":  "as 变量名 / $v:变量名",
+                                        "signature":  "{[db... as var_name]} / {[sql \"...\" as var_name]} / $v:var_name",
+                                        "description":  "将 db/sql 结果存为单条消息内变量；变量名只能英文、数字、下划线且不能数字开头。"
+                                    },
+                                    {
+                                        "name":  "<if seed/cell/db/sql/cond>",
+                                        "signature":  "<if seed=\"...\"> / <if cell=\"表/行/列 > 值\"> / <if db=\"...\"> / <if sql=\"...\"> / <if cond=\"...\">",
+                                        "description":  "条件模板。seed/cell 可在原生与 SQLite 模式使用；db/sql/v 前缀只在 SQLite 模式使用。cond 支持括号、!、&、, 组合。"
+                                    }
+                                ]
+                   },
+                   {
+                       "name":  "crossfire_vector_index",
+                       "title":  "交火模式与纪要向量索引",
+                       "apis":  [
+                                    {
+                                        "name":  "summaryVectorIndexMode",
+                                        "signature":  "settings/global meta 运行链路配置",
+                                        "description":  "交火模式围绕纪要索引、关键词生成、向量召回和 rerank 组织远记忆上下文；会复用普通向量模型/API/rerank 配置。"
+                                    },
+                                    {
+                                        "name":  "keywordPromptGroup / summaryPromptGroup",
+                                        "signature":  "交火关键词生成与纪要处理 prompt group",
+                                        "description":  "关键词 prompt group 用最近上下文生成检索关键词；summary prompt group 用于纪要摘要/索引处理。"
+                                    }
+                                ]
+                   },
+                   {
+                       "name":  "sql_external_api",
+                       "title":  "原生 SQL 外部调用 API",
+                       "apis":  [
+                                    {
+                                        "name":  "executeSqlQuery",
+                                        "signature":  "executeSqlQuery(sqlOrOptions, params?, options?): SqlQueryResult | null",
+                                        "description":  "执行只读 SQL，允许 SELECT/PRAGMA/EXPLAIN/WITH；支持对象参数 {sql|statement|query, params, limit, offset}，会返回 rows/columns/rowCount/sql 等公开查询结果。"
+                                    },
+                                    {
+                                        "name":  "querySql",
+                                        "signature":  "querySql(sqlOrOptions, params?, options?): SqlQueryResult | null",
+                                        "description":  "executeSqlQuery 的等价只读查询入口；同样禁止写入语句，并可通过 limit/offset 包装 SELECT/WITH 查询。"
+                                    },
+                                    {
+                                        "name":  "queryTableRows",
+                                        "signature":  "queryTableRows({ tableName|sheetKey, columns?, where?, orderBy?, limit?, offset? }): SqlQueryResult | null",
+                                        "description":  "按表名或 sheetKey 构造安全 SELECT；where 支持对象等值、IN 与 null 判断，列名会按表格 sourceData/DDL 映射。"
+                                    },
+                                    {
+                                        "name":  "executeSqlMutation",
+                                        "signature":  "executeSqlMutation(sqlOrOptions, params?, options?): Promise<SqlMutationResult>",
+                                        "description":  "执行单条参数化写入 SQL，通过表写入提交链路同步 SQLite/runtime 数据、聊天保存、世界书刷新和冲突检测。"
+                                    },
+                                    {
+                                        "name":  "executeSqlBatch",
+                                        "signature":  "executeSqlBatch(sqlOrOptions, options?): Promise<SqlBatchResult>",
+                                        "description":  "执行多语句 SQL 批处理；不支持 params，适合事务式批量写入，会返回 success、modifiedKeys、appliedEdits、changes、errors。"
+                                    },
+                                    {
+                                        "name":  "executeSql",
+                                        "signature":  "executeSql(sqlOrOptions, params?, options?): Promise<{type:'query'|'mutation',result:any} | null>",
+                                        "description":  "自动判断只读或写入语句：只读返回 query 结果，写入转交 executeSqlMutation。用于外部脚本统一入口。"
+                                    }
+                                ]
+                   },
+                   {
+                       "name":  "misc",
+                       "title":  "其他功能 API",
+                       "apis":  [
+                                    {
+                                        "name":  "importCombinedSettings",
+                                        "signature":  "importCombinedSettings(): Promise\u003cboolean\u003e",
+                                        "description":  "导入组合设置，会弹出文件选择对话框。"
+                                    },
+                                    {
+                                        "name":  "exportCombinedSettings",
+                                        "signature":  "exportCombinedSettings(): Promise\u003cboolean\u003e",
+                                        "description":  "导出组合设置到文件，会弹出保存对话框。"
+                                    },
+                                    {
+                                        "name":  "mergeSummaryNow",
+                                        "signature":  "mergeSummaryNow(): Promise\u003cboolean\u003e",
+                                        "description":  "立即执行合并总结操作。"
+                                    }
+                                ]
+                   }
+               ],
+    "types":  {
+                  "PlotPreset":  {
+                                     "description":  "剧情推进预设对象。",
+                                     "shape":  {
+                                                   "name":  "string",
+                                                   "promptGroup":  "Array\u003c{role:string,content:string,enabled?:boolean,mainSlot?:string}\u003e",
+                                                   "finalSystemDirective":  "string",
+                                                   "rateMain":  "number",
+                                                   "ratePersonal":  "number",
+                                                   "rateErotic":  "number",
+                                                   "rateCuckold":  "number",
+                                                   "extractTags":  "string",
+                                                   "minLength":  "number",
+                                                   "contextTurnCount":  "number",
+                                                   "loopSettings":  "{quickReplyContent:string,loopTags:string,loopDelay:number,loopTotalDuration:number,maxRetries:number}"
+                                               }
+                                 },
+                  "TemplateData":  {
+                                       "description":  "表格模板对象。必须包含 mate 对象且 mate.type=\u0027chatSheets\u0027，并至少包含一个 sheet_* 键；每个 sheet 包含 name/content/sourceData。"
+                                   },
+                  "ApiPreset":  {
+                                    "description":  "API 预设对象。",
+                                    "shape":  {
+                                                  "name":  "string",
+                                                  "apiMode":  "string",
+                                                  "apiConfig":  "object",
+                                                  "tavernProfile":  "string"
+                                              }
+                                },
+                  "SqlQueryResult":  {
+                                         "description":  "原生 SQL 查询返回对象。",
+                                         "shape":  {
+                                                       "columns":  "string[]",
+                                                       "rows":  "Array<Record<string,string|number|Uint8Array|null>>",
+                                                       "rowCount":  "number",
+                                                       "sql":  "string",
+                                                       "limit":  "number | undefined",
+                                                       "offset":  "number | undefined"
+                                                   }
+                                     },
+                  "SqlMutationResult":  {
+                                            "description":  "原生 SQL 写入/批处理返回对象。",
+                                            "shape":  {
+                                                          "success":  "boolean",
+                                                          "modifiedKeys":  "string[]",
+                                                          "appliedEdits":  "number",
+                                                          "changes":  "number",
+                                                          "errors":  "string[]"
+                                                      }
+                                }
+              },
+    "integration_notes":  [
+                              "调用任何 API 前先检查 window.AutoCardUpdaterAPI 是否存在。",
+                              "大多数方法是异步 Promise，使用 async/await。",
+                              "getPlotPresets/getPlotPresetDetails/exportAllPlotPresets/getApiPresets 返回深拷贝；修改返回值不会影响原数据。",
+                              "多数失败路径返回 false、null、-1 或 {success:false,message}，一般不抛异常。",
+                              "switchPlotPreset/switchTemplatePreset 会在设置面板打开时同步 UI。",
+                              "模板 API 的 scope 支持 global/chat：global 作用当前 profile 全局模板；chat 仅作用当前聊天模板快照。",
+                              "callAI 可避免外部前端重复配置 API 信息，统一使用 shujuku 数据库插件配置。",
+                              "updateCell/updateRow/insertRow/deleteRow 支持对象参数形式；skipNotify: true 或 silent: true 可跳过外部表格更新回调通知，适合批量写入。",
+                              "表格 CRUD 的静默选项还兼容 isSilent/suppressNotify；data.isImportMode 或对象参数 isImportMode 会跳过聊天保存和纪要向量同步，用于导入/批量链路。",
+                              "executeSqlQuery/querySql 只允许只读 SQL；executeSqlMutation/executeSqlBatch/executeSql 会进入表写入提交链路，外部 UI 不应直接绕过这些 API 改 runtime 表。",
+                              "queryTableRows 优先用于按表名/sheetKey 查询表格行；raw SQL 的表名会按 sourceData.ddl / sheetKey 映射，避免把中文表名和 SQLite 表名混用。",
+                              "injectPlotPresetToCurrentChat 可只为当前聊天绑定剧情推进预设，不修改全局当前预设；空字符串表示跟随全局。",
+                              "callAI 的 options 支持 max_tokens 与 maxTokens 两种写法，数字字符串会被规范化。",
+                              "shujuku SQL/ORM 模板语法只在 SQLite 模式生效；原生模式会原样保留标签。",
+                              "{[sql ...]} 只用于 SELECT 查询，不用于 UPDATE/INSERT/DELETE/CREATE。",
+                              "shujuku 条件模板支持 <if seed/cell/db/sql/cond>；这不是 EJS，EJS 仍属于 SillyTavern/MVU 或外部 JS 前端。",
+                              "交火模式会复用普通向量模型/API/rerank 配置；关闭交火时应关注普通向量 enabled 是否同步关闭。",
+                              "本地 shujuku mock 宿主需要覆盖 SillyTavern.getContext、TavernHelper、世界书 CRUD、聊天事件和 /api/backends/chat-completions/*。",
+                              "本地测试报告必须输出 JSON、Markdown、HTML，其中 Markdown/HTML 用于让用户直接查看填表前后差异和填表后表格快照。",
+                              "本地 shujuku 测试应支持 --database-mode native|sqlite|both；sqlite 模式通过 mock extensionSettings 注入 storageMode，缺少 DDL 的模板可由 runner 临时补齐测试用 DDL。",
+                              "本地正文填表测试应支持 --story-text 或 --story-file，报告必须包含“正文填表总结”并展示正文关键词写入后的表格快照。",
+                              "本地正文填表应先调用 window.AutoCardUpdaterAPI.callAI 生成指令：native 为 <tableEdit>insertRow(...)</tableEdit>，sqlite 为 <tableEdit>INSERT INTO ...</tableEdit>，再由 runner 解析并调用 shujuku 表格 API 写入。"
+                          ]
+}

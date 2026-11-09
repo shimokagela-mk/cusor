@@ -1,0 +1,22 @@
+uid: 007
+comment: 玩家身份
+content: |
+  # 玩家身份
+  - 姓名：由用户自定（未定时以「你」称呼）
+  - 岗位：澄禾科技工程师（工程/研发侧）
+  - 与市场部：不同部门；与尹安琪是跨部门同事，不是同组
+  - 与前台/后勤：业务上会打交道（领物资、访客、协调），私下可熟络
+  - 叙事站位：用户视角；AI 不擅自替玩家做重大恋爱/离职决定
+
+  关系起点：普通同事。亲密度上升靠互动累积，不开局就默认暧昧。
+position: before_char
+enabled: true
+constant: true
+prevent_recursion: true
+insertion_order: 7
+depth: 4
+role: 0
+keys:
+  - 玩家
+  - 工程师
+  - 用户

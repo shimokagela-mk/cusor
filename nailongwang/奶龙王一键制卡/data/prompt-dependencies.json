@@ -1,0 +1,42 @@
+{
+  "dependencies": {
+    "需求分析": ["prompts/1-需求分析.md"],
+    "规模判断": ["prompts/2-世界观规模判断.md"],
+    "世界观框架": ["prompts/3-世界观框架.md"],
+    "人物设计": ["prompts/4-人物设计.md"],
+    "剧情设计": ["prompts/5-剧情设计.md"],
+    "表格模板": [
+      "prompts/6-表格模板讨论.md",
+      "docs/建表指导/自定义表建表指南.md",
+      "docs/变量语法/syntax-reference.md",
+      "examples/full-card/轮回禁则/tables/table-template.json"
+    ],
+    "组件规划": [
+      "prompts/7-开场白状态栏讨论.md",
+      "examples/full-card/轮回禁则/current-plan.md"
+    ],
+    "开场白前端": [
+      "prompts/7-1-开场白前端.md",
+      "examples/full-card/轮回禁则/frontend/opening.html",
+      "examples/full-card/轮回禁则/frontend/opening-regex.html"
+    ],
+    "状态栏前端": [
+      "prompts/7-2-状态栏前端.md",
+      "examples/full-card/轮回禁则/frontend/status-bar.html"
+    ],
+    "剧情推进预设": [
+      "prompts/7-3-剧情推进预设.md",
+      "examples/full-card/轮回禁则/frontend/剧情推进.json"
+    ],
+    "剧情推进前端": [
+      "prompts/7-4-剧情推进前端.md",
+      "examples/full-card/轮回禁则/frontend/推进美化.html",
+      "examples/full-card/轮回禁则/frontend/推进正则配置.json"
+    ],
+    "头像与立绘前端增强": [
+      "prompts/7-5-头像与立绘前端增强.md",
+      "docs/图片与前端知识库/气泡格式对话图片调用知识库.md"
+    ],
+    "修改卡": ["prompts/9-修改卡启动.md"]
+  }
+}

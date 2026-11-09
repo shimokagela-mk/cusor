@@ -1,0 +1,70 @@
+id: 62
+keys: []
+secondary_keys: []
+comment: 埃瑟尔德大陆装备与道具稀有度层级概览
+content: |-
+  # 装备与道具稀有度层级概览
+    ## 层级定义 (基于工艺、材料、魔法属性综合评估)
+    **层级一：普通/白板装备**
+    *   **描述**: 大规模生产的标准装备，材质普通（如铁、硬木），无魔法属性。
+    *   **示例**: [制式长剑][皮甲][橡木盾][粗糙的草药绷带]。
+    *   **获取**: 任何铁匠铺、防具店可购，价格低廉。
+    *   **适用对象**: 新兵、平民、初级冒险者。
+    **层级二：精良/优质装备**
+    *   **描述**: 由熟练工匠精心打造，选用较好材料（如钢、复合木材），可能经过特殊热处理或拥有优秀的设计，性能显著优于普通装备，但仍无魔法。
+    *   **示例**: [百炼钢剑][镶钉皮甲][塔盾][优质治疗药水]。
+    *   **获取**: 资深铁匠/工匠订制，或从精英敌人身上缴获。
+    *   **适用对象**: 资深战士、骑士、精英冒险者。
+    **层级三：稀有/附魔装备 (低级魔法)**
+    *   **描述**: 由大师级工匠制作并附有稳定的低级魔法效果，或使用天然蕴含微弱魔力的材料（如月光木、低级魔晶）打造。效果通常单一且有限。
+    *   **示例**: [锋锐长剑 (+1破甲)][元素抗性皮甲 (抗火+10%)][闪光尘][次级法力药水]。
+    *   **获取**: 高阶工匠或附魔师订制（价格昂贵），击败强大魔物或探索危险遗迹有可能获得。
+    *   **适用对象**: 精英至大师级冒险者，军队指挥官。
+    **层级四：史诗/强大魔法装备**
+    *   **描述**: 蕴含着强大而复杂的魔法，通常由传奇工匠与高阶法师合作，使用极其稀有的核心材料（如真龙鳞片、深渊魔铁）锻造而成。拥有多种效果或可改变局部战局的能力。
+    *   **示例**: [龙吼战斧 (火焰伤害，微弱龙威)][瞬移斗篷 (每日3次短距离传送)][复活卷轴 (极为稀少)]。
+    *   **获取**: 古代英雄遗物、传奇魔物巢穴秘藏、国家宝库、完成史诗任务奖励。有价无市。
+    *   **适用对象**: 英雄/传奇人物，一国重器。
+    **层级五：传说/神器**
+    *   **描述**: 拥有自我意识或触及世界规则层面的力量，其存在本身即是一个传说。每一次动用都可能引发区域性能量波动或命运牵连。
+    *   **示例**: [圣剑·卡利班 (斩断罪恶，净化污秽)][时间沙漏 (局部时间操控，代价巨大)][深渊之心 (腐蚀与毁灭的源头)]。
+    *   **获取**: 仅存于神话、失落的古代文明遗迹或不可知之地。非人力可常规制造或获取。
+    *   **适用对象**: 命运选中的个体，或作为大陆存亡的关键。
+constant: true
+selective: true
+insertion_order: 56
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: false
+  display_index: 68
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

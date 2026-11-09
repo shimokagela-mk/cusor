@@ -1,0 +1,21 @@
+uid: 620
+comment: 技术-心智云图详解
+content: |
+  # 心智云图/Neural Cloud
+  核心：战术人形的人格与记忆核心存储系统，是人形区别于普通机器的根本。
+  原理：坍塌技术衍生的信息存储；可模拟人类级情感/记忆/人格；每个人形有独立云图空间；云图数据可网络传输和备份。
+  特性：可备份=理论上人形“不死”；可恢复=云图完好则换体恢复；不可逆损伤=云图损坏即彻底死亡；云图网络=人形间共享信息；烙印系统=云图与特定枪械绑定。
+  铁血异变：铁血云图被伊莱莎改写并脱离IOP控制；部分高级铁血有超常云图能力；铁血AI可远程操控低级铁血云图。
+  帕拉蒂斯应用：涅托“云图”与普通人形本质不同，可能使用遗迹级技术。
+keys:
+- 心智云图
+- Neural Cloud
+- 云图
+secondary_keys: []
+enabled: true
+constant: false
+position: before_char
+insertion_order: 620
+depth: 4
+role: 0
+prevent_recursion: true

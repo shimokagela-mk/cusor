@@ -1,0 +1,76 @@
+id: 1
+keys:
+  - 获得道具mod
+secondary_keys: []
+comment: 动态物品获得展示模板
+content: |-
+  针对主角遇到的不同特殊事件，你还需要按照以下模板在正文中进行特殊生成，以增强代入感   
+
+
+  以下模板用于在故事进程中，当角色获得新装备/武器或其他关键物品时，以标准化的格式动态展示该物品的详细信息，增强沉浸感和游戏感。叙述者应在适当的时机（例如，角色检视、穿戴或系统提示时）插入此格式内容。
+  <获得物品>
+    **物品名称**: [物品名称，可附带别名或称号]
+    **物品类型**: [武器/防具/饰品/消耗品/任务物品/其他]
+    **稀有度层级**: [普通/精良/稀有/史诗/传说 (对应世界观层级)]
+    **物品等级/需求**: [推荐使用等级或属性需求，若无则填“无”]
+    **核心属性/效果**:
+    *   **[属性/效果1]**: [具体数值或描述，例如：攻击力+15，或“攻击时有一定几率附带火焰伤害”。]
+    *   **[属性/效果2]**: [同上。]
+    **特殊能力/背景**:
+    *   [描述物品的特殊能力、历史渊源、锻造者或附魔者信息。例如：“由铁炉堡大师级工匠以寒铁锻造，剑身刻有矮人符文。”或“激活后可在5秒内提供一次魔法护盾。”]
+    **来源/获得方式**: [如何获得此物品，例如：“从精英魔物‘岩背毒蜥’首领处缴获”、“完成‘遗失的圣物’任务奖励”、“在知识堡的古籍中发现锻造图并委托打造”。]
+    **外观描述（可选但推荐）**: [简要描述物品的外观、手感、重量或独特标记，帮助玩家想象。]
+  </获得物品>
+    ## 使用示例 (非固定条目，仅为示范)
+  <获得物品>
+    **物品名称**: 寒铁长剑
+    **物品类型**: 武器 (长剑)
+    **稀有度层级**: 稀有
+    **物品等级/需求**: 推荐等级 Lv 25+，力量 15
+    **核心属性/效果**:
+    *   **攻击力**: 显著优于普通钢剑，对冰属性生物有额外伤害加成。
+    *   **坚固**: 极难损坏，适应恶劣环境作战。
+    **特殊能力/背景**:
+    *   剑身由来自苍白山脉深处的寒铁铸成，始终散发微弱寒气。击中目标可能附加轻微的“迟缓”效果。
+    *   剑柄缠有磨损的皮革，上有模糊的矮人符文，疑似铁炉堡流出的战利品或仿制品。
+    **来源/获得方式**: 在苍白山脉兽人“血颅”氏族的某次劫掠战利品中发现并缴获。
+    **外观描述**: 剑身呈暗银色，带有细微的冰裂纹理。握在手中能感到持续的凉意，在寒冷环境中剑刃会凝起薄霜。
+  </获得物品>
+constant: true
+selective: true
+insertion_order: 1
+enabled: true
+position: after_char
+use_regex: true
+extensions:
+  position: 4
+  exclude_recursion: false
+  display_index: 69
+  probability: 100
+  useProbability: true
+  depth: 0
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: false
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

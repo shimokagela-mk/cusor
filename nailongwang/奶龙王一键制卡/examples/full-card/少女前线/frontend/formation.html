@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>少女前方 - 编队</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --y:#e8c840;--y-light:#f0d860;--y-dark:#b89820;
+  --k:#111;--k2:#1a1a1a;--k3:#222;
+  --wh:#f0f0f0;--gr:#999;--gr2:#666;--gr3:#444;
+  --warn:#e04040;
+  --star2:#b8d8e8;--star3:#68c080;--star4:#a0a8d0;--star5:#e8c840;--star6:#e89040;
+  --type-hg:#e8c840;--type-smg:#68c080;--type-rf:#7cb8e0;--type-ar:#e0a040;--type-mg:#c070d0;--type-sg:#e07070;
+}
+body{font-family:'Microsoft YaHei','PingFang SC','Noto Sans SC',sans-serif;background:#000;color:var(--wh);font-size:14px;line-height:1.4;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* ======== Layout ======== */
+.gfl-page{position:relative;width:100%;min-height:100vh;min-height:100dvh;background:#0a0a0a;overflow:hidden}
+.gfl-page-bg{position:fixed;inset:0;background:radial-gradient(circle at 28% 18%,rgba(232,200,64,.16),transparent 34%),linear-gradient(135deg,#151515 0%,#080808 54%,#180808 100%);background-position:center;background-size:cover;background-repeat:no-repeat;z-index:0;opacity:.2}
+.gfl-page-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.3) 0%,transparent 30%,transparent 60%,rgba(0,0,0,.6) 100%)}
+
+.gfl-page-content{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:20px 16px 40px}
+
+/* ======== Header ======== */
+.gfl-header{display:flex;align-items:center;gap:12px;margin-bottom:24px;padding-bottom:12px;border-bottom:2px solid var(--y)}
+.gfl-header h1{font-size:20px;letter-spacing:3px;color:var(--y);text-shadow:0 0 12px rgba(232,200,64,.2)}
+.gfl-header-back{background:none;border:2px solid var(--gr3);color:var(--gr);padding:6px 14px;font-size:12px;letter-spacing:1px;cursor:pointer;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);transition:all .15s}
+.gfl-header-back:hover{border-color:var(--y);color:var(--y)}
+
+/* ======== Save Bar ======== */
+.gfl-save-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:-10px 0 20px;padding:10px 12px;background:rgba(20,20,20,.78);border:1px solid rgba(232,200,64,.18);box-shadow:inset 3px 0 0 rgba(232,200,64,.5)}
+.gfl-save-status{font-size:11px;color:var(--gr);letter-spacing:1px;line-height:1.5}
+.gfl-save-status.dirty{color:var(--y)}
+.gfl-save-status.saving{color:var(--type-rf)}
+.gfl-save-status.saved{color:var(--type-smg)}
+.gfl-save-status.error{color:var(--warn)}
+.gfl-save-btn{flex:0 0 auto;border:1px solid var(--y);background:linear-gradient(180deg,var(--y-light),var(--y-dark));color:#111;padding:7px 16px;font-size:12px;font-weight:800;letter-spacing:2px;cursor:pointer;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);transition:filter .15s,opacity .15s}
+.gfl-save-btn:hover{filter:brightness(1.08)}
+.gfl-save-btn:disabled{opacity:.4;cursor:not-allowed;filter:grayscale(.6)}
+
+/* ======== Squad Section ======== */
+.gfl-squad-section{margin-bottom:20px}
+.gfl-squad-label{display:inline-flex;align-items:center;gap:6px;padding:4px 14px 4px 18px;margin-bottom:10px;font-size:13px;font-weight:700;letter-spacing:2px;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);background:linear-gradient(180deg,rgba(30,28,36,.88),rgba(18,16,22,.88));box-shadow:inset 3px 0 0 var(--y)}
+.gfl-squad-label.combat{box-shadow:inset 3px 0 0 var(--y)}
+.gfl-squad-label.logistics{box-shadow:inset 3px 0 0 var(--type-smg)}
+.gfl-squad-label .tag{font-size:9px;color:var(--gr2);letter-spacing:1px;text-transform:uppercase}
+
+/* ======== Squad Row ======== */
+.gfl-squad-row{display:flex;align-items:stretch;gap:8px;margin-bottom:8px;padding:8px 12px;background:rgba(20,20,20,.7);border:1px solid rgba(255,255,255,.06);transition:border-color .15s}
+.gfl-squad-row:hover{border-color:rgba(232,200,64,.25)}
+
+.gfl-squad-info{display:flex;flex-direction:column;justify-content:center;min-width:60px;padding-right:12px;border-right:1px solid rgba(255,255,255,.08)}
+.gfl-squad-num{font-size:16px;font-weight:700;color:var(--y);letter-spacing:1px}
+.gfl-squad-stats{font-size:9px;color:var(--gr2);margin-top:2px}
+
+.gfl-slots{display:flex;gap:8px;flex:1}
+
+/* ======== Slot (5 per squad) ======== */
+.gfl-slot{position:relative;flex:1;min-height:90px;background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.12);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all .15s;overflow:hidden}
+.gfl-slot:hover{border-color:var(--y);background:rgba(232,200,64,.06)}
+.gfl-slot.empty .gfl-slot-plus{font-size:20px;color:var(--gr3);transition:color .15s}
+.gfl-slot:hover .gfl-slot-plus{color:var(--y)}
+.gfl-slot.empty .gfl-slot-text{font-size:9px;color:var(--gr3);margin-top:4px;letter-spacing:1px}
+
+/* filled slot */
+.gfl-slot.filled{border-style:solid;border-color:rgba(255,255,255,.1);background:rgba(30,30,30,.8)}
+.gfl-slot.filled:hover{border-color:var(--y)}
+.gfl-slot-img{width:100%;height:100%;object-fit:cover;object-position:center 18%;position:absolute;inset:0;opacity:.4;transition:opacity .2s}
+.gfl-slot:hover .gfl-slot-img{opacity:.6}
+.gfl-slot-info{position:relative;z-index:1;text-align:center;padding:4px}
+.gfl-slot-name{font-size:11px;font-weight:700;letter-spacing:.5px;text-shadow:0 1px 4px rgba(0,0,0,.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.gfl-slot-type{font-size:9px;letter-spacing:1px;margin-top:2px;opacity:.8}
+.gfl-slot-stars{margin-top:2px;font-size:8px;letter-spacing:1px}
+
+/* star colors */
+.gfl-slot-stars.s2{color:var(--star2)}.gfl-slot-stars.s3{color:var(--star3)}.gfl-slot-stars.s4{color:var(--star4)}.gfl-slot-stars.s5{color:var(--star5)}.gfl-slot-stars.s6{color:var(--star6)}
+
+/* type badge */
+.gfl-type-badge{position:absolute;top:4px;left:4px;padding:1px 6px;font-size:8px;font-weight:700;letter-spacing:1px;z-index:2;clip-path:polygon(3px 0,100% 0,calc(100% - 3px) 100%,0 100%)}
+.gfl-type-badge.hg{background:rgba(232,200,64,.8);color:#111}
+.gfl-type-badge.smg{background:rgba(104,192,128,.8);color:#111}
+.gfl-type-badge.rf{background:rgba(124,184,224,.8);color:#111}
+.gfl-type-badge.ar{background:rgba(224,160,64,.8);color:#111}
+.gfl-type-badge.mg{background:rgba(192,112,208,.8);color:#fff}
+.gfl-type-badge.sg{background:rgba(224,112,112,.8);color:#fff}
+
+/* remove button */
+.gfl-slot-remove{position:absolute;top:4px;right:4px;width:18px;height:18px;background:rgba(224,64,64,.7);color:#fff;font-size:12px;line-height:18px;text-align:center;cursor:pointer;z-index:2;display:none;transition:background .15s}
+.gfl-slot-remove:hover{background:rgba(224,64,64,1)}
+.gfl-slot.filled:hover .gfl-slot-remove{display:block}
+
+/* ======== Add Logistics Button ======== */
+.gfl-add-logistics{width:100%;padding:10px;background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.12);color:var(--gr3);font-size:13px;letter-spacing:2px;cursor:pointer;transition:all .15s;text-align:center}
+.gfl-add-logistics:hover{border-color:var(--y);color:var(--y);background:rgba(232,200,64,.06)}
+
+/* ===================================================
+   SELECT MODAL
+   =================================================== */
+.gfl-select-overlay{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.85);display:none;flex-direction:column}
+.gfl-select-overlay.open{display:flex}
+
+.gfl-select-header{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:linear-gradient(180deg,rgba(20,20,20,.98),rgba(10,10,10,.98));border-bottom:2px solid var(--y)}
+.gfl-select-title{font-size:15px;color:var(--y);letter-spacing:2px;font-weight:700}
+.gfl-select-close{background:none;border:2px solid var(--gr3);color:var(--gr);padding:6px 14px;font-size:12px;letter-spacing:1px;cursor:pointer;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);transition:all .15s}
+.gfl-select-close:hover{border-color:var(--warn);color:var(--warn)}
+.gfl-select-search-wrap{padding:10px 20px 0;background:rgba(15,15,15,.95)}
+.gfl-select-search{width:100%;border:1px solid rgba(232,200,64,.28);background:rgba(0,0,0,.3);color:var(--wh);padding:8px 10px;font-size:12px;letter-spacing:1px}.gfl-select-search:focus{outline:none;border-color:var(--y);box-shadow:0 0 0 2px rgba(232,200,64,.12)}
+
+/* filter tabs */
+.gfl-select-filters{display:flex;gap:6px;padding:10px 20px;background:rgba(15,15,15,.95);border-bottom:1px solid rgba(255,255,255,.06);overflow-x:auto}
+.gfl-filter-btn{padding:5px 12px;font-size:11px;font-weight:700;letter-spacing:1px;border:1px solid var(--gr3);color:var(--gr);background:none;cursor:pointer;clip-path:polygon(4px 0,100% 0,calc(100% - 4px) 100%,0 100%);transition:all .15s;white-space:nowrap}
+.gfl-filter-btn:hover{border-color:var(--y);color:var(--y)}
+.gfl-filter-btn.active{border-color:var(--y);color:var(--k);background:var(--y)}
+
+/* card grid */
+.gfl-select-grid{flex:1;overflow-y:auto;padding:16px;display:grid;grid-template-columns:repeat(auto-fill, minmax(150px, 1fr));grid-auto-rows:auto;gap:16px;align-content:start;align-items:start}
+
+/* ======== TDoll Card ======== */
+.gfl-card{position:relative;height:220px;background:linear-gradient(180deg,rgba(40,40,40,.9),rgba(20,20,20,.9));border:1px solid rgba(255,255,255,.08);border-radius:4px;cursor:pointer;overflow:hidden;transition:all .15s}
+.gfl-card:hover{border-color:var(--y);transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.5)}
+.gfl-card.selected{border-color:var(--y);box-shadow:0 0 0 2px var(--y),0 4px 16px rgba(232,200,64,.2)}
+
+.gfl-card-img-wrap{position:relative;width:100%;height:142px;overflow:hidden;background:rgba(30,30,30,.6)}
+.gfl-card-img{width:100%;height:100%;object-fit:contain;opacity:.7;transition:opacity .3s}
+.gfl-card-img:not([src]){display:none}
+.gfl-card-img[data-src]:not([src]){display:block;opacity:0}
+.gfl-card:hover .gfl-card-img{opacity:.9}
+
+.gfl-card-body{position:relative;padding:8px 10px;display:flex;flex-direction:column;gap:3px}
+.gfl-card-type{position:absolute;top:-20px;left:8px;padding:2px 8px;font-size:8px;font-weight:700;letter-spacing:1px;clip-path:polygon(3px 0,100% 0,calc(100% - 3px) 100%,0 100%)}
+.gfl-card-name{font-size:12px;font-weight:700;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gfl-card-stars{font-size:9px;letter-spacing:1px}
+.gfl-card-stats{font-size:8px;color:var(--gr2);letter-spacing:.5px;margin-top:2px}
+
+/* selected indicator */
+.gfl-card-check{position:absolute;top:6px;right:6px;width:20px;height:20px;background:var(--y);color:var(--k);font-size:12px;font-weight:700;line-height:20px;text-align:center;display:none;clip-path:polygon(4px 0,100% 0,calc(100% - 4px) 100%,0 100%)}
+.gfl-card.selected .gfl-card-check{display:block}
+
+/* already deployed: dim */
+.gfl-card.deployed{opacity:.4;pointer-events:none}
+.gfl-card.deployed::after{content:'已部署';position:absolute;bottom:10px;left:50%;transform:translateX(-50%);font-size:9px;color:var(--warn);letter-spacing:1px;white-space:nowrap}
+.gfl-card.damaged{opacity:.42;pointer-events:none}
+.gfl-card.damaged::after{content:attr(data-damage-label);position:absolute;bottom:10px;left:50%;transform:translateX(-50%);font-size:9px;color:#ff9b9b;letter-spacing:1px;white-space:nowrap}
+
+/* ======== Mobile ======== */
+@media (max-width:600px){
+  .gfl-page-content{padding:12px 8px 24px}
+  .gfl-header h1{font-size:16px}
+  .gfl-slot{min-height:70px}
+  .gfl-slot-name{font-size:10px}
+  .gfl-squad-info{min-width:40px}
+  .gfl-squad-num{font-size:13px}
+  .gfl-select-grid{grid-template-columns:repeat(auto-fill, minmax(118px, 1fr));gap:10px;padding:12px 8px}
+  .gfl-card{height:184px}
+  .gfl-card-img-wrap{height:118px}
+  .gfl-card-name{font-size:10px}
+  .gfl-card-stats{display:none}
+  .gfl-save-bar{align-items:stretch;flex-direction:column}
+  .gfl-save-btn{width:100%}
+}
+</style>
+</head>
+<body>
+<div class="gfl-page">
+  <div class="gfl-page-bg"></div>
+  <div class="gfl-page-content">
+
+    <!-- Header -->
+    <div class="gfl-header">
+      <h1>编队</h1>
+    </div>
+
+    <div class="gfl-save-bar">
+      <div class="gfl-save-status" id="formation-save-status">选择或移除人形后，点击保存再统一写入主战与后勤队伍。</div>
+      <button class="gfl-save-btn" id="formation-save-btn" type="button" disabled>保存编队</button>
+    </div>
+
+    <!-- Combat squad -->
+    <div class="gfl-squad-section">
+      <div class="gfl-squad-label combat">
+        <span class="tag">COMBAT</span> 主战部队
+      </div>
+      <div class="gfl-squad-row" data-squad="combat-0">
+        <div class="gfl-squad-info">
+          <div class="gfl-squad-num">1队</div>
+          <div class="gfl-squad-stats" id="combat-0-stats"></div>
+        </div>
+        <div class="gfl-slots" id="combat-0-slots"></div>
+      </div>
+    </div>
+
+    <!-- Logistics squads -->
+    <div class="gfl-squad-section">
+      <div class="gfl-squad-label logistics">
+        <span class="tag">LOGISTICS</span> 后勤部队
+      </div>
+      <div id="logistics-container"></div>
+      <button class="gfl-add-logistics" id="add-logistics-btn">+ 新增后勤小队</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- Select Modal -->
+<div class="gfl-select-overlay" id="select-overlay">
+  <div class="gfl-select-header">
+    <span class="gfl-select-title" id="select-title">选择人形</span>
+    <button class="gfl-select-close" id="select-close">关闭</button>
+  </div>
+  <div class="gfl-select-search-wrap"><input class="gfl-select-search" id="select-search" type="search" placeholder="搜索人形名 / 枪种 / 星级，例如 FAL、AR、5"></div>
+  <div class="gfl-select-filters" id="select-filters"></div>
+  <div class="gfl-select-grid" id="select-grid"></div>
+</div>
+
+<script src="gfl-data-bridge.js"></script>
+<script>
+(function(){
+  'use strict';
+
+  var Bridge = window.GFLDataBridge;
+  var WEAPON_TYPES = ['HG','SMG','RF','AR','MG','SG'];
+  var SLOTS_PER_SQUAD = 5;
+  var MAX_LOGISTICS = 5;
+  var LOCAL_FALLBACK_KEY = 'gfl-formation';
+  var TDOLLS = [];
+  var state = {combat:[null,null,null,null,null], logistics:[]};
+  var currentCombatRowsByName = {};
+  var dirty = false;
+  var saveInProgress = false;
+  var pageDisposed = false;
+  var BUBBLE_BG_GROUP = '少女前线待机背景';
+
+  function getNativeUpdaterApi(){
+    try{ if(window.AutoCardUpdaterAPI) return window.AutoCardUpdaterAPI; }catch(e){}
+    try{ if(window.parent && window.parent.AutoCardUpdaterAPI) return window.parent.AutoCardUpdaterAPI; }catch(e){}
+    try{ if(window.top && window.top.AutoCardUpdaterAPI) return window.top.AutoCardUpdaterAPI; }catch(e){}
+    return null;
+  }
+  function nativeExecuteSqlBatch(sql, targetSheetKeys){
+    if(Bridge && typeof Bridge.executeSqlBatch === 'function') return Bridge.executeSqlBatch({sql:sql, targetSheetKeys:targetSheetKeys});
+    var api = getNativeUpdaterApi();
+    if(!api || typeof api.executeSqlBatch !== 'function') throw new Error('AutoCardUpdaterAPI.executeSqlBatch 不可用');
+    return api.executeSqlBatch({sql:sql, targetSheetKeys:targetSheetKeys});
+  }
+  function sqlValue(value){ return value == null ? 'NULL' : "'" + String(value).replace(/'/g, "''") + "'"; }
+  function sqlNumber(value){ value=parseInt(value,10); return isNaN(value) ? '0' : String(value); }
+  function sqlInsert(table, data){
+    var keys = Object.keys(data || {});
+    if(!keys.length) return '';
+    return 'INSERT INTO ' + table + ' (' + keys.join(', ') + ') VALUES (' + keys.map(function(key){ return typeof data[key] === 'number' ? sqlNumber(data[key]) : sqlValue(data[key]); }).join(', ') + ')';
+  }
+
+  function getBubbleApi(name){
+    try{ if(window.top && window.top[name]) return window.top[name]; }catch(e){}
+    try{ if(window.parent && window.parent[name]) return window.parent[name]; }catch(e){}
+    try{ if(window[name]) return window[name]; }catch(e){}
+    return null;
+  }
+
+  function waitForBubbleApi(name, attempt){
+    attempt = attempt || 0;
+    var api = getBubbleApi(name);
+    if(api) return Promise.resolve(api);
+    if(attempt >= 20) return Promise.resolve(null);
+    return new Promise(function(resolve){
+      window.setTimeout(function(){ resolve(waitForBubbleApi(name, attempt + 1)); }, 250);
+    });
+  }
+
+  function applyBubbleBackground(selector){
+    var nodes = document.querySelectorAll(selector);
+    if(!nodes.length) return;
+    waitForBubbleApi('BubbleCG').then(function(api){
+      if(!api || typeof api.getImage !== 'function') return '';
+      return api.getImage(BUBBLE_BG_GROUP, 1);
+    }).then(function(url){
+      if(!url) return;
+      nodes.forEach(function(bg){
+        bg.style.backgroundImage = 'url("' + String(url).replace(/"/g, '%22') + '")';
+        bg.style.backgroundPosition = 'center';
+        bg.style.backgroundSize = 'cover';
+        bg.style.backgroundRepeat = 'no-repeat';
+      });
+    }).catch(function(error){
+      console.warn('编队背景气泡图片加载失败:', error);
+    });
+  }
+
+  if(!Bridge){
+    document.getElementById('combat-0-slots').innerHTML = '<div class="gfl-slot empty"><span class="gfl-slot-text">数据桥接层缺失：gfl-data-bridge.js 未加载</span></div>';
+    document.getElementById('add-logistics-btn').style.display = 'none';
+    return;
+  }
+
+  function esc(s){ return Bridge.esc(s); }
+  function loadLocalState(){
+    try{ var s = localStorage.getItem(LOCAL_FALLBACK_KEY); if(s) return normalizeState(JSON.parse(s)); }catch(e){}
+    return {combat:[null,null,null,null,null], logistics:[]};
+  }
+  function saveLocalState(){
+    try{ localStorage.setItem(LOCAL_FALLBACK_KEY, JSON.stringify(state)); }catch(e){}
+  }
+
+  function emptySlots(){ return [null,null,null,null,null]; }
+  function normalizeState(raw){
+    var out = {combat:emptySlots(), logistics:[]};
+    if(raw && Array.isArray(raw.combat)){
+      for(var i=0;i<SLOTS_PER_SQUAD;i++) out.combat[i] = raw.combat[i] || null;
+    }
+    if(raw && Array.isArray(raw.logistics)){
+      raw.logistics.slice(0, MAX_LOGISTICS).forEach(function(sq){
+        var slots = emptySlots();
+        if(Array.isArray(sq)) for(var i=0;i<SLOTS_PER_SQUAD;i++) slots[i] = sq[i] || null;
+        if(slots.some(Boolean)) out.logistics.push(slots);
+      });
+    }
+    return out;
+  }
+
+  function splitNames(text){
+    return String(text || '').split(/[、,，/]/).map(function(n){ return n.trim(); }).filter(Boolean).slice(0, SLOTS_PER_SQUAD);
+  }
+
+  function getTdoll(name){ for(var i=0;i<TDOLLS.length;i++) if(TDOLLS[i].name===name) return TDOLLS[i]; return null; }
+  function activeSkin(t){
+    if(!t) return null;
+    var label = Bridge.normalizeSkinName(t.currentSkin || '默认立绘') || '默认立绘';
+    if(t.skins){
+      for(var i=0;i<t.skins.length;i++){ if(t.skins[i].label === label) return t.skins[i]; }
+      for(var j=0;j<t.skins.length;j++){ if(t.skins[j].label === '默认立绘') return t.skins[j]; }
+    }
+    return t.skins && t.skins[0] ? t.skins[0] : {label:'默认立绘', imageGroup:Bridge.skinImageGroup(t.name, '默认立绘')};
+  }
+  function skinImageGroupFor(t){
+    var sk = activeSkin(t);
+    return (sk && sk.imageGroup) || Bridge.skinImageGroup(t ? t.name : '', sk ? sk.label : '默认立绘');
+  }
+  function starsStr(n){ var s=''; for(var i=0;i<n;i++) s+='★'; return s; }
+  function starsClass(n){ return 's'+n; }
+  function statsOf(t){ return (t && t.modded && t.modStats) ? t.modStats : (t ? t.baseStats : {}); }
+  function statValue(stats, key, fallback){ return stats && stats[key] != null ? stats[key] : (fallback == null ? 0 : fallback); }
+  function isDestroyedTdoll(t){ return t && String(t.damageState || '').trim() === '损坏'; }
+  function isUnavailableForNewSelection(t){ return t && (String(t.damageState || '').trim() === '大破' || isDestroyedTdoll(t)); }
+
+  function tdollListByNames(names){
+    return names.map(getTdoll).filter(Boolean);
+  }
+  function squadSummary(names){
+    var dolls = tdollListByNames(names.filter(Boolean));
+    var counts = {HG:0,SMG:0,RF:0,AR:0,MG:0,SG:0};
+    var stars = 0;
+    dolls.forEach(function(t){ stars += t.stars || 0; if(counts[t.type] != null) counts[t.type] += 1; });
+    return {stars:stars, counts:counts};
+  }
+  function deployedNames(){
+    var names = [];
+    state.combat.forEach(function(n){ if(n) names.push(n); });
+    state.logistics.forEach(function(sq){ sq.forEach(function(n){ if(n) names.push(n); }); });
+    return names;
+  }
+
+  function refreshData(){
+    TDOLLS = Bridge.ownedTdolls();
+    var combatRows = Bridge.rows('battleConfig').slice().sort(function(a,b){ return Bridge.num(Bridge.field(a, ['出战位','battle_slot']), 0) - Bridge.num(Bridge.field(b, ['出战位','battle_slot']), 0); });
+    var logisticsRows = Bridge.rows('logisticsSquads');
+    currentCombatRowsByName = {};
+    combatRows.forEach(function(row){
+      var rowName = String(Bridge.field(row, ['人形名称','tdoll_name','name'])).trim();
+      if(rowName) currentCombatRowsByName[rowName] = row;
+    });
+    var hasTableState = combatRows.length || logisticsRows.length;
+    if(hasTableState){
+      var next = {combat:emptySlots(), logistics:[]};
+      combatRows.forEach(function(row, idx){
+        var slot = Bridge.num(Bridge.field(row, ['出战位','battle_slot']), idx + 1) - 1;
+        if(slot >= 0 && slot < SLOTS_PER_SQUAD) next.combat[slot] = String(Bridge.field(row, ['人形名称','tdoll_name','name'])).trim() || null;
+      });
+      logisticsRows.slice(0, MAX_LOGISTICS).forEach(function(row){
+        var names = splitNames(Bridge.field(row, ['人形列表','tdoll_list']));
+        var slots = emptySlots();
+        names.forEach(function(name, i){ slots[i] = name; });
+        if(slots.some(Boolean)) next.logistics.push(slots);
+      });
+      state = normalizeState(next);
+      saveLocalState();
+    } else {
+      state = normalizeState({combat:emptySlots(), logistics:[]});
+    }
+  }
+
+  function combatRowData(slotIndex, name){
+    var t = getTdoll(name);
+    var existing = currentCombatRowsByName[name];
+    if(existing){
+      return {
+        '出战位': slotIndex + 1,
+        '人形名称': name,
+        '当前生命': Bridge.field(existing, ['当前生命','current_hp'], statValue(statsOf(t), 'hp', 1)),
+        '最大生命': Bridge.field(existing, ['最大生命','max_hp'], statValue(statsOf(t), 'hp', 1)),
+        '伤害': Bridge.field(existing, ['伤害','damage'], statValue(statsOf(t), 'damage')),
+        '命中': Bridge.field(existing, ['命中','accuracy'], statValue(statsOf(t), 'accuracy')),
+        '回避': Bridge.field(existing, ['回避','evasion'], statValue(statsOf(t), 'evasion')),
+        '射速': Bridge.field(existing, ['射速','rof'], statValue(statsOf(t), 'rof')),
+        '护甲': Bridge.field(existing, ['护甲','armor'], statValue(statsOf(t), 'armor')),
+        '移动': Bridge.field(existing, ['移动','movement'], statValue(statsOf(t), 'movement')),
+        '穿甲': Bridge.field(existing, ['穿甲','armor_piercing'], statValue(statsOf(t), 'armorPiercing')),
+        '暴击': Bridge.field(existing, ['暴击','crit_rate'], statValue(statsOf(t), 'critRate')),
+        '弹链': Bridge.field(existing, ['弹链','ammo_chain'], statValue(statsOf(t), 'ammoChain'))
+      };
+    }
+    var st = statsOf(t);
+    var hp = statValue(st, 'hp', 1);
+    return {
+      '出战位': slotIndex + 1,
+      '人形名称': name,
+      '当前生命': hp,
+      '最大生命': hp,
+      '伤害': statValue(st, 'damage'),
+      '命中': statValue(st, 'accuracy'),
+      '回避': statValue(st, 'evasion'),
+      '射速': statValue(st, 'rof'),
+      '护甲': statValue(st, 'armor'),
+      '移动': statValue(st, 'movement'),
+      '穿甲': statValue(st, 'armorPiercing'),
+      '暴击': statValue(st, 'critRate'),
+      '弹链': statValue(st, 'ammoChain')
+    };
+  }
+
+  function logisticsRowData(index, names){
+    var present = names.filter(Boolean);
+    var summary = squadSummary(present);
+    return {
+      '小队名': '后勤' + (index + 1) + '队',
+      '人形列表': present.join('、'),
+      '总星级': summary.stars,
+      'HG数量': summary.counts.HG,
+      'SMG数量': summary.counts.SMG,
+      'RF数量': summary.counts.RF,
+      'AR数量': summary.counts.AR,
+      'MG数量': summary.counts.MG,
+      'SG数量': summary.counts.SG
+    };
+  }
+
+  function replaceTableRows(tableKey, dataRows){
+    var sqlConfig = {
+      battleConfig:{table:'battle_config', sheet:'sheet_battle_config', columns:{'出战位':'battle_slot','人形名称':'tdoll_name','当前生命':'current_hp','最大生命':'max_hp','伤害':'damage','命中':'accuracy','回避':'evasion','射速':'rate_of_fire','护甲':'armor','移动':'movement','穿甲':'armor_piercing','暴击':'critical_rate','弹链':'ammo_chain'}},
+      logisticsSquads:{table:'logistics_squads', sheet:'sheet_logistics_squads', columns:{'小队名':'squad_name','人形列表':'tdoll_list','总星级':'total_stars','HG数量':'hg_count','SMG数量':'smg_count','RF数量':'rf_count','AR数量':'ar_count','MG数量':'mg_count','SG数量':'sg_count'}}
+    }[tableKey];
+    if(sqlConfig){
+      var statements = ['DELETE FROM ' + sqlConfig.table];
+      dataRows.forEach(function(data){
+        var row = {};
+        Object.keys(data || {}).forEach(function(key){ row[sqlConfig.columns[key] || key] = data[key]; });
+        statements.push(sqlInsert(sqlConfig.table, row));
+      });
+      return nativeExecuteSqlBatch(statements.join(';\n') + ';', [sqlConfig.sheet]);
+    }
+    throw new Error('未知表，无法 SQL 整表替换：' + tableKey);
+  }
+
+  function setSaveStatus(text, mode){
+    var status = document.getElementById('formation-save-status');
+    var btn = document.getElementById('formation-save-btn');
+    if(status){
+      status.textContent = text;
+      status.className = 'gfl-save-status' + (mode ? ' ' + mode : '');
+    }
+    if(btn) btn.disabled = saveInProgress || !dirty;
+  }
+
+  function markDirty(){
+    saveLocalState();
+    dirty = true;
+    setSaveStatus('编队已暂存，尚未写入数据库。点击保存后将一次性更新主战与后勤队伍。', 'dirty');
+  }
+
+  function persistStateNow(){
+    saveLocalState();
+    var combatRows = [];
+    var removedDestroyed = [];
+    state.combat.forEach(function(name, idx){
+      var t = getTdoll(name);
+      if(name && t && isDestroyedTdoll(t)){ removedDestroyed.push(name + '（主战' + (idx + 1) + '号位）'); return; }
+      if(name && t) combatRows.push(combatRowData(idx, name));
+    });
+    var logisticsRows = [];
+    state.logistics.forEach(function(names, idx){
+      var clean = names.map(function(name, slotIdx){
+        var t = getTdoll(name);
+        if(name && t && isDestroyedTdoll(t)){ removedDestroyed.push(name + '（后勤' + (idx + 1) + '队' + (slotIdx + 1) + '号位）'); return null; }
+        return t ? name : null;
+      });
+      if(clean.some(Boolean)) logisticsRows.push(logisticsRowData(idx, clean));
+    });
+    saveInProgress = true;
+    setSaveStatus(removedDestroyed.length ? '正在保存；损坏人形将退出队伍：' + removedDestroyed.join('、') : '正在批量写入主战部队与后勤队伍...', 'saving');
+    return replaceTableRows('battleConfig', combatRows)
+    .then(function(){ return replaceTableRows('logisticsSquads', logisticsRows); })
+    .then(function(){
+      dirty = false;
+      saveInProgress = false;
+      setSaveStatus(removedDestroyed.length ? '已保存：损坏人形已退出队伍，请修理后重新编入：' + removedDestroyed.join('、') : '已保存：主战部队与后勤队伍已一次性写入数据库。', 'saved');
+    }).catch(function(error){
+      saveInProgress = false;
+      dirty = true;
+      setSaveStatus('保存失败，数据库未更新；下次打开仍以数据库为准：' + (error && error.message ? error.message : error), 'error');
+      console.warn('编队写回数据库表失败，数据库仍为唯一真源:', error);
+    });
+  }
+
+  function render(){
+    renderCombatSquad();
+    renderLogisticsSquads();
+  }
+
+  function renderSlot(name, squadKey, slotIdx){
+    if(!name){
+      return '<div class="gfl-slot empty" data-squad="'+esc(squadKey)+'" data-slot="'+slotIdx+'">'
+        +'<span class="gfl-slot-plus">+</span>'
+        +'<span class="gfl-slot-text">选择</span>'
+        +'</div>';
+    }
+    var t = getTdoll(name);
+    if(!t){
+      return '<div class="gfl-slot empty" data-squad="'+esc(squadKey)+'" data-slot="'+slotIdx+'">'
+        +'<span class="gfl-slot-plus">+</span>'
+        +'<span class="gfl-slot-text">未获取</span>'
+        +'</div>';
+    }
+    return '<div class="gfl-slot filled" data-squad="'+esc(squadKey)+'" data-slot="'+slotIdx+'">'
+      +'<span class="gfl-type-badge '+esc(String(t.type||'').toLowerCase())+'">'+esc(t.type)+'</span>'
+      +'<div class="gfl-slot-remove" data-action="remove">✕</div>'
+      +'<img class="gfl-slot-img" loading="lazy" data-skin-image="'+esc(skinImageGroupFor(t))+'" alt="'+esc(name)+'">'
+      +'<div class="gfl-slot-info">'
+      +'<div class="gfl-slot-name">'+esc(name)+'</div>'
+      +'<div class="gfl-slot-stars '+starsClass(t.stars)+'">'+esc(starsStr(t.stars))+'</div>'
+      +'</div></div>';
+  }
+
+  function hydrateSkinImages(root){
+    if(!root) return;
+    root.querySelectorAll('img[data-skin-image]').forEach(function(img){
+      Bridge.applyImageFromSkin(img, img.getAttribute('data-skin-image') || '默认立绘', false).then(function(url){ if(!url) img.style.display='none'; });
+    });
+  }
+
+  function renderCombatSquad(){
+    var el = document.getElementById('combat-0-slots');
+    var html = '';
+    for(var i=0;i<SLOTS_PER_SQUAD;i++) html += renderSlot(state.combat[i], 'combat-0', i);
+    el.innerHTML = html;
+
+    var stats = document.getElementById('combat-0-stats');
+    var count = state.combat.filter(function(n){return n;}).length;
+    stats.textContent = count+'/'+SLOTS_PER_SQUAD;
+    hydrateSkinImages(el);
+  }
+
+  function renderLogisticsSquads(){
+    var container = document.getElementById('logistics-container');
+    var html = '';
+    for(var s=0;s<state.logistics.length;s++){
+      var count = state.logistics[s].filter(function(n){return n;}).length;
+      html += '<div class="gfl-squad-row" data-squad="logistics-'+s+'">'
+        +'<div class="gfl-squad-info">'
+        +'<div class="gfl-squad-num">'+(s+1)+'队</div>'
+        +'<div class="gfl-squad-stats">'+count+'/'+SLOTS_PER_SQUAD+'</div>'
+        +'</div>'
+        +'<div class="gfl-slots" id="logistics-'+s+'-slots"></div>'
+        +'</div>';
+    }
+    container.innerHTML = html;
+
+    for(var s=0;s<state.logistics.length;s++){
+      var el = document.getElementById('logistics-'+s+'-slots');
+      var slots = '';
+      for(var i=0;i<SLOTS_PER_SQUAD;i++) slots += renderSlot(state.logistics[s][i], 'logistics-'+s, i);
+      el.innerHTML = slots;
+      hydrateSkinImages(el);
+    }
+
+    /* hide add button if max reached */
+    var addBtn = document.getElementById('add-logistics-btn');
+    addBtn.style.display = state.logistics.length >= MAX_LOGISTICS ? 'none' : 'block';
+  }
+
+  /* ======== Slot click ======== */
+  document.addEventListener('click', function(e){
+    /* add logistics */
+    if(e.target.id === 'add-logistics-btn'){
+      if(state.logistics.length < MAX_LOGISTICS){
+        state.logistics.push([null,null,null,null,null]);
+        markDirty();
+        render();
+      }
+      return;
+    }
+
+    if(e.target.id === 'formation-save-btn'){
+      if(!dirty || saveInProgress) return;
+      persistStateNow();
+      return;
+    }
+
+    /* remove from slot */
+    var removeBtn = e.target.closest('[data-action="remove"]');
+    if(removeBtn){
+      var slot = removeBtn.closest('.gfl-slot');
+      var squadKey = slot.dataset.squad;
+      var slotIdx = parseInt(slot.dataset.slot, 10);
+      setSlot(squadKey, slotIdx, null);
+      markDirty();
+      render();
+      return;
+    }
+
+    /* click slot to select */
+    var slot = e.target.closest('.gfl-slot');
+    if(slot){
+      var squadKey = slot.dataset.squad;
+      var slotIdx = parseInt(slot.dataset.slot, 10);
+      openSelect(squadKey, slotIdx);
+      return;
+    }
+
+    /* filter buttons */
+    var filterBtn = e.target.closest('.gfl-filter-btn');
+    if(filterBtn){
+      currentFilter = filterBtn.dataset.type;
+      renderSelectGrid();
+      document.querySelectorAll('.gfl-filter-btn').forEach(function(b){
+        b.classList.toggle('active', b.dataset.type === currentFilter);
+      });
+      return;
+    }
+
+    /* card click */
+    var card = e.target.closest('.gfl-card');
+    if(card && !card.classList.contains('deployed')){
+      var name = card.dataset.name;
+      setSlot(selectTarget.squadKey, selectTarget.slotIdx, name);
+      markDirty();
+      render();
+      closeSelect();
+      return;
+    }
+  });
+
+  function setSlot(squadKey, slotIdx, name){
+    var parts = squadKey.split('-');
+    var type = parts[0];
+    var idx = parseInt(parts[1], 10);
+    if(type === 'combat'){
+      state.combat[slotIdx] = name;
+    } else if(type === 'logistics'){
+      state.logistics[idx][slotIdx] = name;
+    }
+  }
+
+  /* ======== Select Modal ======== */
+  var selectTarget = {squadKey: null, slotIdx: -1};
+  var currentFilter = 'ALL';
+  var selectSearch = '';
+  var overlay = document.getElementById('select-overlay');
+  var selectTitle = document.getElementById('select-title');
+  var filtersEl = document.getElementById('select-filters');
+  var gridEl = document.getElementById('select-grid');
+
+  function openSelect(squadKey, slotIdx){
+    selectTarget.squadKey = squadKey;
+    selectTarget.slotIdx = slotIdx;
+    currentFilter = 'ALL';
+    selectSearch = '';
+    document.getElementById('select-search').value = '';
+    var parts = squadKey.split('-');
+    var label = parts[0]==='combat' ? '主战' : '后勤'+(parseInt(parts[1],10)+1)+'队';
+    selectTitle.textContent = '选择人形 → ' + label + ' #' + (slotIdx+1);
+    renderFilters();
+    overlay.classList.add('open');
+    renderSelectGrid();
+  }
+
+  function closeSelect(){ overlay.classList.remove('open'); }
+
+  document.getElementById('select-close').addEventListener('click', closeSelect);
+  overlay.addEventListener('click', function(e){
+    if(e.target === overlay) closeSelect();
+  });
+
+  function renderFilters(){
+    var html = '<button class="gfl-filter-btn active" data-type="ALL">全部</button>';
+    WEAPON_TYPES.forEach(function(t){
+      html += '<button class="gfl-filter-btn" data-type="'+t+'">'+t+'</button>';
+    });
+    filtersEl.innerHTML = html;
+  }
+
+  function renderSelectGrid(){
+    var deployed = deployedNames();
+    var q = selectSearch.toLowerCase();
+    var list = TDOLLS.filter(function(t){
+      if(currentFilter !== 'ALL' && t.type !== currentFilter) return false;
+      if(!q) return true;
+      return String(t.name || '').toLowerCase().indexOf(q) >= 0 || String(t.type || '').toLowerCase().indexOf(q) >= 0 || String(t.stars || '').indexOf(q) >= 0;
+    });
+    if(!list.length){
+      gridEl.innerHTML = '<div class="gfl-card" style="height:auto;padding:18px;cursor:default"><div class="gfl-card-name">没有符合条件的已获取人形</div></div>';
+      return;
+    }
+    gridEl.innerHTML = list.map(function(t){
+      if(currentFilter !== 'ALL' && t.type !== currentFilter) return;
+      var isDeployed = deployed.indexOf(t.name) >= 0;
+      var st = statsOf(t);
+      return '<div class="gfl-card'+(isDeployed?' deployed':'')+(isUnavailableForNewSelection(t)?' damaged':'')+'" data-name="'+esc(t.name)+'" data-damage-label="'+esc(t.damageState || '不可编入')+'">'
+        +'<div class="gfl-card-check">✓</div>'
+        +'<span class="gfl-card-type '+esc(String(t.type||'').toLowerCase())+'" style="background:rgba('+typeColor(t.type)+',0.8)">'+esc(t.type)+'</span>'
+        +'<div class="gfl-card-img-wrap">'
+        +'<img class="gfl-card-img" data-skin-image="'+esc(skinImageGroupFor(t))+'" alt="'+esc(t.name)+'">'
+        +'</div>'
+        +'<div class="gfl-card-body">'
+        +'<div class="gfl-card-name">'+esc(t.name)+'</div>'
+        +'<div class="gfl-card-stars '+starsClass(t.stars)+'">'+esc(starsStr(t.stars))+'</div>'
+        +'<div class="gfl-card-stats">HP:'+esc(statValue(st,'hp'))+' 伤害:'+esc(statValue(st,'damage'))+' 命中:'+esc(statValue(st,'accuracy'))+' 回避:'+esc(statValue(st,'evasion'))+'</div>'
+        +'</div></div>';
+    }).join('');
+    hydrateSkinImages(gridEl);
+  }
+
+  document.getElementById('select-search').addEventListener('input', function(e){ selectSearch = String(e.target.value || '').trim(); renderSelectGrid(); });
+
+  function typeColor(type){
+    var map = {HG:'232,200,64',SMG:'104,192,128',RF:'124,184,224',AR:'224,160,64',MG:'192,112,208',SG:'224,112,112'};
+    return map[type] || '255,255,255';
+  }
+
+  /* ======== Init ======== */
+  function reloadAndRender(){ if(pageDisposed || !document.getElementById('combat-0-slots')) return; refreshData(); render(); }
+  function cleanupPage(){
+    pageDisposed = true;
+  }
+  window.addEventListener('pagehide', cleanupPage, {once:true});
+  window.addEventListener('beforeunload', cleanupPage, {once:true});
+  window.addEventListener('unload', cleanupPage, {once:true});
+
+  applyBubbleBackground('.gfl-page-bg');
+  reloadAndRender();
+  setSaveStatus('选择或移除人形后，点击保存再统一写入主战与后勤队伍。', '');
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>少女前方 - 战术地图</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--y:#e8c840;--y-light:#f0d860;--y-dark:#b89820;--k:#111;--wh:#f0f0f0;--gr:#999;--gr2:#666;--gr3:#444;--warn:#e04040;--ally:#6bb7ff;--enemy:#e74c3c;--npc:#f39c12;--land:#8b7355;--base:#78e0d0}
+body{font-family:'Microsoft YaHei','PingFang SC','Noto Sans SC',sans-serif;background:#000;color:var(--wh);font-size:14px;line-height:1.4;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.gfl-page{position:relative;width:100%;min-height:100vh;min-height:100dvh;background:#080808;overflow:hidden}.gfl-bg{position:fixed;inset:0;background:radial-gradient(circle at 28% 18%,rgba(232,200,64,.16),transparent 34%),linear-gradient(135deg,#151515 0%,#080808 54%,#180808 100%);background-position:center;background-size:cover;background-repeat:no-repeat;opacity:.16}.gfl-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.2) 34%,rgba(0,0,0,.84))}.gfl-content{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:20px 16px 36px}
+.gfl-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;padding-bottom:12px;border-bottom:2px solid var(--y)}.gfl-title{display:flex;flex-direction:column;gap:2px}.gfl-title h1{font-size:20px;letter-spacing:3px;color:var(--y);text-shadow:0 0 12px rgba(232,200,64,.2)}.gfl-title small{font-size:10px;color:var(--gr);letter-spacing:1px}.gfl-head-actions{display:flex;gap:8px;flex-wrap:wrap}.gfl-btn{border:1px solid var(--gr3);background:rgba(255,255,255,.035);color:var(--gr);padding:7px 13px;font-size:11px;font-weight:800;letter-spacing:1px;cursor:pointer;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%);transition:.15s}.gfl-btn:hover{border-color:var(--y);color:var(--y);background:rgba(232,200,64,.06)}.gfl-btn:active{transform:scale(.96)}.gfl-btn.clicked{animation:gflButtonClick .28s ease-out}.gfl-btn.busy{pointer-events:none;filter:saturate(.75) brightness(.78)}@keyframes gflButtonClick{0%{filter:brightness(1);box-shadow:0 0 0 rgba(232,200,64,0)}42%{filter:brightness(1.35);box-shadow:0 0 22px rgba(232,200,64,.42)}100%{filter:brightness(1);box-shadow:0 0 0 rgba(232,200,64,0)}}.gfl-ui-toast{position:fixed;left:50%;bottom:18px;z-index:120;max-width:min(520px,calc(100vw - 32px));padding:9px 14px;background:rgba(0,0,0,.82);border:1px solid rgba(232,200,64,.48);border-left:3px solid var(--y);color:var(--y-light);font-size:12px;font-weight:800;letter-spacing:1px;box-shadow:0 10px 30px rgba(0,0,0,.55);transform:translate(-50%,16px);opacity:0;pointer-events:none;transition:opacity .16s,transform .16s}.gfl-ui-toast.show{opacity:1;transform:translate(-50%,0)}.gfl-btn.primary{border-color:var(--y);background:linear-gradient(180deg,var(--y),var(--y-dark));color:#111}.gfl-btn.danger{border-color:var(--warn);color:#ffb0b0}
+.gfl-status{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:12px}.gfl-chip{background:rgba(18,18,18,.84);border:1px solid rgba(255,255,255,.08);border-left:3px solid var(--y);padding:9px 11px}.gfl-chip-label{font-size:9px;color:var(--gr2);letter-spacing:1px}.gfl-chip-val{font-size:13px;font-weight:800;margin-top:2px;color:var(--wh)}.gfl-chip.combat{border-left-color:var(--warn)}.gfl-chip.base{border-left-color:var(--base)}
+.gfl-map-shell{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:12px;align-items:start}.gfl-panel{background:rgba(18,18,18,.86);border:1px solid rgba(255,255,255,.08);box-shadow:0 12px 32px rgba(0,0,0,.34);overflow:hidden}.gfl-panel-title{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 13px;background:linear-gradient(90deg,rgba(232,200,64,.18),rgba(255,255,255,.03));border-bottom:1px solid rgba(232,200,64,.22);font-size:13px;font-weight:900;letter-spacing:2px;color:var(--y)}.gfl-panel-title .tag{font-size:9px;color:var(--gr2);letter-spacing:1px}.gfl-panel-body{padding:12px}.gfl-map-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;color:var(--gr);font-size:11px;letter-spacing:1px}.gfl-map-box{height:610px;border:1px solid rgba(232,200,64,.22);background:linear-gradient(135deg,#181818,#0c0c0c);overflow:hidden;position:relative;cursor:grab}.gfl-map-box:active{cursor:grabbing}.gfl-map-box svg{width:100%;height:100%;display:block;transform-origin:center;transition:transform .08s linear}.cm{cursor:pointer}.cm:hover .marker-core,.cm:hover rect,.cm:hover polygon{filter:brightness(1.2) drop-shadow(0 0 8px rgba(232,200,64,.35))}.gfl-list{display:flex;flex-direction:column;gap:8px;max-height:650px;overflow:auto}.gfl-list-group{font-size:10px;color:var(--y);font-weight:900;letter-spacing:1px;margin:2px 0}.gfl-entity{border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.24);padding:8px 9px;cursor:pointer;transition:.12s}.gfl-entity:hover{border-color:var(--y);background:rgba(232,200,64,.06)}.gfl-entity-name{font-size:12px;font-weight:900;color:var(--wh)}.gfl-entity-meta{margin-top:3px;font-size:10px;color:var(--gr);display:flex;gap:5px;align-items:center;flex-wrap:wrap}.dot{width:7px;height:7px;display:inline-block;border-radius:50%}.dot.ally{background:var(--ally)}.dot.enemy{background:var(--enemy)}.dot.npc{background:var(--npc)}.dot.land{background:var(--land)}.dot.base{background:var(--base)}.dot.self{background:var(--y)}
+.gfl-modal-mask{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.82);padding:16px}.gfl-modal-mask.open{display:flex}.gfl-modal{width:min(460px,100%);background:rgba(14,14,14,.98);border:1px solid rgba(232,200,64,.5);box-shadow:0 20px 60px rgba(0,0,0,.65)}.gfl-modal-head{display:flex;justify-content:space-between;align-items:center;padding:11px 14px;border-bottom:1px solid rgba(232,200,64,.22);background:linear-gradient(90deg,rgba(232,200,64,.18),rgba(255,255,255,.03))}.gfl-modal-title{font-weight:900;color:var(--y);letter-spacing:2px}.gfl-modal-body{padding:14px;color:var(--gr);font-size:12px;line-height:1.8}.gfl-modal-body strong{color:var(--wh)}
+@media(max-width:900px){.gfl-map-shell{grid-template-columns:1fr}.gfl-status{grid-template-columns:1fr}.gfl-map-box{height:520px}.gfl-list{max-height:none}}@media(max-width:560px){.gfl-content{padding:12px 8px 24px}.gfl-header{align-items:flex-start;flex-direction:column}.gfl-map-box{height:430px}.gfl-head-actions{width:100%}.gfl-btn{flex:1}.gfl-title h1{font-size:17px}}
+</style>
+</head>
+<body>
+<div class="gfl-page">
+  <div class="gfl-bg"></div>
+  <div class="gfl-content">
+    <header class="gfl-header">
+      <div class="gfl-title"><h1>战术地图</h1><small>TACTICAL MAP / BASE OVERVIEW</small></div>
+      <div class="gfl-head-actions"><button class="gfl-btn" id="refresh-btn">AI重绘地图</button><button class="gfl-btn" id="render-btn">只刷新显示</button><button class="gfl-btn" id="reset-view-btn">复位视图</button><button class="gfl-btn danger" id="retreat-btn">撤退</button></div>
+    </header>
+    <section class="gfl-status">
+      <div class="gfl-chip" id="mode-chip"><div class="gfl-chip-label">当前模式</div><div class="gfl-chip-val" id="mode-val">-</div></div>
+      <div class="gfl-chip"><div class="gfl-chip-label">当前位置</div><div class="gfl-chip-val" id="loc-val">-</div></div>
+      <div class="gfl-chip"><div class="gfl-chip-label">数据来源</div><div class="gfl-chip-val" id="source-val">-</div></div>
+    </section>
+    <div class="gfl-map-shell">
+      <section class="gfl-panel">
+        <div class="gfl-panel-title"><span><span class="tag">SVG</span> 地图视图</span><span id="map-count"></span></div>
+        <div class="gfl-panel-body">
+          <div class="gfl-map-bar"><span id="map-hint">未出击时显示固定基地设施；战斗中优先使用数据库坐标。</span></div>
+          <div class="gfl-map-box" id="map-box"></div>
+        </div>
+      </section>
+      <aside class="gfl-panel">
+        <div class="gfl-panel-title"><span><span class="tag">LIST</span> 地图元素</span></div>
+        <div class="gfl-panel-body"><div class="gfl-list" id="map-list"></div></div>
+      </aside>
+    </div>
+  </div>
+</div>
+<div class="gfl-modal-mask" id="detail-mask"><div class="gfl-modal"><div class="gfl-modal-head"><div class="gfl-modal-title" id="detail-title">详情</div><button class="gfl-btn" id="detail-close">关闭</button></div><div class="gfl-modal-body" id="detail-body"></div></div></div>
+<script src="gfl-data-bridge.js"></script>
+<script src="gfl-tactical-map.js"></script>
+<script src="gfl-map-sync.js"></script>
+<script>
+(function(){
+  var Bridge=window.GFLDataBridge;
+  var BUBBLE_BG_GROUP='少女前线待机背景';
+  function getBubbleApi(name){
+    try{if(window.top&&window.top[name])return window.top[name];}catch(e){}
+    try{if(window.parent&&window.parent[name])return window.parent[name];}catch(e){}
+    try{if(window[name])return window[name];}catch(e){}
+    return null;
+  }
+  function waitForBubbleApi(name,attempt){
+    attempt=attempt||0;
+    var api=getBubbleApi(name);
+    if(api)return Promise.resolve(api);
+    if(attempt>=20)return Promise.resolve(null);
+    return new Promise(function(resolve){
+      window.setTimeout(function(){resolve(waitForBubbleApi(name,attempt+1));},250);
+    });
+  }
+  function applyBubbleBackground(selector){
+    var nodes=document.querySelectorAll(selector);
+    if(!nodes.length)return;
+    waitForBubbleApi('BubbleCG').then(function(api){
+      if(!api||typeof api.getImage!=='function')return '';
+      return api.getImage(BUBBLE_BG_GROUP,1);
+    }).then(function(url){
+      if(!url)return;
+      nodes.forEach(function(bg){
+        bg.style.backgroundImage='url("'+String(url).replace(/"/g,'%22')+'")';
+        bg.style.backgroundPosition='center';
+        bg.style.backgroundSize='cover';
+        bg.style.backgroundRepeat='no-repeat';
+      });
+    }).catch(function(error){
+      console.warn('地图背景气泡图片加载失败:',error);
+    });
+  }
+  var baseMapSeeded=false;
+  var avatarCache={};
+  var avatarLoading={};
+  var toastTimer=null;
+  var redrawInFlight=false;
+  var pageDisposed=false;
+  var mapZoom=1,mapPan={x:0,y:0},mapDrag=false,mapStart={x:0,y:0},panStart={x:0,y:0};
+  var D={mode:'base',loc:'格里芬前线基地',items:[],source:'固定基地地图'};
+  function showToast(message){var toast=document.getElementById('gfl-ui-toast');if(!toast){toast=document.createElement('div');toast.id='gfl-ui-toast';toast.className='gfl-ui-toast';document.body.appendChild(toast);}toast.textContent=message||'';toast.classList.add('show');if(toastTimer)window.clearTimeout(toastTimer);toastTimer=window.setTimeout(function(){toast.classList.remove('show');},1800);}
+  function flashButton(btn,message){if(btn){btn.classList.remove('clicked');void btn.offsetWidth;btn.classList.add('clicked');window.setTimeout(function(){btn.classList.remove('clicked');},320);}if(message)showToast(message);}
+  function setButtonBusy(btn,busy){if(!btn)return;btn.classList.toggle('busy',!!busy);btn.disabled=!!busy;}
+  var BASE_ITEMS=[
+    item('作战指挥室','地标',395,85,'基地中枢，用于战役简报、梯队派遣与前线通信。','指挥区','参考少前基地主界面的作战指挥功能设计。'),
+    item('编队整备室','地标',185,175,'主战梯队在此进行人形编成、装备确认与出击前检查。','战备区','连接编队页面的空间化表达。'),
+    item('人形宿舍','地标',600,175,'战术人形休息与互动区域，承担士气恢复和日常生活功能。','生活区','少前宿舍设施的基地化布局。'),
+    item('建造工坊','地标',165,330,'执行人形建造、装备调试与制造队列管理。','生产区','对应建造页面。'),
+    item('修复中心','地标',390,330,'大破修复、快速修复合约使用与战后损伤处理。','医疗区','作战后勤核心设施。'),
+    item('仓储库房','地标',620,330,'管理已拥有人形、皮肤、核心与装备库存。','仓储区','对应仓库页面与看板设置。'),
+    item('后勤调度室','地标',225,500,'后勤梯队派遣、资源回收和远程任务监控。','后勤区','对应少前后勤系统。'),
+    item('情报与模拟室','地标',535,500,'情报解析、模拟作战和训练数据复盘。','训练区','承载后续战斗训练扩展。'),
+    item('主通道','出口',400,575,'通往前线集结点与基地外部交通节点。','出口','出击流程的空间出口。')
+  ];
+  function item(name,type,x,y,status,region,desc){return {'元素名称':name,'元素类型':type,'X坐标':x,'Y坐标':y,'状态':status||'','所属区域':region||'','描述':desc||status||''};}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function getApi(){try{if(window.AutoCardUpdaterAPI)return window.AutoCardUpdaterAPI}catch(e){}try{if(window.parent&&window.parent.AutoCardUpdaterAPI)return window.parent.AutoCardUpdaterAPI}catch(e){}try{if(window.top&&window.top.AutoCardUpdaterAPI)return window.top.AutoCardUpdaterAPI}catch(e){}return null;}
+  function nativeExecuteSqlMutation(sql,params,targetSheetKeys){if(Bridge&&typeof Bridge.executeSqlMutation==='function')return Bridge.executeSqlMutation(sql,params||[],{targetSheetKeys:targetSheetKeys});var api=getApi();if(!api||typeof api.executeSqlMutation!=='function')throw new Error('AutoCardUpdaterAPI.executeSqlMutation 不可用');return api.executeSqlMutation(sql,params||[],{targetSheetKeys:targetSheetKeys});}
+  function rowsOf(sheet){
+    if(!sheet)return[];
+    if(Array.isArray(sheet)){
+      if(sheet.length<2)return[];
+      var rawHead=Array.isArray(sheet[0])?sheet[0].slice(1):[];
+      return sheet.slice(1).filter(function(r){return Array.isArray(r)&&r.length>1;}).map(function(r,i){
+        var o={__rowIndex__:i+1};
+        rawHead.forEach(function(h,idx){o[h]=r[idx+1];});
+        return o;
+      });
+    }
+    if(Array.isArray(sheet.rows))return sheet.rows;
+    if(Array.isArray(sheet.data))return sheet.data;
+    if(!Array.isArray(sheet.content)||sheet.content.length<2)return[];
+    var head=sheet.content[0].slice(1);
+    return sheet.content.slice(1).filter(function(r){return r&&r.length>1;}).map(function(r,i){var o={__rowIndex__:i+1};head.forEach(function(h,idx){o[h]=r[idx+1];});return o;});
+  }
+  function field(row,names){for(var i=0;i<names.length;i++){var v=row[names[i]];if(v!==undefined&&v!==null&&String(v)!=='')return v;}return'';}
+  function num(v,def){var n=parseInt(v,10);return isNaN(n)?def:n;}
+  function findTdoll(name){
+    if(!Bridge || !name) return null;
+    var dolls=[];
+    try{dolls=Bridge.warehouseTdolls();}catch(e){return null;}
+    for(var i=0;i<dolls.length;i++){if(dolls[i].name===name)return dolls[i];}
+    return null;
+  }
+  function skinForTdoll(t){
+    if(!t) return '';
+    var label = Bridge.normalizeSkinName(t.currentSkin || '默认立绘') || '默认立绘';
+    if(t.skins){
+      for(var i=0;i<t.skins.length;i++){
+        if(t.skins[i].label === label) return t.skins[i].imageGroup || Bridge.skinImageGroup(t.name, t.skins[i].label);
+      }
+    }
+    if(t.currentSkinGroup) return t.currentSkinGroup;
+    if(t.skins&&t.skins[0]&&t.skins[0].label)return t.skins[0].imageGroup || Bridge.skinImageGroup(t.name, t.skins[0].label);
+    return '';
+  }
+  function avatarOf(name){
+    name=String(name||'').trim();
+    if(!name) return '';
+    if(avatarLoading[name] || !Bridge || typeof Bridge.getSkinImage!=='function') return '';
+    var tdoll=findTdoll(name);
+    var skin=skinForTdoll(tdoll);
+    if(!skin) return '';
+    var cacheKey=name+'|'+skin;
+    if(avatarCache[cacheKey]) return avatarCache[cacheKey];
+    avatarLoading[cacheKey]=true;
+    Bridge.getSkinImage(skin,false).then(function(url){
+      avatarLoading[cacheKey]=false;
+      if(url){
+        avatarCache[cacheKey]=url;
+        render();
+      }
+    }).catch(function(error){
+      avatarLoading[cacheKey]=false;
+      console.warn('地图头像加载失败:',name,skin,error);
+    });
+    return '';
+  }
+  function withAvatar(it){if(!it)return it;if(!it['头像'])it['头像']=avatarOf(it['元素名称']);return it;}
+  function isUnitType(t){return ['友方','敌方','NPC','npc','ally','enemy','主角'].indexOf(t)>=0;}
+  function unitKey(it){return String((it&&it['元素名称'])||'').trim();}
+  var localSortieActive=!!(Bridge&&Bridge.sortieActive&&Bridge.sortieActive());
+  function sortieActive(){return localSortieActive;}
+  function clearCombatState(reason){return nativeExecuteSqlMutation('UPDATE current_chapter SET sortie_state = ? WHERE row_id = 1',['未出击'],['sheet_current_chapter']);}
+  function mapSyncApi(){try{if(window.GFLMapSync)return window.GFLMapSync;}catch(e){}try{if(window.parent&&window.parent.GFLMapSync)return window.parent.GFLMapSync;}catch(e){}return null;}
+  function normalizeMapRow(r,i){return withAvatar({'元素名称':field(r,['元素名称','element_name','name'])||('元素'+(i+1)),'元素类型':field(r,['元素类型','element_type','type'])||'NPC','X坐标':num(field(r,['X坐标','pos_x','x']),120+(i%5)*130),'Y坐标':num(field(r,['Y坐标','pos_y','y']),120+Math.floor(i/5)*120),'状态':field(r,['状态','element_status','status']),'描述':field(r,['描述','element_desc','desc']),'所属区域':field(r,['所属区域','region']),'战术背景':field(r,['战术背景','legend']),'头像':field(r,['头像','portrait','avatar'])});}
+  function readDatabaseMap(){var rows=Bridge.rows('mapElements').map(normalizeMapRow);return rows.length?rows:null;}
+  function configuredCombatNames(){var enemies={};Bridge.rows('enemyConfig').forEach(function(r){var n=String(field(r,['敌人名称','enemy_name','name'])).trim();if(n)enemies[n]=true;});return {enemies:enemies};}
+  function combatUnitAllowed(it,names){var type=String((it&&it['元素类型'])||'').trim();var name=unitKey(it);if(['敌方','enemy'].indexOf(type)>=0)return !!names.enemies[name];return true;}
+  function readCombatMap(){var rows=Bridge.rows('mapElements').map(normalizeMapRow);if(!rows.length)return null;var names=configuredCombatNames();rows=rows.filter(function(it){return combatUnitAllowed(it,names);});return rows.length?rows:null;}
+  function ensureBaseMapElements(){baseMapSeeded=true;}
+  function isSeededBaseMap(rows){var baseNames={};BASE_ITEMS.forEach(function(it){baseNames[it['元素名称']]=true;});return rows&&rows.length&&rows.every(function(it){return baseNames[it['元素名称']]||!isUnitType(it['元素类型']);});}
+  function isBaseLikeMap(rows){var baseNames={};var hasBase=false;BASE_ITEMS.forEach(function(it){baseNames[it['元素名称']]=true;});(rows||[]).forEach(function(it){if(baseNames[it['元素名称']])hasBase=true;});return !!hasBase;}
+  function buildBattleView(){var db=readCombatMap();if(db&&!isSeededBaseMap(db))return {items:db,source:'数据库地图元素表（敌方已按敌人配置过滤）'};return {items:[],source:'暂无可靠战场地图'};}
+  function readBaseItems(){var db=readDatabaseMap();if(db&&db.length&&isBaseLikeMap(db))return db;var syncer=mapSyncApi();if(syncer&&syncer.baseItems)return syncer.baseItems();return BASE_ITEMS;}
+  function typeClass(t){if(!window.GFLTacticalMap)return 'base';return window.GFLTacticalMap.typeClass(t);}
+  function renderBaseSvg(items){if(!window.GFLTacticalMap)return '';return window.GFLTacticalMap.renderBaseSvg(items);}
+  function renderCombatSvg(items,source){if(!window.GFLTacticalMap)return '';return window.GFLTacticalMap.renderCombatSvg(items,source);}
+
+  function setStatus(){document.getElementById('mode-val').textContent=D.mode==='combat'?'战斗中':'未出击';document.getElementById('loc-val').textContent=D.loc;document.getElementById('source-val').textContent=D.source;document.getElementById('mode-chip').className='gfl-chip '+(D.mode==='combat'?'combat':'base');document.getElementById('map-count').textContent=D.items.length+' 项';document.getElementById('retreat-btn').style.display=D.mode==='combat'?'inline-block':'none';}
+  function renderList(){var groups={'角色':[],'地点':[]};D.items.forEach(function(it,i){var t=it['元素类型'];var g=['地标','出口','障碍物','landmark','exit','obstacle'].indexOf(t)>=0?'地点':'角色';groups[g].push({it:it,i:i});});var html='';Object.keys(groups).forEach(function(g){if(!groups[g].length)return;html+='<div class="gfl-list-group">'+(g==='地点'?'🏛️ 地点':'👥 角色 / 单位')+'</div>';groups[g].forEach(function(x){var it=x.it;var meta=[it['元素类型'],it['所属区域'],it['状态']].filter(function(v){return v!==undefined&&v!==null&&String(v)!=='';}).map(esc).map(function(v){return '<span>'+v+'</span>';}).join('');html+='<div class="gfl-entity" data-idx="'+x.i+'"><div class="gfl-entity-name">'+esc(it['元素名称'])+'</div><div class="gfl-entity-meta"><span class="dot '+typeClass(it['元素类型'])+'"></span>'+meta+'</div></div>';});});document.getElementById('map-list').innerHTML=html||'<div class="gfl-entity">暂无地图元素</div>';}
+  function bindClicks(){document.querySelectorAll('#map-box .cm,#map-list .gfl-entity[data-idx]').forEach(function(el){el.onclick=function(e){e.stopPropagation();var idx=parseInt(this.dataset.idx,10);if(!isNaN(idx))showDetail(idx);};});applyTransform();}
+  function showDetail(idx){var it=D.items[idx];if(!it)return;document.getElementById('detail-title').textContent=it['元素名称'];document.getElementById('detail-body').innerHTML=(it['头像']?'<p><img src="'+esc(it['头像'])+'" alt="'+esc(it['元素名称'])+'" style="max-height:180px;max-width:100%;object-fit:contain;display:block;margin:0 auto 10px"></p>':'')+'<p><strong>类型：</strong>'+esc(it['元素类型'])+'</p><p><strong>坐标：</strong>('+esc(it['X坐标'])+', '+esc(it['Y坐标'])+')</p><p><strong>区域：</strong>'+esc(it['所属区域']||'-')+'</p><p><strong>状态：</strong>'+esc(it['状态']||'-')+'</p><p><strong>说明：</strong>'+esc(it['描述']||it['战术背景']||'暂无说明')+'</p>';document.getElementById('detail-mask').classList.add('open');}
+  function applyTransform(){var svg=document.querySelector('#map-box svg');if(svg)svg.style.transform='scale('+mapZoom+') translate('+(mapPan.x/mapZoom)+'px,'+(mapPan.y/mapZoom)+'px)';}
+  function resetView(){mapZoom=1;mapPan={x:0,y:0};applyTransform();}
+  function render(){if(pageDisposed||!document.getElementById('map-box'))return;var active=sortieActive();var db=active?readCombatMap():readDatabaseMap();if(active){var view=db?{items:db,source:'数据库地图元素表（敌方已按敌人配置过滤）'}:buildBattleView();D.mode='combat';D.loc='前线交战区域';D.items=view.items;D.source=view.source;document.getElementById('map-box').innerHTML=renderCombatSvg(D.items,D.source);}else{ensureBaseMapElements();D.mode='base';D.loc='格里芬前线基地';D.items=readBaseItems();D.source='基地设施 + 人形自由活动';document.getElementById('map-box').innerHTML=renderBaseSvg(D.items);}setStatus();renderList();bindClicks();}
+  function applySyncedMap(result){
+    if(!result || !result.ok || !Array.isArray(result.items)){ render(); return; }
+    var active=sortieActive();
+    D.mode=active?'combat':'base';
+    D.loc=active?'前线交战区域':'格里芬前线基地';
+    D.items=result.items.map(withAvatar);
+    if(active){var names=configuredCombatNames();D.items=D.items.filter(function(it){return combatUnitAllowed(it,names);});}
+    D.source='本次AI重绘结果';
+    document.getElementById('map-box').innerHTML=active?renderCombatSvg(D.items,D.source):renderBaseSvg(D.items);
+    setStatus();renderList();bindClicks();
+  }
+  function cleanupPage(){pageDisposed=true;mapDrag=false;if(toastTimer){window.clearTimeout(toastTimer);toastTimer=null;}}
+  window.addEventListener('pagehide',cleanupPage,{once:true});
+  window.addEventListener('beforeunload',cleanupPage,{once:true});
+  window.addEventListener('unload',cleanupPage,{once:true});
+  function initPanZoom(){var box=document.getElementById('map-box');box.addEventListener('wheel',function(e){e.preventDefault();var d=e.deltaY<0?.12:-.12;mapZoom=Math.max(.6,Math.min(3,mapZoom+d));applyTransform();},{passive:false});box.addEventListener('mousedown',function(e){if(pageDisposed||e.target.closest('.cm'))return;mapDrag=true;mapStart={x:e.clientX,y:e.clientY};panStart={x:mapPan.x,y:mapPan.y};});document.addEventListener('mousemove',function(e){if(pageDisposed||!mapDrag)return;mapPan={x:panStart.x+e.clientX-mapStart.x,y:panStart.y+e.clientY-mapStart.y};applyTransform();});document.addEventListener('mouseup',function(){mapDrag=false;});}
+document.getElementById('refresh-btn').onclick=function(){var btn=this;if(redrawInFlight){flashButton(btn,'地图正在绘制中，请等待完成');return;}redrawInFlight=true;flashButton(btn,'正在请求 AI 重绘地图...');setButtonBusy(btn,true);var done=function(){redrawInFlight=false;setButtonBusy(btn,false);};var syncer=mapSyncApi();if(syncer&&syncer.redraw){syncer.redraw().then(function(result){showToast('地图重绘完成');applySyncedMap(result);}).catch(function(e){console.warn('地图AI重绘失败:',e);showToast('地图 AI 重绘失败，已刷新当前显示');render();}).then(done,done);}else{render();showToast('地图同步器未就绪，已刷新当前显示');done();}};document.getElementById('render-btn').onclick=function(){flashButton(this,'地图显示已刷新');render();};document.getElementById('reset-view-btn').onclick=function(){flashButton(this,'地图视图已复位');resetView();};document.getElementById('retreat-btn').onclick=function(){var btn=this;flashButton(btn,'正在撤退...');setButtonBusy(btn,true);clearCombatState('retreat').then(function(){localSortieActive=false;var prompt=Bridge&&Bridge.buildRetreatPrompt?Bridge.buildRetreatPrompt():'';var sent=prompt&&Bridge&&Bridge.sendToTavern?Bridge.sendToTavern(prompt):{success:false};if(!sent.success){console.warn('撤退提示词填入失败:',sent.message||sent);showToast('已撤退，但无法自动填入撤退提示词');}else{showToast('已撤退，撤退提示词已填入酒馆输入框，请确认或修改后手动发送');}render();}).catch(function(error){console.warn('撤退失败:',error);showToast('撤退失败：'+(error&&error.message?error.message:error));render();}).then(function(){setButtonBusy(btn,false);},function(){setButtonBusy(btn,false);});};document.getElementById('detail-close').onclick=function(){flashButton(this,'详情已关闭');document.getElementById('detail-mask').classList.remove('open');};document.getElementById('detail-mask').addEventListener('click',function(e){if(e.target===this){showToast('详情已关闭');this.classList.remove('open');}});
+  applyBubbleBackground('.gfl-bg');
+  initPanZoom();render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MVU [InitVar] World Book Entry Content",
+  "description": "MVU 初始化变量条目的内容。允许任意嵌套对象；叶子节点必须是 [初始值, 字段说明] 形式的二元数组（第一个元素任意，第二个元素为字符串）。",
+  "type": "object",
+  "additionalProperties": {
+    "$ref": "#/$defs/node"
+  },
+  "$defs": {
+    "node": {
+      "oneOf": [
+        { "$ref": "#/$defs/leaf" },
+        {
+          "type": "object",
+          "additionalProperties": { "$ref": "#/$defs/node" }
+        }
+      ]
+    },
+    "leaf": {
+      "type": "array"
+    }
+  }
+}

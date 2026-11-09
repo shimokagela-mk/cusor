@@ -1,0 +1,74 @@
+uid: sheet_GlobalData
+name: 全局数据表
+sourceData:
+  note: |-
+    记录当前场景位置、时间与主角即时状态。此表有且仅有一行，所有更新必须使用 WHERE row_id = 1。
+    - 列0: 当前位置 - 从大到小，例如：澄禾科技-工程区、澄禾科技-茶水间、公司附近-餐馆。
+    - 列1: 当前时间 - 格式 YYYY-MM-DD HH:MM；开场若未写明，按当代工作日自行设定明确时间。
+    - 列2: 天数 - 故事推进天数，整数，初始为1；每经过00:00 +1。
+    - 列3: 时段 - 只能是：工作中 / 午休 / 下班后 / 周末。按正文场景选择，不确定时写工作中。
+    - 列4: 主角当前状态 - 准确记录玩家此刻正在做的具体事（写代码、开会、午饭、回家路上等）。
+
+    时间推进：逐轮展开的对话按1-8分钟累加；概述性事件按现实耗时跳跃（一顿午饭30-60分钟等）。
+    位置：每轮结束前核对并更新为角色此刻实际所在地。
+  initNode: |-
+    故事初始化时插入唯一一行。开场默认澄禾科技内、工作日白天。
+    SQL示例: INSERT INTO global_state (row_id, current_location, cur_time, day_count, time_slot, protagonist_action) VALUES (1, '澄禾科技-工程区', '2026-03-10 10:15', 1, '工作中', '在工位处理手头任务');
+  deleteNode: 禁止删除。
+  updateNode: |-
+    每轮更新当前位置、当前时间、天数、时段、主角当前状态。
+    SQL示例: UPDATE global_state SET current_location = '澄禾科技-茶水间', cur_time = '2026-03-10 10:22', day_count = 1, time_slot = '工作中', protagonist_action = '在茶水间偶遇同事短暂交谈' WHERE row_id = 1;
+  insertNode: 禁止操作。
+  ddl: |-
+    CREATE TABLE global_state ( -- 全局数据表
+      row_id INTEGER PRIMARY KEY, -- 行号
+      current_location TEXT NOT NULL, -- 当前位置
+      cur_time TEXT NOT NULL CHECK(cur_time GLOB '????-??-?? ??:??'), -- 当前时间
+      day_count INTEGER NOT NULL DEFAULT 1 CHECK(day_count >= 1), -- 天数
+      time_slot TEXT NOT NULL DEFAULT '工作中' CHECK(time_slot IN ('工作中', '午休', '下班后', '周末')), -- 时段
+      protagonist_action TEXT NOT NULL -- 主角当前状态
+    );
+content:
+  - - row_id
+    - 当前位置
+    - 当前时间
+    - 天数
+    - 时段
+    - 主角当前状态
+updateConfig:
+  uiSentinel: -1
+  contextDepth: 4
+  updateFrequency: 1
+  batchSize: 2
+  skipFloors: -1
+  groupId: 1
+exportConfig:
+  enabled: false
+  splitByRow: false
+  entryName: 全局数据表
+  entryType: constant
+  keywords: ""
+  preventRecursion: true
+  injectionTemplate: ""
+  extraIndexEnabled: false
+  extraIndexEntryName: 全局数据表-索引
+  extraIndexColumns: []
+  extraIndexColumnModes: {}
+  extraIndexInjectionTemplate: ""
+  entryPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 10000
+  extraIndexPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 10010
+  fixedEntryPlacement:
+    position: before_char
+    depth: 2
+    order: 99981
+  fixedIndexPlacement:
+    position: before_char
+    depth: 2
+    order: 99982
+orderNo: 1

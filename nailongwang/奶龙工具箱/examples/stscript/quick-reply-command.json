@@ -1,0 +1,48 @@
+{
+  "version": 2,
+  "name": "STscript Quick Reply Commands",
+  "disableSend": false,
+  "placeBeforeInput": false,
+  "injectInput": false,
+  "color": "rgba(0, 0, 0, 0)",
+  "onlyBorderColor": false,
+  "qrList": [
+    {
+      "id": 1,
+      "showLabel": true,
+      "label": "Set Flag",
+      "title": "Set a placeholder variable and echo it.",
+      "message": "/setvar key=example_flag true | /echo example_flag={{pipe}}",
+      "contextList": [],
+      "preventAutoExecute": false,
+      "isHidden": false,
+      "executeOnStartup": false,
+      "executeOnUser": false,
+      "executeOnAi": false,
+      "executeOnChatChange": false,
+      "executeOnGroupMemberDraft": false,
+      "executeOnNewChat": false,
+      "executeBeforeGeneration": false,
+      "automationId": ""
+    },
+    {
+      "id": 2,
+      "showLabel": true,
+      "label": "Send Placeholder",
+      "title": "Send a placeholder message.",
+      "message": "/send Placeholder message.",
+      "contextList": [],
+      "preventAutoExecute": true,
+      "isHidden": false,
+      "executeOnStartup": false,
+      "executeOnUser": false,
+      "executeOnAi": false,
+      "executeOnChatChange": false,
+      "executeOnGroupMemberDraft": false,
+      "executeOnNewChat": false,
+      "executeBeforeGeneration": false,
+      "automationId": ""
+    }
+  ],
+  "idIndex": 2
+}

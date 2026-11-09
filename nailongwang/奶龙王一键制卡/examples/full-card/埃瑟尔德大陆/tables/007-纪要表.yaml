@@ -1,0 +1,79 @@
+uid: sheet_3NoMc1wI
+name: 纪要表
+sourceData:
+  note: |
+    轮次日志，每轮交互后必须立即插入一条新记录。一行代表一轮或一个连续片段的客观纪要。
+    - 列0: 时间跨度 - 本轮事件发生的时间范围，推荐格式：YYYY-MM-DD HH:MM~HH:MM；时间不精确时写剧情可确认的范围。
+    - 列1: 地点 - 本轮事件发生的地点，从大到小描述。
+    - 列2: 纪要 - 以第三方视角客观记录本轮事件，不得加入推测、情绪化语言、负面解读或主观判断。内容必须基于正文明确发生的事实，不得补充未出现的情节；信息过长时压缩次要细节，保留关键事实。
+    - 列3: 概览 - 一句话概括纪要内容，建议30字以内；超过时自行压缩，不依赖SQL硬限制。
+    - 列4: 编码索引 - 推荐格式 AM01、AM02、AM03 递增；若已有最大编号，则在其基础上递增。
+  initNode: 故事初始化时，插入一条新记录用于记录初始化剧情。
+  deleteNode: 禁止删除。纪要是历史记录，错误修正也应通过后续纪要说明，不删除旧记录。
+  updateNode: 禁止操作。纪要表只追加，不覆盖历史。
+  insertNode: |-
+    每轮交互结束后必须插入一条新记录。编码索引按已有最大编号递增。
+    SQL示例: INSERT INTO chronicle (row_id, time_span, location, summary_note, overview, code_index) VALUES ((SELECT COALESCE(MAX(row_id), 0)+1 FROM chronicle), '2024-03-15 10:00~10:30', '王城·集市', '纪要内容...', '一句话概要', 'AM01');
+  ddl: |-
+    CREATE TABLE chronicle ( -- 纪要表
+      row_id INTEGER PRIMARY KEY, -- 行号
+      time_span TEXT NOT NULL, -- 时间跨度
+      location TEXT NOT NULL, -- 地点
+      summary_note TEXT NOT NULL, -- 纪要
+      overview TEXT NOT NULL, -- 概览
+      code_index TEXT NOT NULL UNIQUE -- 编码索引
+    );
+content:
+  - - row_id
+    - 时间跨度
+    - 地点
+    - 纪要
+    - 概览
+    - 编码索引
+updateConfig:
+  uiSentinel: -1
+  contextDepth: -1
+  updateFrequency: -1
+  batchSize: -1
+  skipFloors: -1
+  groupId: 2
+exportConfig:
+  enabled: true
+  splitByRow: true
+  entryName: 纪要
+  entryType: keyword
+  keywords: 编码索引
+  preventRecursion: true
+  injectionTemplate: |-
+    <记忆回溯>
+    $1
+    </记忆回溯>
+  extraIndexEnabled: true
+  extraIndexEntryName: 纪要索引
+  extraIndexColumns:
+    - 概览
+    - 编码索引
+  extraIndexColumnModes:
+    概览: index_only
+    编码索引: both
+  extraIndexInjectionTemplate: |-
+    <已发生的事件概览>
+    $1
+    </已发生的事件概览>
+  entryPlacement:
+    position: at_depth_as_system
+    depth: 999
+    order: 10000
+  extraIndexPlacement:
+    position: at_depth_as_system
+    depth: 1000
+    order: 10010
+  fixedEntryPlacement:
+    position: at_depth_as_system
+    depth: 9999
+    order: 99987
+  fixedIndexPlacement:
+    position: at_depth_as_system
+    depth: 9999
+    order: 99988
+orderNo: 6
