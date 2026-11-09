@@ -57,6 +57,10 @@ body{font-family:"IBM Plex Sans","Noto Sans SC",sans-serif;background:linear-gra
     <div class="tabs" id="tabs"></div>
     <div class="list" id="list"></div>
   </section>
+  <section class="panel">
+    <div class="h">把柄清单</div>
+    <div class="list" id="leverage"></div>
+  </section>
 </div>
 <script>
 /* 公司生活 · 表格数据桥（只读展示用） */
@@ -68,6 +72,7 @@ body{font-family:"IBM Plex Sans","Noto Sans SC",sans-serif;background:linear-gra
     characters: { name: '重要角色表', uid: 'sheet_NcBlYRH5' },
     affinity: { name: '好感进度表', uid: 'sheet_Affinity' },
     corruption: { name: '堕落服从表', uid: 'sheet_Corruption' },
+    leverage: { name: '把柄清单表', uid: 'sheet_Leverage' },
     chronicle: { name: '纪要表', uid: 'sheet_3NoMc1wI' }
   };
 
@@ -146,17 +151,19 @@ body{font-family:"IBM Plex Sans","Noto Sans SC",sans-serif;background:linear-gra
 
   function snapshot() {
     var all = exportAll();
-    if (!all) return { ok: false, reason: 'API不可用或尚未导入表格', global: null, characters: [], affinity: [], corruption: [] };
+    if (!all) return { ok: false, reason: 'API不可用或尚未导入表格', global: null, characters: [], affinity: [], corruption: [], leverage: [] };
     var gSheet = findSheet(all, TABLES.global);
     var cSheet = findSheet(all, TABLES.characters);
     var aSheet = findSheet(all, TABLES.affinity);
     var dSheet = findSheet(all, TABLES.corruption);
+    var lSheet = findSheet(all, TABLES.leverage);
     return {
       ok: true,
       global: firstRow(gSheet),
       characters: rowsAsObjects(cSheet),
       affinity: rowsAsObjects(aSheet),
-      corruption: rowsAsObjects(dSheet)
+      corruption: rowsAsObjects(dSheet),
+      leverage: rowsAsObjects(lSheet)
     };
   }
 
@@ -251,6 +258,7 @@ function render(snap){
     warn.textContent=(snap&&snap.reason)||'请先在开场白点击导入';
     document.getElementById('tabs').innerHTML='';
     document.getElementById('list').innerHTML='';
+    document.getElementById('leverage').innerHTML='';
     return;
   }
   warn.textContent='';
@@ -265,7 +273,9 @@ function render(snap){
 
   var aff=nameMap(snap.affinity);
   var cor=nameMap(snap.corruption);
-  var chars=snap.characters||[];
+  var mainNames={'尹安琪':1,'陈亦勤':1,'丁丁':1};
+  var chars=(snap.characters||[]).filter(function(c){ return mainNames[c['姓名']]; });
+  if(!chars.length) chars=snap.characters||[];
   var tabs=document.getElementById('tabs');
   tabs.innerHTML=chars.map(function(c){
     var n=c['姓名']||'';
@@ -296,6 +306,15 @@ function render(snap){
       '<div class="sub">堕落 '+B.esc(corruption)+'/100 · 服从 '+B.esc(obedience)+'/100</div>'+
     '</article>';
   }).join('') || '<div class="warn">重要角色表暂无数据</div>';
+
+  var lev=(snap.leverage||[]).filter(function(r){ return r['状态']!=='已销毁'; });
+  document.getElementById('leverage').innerHTML=lev.length?lev.map(function(r){
+    return '<article class="card">'+
+      '<div class="name">'+B.esc(r['对象']||'')+' · '+B.esc(r['类型']||'')+' · 强度'+B.esc(r['强度']||'')+'</div>'+
+      '<div class="row">'+B.esc(r['内容摘要']||'')+'</div>'+
+      '<div class="sub">状态 '+B.esc(r['状态']||'—')+(r['备注']?('；'+B.esc(r['备注'])):'')+'</div>'+
+    '</article>';
+  }).join(''):'<div class="warn">暂无把柄</div>';
 
   if(!selectedName && chars[0] && chars[0]['姓名']) setPortrait(chars[0]['姓名']);
   else setPortrait(selectedName);

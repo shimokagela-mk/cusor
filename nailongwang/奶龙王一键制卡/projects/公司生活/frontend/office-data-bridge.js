@@ -7,6 +7,7 @@
     characters: { name: '重要角色表', uid: 'sheet_NcBlYRH5' },
     affinity: { name: '好感进度表', uid: 'sheet_Affinity' },
     corruption: { name: '堕落服从表', uid: 'sheet_Corruption' },
+    leverage: { name: '把柄清单表', uid: 'sheet_Leverage' },
     chronicle: { name: '纪要表', uid: 'sheet_3NoMc1wI' }
   };
 
@@ -85,17 +86,19 @@
 
   function snapshot() {
     var all = exportAll();
-    if (!all) return { ok: false, reason: 'API不可用或尚未导入表格', global: null, characters: [], affinity: [], corruption: [] };
+    if (!all) return { ok: false, reason: 'API不可用或尚未导入表格', global: null, characters: [], affinity: [], corruption: [], leverage: [] };
     var gSheet = findSheet(all, TABLES.global);
     var cSheet = findSheet(all, TABLES.characters);
     var aSheet = findSheet(all, TABLES.affinity);
     var dSheet = findSheet(all, TABLES.corruption);
+    var lSheet = findSheet(all, TABLES.leverage);
     return {
       ok: true,
       global: firstRow(gSheet),
       characters: rowsAsObjects(cSheet),
       affinity: rowsAsObjects(aSheet),
-      corruption: rowsAsObjects(dSheet)
+      corruption: rowsAsObjects(dSheet),
+      leverage: rowsAsObjects(lSheet)
     };
   }
 
