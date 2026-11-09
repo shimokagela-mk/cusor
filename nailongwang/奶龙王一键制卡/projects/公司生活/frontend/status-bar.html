@@ -273,7 +273,7 @@ function render(snap){
 
   var aff=nameMap(snap.affinity);
   var cor=nameMap(snap.corruption);
-  var mainNames={'尹安琪':1,'陈亦勤':1,'丁丁':1};
+  var mainNames={'尹安琪':1,'陈亦勤':1,'丁丁':1,'婉婷':1};
   var chars=(snap.characters||[]).filter(function(c){ return mainNames[c['姓名']]; });
   if(!chars.length) chars=snap.characters||[];
   var tabs=document.getElementById('tabs');

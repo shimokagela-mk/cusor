@@ -2,7 +2,7 @@ uid: sheet_Corruption
 name: 堕落服从表
 sourceData:
   note: |-
-    记录三人黑深渊进度。一行一个角色。与好感表分离：好感≠服从。
+    记录核心女角色黑深渊进度（含婉婷成年乱伦线）。一行一个角色。与好感表分离：好感≠服从。
     - 列0: 角色名 - 业务主键。
     - 列1: 堕落 - 0到100。性羞耻被突破、公开风险、把柄累积程度。
     - 列2: 服从 - 0到100。对玩家指令的即时听从程度。
@@ -18,11 +18,12 @@ sourceData:
 
     变化口径：有效黑化互动 +3~12；强烈公开/强制成功 +8~15；成功反制可令服从-5~10（堕落未必降）。无互动不涨。
   initNode: |-
-    初始化三人各一行，堕落0，服从0，当前玩法标记「无」。
+    初始化尹安琪、陈亦勤、丁丁、婉婷各一行，堕落0，服从0，当前玩法标记「无」。
     SQL示例: INSERT INTO corruption (row_id, char_name, corruption, obedience, play_flag, note) VALUES (1, '尹安琪', 0, 0, '无', '');
+    SQL示例: INSERT INTO corruption (row_id, char_name, corruption, obedience, play_flag, note) VALUES (4, '婉婷', 0, 0, '无', '成年乱伦线');
   deleteNode: 禁止删除。
   updateNode: |-
-    本轮出现有效黑化/强制/公开/玩具/通话NTR等时更新堕落、服从、玩法标记与备注。
+    本轮出现有效黑化/强制/公开/玩具/通话NTR/乱伦推进等时更新堕落、服从、玩法标记与备注。
     SQL示例: UPDATE corruption SET corruption = 45, obedience = 38, play_flag = '上班玩具', note = '绿色遥控；开会差点出声' WHERE char_name = '尹安琪';
   insertNode: |-
     仅当新的长期黑化对象进入核心线时添加。
@@ -61,6 +62,12 @@ content:
     - 0
     - 无
     - ""
+  - - 4
+    - 婉婷
+    - 0
+    - 0
+    - 无
+    - 成年乱伦线
 updateConfig:
   uiSentinel: -1
   contextDepth: 4
