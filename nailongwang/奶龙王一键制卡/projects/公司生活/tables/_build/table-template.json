@@ -86,7 +86,7 @@
     "name": "重要角色表",
     "sourceData": {
       "note": "记录关键NPC档案与即时状态。一行一个角色；路人、一次性访客不要写入。\n- 列0: 姓名 - 业务主键，同名需加身份区分。\n- 列1: 一句话介绍 - ≤15字概括身份（部门/岗位）。\n- 列2: 外貌特征 - 外貌与当前衣着的客观描述。\n- 列3: 当前状态 - 此刻在做什么、情绪或是否在场可互动。\n- 列4: 与玩家关系 - 只能是：陌生 / 同事 / 熟人 / 暧昧 / 疏远。按互动结果更新，不开局默认暧昧。\n- 列5: 是否在场 - 是/否；不在当前可互动范围写否。\n\n更新规则：外貌随衣着变化更新；关系只在正文出现实质互动后调整一档或维持；勿无故清空经历式描述。",
-      "initNode": "初始化时为尹安琪、陈亦勤、丁丁各插入一行；与玩家关系默认同事；是否在场按开场场景填写。\nSQL示例: INSERT INTO important_characters (row_id, name, brief_intro, appearance, current_status, relation_to_player, is_present) VALUES (1, '尹安琪', '市场部职员', '163左右，少笑，步态偏性感', '在市场区工位', '同事', '是');",
+      "initNode": "初始化时为尹安琪、陈亦勤、丁丁各插入一行（在场，关系=同事）；并为周予安、张恒各插入一行（默认不在场，关系=陌生）。\nSQL示例: INSERT INTO important_characters (row_id, name, brief_intro, appearance, current_status, relation_to_player, is_present) VALUES (1, '尹安琪', '市场部职员', '163左右，少笑，步态偏性感', '在市场区工位', '同事', '是');\nSQL示例: INSERT INTO important_characters (row_id, name, brief_intro, appearance, current_status, relation_to_player, is_present) VALUES (4, '周予安', '陈亦勤丈夫', '温和清爽', '默认不在公司', '陌生', '否');",
       "deleteNode": "禁止删除。离场、结婚状态变化等都用 UPDATE。",
       "updateNode": "已有角色状态、衣着、在场、与玩家关系变化时更新。\nSQL示例: UPDATE important_characters SET current_status = '茶水间接水', appearance = '超短裤，白腿明显', is_present = '是', relation_to_player = '熟人' WHERE name = '陈亦勤';",
       "insertNode": "剧情中出现未记录且会反复互动的重要人物时添加（如直属领导、丈夫登场且持续互动）。\nSQL示例: INSERT INTO important_characters (row_id, name, brief_intro, appearance, current_status, relation_to_player, is_present) VALUES ((SELECT COALESCE(MAX(row_id),0)+1 FROM important_characters), '新角色', '身份简述', '外貌', '当前状态', '同事', '是');",
@@ -128,6 +128,24 @@
         "在后勤区域办事",
         "同事",
         "是"
+      ],
+      [
+        4,
+        "周予安",
+        "陈亦勤丈夫",
+        "温和清爽，穿着随意",
+        "默认不在公司",
+        "陌生",
+        "否"
+      ],
+      [
+        5,
+        "张恒",
+        "丁丁丈夫",
+        "务实，气质偏护短",
+        "默认不在公司",
+        "陌生",
+        "否"
       ]
     ],
     "updateConfig": {
