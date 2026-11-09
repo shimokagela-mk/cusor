@@ -3,41 +3,47 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>下载：公司生活角色卡 v0.6.12</title>
+<title>公司生活角色卡 · 下载</title>
 <style>
-  :root { color-scheme: dark; }
   body{font-family:"Segoe UI",sans-serif;background:#0b1220;color:#e5eefc;margin:0;min-height:100vh;display:grid;place-items:center}
-  .card{width:min(92vw,440px);background:#121a2b;border:1px solid #243049;border-radius:16px;padding:28px 24px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
-  h1{font-size:1.35rem;margin:0 0 8px}
-  p{margin:0 0 18px;color:#9fb0c9;line-height:1.6}
+  .card{width:min(92vw,460px);background:#121a2b;border:1px solid #243049;border-radius:16px;padding:28px 24px}
+  h1{font-size:1.3rem;margin:0 0 8px}
+  p{margin:0 0 14px;color:#9fb0c9;line-height:1.6;font-size:.95rem}
   button,a.btn{display:block;width:100%;box-sizing:border-box;text-align:center;text-decoration:none;border:0;border-radius:10px;padding:14px 16px;margin:10px 0;font-weight:700;font-size:1rem;cursor:pointer}
   .primary{background:#3b82f6;color:#fff}
   .secondary{background:#1e293b;color:#dbeafe;border:1px solid #334155}
-  .ghost{background:transparent;color:#9fb0c9;border:1px dashed #334155}
-  small{display:block;margin-top:14px;color:#7f92ab;font-size:12px;line-height:1.5}
-  .status{min-height:1.2em;margin:8px 0 0;color:#86efac;font-size:13px}
+  .status{min-height:1.3em;margin-top:10px;font-size:13px;color:#86efac}
   .err{color:#fca5a5}
+  small{display:block;margin-top:12px;color:#7f92ab;font-size:12px;line-height:1.5;word-break:break-all}
 </style>
 </head>
 <body>
   <div class="card">
-    <h1>公司生活 · v0.6.12</h1>
-    <p>点按钮会<strong>强制下载</strong>到手机/电脑（不是打开预览）。推荐先下 ZIP。</p>
-    <button type="button" class="primary" id="dlZip">下载 ZIP（推荐）</button>
-    <button type="button" class="secondary" id="dlJson">下载 JSON</button>
-    <button type="button" class="ghost" id="dlPrompt">下载主提示词 txt</button>
-    <button type="button" class="ghost" id="dlPrefs">下载喜好文档</button>
+    <h1>公司生活 · v0.6.13</h1>
+    <p>本页不内嵌角色卡。文件从 GitHub 拉取。点按钮强制下载；不行就「浏览器打开」再另存为。</p>
+    <button type="button" class="primary" id="dlJson">强制下载 JSON</button>
+    <a class="btn secondary" id="openJson" target="_blank" rel="noopener">浏览器打开 JSON</a>
+    <button type="button" class="secondary" id="dlPrompt">强制下载主提示词</button>
+    <a class="btn secondary" id="openPrompt" target="_blank" rel="noopener">浏览器打开主提示词</a>
     <p class="status" id="status"></p>
-    <small>
-      导入 SillyTavern：角色管理 → 导入 → 选 JSON → 开新聊天。<br>
-      Mini 主提示：清空后粘贴 txt 全文（不要追加）。
-    </small>
+    <small id="hint"></small>
   </div>
   <script>
+    const jsonUrl =
+      'https://raw.githubusercontent.com/shimokagela-mk/cusor/cursor/company-life-card-pack-96ab/' +
+      ['nailongwang','奶龙王一键制卡','projects','公司生活','release','公司生活.json'].map(encodeURIComponent).join('/');
+    const promptUrl =
+      'https://raw.githubusercontent.com/shimokagela-mk/cusor/cursor/card-download-page-96ab/' +
+      ['card-download','prompt.txt'].map(encodeURIComponent).join('/');
+
+    document.getElementById('openJson').href = jsonUrl;
+    document.getElementById('openPrompt').href = promptUrl;
+    document.getElementById('hint').textContent = '直链：' + jsonUrl;
+
     async function forceDownload(url, filename) {
       const status = document.getElementById('status');
       status.className = 'status';
-      status.textContent = '正在拉取 ' + filename + ' …';
+      status.textContent = '拉取中…';
       try {
         const res = await fetch(url, { cache: 'no-store' });
         if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -46,31 +52,19 @@
         const a = document.createElement('a');
         a.href = objectUrl;
         a.download = filename;
-        a.rel = 'noopener';
         document.body.appendChild(a);
         a.click();
         a.remove();
-        setTimeout(() => URL.revokeObjectURL(objectUrl), 1500);
+        setTimeout(() => URL.revokeObjectURL(objectUrl), 2000);
         status.textContent = '已触发下载：' + filename;
       } catch (e) {
         status.className = 'status err';
-        status.textContent = '自动下载失败，请长按备用链接另存为。';
+        status.textContent = '自动下载失败：请点「浏览器打开」后另存为。';
         console.error(e);
       }
     }
-    document.getElementById('dlZip').onclick = () =>
-      forceDownload('company-life-card-v0.6.12.zip', 'company-life-card-v0.6.12.zip');
-    document.getElementById('dlJson').onclick = () =>
-      forceDownload('公司生活.json', '公司生活.json');
-    document.getElementById('dlPrompt').onclick = () =>
-      forceDownload('主提示-替换用-公司生活.txt', '主提示-替换用-公司生活.txt');
-    document.getElementById('dlPrefs').onclick = () =>
-      forceDownload('user-preferences-公司生活.md', 'user-preferences-公司生活.md');
+    document.getElementById('dlJson').onclick = () => forceDownload(jsonUrl, '公司生活.json');
+    document.getElementById('dlPrompt').onclick = () => forceDownload(promptUrl, '主提示-替换用-公司生活.txt');
   </script>
-  <noscript>
-    <p style="text-align:center">
-      <a class="btn primary" href="company-life-card-v0.6.12.zip" download>下载 ZIP</a>
-    </p>
-  </noscript>
 </body>
 </html>
