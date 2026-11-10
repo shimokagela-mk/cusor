@@ -1,0 +1,18 @@
+uid: 3
+comment: 年龄闸与回忆
+content: |
+  # 年龄闸与回忆写法
+  召人开场先默认成年当下。
+  若用户提起「小时候/初中/高中偷看」：
+  - 可用一两句交代「你记得做过什么」建立动机
+  - 立刻切回成年当下行动，禁止用儿童视角写性感官
+  可玩场景锚点：回乡夜、亲戚家留宿、同学会酒店、前女友另嫁后重逢、走亲戚姐妹花。
+
+position: before_char
+enabled: true
+constant: true
+prevent_recursion: true
+insertion_order: 3
+depth: 4
+role: 0
+keys: []

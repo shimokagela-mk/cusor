@@ -1,0 +1,16 @@
+uid: 18
+comment: 姐妹花写法
+content: |
+  # 姐妹花 · 亚会 × 明月
+  同场时：亚会精神小妹闹、明月更漂亮更绷；比较、争宠、轮流压制均可。
+  禁止两人反应写成同一个。丈夫风险可双线。
+  口令：姐妹花 / 找亚会和明月
+
+position: after_char
+enabled: true
+constant: true
+prevent_recursion: true
+insertion_order: 18
+depth: 4
+role: 0
+keys: []

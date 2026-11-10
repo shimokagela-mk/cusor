@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>故人录 · 剧情推进</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:transparent;font-family:"IBM Plex Sans","Noto Sans SC",sans-serif;color:#0f172a;font-size:13px;line-height:1.7}
+.panel{border:1px solid rgba(15,23,42,.12);border-radius:6px;overflow:hidden;background:linear-gradient(160deg,#f8fafc,#eef2ff)}
+.head{padding:14px 16px;border-bottom:1px solid rgba(15,23,42,.08)}
+.head h1{font-size:16px;font-weight:800}
+.head p{margin-top:4px;color:#64748b;font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:12px 16px}
+@media(max-width:720px){.grid{grid-template-columns:1fr}}
+.card{background:#fff;border:1px solid rgba(15,23,42,.1);border-radius:6px;padding:10px 12px;min-width:0}
+.card .k{font-size:11px;color:#64748b;letter-spacing:.04em;margin-bottom:4px}
+.card .v{white-space:pre-wrap;word-break:break-word}
+.card .v.empty{color:#b45309}
+</style>
+</head>
+<body>
+<div class="panel">
+  <div class="head">
+    <h1>本轮推进摘要</h1>
+    <p>只展示预设已输出标签；recall 为空时显示（空），不补造。</p>
+  </div>
+  <div class="grid" id="grid"></div>
+</div>
+<script>
+(function(){
+'use strict';
+function roots(){var a=[];try{a.push(window);}catch(e){}try{if(window.parent)a.push(window.parent);}catch(e){}try{if(window.top)a.push(window.top);}catch(e){}return a;}
+function getChat(){
+  var rs=roots();
+  for(var i=0;i<rs.length;i++){
+    try{
+      var root=rs[i];
+      var ctx=root.SillyTavern&&root.SillyTavern.getContext?root.SillyTavern.getContext():(root.getContext?root.getContext():null);
+      if(ctx&&Array.isArray(ctx.chat)) return ctx.chat;
+    }catch(e){}
+  }
+  return null;
+}
+function esc(s){return String(s==null?'':s).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+function escapeRegex(s){return String(s).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}
+function sourcesOf(msg){
+  var out=[], seen={};
+  function add(v){if(typeof v!=='string')return; var t=v.trim(); if(!t||seen[t])return; seen[t]=1; out.push(t);}
+  if(!msg)return out;
+  add(msg.mes); add(msg.qrf_plot); if(msg.extra) add(msg.extra.qrf_plot);
+  return out;
+}
+function extractTag(tagName){
+  var chat=getChat(); if(!chat) return '';
+  var re=new RegExp('<'+escapeRegex(tagName)+'>\\s*([\\s\\S]*?)\\s*<\\/'+escapeRegex(tagName)+'>','i');
+  for(var i=chat.length-1;i>=0;i--){
+    var srcs=sourcesOf(chat[i]);
+    for(var j=0;j<srcs.length;j++){
+      var m=srcs[j].match(re);
+      if(m) return String(m[1]||'').trim();
+    }
+  }
+  return '';
+}
+var fields=[
+  {k:'scene',label:'场景'},
+  {k:'present',label:'在场'},
+  {k:'affection',label:'好感口径'},
+  {k:'next',label:'下轮方向'},
+  {k:'dm',label:'场合判定'},
+  {k:'recall',label:'recall'}
+];
+document.getElementById('grid').innerHTML=fields.map(function(f){
+  var v=extractTag(f.k);
+  var show=v || (f.k==='recall'?'（空）':'（本轮未输出）');
+  return '<div class="card"><div class="k">'+esc(f.label)+'</div><div class="v'+(v?'':' empty')+'">'+esc(show)+'</div></div>';
+}).join('');
+})();
+</script>
+</body>
+</html>

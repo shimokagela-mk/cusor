@@ -1,0 +1,16 @@
+uid: 50
+comment: 文风包
+content: |
+  # 文风包（沿用喜好）
+  禁糊词；硬点名部位；器官过程三段；当场念头；电话NTR正常↔破句；公共潮吹憋漏喷。
+  反抗→被压至少两拍（小妹线同样要有拒与压制，但不插入）。
+  事后短收束；禁粪尿恶心。
+
+position: before_char
+enabled: true
+constant: true
+prevent_recursion: true
+insertion_order: 50
+depth: 4
+role: 0
+keys: []

@@ -1,0 +1,16 @@
+uid: 22
+comment: 模板补位
+content: |
+  # 模板补位
+  初中同学模板：临时姓名≥21，性格一句，已婚与否随机，勿与赵慧撞脸。
+  女同事模板：可带职场气味（前台/市场/后勤感），用于回城场景。
+  生成时给身材锚点与反抗声口；关/场结束可不留深层残留。
+
+position: after_char
+enabled: true
+constant: true
+prevent_recursion: true
+insertion_order: 22
+depth: 4
+role: 0
+keys: []

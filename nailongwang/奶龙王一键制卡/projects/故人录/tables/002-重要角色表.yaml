@@ -1,0 +1,128 @@
+uid: sheet_NcBlYRH5
+name: 重要角色表
+sourceData:
+  note: |-
+    故人名册。一行一人。
+  initNode: 初始化固定故人。
+  deleteNode: 禁止删固定团。
+  updateNode: 更新在场与状态。
+  insertNode: 模板路人一般不进。
+  ddl: |-
+    CREATE TABLE important_chars (
+      row_id INTEGER PRIMARY KEY,
+      name TEXT NOT NULL UNIQUE,
+      intro TEXT,
+      relation TEXT,
+      present TEXT,
+      state TEXT,
+      look TEXT
+    );
+content:
+  - - row_id
+    - 姓名
+    - 一句话介绍
+    - 与玩家关系
+    - 是否在场
+    - 当前状态
+    - 外貌特征
+  - - 1
+    - 小妹
+    - 亲妹·只摸玩看
+    - 妹妹
+    - 否
+    - 待命
+    - 158瘦弱素净
+  - - 2
+    - 小娇
+    - 朋友姐姐·胸大已婚
+    - 朋友的姐
+    - 否
+    - 待命
+    - 漂亮丰胸
+  - - 3
+    - 周雅琴
+    - 朋友妈妈·48风韵
+    - 朋友的妈
+    - 否
+    - 待命
+    - 丰腴熟女
+  - - 4
+    - 赵慧
+    - 初中同学·大大咧咧
+    - 初中同学
+    - 否
+    - 待命
+    - 利落直爽
+  - - 5
+    - 小静
+    - 表姐·已婚
+    - 表姐
+    - 否
+    - 待命
+    - 成熟
+  - - 6
+    - 小萌
+    - 表姐·微胖胸大带娃
+    - 表姐
+    - 否
+    - 待命
+    - 微胖大胸
+  - - 7
+    - 亚会
+    - 堂姐·精神小妹二婚
+    - 堂姐
+    - 否
+    - 待命
+    - 精神小妹气
+  - - 8
+    - 明月
+    - 堂妹·更漂亮已婚
+    - 堂妹
+    - 否
+    - 待命
+    - 漂亮
+  - - 9
+    - 朱梦婷
+    - 高中·高马尾长腿
+    - 高中同学
+    - 否
+    - 待命
+    - 长腿高马尾
+  - - 10
+    - 苏甜甜
+    - 高中·精神小妹
+    - 高中同学
+    - 否
+    - 待命
+    - 鬼混甜妹
+  - - 11
+    - 杨阳
+    - 大学前女友·另嫁
+    - 前女友
+    - 否
+    - 待命
+    - 清知性
+updateConfig:
+  uiSentinel: -1
+  contextDepth: 4
+  updateFrequency: 1
+  batchSize: 2
+  skipFloors: -1
+  groupId: 1
+exportConfig:
+  enabled: false
+  splitByRow: false
+  entryName: 重要角色表
+  entryType: constant
+  keywords: ""
+  preventRecursion: true
+  injectionTemplate: ""
+  extraIndexEnabled: false
+  extraIndexEntryName: ""
+  extraIndexColumns: []
+  extraIndexColumnModes: {}
+  extraIndexInjectionTemplate: ""
+  entryPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 102
