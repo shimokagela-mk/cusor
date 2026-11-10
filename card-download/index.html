@@ -6,10 +6,10 @@
 <title>公司生活角色卡 · 下载</title>
 <style>
   body{font-family:"Segoe UI",sans-serif;background:#0b1220;color:#e5eefc;margin:0;min-height:100vh;display:grid;place-items:center}
-  .card{width:min(92vw,460px);background:#121a2b;border:1px solid #243049;border-radius:16px;padding:28px 24px}
+  .card{width:min(92vw,480px);background:#121a2b;border:1px solid #243049;border-radius:16px;padding:28px 24px}
   h1{font-size:1.3rem;margin:0 0 8px}
-  p{margin:0 0 14px;color:#9fb0c9;line-height:1.6;font-size:.95rem}
-  button,a.btn{display:block;width:100%;box-sizing:border-box;text-align:center;text-decoration:none;border:0;border-radius:10px;padding:14px 16px;margin:10px 0;font-weight:700;font-size:1rem;cursor:pointer}
+  p{margin:0 0 12px;color:#9fb0c9;line-height:1.6;font-size:.95rem}
+  button,a.btn{display:block;width:100%;box-sizing:border-box;text-align:center;text-decoration:none;border:0;border-radius:10px;padding:14px 16px;margin:8px 0;font-weight:700;font-size:1rem;cursor:pointer}
   .primary{background:#3b82f6;color:#fff}
   .secondary{background:#1e293b;color:#dbeafe;border:1px solid #334155}
   .status{min-height:1.3em;margin-top:10px;font-size:13px;color:#86efac}
@@ -19,52 +19,58 @@
 </head>
 <body>
   <div class="card">
-    <h1>公司生活 · v0.6.13</h1>
-    <p>本页不内嵌角色卡。文件从 GitHub 拉取。点按钮强制下载；不行就「浏览器打开」再另存为。</p>
-    <button type="button" class="primary" id="dlJson">强制下载 JSON</button>
+    <h1>公司生活 · v0.6.15</h1>
+    <p>GitHub 打不开就用镜像。先点强制下载；失败再点「打开」另存为。</p>
+    <button type="button" class="primary" id="dlJson">强制下载 JSON（镜像）</button>
     <a class="btn secondary" id="openJson" target="_blank" rel="noopener">浏览器打开 JSON</a>
-    <button type="button" class="secondary" id="dlPrompt">强制下载主提示词</button>
+    <button type="button" class="secondary" id="dlPrompt">强制下载主提示词（镜像）</button>
     <a class="btn secondary" id="openPrompt" target="_blank" rel="noopener">浏览器打开主提示词</a>
     <p class="status" id="status"></p>
     <small id="hint"></small>
   </div>
   <script>
-    const jsonUrl =
-      'https://raw.githubusercontent.com/shimokagela-mk/cusor/cursor/company-life-card-pack-96ab/' +
-      ['nailongwang','奶龙王一键制卡','projects','公司生活','release','公司生活.json'].map(encodeURIComponent).join('/');
-    const promptUrl =
-      'https://raw.githubusercontent.com/shimokagela-mk/cusor/cursor/card-download-page-96ab/' +
-      ['card-download','prompt.txt'].map(encodeURIComponent).join('/');
+    const enc = (parts) => parts.map(encodeURIComponent).join('/');
+    const jsonPath = enc(['nailongwang','奶龙王一键制卡','projects','公司生活','release','公司生活.json']);
+    const promptPath = 'card-download/prompt.txt';
+    const mirrorsJson = [
+      'https://ghfast.top/https://raw.githubusercontent.com/shimokagela-mk/cusor/cursor/company-life-card-pack-96ab/' + jsonPath,
+      'https://cdn.jsdelivr.net/gh/shimokagela-mk/cusor@cursor/company-life-card-pack-96ab/nailongwang/奶龙王一键制卡/projects/公司生活/release/公司生活.json',
+      'https://raw.githubusercontent.com/shimokagela-mk/cusor/cursor/company-life-card-pack-96ab/' + jsonPath
+    ];
+    const mirrorsPrompt = [
+      'https://ghfast.top/https://raw.githubusercontent.com/shimokagela-mk/cusor/cursor/card-download-page-96ab/card-download/prompt.txt',
+      'https://cdn.jsdelivr.net/gh/shimokagela-mk/cusor@cursor/card-download-page-96ab/card-download/prompt.txt',
+      'https://raw.githubusercontent.com/shimokagela-mk/cusor/cursor/card-download-page-96ab/card-download/prompt.txt'
+    ];
+    document.getElementById('openJson').href = mirrorsJson[0];
+    document.getElementById('openPrompt').href = mirrorsPrompt[0];
+    document.getElementById('hint').textContent = 'JSON镜像：' + mirrorsJson[0];
 
-    document.getElementById('openJson').href = jsonUrl;
-    document.getElementById('openPrompt').href = promptUrl;
-    document.getElementById('hint').textContent = '直链：' + jsonUrl;
-
-    async function forceDownload(url, filename) {
+    async function forceDownload(urls, filename) {
       const status = document.getElementById('status');
       status.className = 'status';
-      status.textContent = '拉取中…';
-      try {
-        const res = await fetch(url, { cache: 'no-store' });
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        const blob = await res.blob();
-        const objectUrl = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = objectUrl;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        setTimeout(() => URL.revokeObjectURL(objectUrl), 2000);
-        status.textContent = '已触发下载：' + filename;
-      } catch (e) {
-        status.className = 'status err';
-        status.textContent = '自动下载失败：请点「浏览器打开」后另存为。';
-        console.error(e);
+      let lastErr = null;
+      for (const url of urls) {
+        status.textContent = '尝试：' + url.slice(0, 48) + '…';
+        try {
+          const res = await fetch(url, { cache: 'no-store' });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const blob = await res.blob();
+          const objectUrl = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = objectUrl; a.download = filename;
+          document.body.appendChild(a); a.click(); a.remove();
+          setTimeout(() => URL.revokeObjectURL(objectUrl), 2000);
+          status.textContent = '已触发下载：' + filename;
+          return;
+        } catch (e) { lastErr = e; }
       }
+      status.className = 'status err';
+      status.textContent = '全部镜像失败：请点「打开」后另存为。';
+      console.error(lastErr);
     }
-    document.getElementById('dlJson').onclick = () => forceDownload(jsonUrl, '公司生活.json');
-    document.getElementById('dlPrompt').onclick = () => forceDownload(promptUrl, '主提示-替换用-公司生活.txt');
+    document.getElementById('dlJson').onclick = () => forceDownload(mirrorsJson, '公司生活.json');
+    document.getElementById('dlPrompt').onclick = () => forceDownload(mirrorsPrompt, '主提示-替换用-公司生活.txt');
   </script>
 </body>
 </html>
