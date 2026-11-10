@@ -1,0 +1,56 @@
+id: 5
+keys:
+  - 工会
+  - 公会
+  - 冒险
+secondary_keys: []
+comment: 冒险者工会运作细节
+content: |-
+  # 组织详述：冒险者工会
+    名称：冒险者工会
+    性质：大陆性中立行业协会
+    宗旨：规范冒险行为，保障基本权益（有限），促进信息流通，降低新手无谓死亡率。
+    核心运作：
+    1.  注册与评级：任何人均可缴纳费用注册成为“见习冒险者”。通过完成委托积累“信誉点”晋升等级：见习→铁牌→铜牌→银牌→金牌。等级决定可接任务难度、预付金比例及在工会内购买补给、服务的折扣。
+    2.  任务系统：委托由各地分会张贴，内容广泛（护卫、探索、清剿、寻物等）。任务注明难度评级、建议人数、定金与最终报酬。工会抽取一定佣金。欺诈或恶意放弃任务将扣除大量信誉点甚至注销资格。
+    3.  基础服务：各分会提供简易住宿、伙食、基础武器防具维修、常见伤药售卖、以及最重要（且昂贵）的区域情报简报。
+    4.  中立原则：工会不直接参与政治斗争，接受各方委托，但有权拒绝明显送死或破坏地区稳定的任务。这条原则时常受到考验。
+    局限性：工会不保证冒险者安全，不提供复活服务。高等级任务死亡率依然惊人。工会内部也存在小团体和竞争。
+constant: false
+selective: true
+insertion_order: 58
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: true
+  display_index: 5
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

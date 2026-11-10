@@ -1,0 +1,17 @@
+uid: 15
+comment: 墙头男
+content: |
+  # 墙头男（不主控）
+  - 周予安：亦勤丈夫；同学缘；电话怀疑阶梯
+  - 张恒：丁可丈夫；可上门风险
+  - 陆辰：婉婷男友；未实操；聊天/电话对照
+  只在 NTR/对照时出场，不抢女主戏。
+
+position: after_char
+enabled: true
+constant: true
+prevent_recursion: true
+insertion_order: 15
+depth: 4
+role: 0
+keys: []

@@ -1,0 +1,60 @@
+id: 14
+keys:
+  - 圣裔
+secondary_keys: []
+comment: 圣裔港
+content: |-
+  # 圣裔港详情
+    **核心区域**：
+    坚固的防波堤与高耸的灯塔守护着天然深水港；军港区位于西侧，停泊着诺顿王国皇家舰队的战舰，戒备森严，船厂可进行战舰维修与建造；商港区位于东侧，码头林立，仓库密集，设有海关与商行办事处；介于两者之间的“海员区”遍布酒馆、旅店、妓院与当铺，龙蛇混杂；城市背靠丘陵，山顶矗立着古老的圣光修道院（据传是某圣徒登陆地，港口因此得名）。
+
+  **可能遭遇的重要事件（具体发生取决于主角的冒险轨迹与世界实时动态）**：
+  1.  **海上冲突与贸易战阴影**：洛瑟兰共和国的巡逻舰与诺顿王家海军在邻近海域发生摩擦，或翡翠海群岛的海盗（可能受雇于共和国）频繁袭扰诺顿商船。此事件将导致港口紧张，海军频繁出航，商船需雇佣额外护卫，保险费飙升，也可能引发民间排外情绪。
+  2.  **瘟疫船或神秘货物**：一艘来自未知地域（可能是翡翠海深处或更南边）的商船进港，船上人员离奇死亡或染上怪病，或装载着具有魔法波动或禁忌知识的货物。此事件将触发港口检疫隔离甚至封锁，教会与法师塔可能介入调查，引发对未知危险的恐惧。
+  3.  **海军远征或惨败消息**：王国组织针对海盗巢穴或某个敌对势力的海上远征，舰队从圣裔港出发。随后，远征胜利或惨败的消息传回，将极大影响港口士气、经济乃至政治风向。惨败可能导致舰队实力大损，海防空虚，进而诱发更严重的海上威胁。
+  4.  **异域使团或难民潮**：来自遥远大陆（设定中未明示的西方或南方）的使团或因战乱逃难的船队抵达圣裔港，带来全新的文化、技术或信仰，也可能带来新的麻烦与冲突，考验诺顿王国的外交智慧与容纳能力。
+
+  **可能碰到的重要人物**：
+  1.  **海军上将西尔维娅·斯特林**：王国海军最高指挥官之一，驻守圣裔港，以严谨、果敢著称，是坚定的王室拥护者，视洛瑟兰共和国海军为主要竞争对手。
+  2.  **海关总长雷诺兹**：负责征收关税、稽查走私的官员，熟知港口黑白两道的门路，在原则与利益之间谨慎行走，与商盟联合会关系微妙。
+  3.  **“老海狼”科斯塔斯**：海员区最著名（也最混乱）的酒馆“破浪者”的老板，退休的老船长，肚里装满海上传说与各港口秘闻，是情报交流的中心人物。
+  4.  **修道院院长伊瑟拉嬷嬷**：圣裔港修道院的负责人，一位睿智而平和的老修女，致力于慈善与调解港口社区的矛盾，其话语在平民乃至部分水手中颇有影响力。
+  5.  **洛瑟兰共和国商务代表（常驻或随船队）**：一位衣着体面、言辞礼貌但目光锐利的商人或低级外交官，公开任务是促进贸易，私下可能搜集情报或执行商盟联合会的其他指令。
+constant: false
+selective: true
+insertion_order: 14
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: true
+  display_index: 18
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

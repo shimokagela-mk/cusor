@@ -1,0 +1,32 @@
+{
+  "keys": [
+    "keyword"
+  ],
+  "secondary_keys": [],
+  "content": "Entry content placeholder.",
+  "comment": "Entry Name",
+  "constant": false,
+  "selective": false,
+  "enabled": true,
+  "position": 0,
+  "depth": 4,
+  "order": 100,
+  "insertion_order": 0,
+  "probability": 100,
+  "use_regex": false,
+  "group": "",
+  "group_override": false,
+  "group_weight": 100,
+  "group_scoring": null,
+  "prioritize_inclusion": false,
+  "automation_id": "",
+  "triggers": [],
+  "outlet": "",
+  "vectorized": false,
+  "sticky": 0,
+  "cooldown": 0,
+  "delay": 0,
+  "scan_depth": null,
+  "case_sensitive": null,
+  "match_whole_words": null
+}

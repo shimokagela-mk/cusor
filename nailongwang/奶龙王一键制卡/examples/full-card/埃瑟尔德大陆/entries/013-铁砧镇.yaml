@@ -1,0 +1,61 @@
+id: 12
+keys:
+  - 铁砧镇
+  - 矮人
+secondary_keys: []
+comment: 铁砧镇
+content: |-
+  # 铁砧镇详情
+    **核心区域**：
+    镇中心是巨大的“铁砧广场”，每周举行集市，也是矮人商队卸货点；沿主街两侧密布着大大小小的铁匠铺、武器工坊与盔甲店，终日炉火不熄、锤声叮当；镇西设有专供矮人使用的“石厅驿站”，建筑风格粗犷坚固；冒险者工会分会和几家大型商行仓库位于镇东；简陋的木质围墙仅能防范小股野兽或流寇。
+
+  **可能遭遇的重要事件（具体发生取决于主角的冒险轨迹与世界实时动态）**：
+  1.  **矮人商路中断危机**：连接铁炉堡的山道因兽人活动加剧、雪崩或霜巨人异常南迁而变得极其危险，导致矮人商队延误甚至遇袭。此事件将导致优质武器盔甲供应短缺、价格暴涨，引发本地工匠与商人的焦虑，甚至可能促使诺顿军方或冒险者工会发布清理道路的高酬劳任务。
+  2.  **武器质量纠纷与阴谋**：一批从铁砧镇流出的、疑似掺假的武器装备在前线（如哨兵堡）出现问题，导致军方调查员前来严查。此事件可能揭露本地某些工坊与黑市（或影踪会）勾结的丑闻，引发行业震动和信任危机。
+  3.  **苍白山脉兽人劫掠威胁**：兽人部落（尤其是来自碎骨谷的）可能垂涎镇内堆积的金属与武器，策划一次针对铁砧镇的突袭。此事件将迫使镇上民兵、雇佣兵与途经的冒险者临时组织防御，战斗的烈度可能远超寻常盗匪袭击。
+  4.  **新技术或稀有矿脉的发现**：铁炉堡的矮人带来一种新的合金配方，或在附近山脉发现小型稀有矿脉（如少量秘银），引发本地工匠、商行乃至诺顿王室的争夺与关注，可能吸引不怀好意者的窥探。
+
+  **可能碰到的重要人物**：
+  1.  **镇长兼行会首领布雷克·铁锤**：一位退役的王国军械官，本身也是技艺高超的铁匠，致力于维持与矮人的良好关系及镇上的产业繁荣，手段务实。
+  2.  **矮人贸易代表葛罗姆·石须**：常驻石厅驿站的铁炉堡矮人，脾气火爆但重信誉，负责评估订单、监督货物质量与协调商队安全，对人类的“急躁”和“狡猾”时常抱怨。
+  3.  **“火花”艾拉**：镇上最年轻但最有天赋的女性铁匠学徒，勇于尝试新设计，梦想打造出传奇武器，因其才华和打破传统的姿态而备受关注（或非议）。
+  4.  **商行主管霍勒斯**：某大型诺顿商行在铁砧镇的负责人，精于算计，主要收购矮人货物并分销至全国，与各方势力都有利益往来，信息灵通。
+  5.  **前哨溃兵或信使（若山道危机发生）**：从回声前哨或更北边逃回的铁炉堡矮人或人类哨兵，带来关于兽人异动或霜巨人踪迹的可怕第一手消息。
+constant: false
+selective: true
+insertion_order: 12
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: true
+  display_index: 16
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

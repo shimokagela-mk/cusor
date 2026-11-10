@@ -1,0 +1,8 @@
+{
+  "status": "blocked",
+  "reason": "Current model/tool environment cannot read PNG visual content; image reads return model does not support image input.",
+  "requestedSource": "奶龙王一键制卡/ref/gf_tdoll_data/**/01_立绘展示/默认立绘/*_HD.png",
+  "candidateReport": "notes/missing-appearance-default-art-candidates.json",
+  "actionTaken": "Removed 70 unreliable appearance blocks that were not verifiably read from images; preserved 137 text-derived appearances migrated from 少女前线v1.0.",
+  "nextRequirement": "Use a vision-capable model/tool or provide text appearance descriptions/OCR metadata before writing image-derived appearances."
+}

@@ -1,0 +1,9 @@
+comment: 条目名称
+content: |
+  在这里填写世界书条目正文。
+keys: []
+secondary_keys: []
+enabled: true
+constant: true
+position: before_char
+insertion_order: 100

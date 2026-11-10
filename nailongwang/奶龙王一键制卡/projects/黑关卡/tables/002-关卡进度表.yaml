@@ -1,0 +1,64 @@
+uid: sheet_Stage
+name: 关卡进度表
+sourceData:
+  note: |-
+    当前关卡一行（可历史追加）。记录 id、标题、标签、模式、身份、浅三条。
+  initNode: |-
+    初始可空表；抽关后插入或更新当前关。
+  deleteNode: 允许在重抽时删除未结算行。
+  updateNode: |-
+    每轮可更新反抗/风险/服从与备注。
+  insertNode: |-
+    抽关时插入新关。
+  ddl: |-
+    CREATE TABLE stage_progress (
+      row_id INTEGER PRIMARY KEY,
+      stage_id TEXT NOT NULL,
+      title TEXT NOT NULL,
+      tags TEXT,
+      mode TEXT CHECK(mode IN ('速暴','渐进')),
+      identity TEXT,
+      cast_text TEXT,
+      resist INTEGER DEFAULT 50,
+      risk INTEGER DEFAULT 30,
+      obey INTEGER DEFAULT 20,
+      status TEXT DEFAULT '进行中',
+      note TEXT
+    );
+content:
+  - - row_id
+    - 关卡ID
+    - 标题
+    - 标签
+    - 模式
+    - 身份
+    - 出场
+    - 反抗
+    - 风险
+    - 服从
+    - 状态
+    - 备注
+updateConfig:
+  uiSentinel: -1
+  contextDepth: 4
+  updateFrequency: 1
+  batchSize: 2
+  skipFloors: -1
+  groupId: 1
+exportConfig:
+  enabled: false
+  splitByRow: false
+  entryName: 关卡进度表
+  entryType: constant
+  keywords: ""
+  preventRecursion: true
+  injectionTemplate: ""
+  extraIndexEnabled: false
+  extraIndexEntryName: ""
+  extraIndexColumns: []
+  extraIndexColumnModes: {}
+  extraIndexInjectionTemplate: ""
+  entryPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 101

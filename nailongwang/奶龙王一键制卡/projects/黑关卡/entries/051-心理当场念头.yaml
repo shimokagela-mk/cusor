@@ -1,0 +1,17 @@
+uid: 51
+comment: 心理当场念头
+content: |
+  # 人物心理状态（沿用喜好）
+  当场念头最重；关键短旁白 + 平时融叙述；形式轮换。
+  念头要覆盖：耻/怕发现、爽但不认、合理化、对丈夫/男友双轨、恨与依赖。
+  关键（插入/电话/高潮/差点被发现）必写；压迫/玩弄轮也要有。
+  日常淡残留，不刷屏独白。
+
+position: before_char
+enabled: true
+constant: true
+prevent_recursion: true
+insertion_order: 51
+depth: 4
+role: 0
+keys: []

@@ -1,0 +1,67 @@
+id: 6
+keys: []
+secondary_keys: []
+comment: 动态技能习得与提升展示模板
+content: |2-
+    以下模板用于在故事进程中，当角色领悟新技能、已有技能突破或通过特殊方式提升时，以标准化的格式动态展示技能的变化，清晰反映角色成长。叙述者应在技能实际生效、角色练习感悟或系统提示时插入此格式内容。
+  <技能生成>
+    **技能名称**: [技能名称]
+    **技能类型**: [主动/被动/天赋/特殊]
+    **当前等级/阶段**: [例如：Lv 1 → Lv 2，或“入门”→“精通”，或具体阶段描述]
+    **效果描述 (更新后)**:
+    *   **[主要效果]**: [技能的核心作用描述，更新提升后的效果。]
+    *   **[附加效果/变化]**: [等级提升后新增的效果、范围扩大、消耗降低、冷却缩短等。]
+    *   **[限制/代价]**: [使用条件、消耗（体力、魔力、精神力等）、冷却时间或副作用。]
+    **习得/提升方式**: [如何获得此次提升，例如：“经历与精英狼群的生死搏杀后领悟”、“长期冥想训练突破瓶颈”、“阅读古代剑谱残卷有所感悟”、“使用特殊道具‘启迪水晶’”。]
+    **角色感悟/表现 (可选但推荐）**: [从角色主观视角描述掌握新力量或突破时的感受、身体变化或外在表现，增强代入感。例如：“阿不思感到一股暖流从丹田涌向手臂，挥剑时轨迹变得更加清晰而有力。”]
+  </技能生成>
+    ## 使用示例 (非固定条目，仅为示范)
+  <技能生成>
+    **技能名称**: 疾风步
+    **技能类型**: 主动
+    **当前等级/阶段**: Lv 3 (熟练) → Lv 4 (精通)
+    **效果描述 (更新后)**:
+    *   **主要效果**: 短时间内大幅提升移动速度和闪避能力，持续8秒（原6秒）。
+    *   **附加效果/变化**: 激活瞬间产生轻微残影迷惑敌人；冷却时间缩短至45秒（原60秒）。
+    *   **限制/代价**: 消耗中等体力，短时间内连续使用效果递减。
+    **习得/提升方式**: 在多次丛林追踪与逃亡任务中，不断优化奔跑节奏和呼吸法，最终突破。
+    **角色感悟/表现**: 使用者感觉双腿变得更加轻盈，仿佛能预判到下一个最佳落点，在复杂地形中穿梭时如鱼得水。
+  </技能生成>
+constant: true
+selective: true
+insertion_order: 2
+enabled: true
+position: after_char
+use_regex: true
+extensions:
+  position: 4
+  exclude_recursion: false
+  display_index: 70
+  probability: 100
+  useProbability: true
+  depth: 0
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: false
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

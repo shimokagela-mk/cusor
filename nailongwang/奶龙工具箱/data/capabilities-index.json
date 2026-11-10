@@ -1,0 +1,224 @@
+{
+  "$schema": "./capabilities-index.schema.json",
+  "name": "Tavern Ecosystem Capabilities Index",
+  "language": "zh-CN",
+  "updated_at": "2026-06-08",
+  "modes": [
+    {
+      "code": "A",
+      "name": "JS-Slash-Runner Script JSON",
+      "intent": "可导入的酒馆助手脚本 .json",
+      "entry": "window.TavernHelper",
+      "data": ["data/js-slash-runner-api.json"],
+      "docs": ["docs/JS_SLASH_RUNNER_API.md"],
+      "examples": [
+        "examples/js-slash-runner/minimal-script.json",
+        "examples/js-slash-runner/multi-button-script.json"
+      ],
+      "schemas": ["schemas/js-slash-runner-script.schema.json"],
+      "generators": ["js-script", "js-script-buttons"]
+    },
+    {
+      "code": "B",
+      "name": "JS-Slash-Runner 纯 JS 脚本",
+      "intent": "由 .js 经 scripts/convert.js 打包成 .json",
+      "entry": "window.TavernHelper",
+      "data": ["data/js-slash-runner-api.json"],
+      "docs": ["docs/JS_SLASH_RUNNER_API.md"],
+      "examples": ["examples/js-slash-runner/README.md"],
+      "schemas": [],
+      "generators": []
+    },
+    {
+      "code": "C",
+      "name": "SillyTavern 原生扩展",
+      "intent": "manifest.json + index.js + style.css 形式的原生扩展",
+      "entry": "SillyTavern.getContext()",
+      "data": ["data/sillytavern-extension-api.json"],
+      "docs": ["docs/SILLYTAVERN_EXTENSION_API.md"],
+      "examples": ["examples/sillytavern-extension/"],
+      "schemas": [],
+      "generators": ["st-extension"]
+    },
+    {
+      "code": "D",
+      "name": "shujuku 外部调用 UI",
+      "intent": "依赖 shujuku 的脚本 UI / 工具按钮",
+      "entry": "window.AutoCardUpdaterAPI",
+      "data": ["data/shujuku-api.json"],
+      "docs": ["docs/SHUJUKU_API.md"],
+      "examples": ["examples/shujuku/external-ui.js"],
+      "schemas": [],
+      "generators": ["shujuku-ui"]
+    },
+    {
+      "code": "E",
+      "name": "shujuku 数据文件",
+      "intent": "shujuku 模板 / 剧情预设 / API 预设 / UI 主题 / 正文替换",
+      "entry": "JSON 数据文件",
+      "data": ["data/shujuku-api.json"],
+      "docs": ["docs/SHUJUKU_API.md"],
+      "examples": [
+        "examples/shujuku/minimal-template.json",
+        "examples/shujuku/full-template-format.json",
+        "examples/shujuku/plot-preset.json",
+        "examples/shujuku/plot-preset-full-format.json",
+        "examples/shujuku/api-preset.json",
+        "examples/shujuku/database-ui-theme-format.json",
+        "examples/shujuku/body-replace-preset-format.json"
+      ],
+      "schemas": [
+        "schemas/shujuku-template.schema.json",
+        "schemas/shujuku-plot-preset.schema.json",
+        "schemas/shujuku-api-preset.schema.json",
+        "schemas/shujuku-ui-theme.schema.json",
+        "schemas/shujuku-body-replace-preset.schema.json"
+      ],
+      "generators": [
+        "shujuku-template",
+        "shujuku-plot",
+        "shujuku-api-preset",
+        "shujuku-ui-theme",
+        "shujuku-body-replace"
+      ]
+    },
+    {
+      "code": "F",
+      "name": "SillyTavern 资产 JSON",
+      "intent": "快速回复 / 世界书 / 对话补全预设 / 主题 UI / Regex / 世界书单条目",
+      "entry": "SillyTavern 资产 JSON",
+      "data": [
+        "data/sillytavern-assets-api.json",
+        "data/worldbook-entry-api.json",
+        "data/sillytavern-regex-api.json",
+        "data/sillytavern-preset-api.json",
+        "data/sillytavern-extension-api.json"
+      ],
+      "docs": [
+        "docs/SILLYTAVERN_ASSETS_API.md",
+        "docs/WORLDBOOK_ENTRY_API.md",
+        "docs/SILLYTAVERN_REGEX_API.md",
+        "docs/SILLYTAVERN_PRESET_API.md"
+      ],
+      "examples": [
+        "examples/sillytavern-assets/quick-reply-format.json",
+        "examples/sillytavern-assets/worldbook-format.json",
+        "examples/sillytavern-assets/completion-preset-format.json",
+        "examples/sillytavern-assets/theme-ui-format.json",
+        "examples/sillytavern-assets/regex-format.json",
+        "examples/worldbook-entry/minimal-entry.json",
+        "examples/worldbook-entry/st-json-entry.json"
+      ],
+      "schemas": [
+        "schemas/sillytavern-quick-reply.schema.json",
+        "schemas/sillytavern-worldbook.schema.json",
+        "schemas/sillytavern-completion-preset.schema.json",
+        "schemas/sillytavern-theme.schema.json",
+        "schemas/sillytavern-regex.schema.json",
+        "schemas/worldbook-entry.schema.json",
+        "schemas/sillytavern-worldbook-entry.schema.json"
+      ],
+      "generators": [
+        "quick-reply",
+        "worldbook",
+        "completion-preset",
+        "theme",
+        "regex",
+        "worldbook-entry"
+      ]
+    },
+    {
+      "code": "G",
+      "name": "MVU 变量控制脚本 / [InitVar] 世界书",
+      "intent": "基于 MVU 的变量框架脚本与初始化条目",
+      "entry": "window.Mvu + window.TavernHelper",
+      "data": ["data/mvu-api.json"],
+      "docs": ["docs/MVU_API.md"],
+      "examples": [
+        "examples/mvu/initvar-format.json",
+        "examples/mvu/mvu-script.json",
+        "examples/mvu/update-block-format.txt"
+      ],
+      "schemas": [
+        "schemas/mvu-initvar.schema.json",
+        "schemas/js-slash-runner-script.schema.json"
+      ],
+      "generators": ["mvu-initvar", "mvu-script"]
+    },
+    {
+      "code": "H",
+      "name": "Zod 运行时校验",
+      "intent": "为 LLM 输出 / 工具参数 / 配置加 zod schema",
+      "entry": "全局 z",
+      "data": ["data/zod-api.json"],
+      "docs": ["docs/ZOD_API.md"],
+      "examples": ["examples/zod/zod-schema-snippets.js"],
+      "schemas": [],
+      "generators": ["zod-snippets"]
+    },
+    {
+      "code": "I",
+      "name": "Tavern 前端片段",
+      "intent": "消息内 HTML / 状态栏 HTML / 开场白 HTML / Regex replaceString HTML / scoped CSS",
+      "entry": "HTML/CSS snippet",
+      "data": ["data/tavern-frontend-snippets-api.json"],
+      "docs": ["docs/TAVERN_FRONTEND_SNIPPETS_API.md"],
+      "examples": [
+        "examples/frontend-snippets/status-panel.json",
+        "examples/frontend-snippets/regex-replace-html.json"
+      ],
+      "schemas": ["schemas/frontend-snippet.schema.json"],
+      "generators": ["frontend-snippet", "regex-html-snippet"]
+    },
+    {
+      "code": "J",
+      "name": "STscript / Quick Reply 脚本",
+      "intent": "SillyTavern slash commands、STscript、Quick Reply 联动脚本",
+      "entry": "Slash Commands / Quick Reply message",
+      "data": ["data/sillytavern-stscript-api.json"],
+      "docs": ["docs/SILLYTAVERN_STSCRIPT_API.md"],
+      "examples": [
+        "examples/stscript/quick-reply-command.json",
+        "examples/stscript/basic-flow.stscript"
+      ],
+      "schemas": ["schemas/sillytavern-quick-reply.schema.json"],
+      "generators": ["stscript", "stscript-quick-reply"]
+    },
+    {
+      "code": "K",
+      "name": "Tavern Card v3 单文件识别",
+      "intent": "识别/审查 Tavern Card v3 JSON 与内嵌资产字段",
+      "entry": "spec: chara_card_v3",
+      "data": ["data/tavern-card-v3-format.json"],
+      "docs": ["docs/TAVERN_CARD_V3_FORMAT.md"],
+      "examples": [],
+      "schemas": [],
+      "generators": []
+    },
+    {
+      "code": "L",
+      "name": "API Connections / 后端兼容",
+      "intent": "OpenAI-compatible / Claude / Gemini / OpenRouter / Kobold / Text Completion 兼容性审查",
+      "entry": "SillyTavern API Connections settings",
+      "data": ["data/sillytavern-api-connections.json"],
+      "docs": ["docs/SILLYTAVERN_API_CONNECTIONS.md"],
+      "examples": [],
+      "schemas": [],
+      "generators": []
+    }
+  ],
+  "trigger_phrases": {
+    "A": ["酒馆助手脚本", "JS-Slash-Runner", "TavernHelper", "导入脚本"],
+    "B": ["纯 JS 脚本", "未打包脚本", "convert.js"],
+    "C": ["SillyTavern 扩展", "原生扩展", "manifest.json", "Prompt Manager", "Function Calling"],
+    "D": ["数据库 UI", "shujuku UI", "AutoCardUpdaterAPI"],
+    "E": ["shujuku 模板", "剧情推进预设", "数据库 UI 主题", "正文替换", "API 预设"],
+    "F": ["快速回复", "世界书", "世界书单条目", "对话补全预设", "主题 UI", "Regex", "正则脚本", "破限", "preset"],
+    "G": ["MVU", "MagVarUpdate", "Mvu.events", "stat_data", "display_data", "[InitVar]"],
+    "H": ["zod", "z.object", "safeParse", "discriminatedUnion"],
+    "I": ["前端片段", "消息 HTML", "状态栏 HTML", "开场白 HTML", "replaceString HTML", "scoped CSS", "折叠面板", "剧情推进面板"],
+    "J": ["STscript", "Slash Commands", "/setvar", "/getvar", "/send", "Quick Reply 脚本", "快速回复脚本"],
+    "K": ["Tavern Card v3", "chara_card_v3", "角色卡单文件", "regex_scripts", "tavern_helper"],
+    "L": ["API Connections", "OpenAI-compatible", "Claude", "Gemini", "OpenRouter", "Kobold", "Text Completion", "Function Calling 后端"]
+  }
+}

@@ -1,0 +1,54 @@
+id: 61
+keys: []
+secondary_keys: []
+comment: 重要经济组织与影响因素
+content: |-
+  # 重要经济组织与影响因素
+    ## 关键组织
+    *   **商盟联合会**: 掌控大陆主要长途贸易路线、信贷与汇兑，能通过调整关税、囤积居奇或资助海盗（传言）来影响地区物价，是洛瑟兰共和国的经济命脉。
+    *   **各职业行会 (战士工会、法师塔附属工匠协会等)**: 控制高级技艺的传授与产品的质量认证，通过学徒制和生产标准维持行业利润与垄断。
+    *   **影踪会**: 操纵黑市，流通赃物、违禁品（如某些魔物器官、被禁魔法道具）、情报，提供洗钱和高利贷服务，是经济阴影面。
+    *   **圣光教会**: 拥有庞大地产和信徒捐献，从事慈善、借贷（利率较低）和特定圣物贸易，经济实力雄厚。
+    ## 经济波动因素
+    *   **魔物潮/兽人南下**: 导致边境农田被毁、商路中断、难民产生，引发局部粮价飞涨和武器需求激增。
+    *   **重大考古发现或古代遗迹开启**: 可能短期内涌入大量古代艺术品或稀有材料，扰乱市场，也可能引来争夺引发冲突。
+    *   **政治联姻或战争**: 改变贸易协定，导致特定商品禁运或关税变化。
+    *   **罕见自然灾害**: 影响农作物或畜牧业收成。
+constant: true
+selective: true
+insertion_order: 54
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: false
+  display_index: 67
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

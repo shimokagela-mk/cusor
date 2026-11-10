@@ -1,0 +1,73 @@
+{
+  "$schema": "./tavern-card-v3-format.schema.json",
+  "name": "Tavern Card v3 Single File Format Knowledge Base",
+  "language": "zh-CN",
+  "updated_at": "2026-06-08",
+  "sources": [
+    "https://github.com/kwaroran/character-card-spec-v3",
+    "https://raw.githubusercontent.com/kwaroran/character-card-spec-v3/main/SPEC_V3.md",
+    "https://docs.sillytavern.app/usage/characters/characterdesign/"
+  ],
+  "source_audit": {
+    "checked_at": "2026-06-08",
+    "upstream_refs": [
+      "kwaroran/character-card-spec-v3@f3a86af019fbd99f788f7a1155f399655b34ab35",
+      "SPEC_V3.md",
+      "SillyTavern/SillyTavern-Docs:Usage/Characters/characterdesign.md"
+    ],
+    "replaced_unreachable_source": "https://github.com/malfoyslastname/character-card-spec-v3"
+  },
+  "scope_note": "本文件用于奶龙工具箱识别/审查 Tavern Card v3 单文件结构和内嵌资产字段。整卡解包、回包、构建、发布属于奶龙王一键制卡流程。",
+  "top_level_fields": {
+    "spec": "角色卡规范标识；v3 常见为 chara_card_v3。",
+    "spec_version": "规范版本。",
+    "data": "角色卡主体数据对象。"
+  },
+  "data_fields": {
+    "name": "角色名。",
+    "description": "角色描述。",
+    "personality": "性格。",
+    "scenario": "场景。",
+    "mes_example": "示例对话文本。",
+    "first_mes": "默认开场白。",
+    "alternate_greetings": "额外开场白数组。",
+    "group_only_greetings": "仅群聊使用的额外开场白数组。",
+    "creator_notes": "作者说明。",
+    "creator_notes_multilingual": "多语言作者说明；存在时 creator_notes 通常作为 en 兜底或被目标语言覆盖。",
+    "tags": "标签数组。",
+    "creator": "创作者标识。",
+    "character_version": "角色卡版本字符串。",
+    "source": "来源 ID 或 HTTP/HTTPS URL 数组；应用应尽量追加而非删除非自身来源。",
+    "assets": "角色资产数组；每项至少包含 type、uri、name、ext。",
+    "character_book": "内置世界书。",
+    "extensions": "扩展字段容器，用于 ST、插件或制卡工具保存额外资产。"
+  },
+  "extension_fields": {
+    "regex_scripts": "可能出现在 data.extensions 或 ST 扩展字段中的角色卡内 Regex 脚本列表。",
+    "tavern_helper": "可能保存酒馆助手脚本或相关元数据的扩展字段；编辑前需确认来源。",
+    "assets": "图片、音频、扩展资源等引用或内嵌信息；uri 可为 HTTPS/base64 data URL/embeded://path/ccdefault: 等；往返维护时应保留未知字段。"
+  },
+  "embedding_methods": {
+    "json": "纯 JSON 单文件可直接包含 CharacterCardV3 对象。",
+    "png_apng": "PNG/APNG 可通过 tavern chunk 保存 v3 数据；兼容 v2 回填时应提示用户 v3 功能可能丢失。",
+    "charx": "CHARX 是 zip 格式，根目录必须包含 card.json；嵌入资源使用 embeded://path/to/asset URI（规范拼写为 embeded）。"
+  },
+  "asset_uri_rules": [
+    "CHARX 资源建议按 assets/{type}/images、audio、video、l2d、3d、ai、fonts、code、other 等目录存放。",
+    "asset.type 可为 icon、background、emotion、user_icon、other；自定义类型建议以 x_ 开头以避免与规范冲突。",
+    "asset.ext 应是不带点的小写扩展名，未知时可用 unknown。",
+    "HTTP 资源可因安全被忽略；HTTPS、base64 data URL、embeded://、ccdefault: 是审查时应识别的常见 URI。"
+  ],
+  "asset_preservation": [
+    "审查单文件时优先保留未知 extensions 字段。",
+    "导入时不应因未来版本或未知字段直接拒绝；小范围维护应尽量保留未知字段以便安全导出。",
+    "不要删除或改写 source 中非本应用追加的来源元素，除非来源明显有害或严重影响使用。",
+    "不要因为 schema 未列出就删除 data.extensions、character_book、regex_scripts 或工具私有字段。",
+    "不要把 examples 中的占位角色卡当作真实业务正文来源。"
+  ],
+  "toolbox_boundary": [
+    "奶龙工具箱只做单文件识别、审查、小范围字段维护和知识库说明。",
+    "用户要求解包、回包、构建、发布、批量修改整卡时，应路由到奶龙王一键制卡。",
+    "处理 _inbox 中疑似角色卡文件时，应先报告判断结果并等待确认，不自动移动或解包。"
+  ]
+}

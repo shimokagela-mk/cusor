@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Zod API Knowledge Base",
+  "type": "object",
+  "required": ["name", "language", "updated_at", "sources", "runtime", "primitives", "containers"],
+  "properties": {
+    "name": { "type": "string" },
+    "language": { "type": "string" },
+    "updated_at": { "type": "string" },
+    "sources": { "type": "array", "items": { "type": "string" } },
+    "scope_note": { "type": "string" },
+    "runtime": { "type": "object" },
+    "primitives": { "type": "array" },
+    "literals_and_enums": { "type": "array" },
+    "containers": { "type": "array" },
+    "compositions": { "type": "array" },
+    "transforms_and_refinements": { "type": "array" },
+    "parsing": { "type": "array" },
+    "type_inference": { "type": "object" },
+    "errors": { "type": "object" },
+    "patterns_for_tavern_helper_and_mvu": { "type": "array" },
+    "integration_notes": { "type": "array" }
+  },
+  "additionalProperties": true
+}

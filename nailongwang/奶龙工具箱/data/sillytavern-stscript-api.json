@@ -1,0 +1,225 @@
+{
+  "$schema": "./sillytavern-stscript-api.schema.json",
+  "name": "SillyTavern STscript / Slash Commands Knowledge Base",
+  "language": "zh-CN",
+  "updated_at": "2026-06-08",
+  "sources": [
+    "https://docs.sillytavern.app/for-contributors/st-script/",
+    "https://docs.sillytavern.app/extensions/quick-reply/",
+    "STscript语言参考.txt"
+  ],
+  "source_audit": {
+    "checked_at": "2026-06-08",
+    "upstream_refs": [
+      "SillyTavern/SillyTavern-Docs:For_Contributors/st-script.md"
+    ]
+  },
+  "scope_note": "本知识库记录 STscript 与 Slash Commands 的常用命令、变量、pipe 传值、闭包、流程控制、聊天/世界书/Quick Reply 操作，以及与 JS-Slash-Runner triggerSlash 的边界。长逻辑、复杂 DOM、异步请求、持久结构化状态仍应转 JS-Slash-Runner 或 SillyTavern 原生扩展。",
+  "commands": [
+    { "name": "/pass", "category": "io", "signature": "/pass value", "description": "把常量值写入 pipe，常用于给后续命令传入固定文本。", "side_effect": "none" },
+    { "name": "/echo", "category": "io", "signature": "/echo severity=info|warning|error|success text", "description": "在 UI 中输出通知/调试文本；severity 可设置提示样式。", "side_effect": "ui" },
+    { "name": "/popup", "category": "io", "signature": "/popup large=on|off wide=on|off okButton=text html_or_text", "description": "显示阻塞弹窗，支持简单 HTML；插入外部内容前需注意 HTML 安全。", "side_effect": "ui" },
+    { "name": "/input", "category": "io", "signature": "/input rows=number prompt", "description": "显示输入框，并将用户输入写入 pipe。", "side_effect": "ui" },
+    { "name": "/buttons", "category": "io", "signature": "/buttons labels=[\"a\",\"b\"] text", "description": "显示带按钮的阻塞弹窗，返回点击的按钮标签；labels 可为 JSON 字符串数组或变量名。", "side_effect": "ui" },
+    { "name": "/setinput", "category": "io", "signature": "/setinput text", "description": "用提供文本替换聊天输入框内容。", "side_effect": "ui_write" },
+    { "name": "/speak", "category": "io", "signature": "/speak voice=name text", "description": "调用当前 TTS 引擎朗读文本。", "side_effect": "audio" },
+    { "name": "/getvar", "category": "variables", "signature": "/getvar name 或 /getvar index=n name", "description": "读取本地变量，可按数组索引或对象键读取子值，并把结果写入 pipe。", "side_effect": "none" },
+    { "name": "/setvar", "category": "variables", "signature": "/setvar key=name value 或 /setvar key=name index=n value", "description": "设置本地/聊天变量；index 可写入数组或对象子值。", "side_effect": "metadata_write" },
+    { "name": "/addvar", "category": "variables", "signature": "/addvar key=name increment", "description": "对变量做数字加减；无法数值化时执行字符串连接；数组变量可 push 新值。", "side_effect": "metadata_write" },
+    { "name": "/incvar", "category": "variables", "signature": "/incvar name", "description": "本地变量加 1，并把结果写入 pipe。", "side_effect": "metadata_write" },
+    { "name": "/decvar", "category": "variables", "signature": "/decvar name", "description": "本地变量减 1，并把结果写入 pipe。", "side_effect": "metadata_write" },
+    { "name": "/flushvar", "category": "variables", "signature": "/flushvar name", "description": "删除本地变量值。", "side_effect": "metadata_write" },
+    { "name": "/getglobalvar", "category": "variables", "signature": "/getglobalvar name", "description": "读取全局变量，并把结果写入 pipe。", "side_effect": "none" },
+    { "name": "/setglobalvar", "category": "variables", "signature": "/setglobalvar key=name value", "description": "设置全局变量，可能跨聊天/角色长期生效。", "side_effect": "settings_write" },
+    { "name": "/addglobalvar", "category": "variables", "signature": "/addglobalvar key=name increment", "description": "对全局变量做数字加减或字符串连接。", "side_effect": "settings_write" },
+    { "name": "/incglobalvar", "category": "variables", "signature": "/incglobalvar name", "description": "全局变量加 1。", "side_effect": "settings_write" },
+    { "name": "/decglobalvar", "category": "variables", "signature": "/decglobalvar name", "description": "全局变量减 1。", "side_effect": "settings_write" },
+    { "name": "/flushglobalvar", "category": "variables", "signature": "/flushglobalvar name", "description": "删除全局变量值。", "side_effect": "settings_write" },
+    { "name": "/let", "category": "scope", "signature": "/let name value", "description": "声明作用域变量；常与闭包配合，生命周期限于当前脚本/闭包作用域。", "side_effect": "runtime_state" },
+    { "name": "/var", "category": "scope", "signature": "/var name value", "description": "设置或读取作用域变量；也可通过 {{var::name}} 宏读取。", "side_effect": "runtime_state" },
+    { "name": "/return", "category": "scope", "signature": "/return value", "description": "从闭包/命令块返回值给调用方或后续 pipe。", "side_effect": "flow_control" },
+    { "name": "/if", "category": "flow", "signature": "/if left=valueA right=valueB rule=eq|neq|lt|gt|lte|gte|not|in|nin else=commands commands", "description": "条件分支；子命令可用引号字符串或闭包。", "side_effect": "depends_on_subcommand" },
+    { "name": "/while", "category": "flow", "signature": "/while left=valueA right=valueB rule=operation guard=on|off commands", "description": "条件循环；默认 guard=on 限制迭代，避免无限循环。", "side_effect": "depends_on_subcommand" },
+    { "name": "/times", "category": "flow", "signature": "/times guard=on|off repeats commands", "description": "重复执行子命令；{{timesIndex}} 可读取从 0 开始的迭代索引。", "side_effect": "depends_on_subcommand" },
+    { "name": "/break", "category": "flow", "signature": "/break value", "description": "提前跳出 /while、/times 或闭包；未命名参数可作为新的 pipe 返回值。", "side_effect": "flow_control" },
+    { "name": "/abort", "category": "flow", "signature": "/abort", "description": "中断当前脚本执行。", "side_effect": "flow_control" },
+    { "name": "/run", "category": "execution", "signature": "/run QrSet.Label 或 /run Label", "description": "运行快速回复、命名闭包或脚本过程；可用作过程调用。", "side_effect": "depends_on_target" },
+    { "name": "/:", "category": "execution", "signature": "/:ClosureName 或 /:QrSet.Label", "description": "/run 的简写，可执行作用域变量中的命名闭包或 Quick Reply。", "side_effect": "depends_on_target" },
+    { "name": "/parser-flag", "category": "parser", "signature": "/parser-flag STRICT_ESCAPING|REPLACE_GETVAR on|off", "description": "切换解析器行为；STRICT_ESCAPING 改变转义规则，REPLACE_GETVAR 避免变量值二次宏替换。", "side_effect": "parser_state" },
+    { "name": "/add", "category": "math", "signature": "/add a b c", "description": "加法，结果写入 pipe。", "side_effect": "none" },
+    { "name": "/mul", "category": "math", "signature": "/mul a b c", "description": "乘法，结果写入 pipe。", "side_effect": "none" },
+    { "name": "/sub", "category": "math", "signature": "/sub a b", "description": "减法，结果写入 pipe。", "side_effect": "none" },
+    { "name": "/div", "category": "math", "signature": "/div a b", "description": "除法；无效运算返回 0。", "side_effect": "none" },
+    { "name": "/mod", "category": "math", "signature": "/mod a b", "description": "取模；无效运算返回 0。", "side_effect": "none" },
+    { "name": "/pow", "category": "math", "signature": "/pow a b", "description": "幂运算。", "side_effect": "none" },
+    { "name": "/rand", "category": "math", "signature": "/rand round=round|ceil|floor from=0 to=1", "description": "生成指定范围内随机数；round 控制取整方式。", "side_effect": "none" },
+    { "name": "/round", "category": "math", "signature": "/round value", "description": "四舍五入到最近整数。", "side_effect": "none" },
+    { "name": "/len", "category": "text_data", "signature": "/len value", "description": "获取数组项目数量或文本长度，取决于输入类型和 ST 版本实现。", "side_effect": "none" },
+    { "name": "/trimtokens", "category": "text_data", "signature": "/trimtokens limit=number direction=start|end text", "description": "按 token 数从开头或结尾裁剪文本。", "side_effect": "none" },
+    { "name": "/trimstart", "category": "text_data", "signature": "/trimstart text", "description": "把输入裁剪到第一个完整句子的开始。", "side_effect": "none" },
+    { "name": "/trimend", "category": "text_data", "signature": "/trimend text", "description": "把输入裁剪到最后一个完整句子的结束。", "side_effect": "none" },
+    { "name": "/fuzzy", "category": "text_data", "signature": "/fuzzy list=[\"candidate\"] input", "description": "从候选列表中返回与输入最接近的字符串。", "side_effect": "none" },
+    { "name": "/regex", "category": "text_data", "signature": "/regex name=scriptName text", "description": "执行已启用的 Regex 扩展脚本处理文本。", "side_effect": "depends_on_regex" },
+    { "name": "/gen", "category": "llm", "signature": "/gen lock=on|off stop=[] prompt", "description": "使用当前角色和聊天上下文向当前 LLM API 生成文本，并把结果写入 pipe。", "side_effect": "llm_request" },
+    { "name": "/genraw", "category": "llm", "signature": "/genraw lock=on|off stop=[] instruct=on|off as=system|char prompt", "description": "使用原始提示生成文本，忽略当前角色和聊天；可控制 instruct 与文本补全角色格式。", "side_effect": "llm_request" },
+    { "name": "/trigger", "category": "llm", "signature": "/trigger groupMemberOrCharacter", "description": "触发正常生成，相当于点击发送按钮；群聊可指定成员索引或角色名。", "side_effect": "generation" },
+    { "name": "/inject", "category": "prompt_injection", "signature": "/inject id=Id position=after|before|chat depth=4 text", "description": "向当前聊天的 LLM 提示添加自定义注入；同 id 后续调用会覆盖，空文本可清除。", "side_effect": "chat_metadata_write" },
+    { "name": "/listinjects", "category": "prompt_injection", "signature": "/listinjects", "description": "列出当前聊天中由脚本添加的提示注入。", "side_effect": "chat_message_or_ui" },
+    { "name": "/flushinjects", "category": "prompt_injection", "signature": "/flushinjects", "description": "删除当前聊天中由脚本添加的所有提示注入。", "side_effect": "chat_metadata_write" },
+    { "name": "/note", "category": "prompt_injection", "signature": "/note text", "description": "设置当前聊天作者注释。", "side_effect": "chat_metadata_write" },
+    { "name": "/interval", "category": "prompt_injection", "signature": "/interval number", "description": "设置当前聊天作者注释插入间隔。", "side_effect": "chat_metadata_write" },
+    { "name": "/depth", "category": "prompt_injection", "signature": "/depth number", "description": "设置当前聊天作者注释插入深度。", "side_effect": "chat_metadata_write" },
+    { "name": "/position", "category": "prompt_injection", "signature": "/position position", "description": "设置当前聊天作者注释位置。", "side_effect": "chat_metadata_write" },
+    { "name": "/messages", "category": "chat", "signature": "/messages names=on|off start-finish", "description": "读取当前聊天消息范围；隐藏消息会被排除。", "side_effect": "none" },
+    { "name": "/send", "category": "chat", "signature": "/send at=index text", "description": "以当前人格添加用户消息；at 可指定插入位置。", "side_effect": "chat_write" },
+    { "name": "/sendas", "category": "chat", "signature": "/sendas name=charname at=index text", "description": "按角色名匹配并以该角色身份添加消息。", "side_effect": "chat_write" },
+    { "name": "/sys", "category": "chat", "signature": "/sys at=index text", "description": "添加中立叙述者/系统样式消息。", "side_effect": "chat_write" },
+    { "name": "/comment", "category": "chat", "signature": "/comment at=index text", "description": "添加隐藏评论，显示在聊天中但不进入提示。", "side_effect": "chat_write" },
+    { "name": "/addswipe", "category": "chat", "signature": "/addswipe text", "description": "向最后一条角色消息添加 swipe。", "side_effect": "chat_write" },
+    { "name": "/hide", "category": "chat", "signature": "/hide messageId 或 start-finish", "description": "隐藏一条或多条消息，使其不进入提示。", "side_effect": "chat_write" },
+    { "name": "/unhide", "category": "chat", "signature": "/unhide messageId 或 start-finish", "description": "取消隐藏一条或多条消息。", "side_effect": "chat_write" },
+    { "name": "/cut", "category": "chat_destructive", "signature": "/cut messageId 或 start-finish", "description": "从聊天中剪切一条或多条消息；破坏性操作，执行前应确认。", "side_effect": "destructive_chat_write" },
+    { "name": "/del", "category": "chat_destructive", "signature": "/del number", "description": "删除最后 N 条消息；破坏性操作。", "side_effect": "destructive_chat_write" },
+    { "name": "/delswipe", "category": "chat_destructive", "signature": "/delswipe swipeId", "description": "删除最后一条角色消息中的指定 swipe。", "side_effect": "destructive_chat_write" },
+    { "name": "/delname", "category": "chat_destructive", "signature": "/delname characterName", "description": "删除当前聊天中属于指定名称角色的全部消息。", "side_effect": "destructive_chat_write" },
+    { "name": "/delchat", "category": "chat_destructive", "signature": "/delchat", "description": "删除当前聊天；高风险破坏性操作。", "side_effect": "destructive_chat_write" },
+    { "name": "/char-get", "category": "character", "signature": "/char-get", "description": "读取当前角色数据为 JSON 对象并写入 pipe。", "side_effect": "none" },
+    { "name": "/char-create", "category": "character", "signature": "/char-create name=... description=... 等命名参数", "description": "按命名参数创建新角色；字段与当前 ST 版本角色数据结构相关。", "side_effect": "character_write" },
+    { "name": "/char-update", "category": "character", "signature": "/char-update name=... description=... 等命名参数", "description": "按命名参数更新当前角色数据。", "side_effect": "character_write" },
+    { "name": "/char-delete", "category": "character", "signature": "/char-delete name", "description": "删除指定角色；破坏性操作。", "side_effect": "destructive_character_write" },
+    { "name": "/char-duplicate", "category": "character", "signature": "/char-duplicate name", "description": "复制指定角色。", "side_effect": "character_write" },
+    { "name": "/tag-import", "category": "character", "signature": "/tag-import name", "description": "从指定角色卡文件导入标签。", "side_effect": "settings_write" },
+    { "name": "/loader-show", "category": "loader", "signature": "/loader-show text", "description": "显示加载遮罩，可用于耗时任务反馈。", "side_effect": "ui" },
+    { "name": "/loader-hide", "category": "loader", "signature": "/loader-hide", "description": "隐藏加载遮罩。", "side_effect": "ui" },
+    { "name": "/loader-wrap", "category": "loader", "signature": "/loader-wrap {: commands :}", "description": "显示加载遮罩、执行闭包、结束后自动隐藏遮罩。", "side_effect": "depends_on_subcommand" },
+    { "name": "/loader-stop", "category": "loader", "signature": "/loader-stop", "description": "停止并移除加载遮罩。", "side_effect": "ui" },
+    { "name": "/getchatbook", "category": "worldbook", "signature": "/getchatbook", "description": "获取与当前聊天绑定的世界书名称；未绑定时可能创建新文件。", "side_effect": "worldbook_maybe_write" },
+    { "name": "/findentry", "category": "worldbook", "signature": "/findentry file=bookName field=fieldName text", "description": "按字段模糊查找世界书条目 UID，默认字段为 key。", "side_effect": "none" },
+    { "name": "/getentryfield", "category": "worldbook", "signature": "/getentryfield file=bookName field=field UID", "description": "读取指定世界书条目字段，默认字段为 content。", "side_effect": "none" },
+    { "name": "/setentryfield", "category": "worldbook", "signature": "/setentryfield file=bookName uid=UID field=field text", "description": "写入指定世界书条目字段；key 字段可用逗号分隔列表。", "side_effect": "worldbook_write" },
+    { "name": "/createentry", "category": "worldbook", "signature": "/createentry file=bookName key=keyValue content", "description": "在指定世界书中创建条目，并把 UID 写入 pipe。", "side_effect": "worldbook_write" },
+    { "name": "/qr-create", "category": "quick_reply", "signature": "/qr-create set=Preset label=Button hidden=true|false startup=true|false user=true|false bot=true|false load=true|false message", "description": "创建快速回复按钮/脚本。", "side_effect": "quick_reply_write" },
+    { "name": "/qr-update", "category": "quick_reply", "signature": "/qr-update set=Preset label=Button newlabel=NewLabel message", "description": "更新快速回复按钮/脚本及自动执行属性。", "side_effect": "quick_reply_write" },
+    { "name": "/qr-delete", "category": "quick_reply", "signature": "/qr-delete set=Preset label", "description": "删除快速回复。", "side_effect": "quick_reply_write" },
+    { "name": "/qr-presetadd", "category": "quick_reply", "signature": "/qr-presetadd slots=number enabled=true|false presetName", "description": "创建快速回复预设。", "side_effect": "quick_reply_write" },
+    { "name": "/qr-presetupdate", "category": "quick_reply", "signature": "/qr-presetupdate slots=number enabled=true|false presetName", "description": "创建或更新快速回复预设配置。", "side_effect": "quick_reply_write" },
+    { "name": "/qr-contextadd", "category": "quick_reply", "signature": "/qr-contextadd set=Preset label=Button chain=true|false contextPreset", "description": "为快速回复添加上下文菜单预设。", "side_effect": "quick_reply_write" },
+    { "name": "/qr-contextclear", "category": "quick_reply", "signature": "/qr-contextclear set=Preset label", "description": "清空快速回复的上下文菜单预设。", "side_effect": "quick_reply_write" },
+    { "name": "/qr-contextdel", "category": "quick_reply", "signature": "/qr-contextdel set=Preset label=Button contextPreset", "description": "移除一个快速回复上下文菜单预设。", "side_effect": "quick_reply_write" },
+    { "name": "/qr-get", "category": "quick_reply", "signature": "/qr-get set=Preset id=number", "description": "检索快速回复属性；属于暂存/版本相关能力。", "side_effect": "none", "stability": "staging_or_version_dependent" },
+    { "name": "/websearch", "category": "extension_command", "signature": "/websearch query", "description": "Web Search 扩展提供的联网搜索命令；可用性取决于扩展。", "side_effect": "network_request" },
+    { "name": "/imagine", "category": "extension_command", "signature": "/imagine prompt", "description": "Image Generation 扩展提供的图像生成命令。", "side_effect": "generation_or_network" },
+    { "name": "/random", "category": "ui_navigation", "signature": "/random", "description": "打开随机角色聊天。", "side_effect": "navigation" },
+    { "name": "/go", "category": "ui_navigation", "signature": "/go name", "description": "按名称打开角色聊天，通常按完全匹配、前缀、子字符串查找。", "side_effect": "navigation" },
+    { "name": "/bg", "category": "ui_style", "signature": "/bg name", "description": "按模糊名称匹配设置背景，受聊天背景锁定状态影响。", "side_effect": "ui_write" },
+    { "name": "/lockbg", "category": "ui_style", "signature": "/lockbg", "description": "锁定当前聊天背景。", "side_effect": "chat_metadata_write" },
+    { "name": "/unlockbg", "category": "ui_style", "signature": "/unlockbg", "description": "解锁当前聊天背景。", "side_effect": "chat_metadata_write" },
+    { "name": "/panels", "category": "ui_style", "signature": "/panels", "description": "切换顶部栏、左侧和右侧抽屉等 UI 面板可见性。", "side_effect": "ui" }
+  ],
+  "pipe": {
+    "description": "多个 slash command 可通过管道把上一步输出传给下一步。单管道 | 会把前一个命令输出自动作为下一个命令的未命名参数；双管道 || 阻止自动注入。",
+    "example": "/getvar mood | /echo 当前 mood={{pipe}}",
+    "notes": [
+      "使用 {{pipe}} 可显式引用上一步输出。",
+      "当下一个命令已有未命名参数模板时，通常用 {{pipe}} 指定插入位置。",
+      "闭包内父级 pipe 是否自动注入属于版本相关行为，使用前确认当前 ST 版本。",
+      "复杂逻辑建议改用 JS-Slash-Runner 或原生扩展。"
+    ]
+  },
+  "variables": {
+    "scopes": ["本地变量（保存到当前聊天元数据）", "全局变量（保存到 settings.json）", "作用域变量（/let 与 /var，限当前脚本/闭包）"],
+    "macros": ["{{getvar::name}}", "{{setvar::name::value}}", "{{getglobalvar::name}}", "{{var::name}}"],
+    "array_object_support": [
+      "变量值可存 JSON 序列化数组或对象。",
+      "/getvar 与 /setvar 可用 index=number/string 读取或写入数组/对象子值。",
+      "不存在的变量按数字 index 写入时可创建数组，按字符串 index 写入时可创建对象。"
+    ],
+    "notes": [
+      "变量名应使用稳定英文/短横线/下划线，避免和扩展保留名冲突。",
+      "同名本地变量与全局变量同时存在时，命令解析通常优先本地变量。",
+      "写全局变量前先确认是否会污染跨聊天状态。",
+      "变量值包含宏文本时可考虑 REPLACE_GETVAR，避免二次替换。"
+    ]
+  },
+  "syntax_features": {
+    "closures": {
+      "delimiter": "{: ... :}",
+      "description": "闭包是一组延迟执行的命令，可用于 /if、/while、/times、/run、命名过程和立即执行表达式。",
+      "immediate_execution": "{: /len foo :}()",
+      "named_closure": "/let myClosure {: /echo example :} | /:myClosure",
+      "notes": ["闭包拥有作用域变量，可访问祖先闭包变量但不能访问后代变量。", "命名闭包可接受命名参数和默认值。"]
+    },
+    "escaping": {
+      "pipe": "字面量管道使用 \\|；STRICT_ESCAPING 下引用值中的管道通常不需要转义。",
+      "macros": "需要延迟宏替换时转义 {{ 或成对转义花括号。",
+      "quotes": "引用值中的字面量引号使用 \\\"。",
+      "spaces": "命名参数值含空格时使用引号或转义空格。",
+      "closure_delimiters": "字面量 {: 或 :} 需要转义。"
+    },
+    "comments": ["// line comment", "/# command comment", "/* block comment *|（暂存/版本相关）"],
+    "autocomplete": {
+      "locations": ["聊天输入框", "大型 Quick Reply 编辑器"],
+      "matching_modes": ["Starts with", "Includes", "Fuzzy"],
+      "notes": [
+        "多段 pipe 与嵌套闭包中也会触发命令补全。",
+        "必填参数会自动提示，选填参数可用 Ctrl+Space 打开候选。",
+        "输入 /: 执行闭包或 Quick Reply 时，会提示作用域变量与 QR。",
+        "输入 {{ 可提示可用宏。"
+      ]
+    },
+    "parser_flags": [
+      { "name": "STRICT_ESCAPING", "description": "更严格且可预测的转义规则，尤其影响引用值中的管道和反斜杠。" },
+      { "name": "REPLACE_GETVAR", "description": "将 getvar/getglobalvar 宏延后为作用域变量替换，避免变量值中的宏被二次解析。" }
+    ]
+  },
+  "flow_rules": {
+    "comparisons": ["eq", "neq", "lt", "gt", "lte", "gte", "not", "in", "nin"],
+    "loop_guard": " /while 与 /times 默认 guard=on，通常限制 100 次迭代；guard=off 可能导致无限循环。",
+    "subcommands": "子命令可写作引号字符串；复杂子命令优先用闭包，减少管道和宏转义。"
+  },
+  "worldbook_fields": {
+    "string_fields": ["content", "comment"],
+    "list_fields": ["key", "keysecondary"],
+    "boolean_fields": ["constant", "disable", "excludeRecursion", "caseSensitive", "matchWholeWords"],
+    "number_fields": ["order", "probability", "depth", "scanDepth"],
+    "enum_fields": {
+      "selectiveLogic": { "0": "AND ANY", "1": "NOT ALL", "2": "NOT ANY", "3": "AND ALL" },
+      "position": { "0": "主提示前", "1": "主提示后", "2": "作者说明顶部", "3": "作者说明底部", "4": "指定深度聊天中", "5": "示例消息顶部", "6": "示例消息底部" },
+      "role_when_position_4": { "0": "系统", "1": "用户", "2": "助手" }
+    }
+  },
+  "side_effect_levels": [
+    { "level": "none", "meaning": "只读或纯计算。" },
+    { "level": "ui", "meaning": "只影响当前界面显示。" },
+    { "level": "metadata_write", "meaning": "写当前聊天/脚本变量。" },
+    { "level": "settings_write", "meaning": "写全局设置或跨聊天变量。" },
+    { "level": "chat_write", "meaning": "新增或修改聊天内容。" },
+    { "level": "worldbook_write", "meaning": "写世界书资产。" },
+    { "level": "quick_reply_write", "meaning": "写 Quick Reply 配置。" },
+    { "level": "character_write", "meaning": "创建、复制或修改角色数据。" },
+    { "level": "destructive_character_write", "meaning": "删除角色数据，执行前必须确认。" },
+    { "level": "generation", "meaning": "触发 LLM 或图像生成。" },
+    { "level": "destructive_chat_write", "meaning": "删除/剪切聊天内容，执行前应确认。" }
+  ],
+  "quick_reply_integration": [
+    "Quick Reply 的 message 字段可以写 STscript/slash command。",
+    "按钮可作为手动触发入口，也可被 /run 或 /trigger 间接触发。",
+    "快速回复支持启动、用户消息、AI 消息、聊天加载、群组回复等自动执行入口，启用前必须标注副作用。",
+    "建议在使用 STscript 时关闭自动注入用户输入，改用 {{input}} 显式读取输入框内容。",
+    "快速回复中不要放真实密钥或长 prompt 正文。"
+  ],
+  "js_slash_runner_boundary": [
+    "STscript 是 SillyTavern 命令语言；JS-Slash-Runner 是 JavaScript 运行环境。",
+    "JS-Slash-Runner 中可通过 TavernHelper.triggerSlash 触发 slash command，但复杂状态管理应留在 JS 中。",
+    "若任务要求 DOM、异步请求、复杂数据结构，应优先使用 JS-Slash-Runner 或原生扩展，而非堆叠 STscript。"
+  ],
+  "integration_notes": [
+    "STscript 样例应保持短小、可读、无真实正文。",
+    "会发送消息、改变量或触发生成的命令需要在文档中标注副作用。",
+    "删除聊天、剪切消息、修改世界书、创建/更新 Quick Reply、触发 LLM 生成的命令应作为高风险命令处理。",
+    "Quick Reply 联动 Regex 时，要确认 Regex placement 是否包含 Slash Commands。",
+    "Autocomplete 只说明当前 ST UI 中的编辑辅助，不代表该命令在目标 SillyTavern 版本中一定可用。",
+    "标注为暂存或版本相关的能力，不应作为跨版本稳定骨架默认生成。"
+  ],
+  "related_examples": ["examples/stscript/quick-reply-command.json", "examples/stscript/basic-flow.stscript"]
+}

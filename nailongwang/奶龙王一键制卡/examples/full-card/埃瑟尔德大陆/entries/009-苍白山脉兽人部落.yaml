@@ -1,0 +1,61 @@
+id: 8
+keys:
+  - 兽人
+  - 苍白
+secondary_keys: []
+comment: 苍白山脉兽人部落
+content: |-
+  # 势力详述：苍白山脉兽人部落
+    **核心概览**：盘踞在北部苍白山脉中上层区域的多个兽人氏族的松散联盟。以野蛮的力量、好战的天性和对定居文明的深刻敌视为标志。社会围绕力量、猎杀与生存构建，缺乏统一的中央政权。
+    **统治体系**：氏族制。每个氏族由最强大的战士（通常称“酋长”或“屠夫”）领导。氏族间时而结盟，时而血战。只有在面对共同外部威胁（如矮人或人类大规模清剿）时，才可能由一位极具威望的“战争领主”短暂统合。
+    **社会文化**：崇拜原始力量、勇气与猎物之灵。社会地位完全由武力和战功决定。有口述传统，但没有文字。劫掠被视为荣耀的生存方式与成年仪式。对魔法既恐惧又憎恶。
+    **军事力量**：个体兽人力量远超普通人类，但装备简陋（毛皮、骨甲、抢来的金属武器）。擅长山地游击、伏击与狂暴冲锋。战斗时以小队或氏族为单位，缺乏严密的阵型与纪律。
+    **经济基础**：几乎无生产经济。依靠狩猎、采集和劫掠诺顿边境或小型商队获取食物、武器与其他物资。内部以战利品分配为主要流通方式。
+    **主要据点**：
+    - **血颅峰 (苍白山脉中部)**：最大兽人氏族“血颅”的根据地，位于险峻山峰的洞穴网络，易守难攻，是许多劫掠行动的出发地。
+    - **碎骨谷 (山脉东段)**：多个中小型氏族混居的崎岖山谷，劫掠诺顿东部边境的主要跳板之一，以残酷的争斗闻名。
+    - **嚎叫隘口 (山脉南麓)**：季节性营地，兽人在此集结，准备对山下的诺顿村镇发动大规模袭击。
+    - **霜咬营地 (山脉北部较高处)**：最靠近霜巨人活动区域的兽人前哨，环境极端恶劣，居住者皆为强悍亡命之徒。
+    **外交态势**：
+    - **全面敌对**：诺顿王国（主要劫掠目标）、铁炉堡矮人（争夺山脉控制权）。
+    - **非正式联系**：荒原氏族（通过边境走私交换信息与少量物资，有时协同袭扰）。
+    - **恐惧与冲突**：霜巨人部落（视为不可力敌的天灾，尽量避开其迁徙路线）。
+    - **无视**：大陆其他主要势力（地理隔绝，无直接利益关系）。
+constant: false
+selective: true
+insertion_order: 20
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: true
+  display_index: 12
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

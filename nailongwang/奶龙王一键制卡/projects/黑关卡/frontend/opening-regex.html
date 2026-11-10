@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:transparent;color:#1f2937;font-family:"Noto Serif SC","Source Han Serif SC","Songti SC",serif;font-size:15px;line-height:1.85}
+.office-opening{position:relative;overflow:hidden;border:1px solid rgba(15,23,42,.12);border-radius:4px;background:linear-gradient(160deg,#f8fafc 0%,#eef2ff 48%,#f8fafc 100%);box-shadow:0 12px 28px rgba(15,23,42,.08)}
+.office-opening:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 12% 0,rgba(59,130,246,.10),transparent 36%),radial-gradient(circle at 88% 18%,rgba(14,165,233,.08),transparent 28%);pointer-events:none}
+.opening-content{position:relative;padding:22px 24px 14px;white-space:pre-wrap;color:#111827}
+.opening-content:empty:before{content:"等待开场文本载入。";color:#64748b}
+.office-actions{position:relative;padding:0 24px 22px;text-align:center}
+.import-btn{min-width:220px;border:0;border-radius:4px;padding:12px 26px;background:#0f172a;color:#f8fafc;font-weight:700;font-size:14px;letter-spacing:1px;cursor:pointer;transition:transform .2s,background .2s}
+.import-btn:hover{transform:translateY(-1px);background:#1e293b}
+.import-btn:disabled{cursor:not-allowed;background:#94a3b8;transform:none}
+.status{margin-top:10px;min-height:20px;font-size:12px;color:#0369a1;opacity:0;transition:opacity .25s;font-family:"IBM Plex Sans","Noto Sans SC",sans-serif}
+.status.show{opacity:1}.status.err{color:#b91c1c}.status.ok{color:#047857}
+@media(max-width:680px){.opening-content{padding:18px 16px}.office-actions{padding:0 16px 18px}.import-btn{width:100%;min-width:0}}
+</style>
+</head>
+<body>
+<div class="office-opening">
+  <div class="opening-content" id="openingContent">$1</div>
+  <div class="office-actions">
+    <button class="import-btn" id="importTableButton">导入表格并开始</button>
+    <div class="status" id="statusMessage">等待导入</div>
+  </div>
+</div>
+<script>
+(function(){
+'use strict';
+var TEMPLATE_ENTRY_KEY='__ACU_TEMPLATE_DATA__';
+var PRESET_ENTRY_KEY='__ACU_PRESET_DATA__';
+var button=document.getElementById('importTableButton');
+var statusEl=document.getElementById('statusMessage');
+function setStatus(text,type){statusEl.textContent=text;statusEl.className='status show '+(type||'');}
+function resetButton(){button.disabled=false;button.textContent='导入表格并开始';}
+function roots(){var list=[window];try{if(window.parent&&window.parent!==window)list.push(window.parent)}catch(e){}try{if(window.top&&window.top!==window)list.push(window.top)}catch(e){}return list;}
+function getApi(){var rs=roots();for(var i=0;i<rs.length;i++){try{if(rs[i].AutoCardUpdaterAPI&&typeof rs[i].AutoCardUpdaterAPI.initGameSession==='function')return rs[i].AutoCardUpdaterAPI;}catch(e){}}return null;}
+function getEntryKeys(entry){
+  var raw=[];
+  if(!entry)return raw;
+  if(Array.isArray(entry.keys))raw=raw.concat(entry.keys);
+  if(Array.isArray(entry.key))raw=raw.concat(entry.key);else if(typeof entry.key==='string')raw.push(entry.key);
+  if(entry.comment)raw.push(entry.comment);
+  return raw.map(function(v){return String(v||'').trim();}).filter(Boolean);
+}
+function readWorldBookEntry(key){
+  var rs=roots();
+  for(var i=0;i<rs.length;i++){
+    try{
+      var root=rs[i];
+      var ctx=null;
+      if(root.SillyTavern&&typeof root.SillyTavern.getContext==='function')ctx=root.SillyTavern.getContext();
+      if(!ctx&&typeof root.getContext==='function')ctx=root.getContext();
+      var ch=ctx&&ctx.characters&&ctx.characters[ctx.characterId!=null?ctx.characterId:(ctx.this_chid||0)];
+      var entries=(ch&&ch.data&&ch.data.character_book&&ch.data.character_book.entries)||(ch&&ch.character_book&&ch.character_book.entries)||[];
+      for(var j=0;j<entries.length;j++){
+        var entry=entries[j];
+        var keys=getEntryKeys(entry);
+        if(keys.indexOf(key)!==-1&&entry.content)return String(entry.content).trim();
+      }
+    }catch(e){}
+  }
+  return null;
+}
+function decodeBase64Json(base64Text){
+  try{
+    var binary=atob(String(base64Text||'').trim());
+    var bytes=new Uint8Array(binary.length);
+    for(var i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
+    return JSON.parse(new TextDecoder('utf-8').decode(bytes));
+  }catch(e){
+    console.error('[黑关卡开场初始化] 数据解析失败:',e);
+    return null;
+  }
+}
+function sendToTavern(message){
+  try{
+    var doc=parent&&parent.document;
+    var textarea=doc&&doc.getElementById('send_textarea');
+    var sendButton=doc&&doc.getElementById('send_but');
+    if(textarea&&sendButton){textarea.value=message;sendButton.click();return true;}
+  }catch(e){console.error('[黑关卡开场初始化] 发送消息失败:',e);}
+  return false;
+}
+async function importTables(){
+  button.disabled=true;button.textContent='导入中...';setStatus('正在读取表格与推进预设','');
+  var templateB64=readWorldBookEntry(TEMPLATE_ENTRY_KEY);
+  if(!templateB64){setStatus('未找到世界书表格数据：'+TEMPLATE_ENTRY_KEY,'err');resetButton();return;}
+  var templateData=decodeBase64Json(templateB64);
+  if(!templateData){setStatus('表格数据解析失败','err');resetButton();return;}
+  var presetB64=readWorldBookEntry(PRESET_ENTRY_KEY);
+  var presetData=null;
+  if(presetB64){
+    presetData=decodeBase64Json(presetB64);
+    if(!presetData){setStatus('推进预设解析失败','err');resetButton();return;}
+  }else{
+    setStatus('未找到推进预设：'+PRESET_ENTRY_KEY+'（将仅导入表格）','');
+  }
+  var api=getApi();
+  if(!api){setStatus('shujuku API 不可用，请在 SillyTavern 中打开','err');resetButton();return;}
+  try{
+    var opts={injectTemplate:true, templateData:templateData, loadPreset:!!presetData};
+    if(presetData)opts.presetData=presetData;
+    var result=await api.initGameSession({}, opts);
+    if(result&&result.success===false){setStatus('导入失败：'+(result.message||'未知错误'),'err');resetButton();return;}
+    var sent=sendToTavern('开始');
+    setStatus(sent?'已导入，开始指令已发送':'已导入，但未找到酒馆发送按钮','ok');
+    button.textContent='已导入';
+  }catch(e){
+    console.error('[黑关卡开场初始化] 导入失败:',e);
+    setStatus('导入失败：'+(e&&e.message?e.message:'未知错误'),'err');
+    resetButton();
+  }
+}
+button.addEventListener('click', importTables);
+})();
+</script>
+</body>
+</html>

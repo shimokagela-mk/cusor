@@ -1,0 +1,310 @@
+{
+  "sheet_SummaryLog": {
+    "uid": "sheet_SummaryLog",
+    "name": "纪要表",
+    "sourceData": {
+      "note": "轮次日志表，跨世界累计保存，不因轮回切换而清空。\n- 列0: 时间跨度 - 本轮事件发生的时间范围。\n- 列1: 地点 - 本轮事件发生的具体地点，从大到小描述。\n- 列2: 纪要 - 以第三方视角客观记录本轮已明确发生的事实，不得加入幕后解释、主观猜测或总结升华。应重点记录玩家如何接触规则、验证规则、误判规则、规避风险或触发失败条件，不少于200字。\n- 列3: 概览 - 30字以内，一句话概括本轮事件。\n- 列4: 编码索引 - 格式为 AMXX，XX 从 01 递增。",
+      "initNode": "故事初始化时，插入一条新记录，用于记录本轮世界初始化与开场事件。",
+      "deleteNode": "禁止删除。",
+      "updateNode": "禁止操作。",
+      "insertNode": "每轮交互结束后插入一条新记录，若发生世界切换，则下一条记录应明确体现新世界初始化。"
+    },
+    "content": [
+      [
+        null,
+        "时间跨度",
+        "地点",
+        "纪要",
+        "概览",
+        "编码索引"
+      ]
+    ],
+    "updateConfig": {
+      "uiSentinel": -1,
+      "contextDepth": -1,
+      "updateFrequency": -1,
+      "batchSize": -1,
+      "skipFloors": -1
+    },
+    "exportConfig": {
+      "enabled": true,
+      "splitByRow": true,
+      "entryName": "纪要",
+      "entryType": "keyword",
+      "keywords": "编码索引",
+      "preventRecursion": true,
+      "injectionTemplate": "<记忆回溯>\n$1\n</记忆回溯>",
+      "extraIndexEnabled": true,
+      "extraIndexEntryName": "纪要索引",
+      "extraIndexColumns": [
+        "概览",
+        "编码索引"
+      ],
+      "extraIndexColumnModes": {
+        "概览": "index_only",
+        "编码索引": "both"
+      },
+      "extraIndexInjectionTemplate": "<已发生事件概览>\n$1\n</已发生事件概览>",
+      "entryPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 999,
+        "order": 10000
+      },
+      "extraIndexPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 1000,
+        "order": 10010
+      },
+      "fixedEntryPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 9999,
+        "order": 99987
+      },
+      "fixedIndexPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 9999,
+        "order": 99988
+      }
+    },
+    "orderNo": 6
+  },
+  "sheet_KeyActors": {
+    "uid": "sheet_KeyActors",
+    "name": "重要角色表",
+    "sourceData": {
+      "note": "记录当前世界中已登场的重要人物。\n- 列0: 姓名 - 角色姓名，用作关键词触发列。\n- 列1: 一句话介绍 - 不超过20字，概括其身份或作用。\n- 列2: 外貌特征 - 记录能帮助辨认角色的外貌、着装或异常特征。\n- 列3: 当前状态 - 记录角色目前所处状态、立场或可见异常。\n- 列4: 备注 - 记录该角色与当前规则、目标、地点或风险相关的补充信息。",
+      "initNode": "当前世界初始化时，为已知的重要人物分别插入一条记录。",
+      "deleteNode": "进入新世界时，允许删除旧世界的全部角色记录；同一世界内禁止随意删除，除非角色已确认消失或不再存在。",
+      "updateNode": "角色状态、外貌、立场或备注发生变化时更新对应条目。",
+      "insertNode": "有新的重要人物登场，或原本未知身份被确认后，插入新条目。"
+    },
+    "content": [
+      [
+        null,
+        "姓名",
+        "一句话介绍",
+        "外貌特征",
+        "当前状态",
+        "备注"
+      ]
+    ],
+    "updateConfig": {
+      "uiSentinel": -1,
+      "contextDepth": -1,
+      "updateFrequency": -1,
+      "batchSize": -1,
+      "skipFloors": -1
+    },
+    "exportConfig": {
+      "enabled": true,
+      "splitByRow": true,
+      "entryName": "重要人物表",
+      "entryType": "keyword",
+      "keywords": "姓名",
+      "preventRecursion": true,
+      "injectionTemplate": "",
+      "extraIndexEnabled": true,
+      "extraIndexEntryName": "重要人物表-索引",
+      "extraIndexColumns": [
+        "姓名",
+        "一句话介绍"
+      ],
+      "extraIndexColumnModes": {
+        "姓名": "both",
+        "一句话介绍": "index_only"
+      },
+      "extraIndexInjectionTemplate": "以下为当前世界已登场的重要角色：\n<重要角色索引>\n$1\n</重要角色索引>",
+      "entryPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 10000,
+        "order": 10000
+      },
+      "extraIndexPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 10000,
+        "order": 8000
+      },
+      "fixedEntryPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 10000,
+        "order": 99983
+      },
+      "fixedIndexPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 10000,
+        "order": 99984
+      }
+    },
+    "orderNo": 2
+  },
+  "sheet_GlobalLoopState": {
+    "uid": "sheet_GlobalLoopState",
+    "name": "全局轮回状态表",
+    "sourceData": {
+      "note": "记录当前轮次唯一有效的世界状态。本表除表头外始终只保留一行。\n- 列0: 当前轮次 - 从 1 开始递增。\n- 列1: 当前世界编号 - 例如 W-001、W-002。\n- 列2: 当前场景 - 本轮随机生成的封闭场景。\n- 列3: 当前身份 - 本轮玩家身份。\n- 列4: 当前目标 - 本轮成功条件。\n- 列5: 当前难度 - 低 / 中 / 高。\n- 列6: 当前阶段 - 例如开局生成、试探期、确认期、逃离期、失败结算。\n- 列7: 当前地点 - 玩家当前所在位置。\n- 列8: 当前时间 - 当前世界中的时间标记。\n- 列9: 存活状态 - 存活 / 濒危 / 消失。\n- 列10: 规则总数 - 当前世界已生成或已知的规则总条数。\n- 列11: 已验证规则数 - 当前已被确认真伪或已完成验证的规则数量。",
+      "initNode": "故事初始化时插入一条默认记录，生成当前轮次与当前世界的基础状态。",
+      "deleteNode": "禁止删除。",
+      "updateNode": "每轮交互后根据剧情推进更新这一行；若世界切换，则直接在这一行覆盖为新世界状态。",
+      "insertNode": "禁止操作。"
+    },
+    "content": [
+      [
+        null,
+        "当前轮次",
+        "当前世界编号",
+        "当前场景",
+        "当前身份",
+        "当前目标",
+        "当前难度",
+        "当前阶段",
+        "当前地点",
+        "当前时间",
+        "存活状态",
+        "规则总数",
+        "已验证规则数"
+      ],
+      [
+        null,
+        "1",
+        "W-001",
+        "未知",
+        "未知",
+        "未知",
+        "待生成",
+        "开局生成",
+        "未知",
+        "未知",
+        "存活",
+        "0",
+        "0"
+      ]
+    ],
+    "updateConfig": {
+      "uiSentinel": -1,
+      "contextDepth": -1,
+      "updateFrequency": -1,
+      "batchSize": -1,
+      "skipFloors": -1
+    },
+    "exportConfig": {
+      "enabled": false,
+      "splitByRow": false,
+      "entryName": "全局轮回状态表",
+      "entryType": "constant",
+      "keywords": "",
+      "preventRecursion": true,
+      "injectionTemplate": "",
+      "extraIndexEnabled": false,
+      "extraIndexEntryName": "全局轮回状态表-索引",
+      "extraIndexColumns": [],
+      "extraIndexColumnModes": {},
+      "extraIndexInjectionTemplate": "",
+      "entryPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 2,
+        "order": 10000
+      },
+      "extraIndexPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 2,
+        "order": 10010
+      },
+      "fixedEntryPlacement": {
+        "position": "before_char",
+        "depth": 2,
+        "order": 99981
+      },
+      "fixedIndexPlacement": {
+        "position": "before_char",
+        "depth": 2,
+        "order": 99982
+      }
+    },
+    "orderNo": 0
+  },
+  "sheet_RuleTracker": {
+    "uid": "sheet_RuleTracker",
+    "name": "规则追踪表",
+    "sourceData": {
+      "note": "记录当前世界中所有已知、待验证或已证伪的规则条目。进入新世界后，本表除表头外必须清空并按新世界重新建立。\n- 列0: 规则编号 - 例如 R01、R02，按出现顺序递增。\n- 列1: 规则摘要 - 20字以内概括规则内容。\n- 列2: 规则类型 - 基础生存规则 / 场景专属规则 / 身份限制规则 / 误导性规则 / 致命禁则。\n- 列3: 可信度 - 未知 / 待验证 / 较高 / 已确认 / 已证伪。\n- 列4: 生效状态 - 生效中 / 未触发 / 已触发 / 已失效 / 已废弃。\n- 列5: 触发条件 - 写清触发方式；若尚未明确，则填写 未触发 或 未知。\n- 列6: 违背后果 - 写清违反规则的后果；若尚未知悉，则填写 未知。\n所有未知信息必须严格使用：未知 / 待验证 / 未触发 这三类占位词，不得擅自补完。",
+      "initNode": "当前世界初始化时，根据已生成的规则插入多条初始记录；若开局只能确定少量信息，则允许用未知占位先建立记录。",
+      "deleteNode": "进入新世界时，允许删除旧世界全部规则记录；同一世界内，仅在规则被证伪、失效或彻底废弃时删除或清理。",
+      "updateNode": "当规则被验证、触发、证伪、补全条件或确认后果时，更新对应条目。",
+      "insertNode": "发现新规则、新伪规则或新的致命禁则时插入新条目。"
+    },
+    "content": [
+      [
+        null,
+        "规则编号",
+        "规则摘要",
+        "规则类型",
+        "可信度",
+        "生效状态",
+        "触发条件",
+        "违背后果"
+      ],
+      [
+        null,
+        "R01",
+        "未知规则",
+        "基础生存规则",
+        "待验证",
+        "生效中",
+        "未触发",
+        "未知"
+      ]
+    ],
+    "updateConfig": {
+      "uiSentinel": -1,
+      "contextDepth": -1,
+      "updateFrequency": -1,
+      "batchSize": -1,
+      "skipFloors": -1
+    },
+    "exportConfig": {
+      "enabled": true,
+      "splitByRow": true,
+      "entryName": "规则追踪",
+      "entryType": "keyword",
+      "keywords": "规则编号",
+      "preventRecursion": true,
+      "injectionTemplate": "<当前世界规则条目>\n$1\n</当前世界规则条目>",
+      "extraIndexEnabled": true,
+      "extraIndexEntryName": "规则追踪-索引",
+      "extraIndexColumns": [
+        "规则编号",
+        "规则摘要",
+        "可信度",
+        "生效状态"
+      ],
+      "extraIndexColumnModes": {
+        "规则编号": "both",
+        "规则摘要": "index_only",
+        "可信度": "index_only",
+        "生效状态": "index_only"
+      },
+      "extraIndexInjectionTemplate": "<当前世界规则索引>\n$1\n</当前世界规则索引>",
+      "entryPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 999,
+        "order": 10020
+      },
+      "extraIndexPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 999,
+        "order": 10010
+      },
+      "fixedEntryPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 9999,
+        "order": 99985
+      },
+      "fixedIndexPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 9999,
+        "order": 99986
+      }
+    },
+    "orderNo": 1
+  }
+}

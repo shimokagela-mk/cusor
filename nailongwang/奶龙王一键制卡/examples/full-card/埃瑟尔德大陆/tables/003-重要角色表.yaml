@@ -1,0 +1,127 @@
+uid: sheet_NcBlYRH5
+name: 重要角色表
+sourceData:
+  note: |-
+    记录所有关键NPC的详细信息和动态状态。一行代表一个重要角色，普通路人和临时杂兵不要写入本表。
+    - 列0: 姓名 - NPC的名字，作为业务主键；同名角色需在姓名中加入身份区分。
+    - 列1: 性别/年龄 - NPC的生理性别和年龄，也可写未知。
+    - 列2: 一句话介绍 - 用短句概括角色身份背景，建议15字左右，过长时自行压缩。
+    - 列3: 外貌特征 - NPC外貌、当前衣着和明显状态的客观描述。
+    - 列4: 持有的重要物品 - 关键物品列表，用分号分隔；没有则填无。
+    - 列5: 是否离场 - 推荐填写是或否；离开主角当前可互动范围时写是，再次登场时写否。
+    - 列6: 过往经历 - 角色背景与关键事件，随剧情增量更新；内容过长时压缩旧信息后保留关键事实。
+    - 列7: 职业 - NPC的职业、身份或自定义职业。
+    - 列8: 当前等级 - NPC当前等级。
+    - 列9: 当前经验值 - 推荐格式：当前经验/升级所需经验，例如100/338。
+    - 列10: 力量 - 力量属性值。
+    - 列11: 敏捷 - 敏捷属性值。
+    - 列12: 体质 - 体质属性值。
+    - 列13: 智力 - 智力属性值。
+    - 列14: 感知 - 感知属性值。
+    - 列15: 魅力 - 魅力属性值。
+    - 列16: 生命值 - 推荐格式：当前值/最大值。
+    - 列17: 体力值 - 推荐格式：当前值/最大值。
+    - 列18: 法力值 - 推荐格式：当前值/最大值。
+    - 列19: 当前技能 - 重要技能列表，推荐格式：技能名[等级]，多个技能用分号分隔。
+
+    更新规则：每轮必须检查已记录重要角色是否离场、再次登场、受伤、恢复、升级、获得经验、关系变化或经历变化。经历类字段应增量追加或压缩更新，不要无故覆盖成空。
+  initNode: 游戏初始化时，为开场剧情中已经明确登场或与主角强相关的重要人物分别插入条目。
+  deleteNode: 禁止删除。角色死亡、失踪、离场、背叛或暂时不可互动都用 UPDATE 记录，不删除档案。
+  updateNode: |-
+    已有角色的状态、关系、想法、经历、等级、经验、资源或离场状态变化时更新；若角色死亡需在姓名或过往经历中明确标注。
+    SQL示例: UPDATE important_characters SET hp = '50/100', is_off_stage = '否', current_exp = '180/338' WHERE name = '角色名';
+    SQL示例(经历增量): UPDATE important_characters SET back_story = COALESCE(back_story, '') || ';在王城集市协助主角脱困', is_off_stage = '否' WHERE name = '角色名';
+    SQL示例(升级): UPDATE important_characters SET current_level = 6, current_exp = '0/506', strength = strength + 1, constitution = constitution + 1, hp = '130/130' WHERE name = '角色名';
+  insertNode: |-
+    剧情中有之前未记录的重要人物登场，且该人物与主线、任务、战斗、关系网或长期剧情有关时添加。
+    SQL示例: INSERT INTO important_characters (row_id, name, gender_age, brief_intro, appearance, key_items, is_off_stage, back_story, profession, current_level, current_exp, strength, agility, constitution, intelligence, perception, charisma, hp, stamina, mp, current_skills) VALUES ((SELECT COALESCE(MAX(row_id), 0)+1 FROM important_characters), '角色名', '女/20', '王城斥候', '外貌描述', '无', '否', '初次在王城登场', '战士', 5, '100/338', 8, 6, 7, 5, 6, 4, '120/120', '60/60', '50/50', '技能A[1];技能B[2]');
+  ddl: |-
+    CREATE TABLE important_characters ( -- 重要角色表
+      row_id INTEGER PRIMARY KEY, -- 行号
+      name TEXT NOT NULL UNIQUE, -- 姓名
+      gender_age TEXT NOT NULL, -- 性别/年龄
+      brief_intro TEXT, -- 一句话介绍
+      appearance TEXT, -- 外貌特征
+      key_items TEXT, -- 持有的重要物品
+      is_off_stage TEXT NOT NULL DEFAULT '否', -- 是否离场
+      back_story TEXT, -- 过往经历
+      profession TEXT, -- 职业
+      current_level INTEGER, -- 当前等级
+      current_exp TEXT, -- 当前经验值
+      strength INTEGER, -- 力量
+      agility INTEGER, -- 敏捷
+      constitution INTEGER, -- 体质
+      intelligence INTEGER, -- 智力
+      perception INTEGER, -- 感知
+      charisma INTEGER, -- 魅力
+      hp TEXT, -- 生命值
+      stamina TEXT, -- 体力值
+      mp TEXT, -- 法力值
+      current_skills TEXT -- 当前技能
+    );
+content:
+  - - row_id
+    - 姓名
+    - 性别/年龄
+    - 一句话介绍
+    - 外貌特征
+    - 持有的重要物品
+    - 是否离场
+    - 过往经历
+    - 职业
+    - 当前等级
+    - 当前经验值
+    - 力量
+    - 敏捷
+    - 体质
+    - 智力
+    - 感知
+    - 魅力
+    - 生命值
+    - 体力值
+    - 法力值
+    - 当前技能
+updateConfig:
+  uiSentinel: -1
+  contextDepth: -1
+  updateFrequency: -1
+  batchSize: -1
+  skipFloors: -1
+exportConfig:
+  enabled: true
+  splitByRow: true
+  entryName: 重要人物表
+  entryType: keyword
+  keywords: 姓名
+  preventRecursion: true
+  injectionTemplate: ""
+  extraIndexEnabled: true
+  extraIndexEntryName: 重要人物表-索引
+  extraIndexColumns:
+    - 姓名
+    - 一句话介绍
+  extraIndexColumnModes:
+    姓名: both
+    一句话介绍: index_only
+  extraIndexInjectionTemplate: |-
+    以下为已经登场过的角色：
+    <已登场角色>
+    $1
+    </已登场角色>
+  entryPlacement:
+    position: at_depth_as_system
+    depth: 10000
+    order: 10000
+  extraIndexPlacement:
+    position: at_depth_as_system
+    depth: 10000
+    order: 8000
+  fixedEntryPlacement:
+    position: at_depth_as_system
+    depth: 10000
+    order: 99983
+  fixedIndexPlacement:
+    position: at_depth_as_system
+    depth: 10000
+    order: 99984
+orderNo: 2

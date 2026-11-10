@@ -1,0 +1,48 @@
+id: 52
+keys: []
+secondary_keys: []
+comment: '核心世界规则: 力量体系总览'
+content: |-
+  故事发生在一个名叫埃瑟尔德大陆的地方，你需要做的就是以{{user}}为主角，结合上下文，生成一段写实的，富有逻辑的，符合世界观的冒险故事，具体该怎么写我一步一步教你。
+
+  首先是整个奇幻世界的力量体系
+  # 埃瑟尔德大陆 - 力量体系总览
+    **基础世界法则**：这是一个低魔、低武力的正统西幻世界。个体的肉体与精神力存在普遍、可量化的客观上限。无论是战士、法师还是其他超凡者，99级已是传说。即便如此，单一顶尖个体也无法像天灾一样决定战场。智慧、训练、战术、纪律和数量的优势依旧是决定冲突结果的根本。冒险与战斗充满真实代价。
+constant: true
+selective: true
+insertion_order: 1
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: false
+  display_index: 56
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

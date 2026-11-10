@@ -1,0 +1,215 @@
+{
+  "$schema": "./mvu-api.schema.json",
+  "name": "MagVarUpdate (MVU) API Knowledge Base",
+  "language": "zh-CN",
+  "updated_at": "2026-06-08",
+  "sources": [
+    "https://github.com/MagicalAstrogy/MagVarUpdate",
+    "https://raw.githubusercontent.com/MagicalAstrogy/MagVarUpdate/beta/doc/tutorial.md",
+    "https://stagedog.github.io/绛绛/教程/手写mvu变量卡/脚本控制变量/"
+  ],
+  "source_audit": {
+    "checked_at": "2026-06-08",
+    "upstream_refs": [
+      "MagicalAstrogy/MagVarUpdate@c1ae3a921bdab2e33b1afc745e5474b9b07fc070",
+      "src/function/global/index.ts",
+      "src/function/exported_events.ts"
+    ]
+  },
+  "scope_note": "本文件只记录 MVU（MagVarUpdate）暴露给酒馆助手脚本/前端界面的运行时 API、事件、变量结构、命令格式、初始化方式。MVU 是一个 JS-Slash-Runner 上层脚本，依赖 TavernHelper，不要与 SillyTavern Extension API、shujuku API 混放。",
+  "runtime": {
+    "description": "MVU 在 AI 回复结束时扫描消息中的更新指令，按 _.set 风格更新变量。变量分两份：stat_data（当前值，配带条件描述）和 display_data（显示格式，含 old->new 与原因）。",
+    "global_object": "Mvu",
+    "ready_signal": "await waitGlobalInitialized('Mvu');",
+    "install_via_jsr": "import 'https://gcore.jsdelivr.net/gh/MagicalAstrogy/MagVarUpdate@master/artifact/bundle.js'",
+    "depends_on": ["JS-Slash-Runner", "window.TavernHelper", "lodash"],
+    "preferred_api_family": ["Mvu.getMvuData", "Mvu.replaceMvuData", "Mvu.parseMessage", "Mvu.events", "Mvu.isDuringExtraAnalysis"],
+    "data_layout": {
+      "stat_data": "Record<string, any>，初始化时每个叶子节点形如 [初始值, '更新条件/字段说明']；运行时叶子的第一个元素是当前值。",
+      "display_data": "Record<string, any>，本轮更新过的字段为 'old->new(reason)' 字符串；未更新的字段保持上轮值。",
+      "delta_data": "Record<string, any>，本轮被更新的字段差异。",
+      "initialized_lorebooks": "Record<string, string[]>，已经被 [InitVar] 初始化过的世界书条目记录。"
+    }
+  },
+  "events": [
+    {
+      "name": "Mvu.events.VARIABLE_INIT_STARTED",
+      "trigger": "新聊天初始化变量前",
+      "listener_signature": "(variables: MvuData) => void"
+    },
+    {
+      "name": "Mvu.events.VARIABLE_INITIALIZED",
+      "trigger": "变量初始化完成（仅新开聊天）",
+      "listener_signature": "(variables: MvuData) => void"
+    },
+    {
+      "name": "Mvu.events.VARIABLE_UPDATE_STARTED",
+      "trigger": "针对一条 AI 回复开始更新变量前",
+      "listener_signature": "(variables: MvuData, out_is_updated: boolean) => void"
+    },
+    {
+      "name": "Mvu.events.COMMAND_PARSED",
+      "trigger": "已经从消息中解析出更新命令，但尚未执行",
+      "listener_signature": "(commands: MvuCommand[]) => void",
+      "use_cases": [
+        "修复 LLM 在中文路径中插入的 `-`：command.args[0] = command.args[0].replaceAll('-', '');",
+        "把繁体路径转换为简体：command.args[0] = toSimplified(command.args[0]);"
+      ]
+    },
+    {
+      "name": "Mvu.events.SINGLE_VARIABLE_UPDATED",
+      "trigger": "每条更新命令执行后",
+      "listener_signature": "(stat_data: Record<string, any>, path: string, old_value: any, new_value: any) => void"
+    },
+    {
+      "name": "Mvu.events.VARIABLE_UPDATE_ENDED",
+      "trigger": "本次回复的所有命令执行完成后",
+      "listener_signature": "(new_variables: MvuData, old_variables: MvuData) => void",
+      "use_cases": [
+        "对结果二次校验：_.update(new_variables, 'stat_data.角色A.状态值', v => _.clamp(v, 0, 100));",
+        "限制变化幅度：_.update(new_variables, 'stat_data.角色A.状态值', v => _.clamp(v, oldValue - 3, oldValue + 3));",
+        "完全锁死字段：_.set(new_variables, 'stat_data.角色A.状态值', _.get(old_variables, 'stat_data.角色A.状态值'));"
+      ]
+    },
+    {
+      "name": "Mvu.events.BEFORE_MESSAGE_UPDATE",
+      "trigger": "MVU 即将把变量结果写入对应楼层前",
+      "listener_signature": "(variables: MvuData, message_id: number) => void"
+    }
+  ],
+  "legacy_event_names": {
+    "mag_variable_update_started": "等价 VARIABLE_UPDATE_STARTED",
+    "mag_variable_updated": "等价 SINGLE_VARIABLE_UPDATED",
+    "mag_variable_update_ended": "等价 VARIABLE_UPDATE_ENDED"
+  },
+  "apis": [
+    {
+      "name": "Mvu.getMvuData",
+      "signature": "Mvu.getMvuData(option?: { type?: 'message' | 'chat' | 'character' | 'global' | 'script'; message_id?: number | 'latest'; script_id?: string }): MvuData",
+      "description": "读取变量表并视作 MvuData。message_id 支持 -1 / 'latest' 取最新；负数表示倒数；前端界面里通常配合 getCurrentMessageId()。"
+    },
+    {
+      "name": "Mvu.replaceMvuData",
+      "signature": "Mvu.replaceMvuData(data: MvuData, option: { type?: 'message' | 'chat' | 'character' | 'global' | 'script'; message_id?: number | 'latest'; script_id?: string }): Promise<void>",
+      "description": "用给定 MvuData 完整替换变量表。如果不是自行调用 parseMessage 处理变量，更推荐监听 MVU 事件来修改传入数据。"
+    },
+    {
+      "name": "Mvu.parseMessage",
+      "signature": "Mvu.parseMessage(message: string, old_data: MvuData): Promise<MvuData | undefined>",
+      "description": "对一段消息文本解析其中的 <UpdateVariable>/_.set/<JSONPatch>/<initvar>，并基于 old_data 计算更新后的 MvuData；无更新时可能返回 undefined。"
+    },
+    {
+      "name": "Mvu.events",
+      "signature": "Mvu.events: Record<string, string>",
+      "description": "事件常量集合：VARIABLE_INIT_STARTED / VARIABLE_INITIALIZED / VARIABLE_UPDATE_STARTED / COMMAND_PARSED / SINGLE_VARIABLE_UPDATED / VARIABLE_UPDATE_ENDED / BEFORE_MESSAGE_UPDATE。"
+    },
+    {
+      "name": "Mvu.isDuringExtraAnalysis",
+      "signature": "Mvu.isDuringExtraAnalysis(): boolean",
+      "description": "返回当前轮次是否属于额外模型解析轮次；可用于避免 UI 或脚本在额外分析阶段重复执行用户可见副作用。"
+    },
+    {
+      "name": "Mvu.getCurrentMvuData",
+      "signature": "Mvu.getCurrentMvuData(): MvuData",
+      "description": "历史接口：读取当前楼层 MvuData。新代码应改用 Mvu.getMvuData({ type: 'message', message_id: getCurrentMessageId() })。",
+      "deprecated": true,
+      "replacement": "Mvu.getMvuData"
+    },
+    {
+      "name": "Mvu.replaceCurrentMvuData",
+      "signature": "Mvu.replaceCurrentMvuData(data: MvuData): Promise<void>",
+      "description": "历史接口：替换当前楼层 MvuData。新代码应改用 Mvu.replaceMvuData(data, { type: 'message', message_id: getCurrentMessageId() })。",
+      "deprecated": true,
+      "replacement": "Mvu.replaceMvuData"
+    },
+    {
+      "name": "Mvu.reloadInitVar",
+      "signature": "Mvu.reloadInitVar(data: MvuData): Promise<boolean>",
+      "description": "历史接口：重新加载 InitVar 数据。新代码优先通过初始化世界书与事件流程处理变量初始化。",
+      "deprecated": true
+    },
+    {
+      "name": "Mvu.setMvuVariable",
+      "signature": "Mvu.setMvuVariable(data: MvuData, path: string, value: any, options?: { reason?: string; is_recursive?: boolean }): Promise<boolean>",
+      "description": "历史接口：在 MvuData 上更新单个变量。新代码优先在事件回调中直接 _.set/_.update 入参对象，或用 parseMessage + replaceMvuData 完成完整流程。",
+      "deprecated": true,
+      "replacement": "Mvu.events / Mvu.parseMessage / Mvu.replaceMvuData"
+    },
+    {
+      "name": "Mvu.getMvuVariable",
+      "signature": "Mvu.getMvuVariable(data: MvuData, path: string, options?: { category?: 'stat' | 'display' | 'delta'; default_value?: any }): any",
+      "description": "历史接口：从 MvuData 读取指定分类下路径值，并自动展开 [value, desc]。新代码可用 lodash _.get 并显式处理叶子形态。",
+      "deprecated": true,
+      "replacement": "_.get + SafeGetValue"
+    },
+    {
+      "name": "Mvu.getRecordFromMvuData",
+      "signature": "Mvu.getRecordFromMvuData(data: MvuData, category: 'stat' | 'display' | 'delta'): Record<string, any>",
+      "description": "历史接口：返回 stat/display/delta 记录对象。新代码直接读取 data.stat_data、data.display_data、data.delta_data。",
+      "deprecated": true
+    }
+  ],
+  "command_syntax": {
+    "set": {
+      "form": "_.set('path.to.var', oldValue, newValue);//reason",
+      "notes": [
+        "path 用点号分隔；不要带 stat_data 前缀。",
+        "oldValue 主要用于人类可读，MVU 实际不依赖它。",
+        "newValue 可以是数字、字符串、布尔、数组、对象。",
+        "// 后写更新原因，会被写入 display_data。"
+      ]
+    },
+    "blocks": {
+      "UpdateVariable": "<UpdateVariable> ... _.set(...) ... </UpdateVariable> 是默认的更新指令块。",
+      "JSONPatch": "<JSONPatch> 包含 RFC 6902 风格的 JSON Patch；新版本支持 YAML/JSON5/TOML 内容。",
+      "initvar": "<initvar> 块可以在额外问候语 / 世界书条目里覆盖初始变量。"
+    },
+    "init_lorebook": {
+      "naming": "条目名包含 [InitVar] 或 [initvar]，可以是关闭状态。",
+      "format": "JSON5；叶子节点形如 [\"初始值\", \"更新条件/字段说明\"]，对象/数组可任意嵌套。",
+      "scope_prefix": {
+        "_": "私有变量：仅脚本可读写，AI 不可更新。",
+        "$": "对 AI 完全不可见（不会注入到提示词）。"
+      }
+    }
+  },
+  "prompt_template": {
+    "stat_data_macro": "{{get_message_variable::stat_data}} 用于把当前层 stat_data 注入提示词。",
+    "display_data_macro": "{{get_message_variable::display_data}} 用于显示带 old->new 的变化。",
+    "stage_check_pattern": "通过提示词模板（EJS）判断 _.get(getvar('stat_data'), 'path[0]') 来分阶段渲染。"
+  },
+  "frontend_helpers": {
+    "html_status_bar": "前端界面里通过 await getChatMessages(getCurrentMessageId()) 取 message[0].data，再读取 display_data / stat_data。",
+    "SafeGetValue": "推荐写一个工具函数兼容字符串与 [value, desc] 数组：return Array.isArray(v) ? (v.length ? v[0] : def) : (v ?? def);"
+  },
+  "common_patterns": [
+    {
+      "name": "数值范围限制",
+      "code": "eventOn(Mvu.events.VARIABLE_UPDATE_ENDED, vars => _.update(vars, 'stat_data.角色A.状态值', v => _.clamp(v, 0, 100)));"
+    },
+    {
+      "name": "限制单轮变化幅度",
+      "code": "eventOn(Mvu.events.VARIABLE_UPDATE_ENDED, (next, prev) => { const o = _.get(prev, 'stat_data.角色A.状态值'); _.update(next, 'stat_data.角色A.状态值', v => _.clamp(v, o - 3, o + 3)); });"
+    },
+    {
+      "name": "锁定变量不被 AI 更新",
+      "code": "eventOn(Mvu.events.VARIABLE_UPDATE_ENDED, (next, prev) => _.set(next, 'stat_data.角色A.状态值', _.get(prev, 'stat_data.角色A.状态值')));"
+    },
+    {
+      "name": "用变量值激活绿灯",
+      "code": "eventOn(Mvu.events.VARIABLE_UPDATE_ENDED, vars => injectPrompts([{ id: '激活-状态值', position: 'none', depth: 0, role: 'user', content: `状态值=${_.get(vars, 'stat_data.角色A.状态值')}`, should_scan: true }]));"
+    },
+    {
+      "name": "条件触发立即事件",
+      "code": "injectPrompts([{ id: '激活-立即事件', position: 'none', depth: 0, role: 'system', content: '【状态值触发时的示例事件】', filter: () => _.get(getAllVariables(), 'stat_data.角色A.状态值') === 0, should_scan: true }]);"
+    }
+  ],
+  "integration_notes": [
+    "调用任何 MVU API 之前必须 await waitGlobalInitialized('Mvu')。",
+    "MVU 不是 SillyTavern 原生扩展，是 JS-Slash-Runner 脚本：必须在酒馆助手脚本/前端界面 iframe 里运行。",
+    "事件回调可以直接 mutate 传入对象（_.set/_.update），MVU 会按修改后的对象继续流程。",
+    "命令解析失败或类型不匹配时，MVU 会保持旧值并在控制台报错，不会抛出阻塞。",
+    "新版命令支持 <jsonpatch> 块的 YAML/JSON5/TOML 解析；解析顺序为 JSON → JSON5 → YAML。",
+    "标记为 deprecated 的 API 仅用于识别既有脚本；新建默认骨架不要生成。"
+  ]
+}
