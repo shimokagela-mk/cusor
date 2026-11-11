@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>情话6.4.3 · 双人身体互动 · 下载</title>
+<style>
+  body{font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#0b1220;color:#e5eefc;margin:0;min-height:100vh;display:grid;place-items:center}
+  .card{width:min(92vw,520px);background:#121a2b;border:1px solid #243049;border-radius:16px;padding:28px 24px}
+  h1{font-size:1.25rem;margin:0 0 8px}
+  p{margin:0 0 12px;color:#9fb0c9;line-height:1.6;font-size:.95rem}
+  button,a.btn{display:block;width:100%;box-sizing:border-box;text-align:center;text-decoration:none;border:0;border-radius:10px;padding:14px 16px;margin:8px 0;font-weight:700;font-size:1rem;cursor:pointer}
+  .primary{background:#3b82f6;color:#fff}
+  .secondary{background:#1e293b;color:#dbeafe;border:1px solid #334155}
+  .status{min-height:1.3em;margin-top:10px;font-size:13px;color:#86efac}
+  .err{color:#fca5a5}
+  small{display:block;margin-top:12px;color:#7f92ab;font-size:12px;line-height:1.5;word-break:break-all}
+  .sep{height:1px;background:#243049;margin:14px 0}
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>情话 6.4.3 · WorldInfo v9.4.1</h1>
+    <p>双人身体互动独立版。GitHub 打不开就用镜像。先点强制下载；失败再点「打开」另存为。</p>
+
+    <button type="button" class="primary" id="dlWi">强制下载世界书 JSON（镜像）</button>
+    <a class="btn secondary" id="openWi" target="_blank" rel="noopener">浏览器打开世界书 JSON</a>
+
+    <div class="sep"></div>
+
+    <button type="button" class="primary" id="dlScript">强制下载脚本 JSON（镜像）</button>
+    <a class="btn secondary" id="openScript" target="_blank" rel="noopener">浏览器打开脚本 JSON</a>
+
+    <div class="sep"></div>
+
+    <button type="button" class="secondary" id="dlUsage">强制下载使用说明</button>
+    <a class="btn secondary" id="openUsage" target="_blank" rel="noopener">浏览器打开使用说明</a>
+
+    <p class="status" id="status"></p>
+    <small id="hint"></small>
+  </div>
+  <script>
+    const BRANCH = 'cursor/adult-romance-dirtytalk-df55';
+    const enc = (parts) => parts.map(encodeURIComponent).join('/');
+    const wiFile = 'Adult_Romance_DirtyTalk_WorldInfo_v9_4_1_DyadicBody_RoutedBody_SourceHygiene_HostCompat.json';
+    const scriptFile = '情话6.4.3_双人身体互动_独立版.json';
+    const wiPath = enc(['releases','liaosao-v643-dyadic', wiFile]);
+    const scriptPath = enc(['releases','liaosao-v643-dyadic', scriptFile]);
+    const usagePath = 'card-download/liaosao/usage.txt';
+
+    const mirrorsWi = [
+      'https://ghfast.top/https://raw.githubusercontent.com/shimokagela-mk/cusor/' + BRANCH + '/' + wiPath,
+      'https://cdn.jsdelivr.net/gh/shimokagela-mk/cusor@' + BRANCH + '/releases/liaosao-v643-dyadic/' + encodeURIComponent(wiFile),
+      'https://raw.githubusercontent.com/shimokagela-mk/cusor/' + BRANCH + '/' + wiPath
+    ];
+    const mirrorsScript = [
+      'https://ghfast.top/https://raw.githubusercontent.com/shimokagela-mk/cusor/' + BRANCH + '/' + scriptPath,
+      'https://cdn.jsdelivr.net/gh/shimokagela-mk/cusor@' + BRANCH + '/releases/liaosao-v643-dyadic/' + encodeURIComponent(scriptFile),
+      'https://raw.githubusercontent.com/shimokagela-mk/cusor/' + BRANCH + '/' + scriptPath
+    ];
+    const mirrorsUsage = [
+      'https://ghfast.top/https://raw.githubusercontent.com/shimokagela-mk/cusor/' + BRANCH + '/' + usagePath,
+      'https://cdn.jsdelivr.net/gh/shimokagela-mk/cusor@' + BRANCH + '/' + usagePath,
+      'https://raw.githubusercontent.com/shimokagela-mk/cusor/' + BRANCH + '/' + usagePath
+    ];
+
+    document.getElementById('openWi').href = mirrorsWi[0];
+    document.getElementById('openScript').href = mirrorsScript[0];
+    document.getElementById('openUsage').href = mirrorsUsage[0];
+    document.getElementById('hint').textContent = '世界书镜像：' + mirrorsWi[0];
+
+    async function forceDownload(urls, filename) {
+      const status = document.getElementById('status');
+      status.className = 'status';
+      let lastErr = null;
+      for (const url of urls) {
+        status.textContent = '尝试：' + url.slice(0, 48) + '…';
+        try {
+          const res = await fetch(url, { cache: 'no-store' });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const blob = await res.blob();
+          const objectUrl = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = objectUrl; a.download = filename;
+          document.body.appendChild(a); a.click(); a.remove();
+          setTimeout(() => URL.revokeObjectURL(objectUrl), 2000);
+          status.textContent = '已触发下载：' + filename;
+          return;
+        } catch (e) { lastErr = e; }
+      }
+      status.className = 'status err';
+      status.textContent = '全部镜像失败：请点「打开」后另存为。';
+      console.error(lastErr);
+    }
+
+    document.getElementById('dlWi').onclick = () => forceDownload(mirrorsWi, wiFile);
+    document.getElementById('dlScript').onclick = () => forceDownload(mirrorsScript, scriptFile);
+    document.getElementById('dlUsage').onclick = () => forceDownload(mirrorsUsage, '情话6.4.3-使用说明.txt');
+  </script>
+</body>
+</html>

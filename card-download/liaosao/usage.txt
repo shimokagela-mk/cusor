@@ -1,0 +1,27 @@
+情话 6.4.3｜双人身体互动独立版 + WorldInfo v9.4.1
+
+【装什么】
+1) 世界书 JSON
+   Adult_Romance_DirtyTalk_WorldInfo_v9_4_1_DyadicBody_RoutedBody_SourceHygiene_HostCompat.json
+2) TavernHelper / JS-Slash-Runner 脚本 JSON
+   情话6.4.3_双人身体互动_独立版.json
+
+【怎么装】
+1. SillyTavern → World Info → Import → 选世界书 JSON
+2. TavernHelper → Import → 选脚本 JSON → 启用
+3. 聊天页应出现按钮：💬情话6.4.3
+
+【版本关系】
+- 脚本 worldbook_version = 9.4.1
+- 脚本内嵌世界书与独立世界书 706 条目一致
+- 6.4.3 为独立版热修复：同步 V941 required key、世界书发现/安装身份与运行时版本
+- Body 知识、路由、Source Hygiene、创作语义相对 6.4 主体不变
+
+【用途】
+- 聊骚预设路由（甜撩/甜虐/坏撩/强撩/高压/强羞辱/规训/沉浸）
+- DTX641 双人身体互动：场景路由 + Body 因果权限
+- 独立浮动面板，可不依赖剑仙宿主
+
+【注意】
+- 仅限成年向成人角色扮演素材
+- 先导入世界书再开脚本更稳；脚本找不到物理世界书时会回退内嵌源
