@@ -1,0 +1,16 @@
+uid: 60
+comment: 情话世界书说明
+content: |
+  # 情话 WorldInfo 已嵌入
+  本卡已合并 Adult Romance DirtyTalk WorldInfo v9.4.1（约 706 条绿灯条目）：聊骚路由、玩法库、DTX641 双人身体互动等。
+  多数条目靠脚本关键词触发；完整按钮面板请另导入 assets 中的「情话6.4.3_双人身体互动_独立版」酒馆助手脚本。
+  与本卡自有规则并行：年龄闸≥21、反抗被压、墙头男绑定、逼主镜头保感觉、叙述默认脏语域、海棠对话与三体位仍生效。
+
+position: before_char
+enabled: true
+constant: true
+prevent_recursion: true
+insertion_order: 60
+depth: 4
+role: 0
+keys: []

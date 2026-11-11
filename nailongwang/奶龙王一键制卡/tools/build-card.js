@@ -140,6 +140,90 @@ function loadEntriesFromDir(entriesDir) {
   return entries;
 }
 
+function stPositionToName(position) {
+  const map = {
+    0: 'before_char',
+    1: 'after_char',
+    2: 'before_an',
+    3: 'after_an',
+    4: 'at_depth',
+    5: 'before_em',
+    6: 'after_em'
+  };
+  if (typeof position === 'number') return map[position] || 'before_char';
+  if (typeof position === 'string' && ['before_char', 'after_char', 'before_an', 'after_an', 'at_depth', 'before_em', 'after_em'].includes(position)) {
+    return position;
+  }
+  return 'before_char';
+}
+
+function convertStWorldInfoEntry(st, id) {
+  const entry = createEntryTemplate();
+  entry.id = id;
+  entry.comment = st.comment || `wi-${st.uid ?? id}`;
+  entry.content = typeof st.content === 'string' ? st.content : '';
+  entry.enabled = st.disable !== true;
+  entry.constant = st.constant === true;
+  entry.selective = st.selective !== false;
+  entry.keys = Array.isArray(st.key) ? st.key.map(String) : [];
+  entry.secondary_keys = Array.isArray(st.keysecondary) ? st.keysecondary.map(String) : [];
+  entry.insertion_order = Number.isFinite(st.order) ? st.order : (1000 + id);
+  entry.position = stPositionToName(st.position);
+  entry.use_regex = false;
+  entry.extensions.position = typeof st.position === 'number' ? st.position : convertPosition(entry.position);
+  entry.extensions.display_index = id;
+  entry.extensions.depth = Number.isFinite(st.depth) ? st.depth : 4;
+  entry.extensions.role = Number.isFinite(st.role) ? st.role : 0;
+  entry.extensions.probability = Number.isFinite(st.probability) ? st.probability : 100;
+  entry.extensions.useProbability = st.useProbability !== false;
+  entry.extensions.prevent_recursion = st.preventRecursion === true;
+  entry.extensions.exclude_recursion = st.excludeRecursion === true;
+  entry.extensions.delay_until_recursion = st.delayUntilRecursion === true;
+  entry.extensions.scan_depth = st.scanDepth ?? null;
+  entry.extensions.match_whole_words = st.matchWholeWords ?? null;
+  entry.extensions.case_sensitive = st.caseSensitive ?? null;
+  entry.extensions.group = typeof st.group === 'string' ? st.group : '';
+  entry.extensions.group_override = st.groupOverride === true;
+  entry.extensions.group_weight = Number.isFinite(st.groupWeight) ? st.groupWeight : 100;
+  entry.extensions.sticky = Number.isFinite(st.sticky) ? st.sticky : 0;
+  entry.extensions.cooldown = Number.isFinite(st.cooldown) ? st.cooldown : 0;
+  entry.extensions.delay = Number.isFinite(st.delay) ? st.delay : 0;
+  entry.extensions.ignore_budget = st.ignoreBudget === true;
+  entry.extensions.vectorized = st.vectorized === true;
+  entry.extensions.selectiveLogic = Number.isFinite(st.selectiveLogic) ? st.selectiveLogic : 0;
+  entry.extensions.triggers = Array.isArray(st.triggers) ? st.triggers : [];
+  return entry;
+}
+
+function loadExtraWorldInfo(planDir, buildConfig, startId) {
+  const configured = Array.isArray(buildConfig?.extraWorldInfo) ? buildConfig.extraWorldInfo : [];
+  if (configured.length === 0) return [];
+
+  const merged = [];
+  let nextId = startId;
+  for (const rel of configured) {
+    const filePath = path.resolve(planDir, rel);
+    if (!fs.existsSync(filePath)) {
+      throw new Error(`extraWorldInfo 文件不存在: ${filePath}`);
+    }
+    const data = readJsonFile(filePath);
+    let sourceEntries = [];
+    if (Array.isArray(data)) sourceEntries = data;
+    else if (data && typeof data === 'object' && data.entries && typeof data.entries === 'object') {
+      sourceEntries = Array.isArray(data.entries) ? data.entries : Object.values(data.entries);
+    } else {
+      throw new Error(`extraWorldInfo 无法识别条目结构: ${filePath}`);
+    }
+
+    for (const st of sourceEntries) {
+      merged.push(convertStWorldInfoEntry(st || {}, nextId));
+      nextId += 1;
+    }
+    console.log(`  合并外部世界书: ${rel} (${sourceEntries.length} 条)`);
+  }
+  return merged;
+}
+
 function encodeToBase64(jsonObj) {
   const jsonStr = JSON.stringify(jsonObj);
   const utf8Bytes = Buffer.from(jsonStr, 'utf-8');
@@ -778,7 +862,11 @@ function buildCharacterCard(planPath) {
   
   console.log('1. 加载世界书条目...');
   const entries = loadEntriesFromDir(entriesDir);
-  console.log(`  共加载 ${entries.length} 个条目\n`);
+  const extraEntries = loadExtraWorldInfo(planDir, buildConfig, entries.length);
+  if (extraEntries.length > 0) {
+    entries.push(...extraEntries);
+  }
+  console.log(`  共加载 ${entries.length} 个条目（含外部世界书 ${extraEntries.length}）\n`);
   
   console.log('2. 加载表格模板...');
   const tablesJson = loadTableTemplates(tablesDir);

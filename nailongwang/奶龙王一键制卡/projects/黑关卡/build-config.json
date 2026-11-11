@@ -7,5 +7,8 @@
   "frontendDir": "frontend",
   "assetsDir": "assets",
   "releaseDir": "release",
-  "sourceCard": "card.json"
+  "sourceCard": "card.json",
+  "extraWorldInfo": [
+    "assets/liaosao/worldinfo-v9.4.1.json"
+  ]
 }

@@ -89,6 +89,32 @@ function countEntryYamlFiles(projectDir) {
     .length;
 }
 
+function countExtraWorldInfoEntries(projectDir) {
+  const buildConfigPath = path.join(projectDir, 'build-config.json');
+  if (!fileExists(buildConfigPath)) return 0;
+  let buildConfig;
+  try {
+    buildConfig = readJson(buildConfigPath);
+  } catch (_) {
+    return 0;
+  }
+  const configured = Array.isArray(buildConfig?.extraWorldInfo) ? buildConfig.extraWorldInfo : [];
+  let total = 0;
+  for (const rel of configured) {
+    const filePath = path.resolve(projectDir, rel);
+    if (!fileExists(filePath)) {
+      fail(`extraWorldInfo missing: ${rel}`);
+      continue;
+    }
+    const data = readJson(filePath);
+    if (Array.isArray(data)) total += data.length;
+    else if (data && typeof data === 'object' && data.entries) {
+      total += Array.isArray(data.entries) ? data.entries.length : Object.keys(data.entries).length;
+    }
+  }
+  return total;
+}
+
 function loadPlotRegexConfig(projectDir) {
   const configPath = path.join(projectDir, 'frontend', '推进正则配置.json');
   if (!fileExists(configPath)) return null;
@@ -253,9 +279,14 @@ function verifyReleaseCard(options) {
 
   if (projectDir && fileExists(projectDir)) {
     const entryCount = countEntryYamlFiles(projectDir);
+    const extraCount = countExtraWorldInfoEntries(projectDir);
     if (entryCount !== null && Array.isArray(entries)) {
-      if (entries.length !== entryCount) fail(`worldbook entry count mismatch: card=${entries.length}, entries/*.yaml=${entryCount}`);
-      else pass(`worldbook entry count matches entries/*.yaml: ${entryCount}`);
+      const expected = entryCount + extraCount;
+      if (entries.length !== expected) {
+        fail(`worldbook entry count mismatch: card=${entries.length}, expected yaml(${entryCount})+extra(${extraCount})=${expected}`);
+      } else {
+        pass(`worldbook entry count matches yaml+extraWorldInfo: ${expected}`);
+      }
     }
 
     const worldbookBuildPath = path.join(projectDir, 'entries', '_build', 'worldbook.json');
