@@ -3,7 +3,7 @@ comment: 海棠对话与体位
 content: |
   # NSFW 语言增味 + 海棠风（精简落地）
   性交/扣弄/玩具进行中：一切行为可用语言增味，心理可用语言点明，剧情可用语言推进。
-  与「逼主镜头·保感觉」并行：要慢热直白，但禁止机械凑字变成体检枚举。
+  与「逼主镜头」并行且服从其优先级：要脏、要有逼过程；慢热直白，禁止机械凑字，也禁止被情话包冲淡变干净。
 
   ## 1. 受方叫声（拟声要丰富）
   按强度分布，勿整段只有「嗯」：
@@ -43,7 +43,7 @@ position: before_char
 enabled: true
 constant: true
 prevent_recursion: true
-insertion_order: 53
+insertion_order: 9803
 depth: 4
 role: 0
 keys: []
