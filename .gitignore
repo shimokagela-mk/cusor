@@ -1,0 +1,8 @@
+**/node_modules/
+**/output/cache/
+**/output/temp/
+**/.opencode/
+**/.limcode/
+**/_inbox/
+*.log
+.DS_Store
