@@ -1,0 +1,206 @@
+{
+  "$schema": "./sillytavern-assets-api.schema.json",
+  "name": "SillyTavern Assets Format Knowledge Base",
+  "language": "zh-CN",
+  "updated_at": "2026-06-08",
+  "sources": [
+    "https://docs.sillytavern.app/usage/worldinfo/",
+    "https://docs.sillytavern.app/usage/user-settings/uicustomization/",
+    "https://docs.sillytavern.app/usage/prompts/prompt-manager/",
+    "https://docs.sillytavern.app/extensions/quick-reply/",
+    "https://docs.sillytavern.app/extensions/regex/",
+    "sillyTavern酒馆项目架构详细说明.md"
+  ],
+  "source_audit": {
+    "checked_at": "2026-06-08",
+    "upstream_refs": [
+      "SillyTavern/SillyTavern-Docs:Usage/worldinfo.md",
+      "SillyTavern/SillyTavern-Docs:Usage/User_Settings/uicustomization.md",
+      "SillyTavern/SillyTavern-Docs:Usage/Prompts/prompt-manager.md",
+      "SillyTavern/SillyTavern-Docs:extensions/Regex.md"
+    ]
+  },
+  "scope_note": "本文件记录可单文件导入/导出的 SillyTavern 资产 JSON 格式：Quick Reply、Worldbook、Completion Preset、Theme、Regex。它面向奶龙工具箱的单文件识别、审查、小范围维护，不负责角色卡解包、回包或构建。",
+  "asset_types": [
+    {
+      "name": "Quick Reply",
+      "format": "快速回复集合 JSON，通常包含 name 与 qrList。",
+      "example": "examples/sillytavern-assets/quick-reply-format.json",
+      "schema": "schemas/sillytavern-quick-reply.schema.json",
+      "fields": {
+        "name": "快速回复集合名称。",
+        "qrList": "按钮数组；每项包含 label、message、title、preventAutoExecute、isHidden 等字段。",
+        "message": "按钮触发时执行的文本或 slash/STscript 命令。"
+      },
+      "import_export_notes": [
+        "导入后通常出现在 Quick Reply 扩展的集合列表中。",
+        "按钮命令可联动 STscript、Regex 或普通文本发送。"
+      ],
+      "risks": [
+        "message 中的 slash command 可能立即修改聊天、变量或发送消息，导入前应审查。",
+        "不要把真实密钥或长正文写入快速回复样例。"
+      ]
+    },
+    {
+      "name": "Worldbook",
+      "format": "世界书 JSON，核心为 entries 对象。",
+      "example": "examples/sillytavern-assets/worldbook-format.json",
+      "schema": "schemas/sillytavern-worldbook.schema.json",
+      "fields": {
+        "entries": "以 uid/序号为键的条目对象集合。",
+        "key": "主关键词数组。",
+        "keysecondary": "次级关键词数组。",
+        "content": "触发后插入上下文的内容。",
+        "constant/selective/disable": "控制常驻、选择性触发与禁用状态。",
+        "group/useProbability/group_scoring": "蓝圈/绿圈组、组内概率与评分策略，影响同组条目的选择方式。",
+        "triggers/automationId": "Automations 触发器与自动化绑定字段；触发顺序会与角色世界书插入策略、Priority 排序共同作用。",
+        "outletName": "Outlet 名称；条目内容不会自动注入，而是通过 {{outlet::Name}} 宏在 prompt 字段中展开。",
+        "vectorized": "Vector Storage Matching 状态标记；表示条目可参与向量匹配，但仍会按普通关键词规则生效。",
+        "sticky/cooldown/delay": "Timed Effects 字段，控制触发后保持、冷却与延迟激活。"
+      },
+      "import_export_notes": [
+        "完整世界书导出包含 entries；单条条目可映射到 worldbook-entry 格式后维护。",
+        "Character Lore、Persona Lore 与 Chat Lore 的绑定关系可能保存在角色、人格或聊天设置中，不一定全部位于世界书 JSON 本体。",
+        "字段名在 YAML 单条格式与 ST JSON 中可能不同，例如 keys/key、secondary_keys/keysecondary。",
+        "完整导出的世界书可保留所有 entries；只维护绑定关系时应先确认资产归属，不要把角色/聊天绑定误写进通用世界书样例。"
+      ],
+      "risks": [
+        "position/depth/order 会改变插入位置与优先级。",
+        "use_regex 或正则关键词可能导致大范围误触发。",
+        "Outlet 宏不支持嵌套，也不能在 World Info 条目、角色卡字段或作者注释中可靠展开。",
+        "Vectorized 只是额外匹配标记；如果保留关键词，条目仍可能被普通关键词激活。",
+        "Timed Effects 具有状态性，sticky/cooldown/delay 会让同一条目在不同楼层产生不同结果。"
+      ]
+    },
+    {
+      "name": "Completion Preset",
+      "format": "Chat Completion 预设 JSON，核心为 prompts 与 prompt_order。",
+      "example": "examples/sillytavern-assets/completion-preset-format.json",
+      "schema": "schemas/sillytavern-completion-preset.schema.json",
+      "fields": {
+        "prompts": "提示词块列表，包含 identifier、name、role、content、marker 等。",
+        "prompt_order": "提示词启用状态与发送顺序。",
+        "temperature/top_p/openai_max_context/openai_max_tokens": "模型采样与上下文参数。"
+      },
+      "import_export_notes": [
+        "Chat Completion 预设主要服务 OpenAI-compatible、Claude、Gemini 等聊天后端。",
+        "Text Completion 对应 Advanced Formatting，字段兼容性不同。"
+      ],
+      "risks": [
+        "jailbreak/NSFW/continue/impersonate/quiet prompt 会显著改变模型行为。",
+        "角色卡内置 prompt 与外部 preset 叠加时可能重复或冲突。"
+      ]
+    },
+    {
+      "name": "Theme",
+      "format": "UI 主题 JSON，包含 name 与 theme 配置对象。",
+      "example": "examples/sillytavern-assets/theme-ui-format.json",
+      "schema": "schemas/sillytavern-theme.schema.json",
+      "fields": {
+        "name": "主题名称。",
+        "theme": "颜色、布局、字体、blur、shadow、custom CSS 等 UI 设置。",
+        "custom_css": "部分导出可能包含自定义 CSS 字段或 theme 内 CSS 字段。"
+      },
+      "import_export_notes": [
+        "导入主题会改变 UI 外观配置。",
+        "跨版本 UI class 变化可能导致旧 CSS 失效。"
+      ],
+      "risks": [
+        "长 CSS 不应放入工具箱 examples/data。",
+        "全局选择器可能污染扩展、弹窗或移动端布局。"
+      ]
+    },
+    {
+      "name": "Regex",
+      "format": "Regex 脚本 JSON，包含 scriptName、findRegex、replaceString、placement 等字段。",
+      "example": "examples/sillytavern-assets/regex-format.json",
+      "schema": "schemas/sillytavern-regex.schema.json",
+      "fields": {
+        "scriptName": "脚本名称。",
+        "findRegex": "查找表达式，常见格式为 /pattern/flags。",
+        "replaceString": "替换文本，可含捕获组或 HTML。",
+        "placement": "作用来源/位置枚举数组。",
+        "disabled/markdownOnly/promptOnly/runOnEdit": "禁用、显示/提示词作用域与编辑后运行开关。"
+      },
+      "import_export_notes": [
+        "Global Regex 与 Scoped/角色卡内 Regex 保存位置不同。",
+        "回包到角色卡 regex_scripts 需保留字段边界，不应把外部无关设置混入角色卡。"
+      ],
+      "risks": [
+        "灾难性回溯正则会卡住浏览器。",
+        "replaceString 插入 HTML 时需考虑 DOMPurify、XSS 与 Show tags 设置。"
+      ]
+    }
+  ],
+  "compatibility_risks": [
+    "SillyTavern 版本升级可能新增或重命名导出字段，校验 schema 应保持适度宽松。",
+    "资产导出不等同角色卡完整数据；工具箱只做单文件维护，不自动解包、回包或构建角色卡。",
+    "不同后端、扩展和主题会影响 prompt、regex、HTML 片段的实际效果。",
+    "data/[user]/secrets.json、真实 API key、cookie、代理 token、用户私密聊天记录不得写入 examples、data、docs 或测试夹具。"
+  ],
+  "storage_locations": [
+    {
+      "path": "data/[user]/characters/",
+      "asset": "角色卡 PNG / Tavern Card 元数据",
+      "format": "通常为 PNG 图片，角色 JSON 元数据嵌入图片文本块。",
+      "toolbox_boundary": "识别/审查单文件可走工具箱；解包、回包、构建、发布应转奶龙王一键制卡。"
+    },
+    {
+      "path": "data/[user]/chats/",
+      "asset": "聊天记录",
+      "format": "通常为 JSONL，每行一条消息对象。",
+      "toolbox_boundary": "只做格式识别、片段审查或脚本读取说明；不要把真实用户聊天样本加入 examples。"
+    },
+    {
+      "path": "data/[user]/worlds/",
+      "asset": "世界书",
+      "format": "JSON，核心为 entries 条目对象。",
+      "toolbox_boundary": "单个世界书 JSON 或单条条目维护归工具箱；批量整卡世界书改造按任务边界转奶龙王。"
+    },
+    {
+      "path": "data/[user]/extensions/",
+      "asset": "用户扩展",
+      "format": "扩展目录，通常包含 manifest.json、index.js、style.css。",
+      "toolbox_boundary": "原生前端扩展骨架和单文件审查归 C 模式。"
+    },
+    {
+      "path": "data/[user]/settings.json",
+      "asset": "用户设置与部分全局扩展配置",
+      "format": "JSON。",
+      "toolbox_boundary": "只记录字段风险和兼容性；不要复制真实用户设置全文作为样例。"
+    },
+    {
+      "path": "data/[user]/secrets.json",
+      "asset": "API 密钥与敏感信息",
+      "format": "JSON。",
+      "toolbox_boundary": "禁止纳入工具箱样例、知识库正文或测试夹具。"
+    }
+  ],
+  "databank_notes": {
+    "description": "Data Bank / 附件资料通常按全局、角色、聊天三层组织，用于给聊天提供参考资料或附件内容。具体 API、slash commands 与字段以当前 SillyTavern 版本为准。",
+    "layers": [
+      { "name": "global", "scope": "所有角色和聊天可用", "typical_use": "通用参考文档、常用资料" },
+      { "name": "character", "scope": "特定角色相关聊天可用", "typical_use": "角色背景、设定资料" },
+      { "name": "chat", "scope": "当前聊天专用", "typical_use": "临时资料、会话附件" }
+    ],
+    "toolbox_boundary": [
+      "可记录 Data Bank 的分层概念、隐私风险和资料归属。",
+      "不在未核对当前版本前记录具体 Data Bank API 端点或 slash command 为稳定能力。",
+      "附件内容可能包含用户私密资料，不能作为 examples/data/docs 的真实正文。"
+    ]
+  },
+  "related_examples": [
+    "examples/sillytavern-assets/quick-reply-format.json",
+    "examples/sillytavern-assets/worldbook-format.json",
+    "examples/sillytavern-assets/completion-preset-format.json",
+    "examples/sillytavern-assets/theme-ui-format.json",
+    "examples/sillytavern-assets/regex-format.json"
+  ],
+  "related_schemas": [
+    "schemas/sillytavern-quick-reply.schema.json",
+    "schemas/sillytavern-worldbook.schema.json",
+    "schemas/sillytavern-completion-preset.schema.json",
+    "schemas/sillytavern-theme.schema.json",
+    "schemas/sillytavern-regex.schema.json"
+  ]
+}

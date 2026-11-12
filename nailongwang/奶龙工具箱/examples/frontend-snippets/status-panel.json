@@ -1,0 +1,21 @@
+{
+  "name": "Status Panel Snippet",
+  "kind": "status_bar",
+  "description": "消息或状态栏中使用的局部状态面板骨架。",
+  "scope_class": "nl-status-panel",
+  "html": "<section class=\"nl-status-panel\" aria-label=\"status panel\"><header>状态</header><dl><dt>项目</dt><dd>Placeholder</dd></dl></section>",
+  "css": ".nl-status-panel { max-width: 100%; border: 1px solid currentColor; border-radius: 8px; padding: 0.75rem; }\n.nl-status-panel dl { display: grid; grid-template-columns: auto 1fr; gap: 0.25rem 0.5rem; margin: 0; }",
+  "mobile_notes": [
+    "使用 max-width: 100% 避免溢出消息区域。",
+    "使用 rem/gap 而不是固定大宽度。"
+  ],
+  "security_notes": [
+    "插入真实 DOM 前应使用 DOMPurify.sanitize。",
+    "不要添加 inline event handler。"
+  ],
+  "allowed_contexts": [
+    "message_html",
+    "status_bar",
+    "greeting_html"
+  ]
+}

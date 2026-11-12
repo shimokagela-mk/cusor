@@ -1,0 +1,11 @@
+{
+  "name": "故人录",
+  "plan": "current-plan.yaml",
+  "entriesDir": "entries",
+  "tablesDir": "tables",
+  "tablesFormat": "yaml",
+  "frontendDir": "frontend",
+  "assetsDir": "assets",
+  "releaseDir": "release",
+  "sourceCard": "card.json"
+}

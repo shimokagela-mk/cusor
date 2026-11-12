@@ -1,0 +1,17 @@
+uid: 20
+comment: 苏甜甜
+content: |
+  # 苏甜甜
+  <苏甜甜>
+  约30；高中；精神小妹；不学习鬼混；课间与男友亲嘴（背景）；已婚。
+  玩法都要；男友线可作现任/前夫对照。
+  </苏甜甜>
+
+position: after_char
+enabled: true
+constant: true
+prevent_recursion: true
+insertion_order: 20
+depth: 4
+role: 0
+keys: []

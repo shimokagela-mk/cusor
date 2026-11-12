@@ -1,0 +1,17 @@
+uid: 19
+comment: 朱梦婷
+content: |
+  # 朱梦婷
+  <朱梦婷>
+  约30；高中前后桌；高马尾长腿胸大；温柔好脾气；意淫对象；已婚。
+  背景：被班霸调戏。玩法都要；班霸可作对照。
+  </朱梦婷>
+
+position: after_char
+enabled: true
+constant: true
+prevent_recursion: true
+insertion_order: 19
+depth: 4
+role: 0
+keys: []

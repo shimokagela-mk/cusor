@@ -1,0 +1,24 @@
+{
+  "type": "script",
+  "enabled": true,
+  "name": "多按钮酒馆助手脚本样例",
+  "id": "00000000-0000-4000-8000-000000000002",
+  "content": "\n(function() {\n    'use strict';\n\n    const TH = window.TavernHelper;\n\n    function assertHelper() {\n        if (!TH) {\n            throw new Error('未检测到 JS-Slash-Runner / TavernHelper');\n        }\n        return TH;\n    }\n\n    function toast(message, type = 'info') {\n        if (window.toastr && typeof window.toastr[type] === 'function') {\n            window.toastr[type](message, '多按钮样例');\n        } else {\n            console.log(`[多按钮样例][${type}]`, message);\n        }\n    }\n\n    async function showMessageCount() {\n        const helper = assertHelper();\n        const lastId = helper.getLastMessageId();\n        const messages = helper.getChatMessages(`0-${lastId}`, { include_swipes: false });\n        toast(`当前聊天共有 ${messages.length} 条消息`);\n    }\n\n    async function jumpToFirstMessage() {\n        const helper = assertHelper();\n        await helper.triggerSlash('/chat-jump 0');\n        toast('已跳转到第 0 楼', 'success');\n    }\n\n    window.ShujukuExampleButtons = {\n        showMessageCount,\n        jumpToFirstMessage,\n    };\n})();\n",
+  "info": "JS-Slash-Runner 多按钮脚本样例：通过 data/按钮配置调用 window.ShujukuExampleButtons 上的方法。",
+  "button": {
+    "enabled": true,
+    "buttons": [
+      {
+        "name": "统计消息数",
+        "script": "window.ShujukuExampleButtons.showMessageCount()"
+      },
+      {
+        "name": "跳到第0楼",
+        "script": "window.ShujukuExampleButtons.jumpToFirstMessage()"
+      }
+    ]
+  },
+  "data": {
+    "note": "按钮字段结构来自既有 JS-Slash-Runner 导出格式；如上游版本改变，以 JS-Slash-Runner 导出结果为准。"
+  }
+}

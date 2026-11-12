@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SillyTavern Assets API Knowledge Base",
+  "type": "object",
+  "required": ["name", "language", "updated_at", "sources", "asset_types", "compatibility_risks"],
+  "properties": {
+    "name": { "type": "string" },
+    "language": { "type": "string" },
+    "updated_at": { "type": "string" },
+    "sources": { "type": "array", "items": { "type": "string" } },
+    "scope_note": { "type": "string" },
+    "asset_types": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "format", "fields"],
+        "properties": {
+          "name": { "type": "string" },
+          "format": { "type": "string" },
+          "example": { "type": "string" },
+          "schema": { "type": "string" },
+          "fields": { "type": "object" },
+          "import_export_notes": { "type": "array", "items": { "type": "string" } },
+          "risks": { "type": "array", "items": { "type": "string" } }
+        },
+        "additionalProperties": true
+      }
+    },
+    "compatibility_risks": { "type": "array", "items": { "type": "string" } },
+    "related_examples": { "type": "array", "items": { "type": "string" } },
+    "related_schemas": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": true
+}

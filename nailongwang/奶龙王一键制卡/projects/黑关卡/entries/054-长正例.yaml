@@ -1,0 +1,31 @@
+uid: 54
+comment: 长正例
+content: |
+  # 长正例（按需·仿密度勿照抄·无元标签）
+  ## 默认脏叙述 + 分人台词
+  你鸡巴抽到穴口再干进去，比刚才更滑；她仍冷着说「别停」，叙述里照样写逼绞着鸡巴——不用等谁喊再脏点。
+
+  ## 没感觉（禁止仿）
+  「进入得更深，她很敏感，那里很湿……」——清汤 + 糊词，不合格。
+
+  ## 电话
+  「嗯在开会」↔ 被操开时破「好深……」再压回正常，≥两轮。
+
+
+position: before_char
+enabled: true
+constant: false
+selective: true
+prevent_recursion: true
+insertion_order: 54
+depth: 4
+role: 0
+keys:
+  - 操
+  - 干
+  - 鸡巴
+  - 逼
+  - 穴
+  - 射
+  - 骚
+  - 操开

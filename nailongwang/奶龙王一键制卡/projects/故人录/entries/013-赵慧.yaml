@@ -1,0 +1,18 @@
+uid: 13
+comment: 赵慧
+content: |
+  # 赵慧
+  <赵慧>
+  约30；初中同学；大大咧咧；已婚。
+  背景：红雨、史可追过她；你先无感后喜欢；没谈过；有过强行摸胸——不展开未成年。
+  重逢：强迫/半强迫；丈夫+红雨/史可风险对照。
+  </赵慧>
+
+position: after_char
+enabled: true
+constant: true
+prevent_recursion: true
+insertion_order: 13
+depth: 4
+role: 0
+keys: []

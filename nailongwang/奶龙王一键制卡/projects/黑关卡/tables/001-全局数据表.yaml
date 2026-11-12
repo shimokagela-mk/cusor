@@ -1,0 +1,62 @@
+uid: sheet_GlobalData
+name: 全局数据表
+sourceData:
+  note: |-
+    记录当前关卡与场景壳。有且仅有一行，更新必须 WHERE row_id = 1。
+    - 当前位置：本关场景
+    - 当前时间：可按关虚构
+    - 天数：周目天数
+    - 时段：关卡中 / 结算后 / 待命
+    - 主角当前状态：本关身份+正在做的事
+  initNode: |-
+    INSERT INTO global_state (row_id, current_location, cur_time, day_count, time_slot, protagonist_action) VALUES (1, '模拟器大厅', '2026-11-10 10:00', 1, '待命', '等待抽关');
+  deleteNode: 禁止删除。
+  updateNode: |-
+    抽关/换场景/结算时更新。
+  insertNode: 禁止操作。
+  ddl: |-
+    CREATE TABLE global_state (
+      row_id INTEGER PRIMARY KEY,
+      current_location TEXT NOT NULL,
+      cur_time TEXT NOT NULL,
+      day_count INTEGER NOT NULL DEFAULT 1,
+      time_slot TEXT NOT NULL DEFAULT '待命' CHECK(time_slot IN ('关卡中', '结算后', '待命')),
+      protagonist_action TEXT NOT NULL
+    );
+content:
+  - - row_id
+    - 当前位置
+    - 当前时间
+    - 天数
+    - 时段
+    - 主角当前状态
+  - - 1
+    - 模拟器大厅
+    - 2026-11-10 10:00
+    - 1
+    - 待命
+    - 等待抽关
+updateConfig:
+  uiSentinel: -1
+  contextDepth: 4
+  updateFrequency: 1
+  batchSize: 2
+  skipFloors: -1
+  groupId: 1
+exportConfig:
+  enabled: false
+  splitByRow: false
+  entryName: 全局数据表
+  entryType: constant
+  keywords: ""
+  preventRecursion: true
+  injectionTemplate: ""
+  extraIndexEnabled: false
+  extraIndexEntryName: ""
+  extraIndexColumns: []
+  extraIndexColumnModes: {}
+  extraIndexInjectionTemplate: ""
+  entryPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 100

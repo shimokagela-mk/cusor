@@ -1,0 +1,62 @@
+id: 26
+keys:
+  - 幽暗
+  - 密林
+  - 精灵
+secondary_keys: []
+comment: 幽暗密林精灵
+content: |-
+  # 势力详述：幽暗密林精灵
+    **核心概览**：隐居在大陆东部广袤、古老且魔法萦绕的幽暗密林深处的精灵族群。寿命悠长，数量稀少，与森林共生，极度排外且神秘。视森林为神圣家园与责任所在，对任何破坏行为抱有深刻敌意。
+    **统治体系**：松散的氏族长老会议制。没有国王或中央集权，各个精灵氏族在各自领地上高度自治。重大事务由各氏族长老（通常是最年长、最具智慧或魔法造诣者）聚集在森林圣地“星穹林苑”商议决定。决定依赖于共识与传统，过程缓慢。
+    **社会文化**：高度仪式化，重视家族谱系、古老誓言与自然平衡。艺术（音乐、诗歌、雕刻）与魔法研究融入日常生活。时间观念与短生种截然不同，行动看似迟缓，但谋划深远。对“外界”的喧嚣、贪婪与短暂生命感到悲哀或轻蔑。
+    **军事力量**：个体精灵战士是出色的弓箭手、剑士与森林潜行者，感官敏锐，行动迅捷如风。不擅长也不屑于大规模兵团作战，更依赖小队游击、精确狙击与利用森林环境设伏。拥有失落年代传承下来的魔法物品与结界知识，用于守护圣地与关键路径。
+    **经济基础**：几乎完全自给自足的非货币经济。以采集、狩猎（有严格节制）和林间园艺为主。擅长利用森林产物：制造精美的木器、弓箭、纺织品（精灵布）以及效力神奇的草药与药剂。几乎不进行对外贸易，偶用这些物品与极少数的、受信任的外界个体交换稀有金属或知识。
+    **主要聚居地/圣地**：
+    - **星穹林苑 (密林深处核心)**：精灵最重要的圣地与集会地，古树参天，夜光蕈类遍地，中央有映照星空的静谧湖，has(长老议事石环，远古圣树，星辰观测台)。
+    - **银叶氏族树城 (密林西北部)**：最大的精灵常住聚落之一，建筑与巨大古树融为一体，has(家族厅堂，织造工坊，弓箭匠居所，树顶瞭望台)。
+    - **涌泉林地 (密林东部)**：以蕴含生命魔力的泉水闻名，是重要的草药种植地与疗愈场所，has(药师居所，温室苗圃，静修洞穴)。
+    - **迷雾隘口前哨 (密林西部边缘)**：少数面向外界的隐蔽岗哨，负责监视人类落叶镇等方向动向，has(伪装树屋，警戒符文，撤退密道)。
+    **外交态势**：
+    - **绝对排斥**：对绝大多数试图深入森林的外界势力（尤其是大规模伐木、开垦或探险队）持敌对态度， silent but deadly。
+    - **极罕见接触**：与极少数获得信任的人类德鲁伊、学者或品格高尚的冒险者有零星交流。
+    - **古老盟约（可能）**：传说与更北方或地底某些古老存在有 forgotten pact，但详情不明。
+    - **潜在冲突**：与翡翠海群岛联邦（对沿海森林资源的觊觎）、诺顿王国及荒原氏族（扩张或生存导致的森林边缘摩擦）关系持续紧张。
+constant: false
+selective: true
+insertion_order: 40
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: true
+  display_index: 30
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

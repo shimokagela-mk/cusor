@@ -1,0 +1,101 @@
+uid: sheet_Residue
+name: 浅残留表
+sourceData:
+  note: 固定故人跨场浅残留。
+  initNode: 各人一行初始0。
+  deleteNode: 禁止。
+  updateNode: 场末微量更新。
+  insertNode: 仅固定故人。
+  ddl: |-
+    CREATE TABLE residue (
+      row_id INTEGER PRIMARY KEY,
+      char_name TEXT NOT NULL UNIQUE,
+      obey_echo INTEGER DEFAULT 0,
+      leverage_echo TEXT,
+      mind_echo TEXT
+    );
+content:
+  - - row_id
+    - 角色名
+    - 服从余味
+    - 把柄余味
+    - 心理余味
+  - - 1
+    - 小妹
+    - 0
+    - 
+    - 
+  - - 2
+    - 小娇
+    - 0
+    - 
+    - 
+  - - 3
+    - 周雅琴
+    - 0
+    - 
+    - 
+  - - 4
+    - 赵慧
+    - 0
+    - 
+    - 
+  - - 5
+    - 小静
+    - 0
+    - 
+    - 
+  - - 6
+    - 小萌
+    - 0
+    - 
+    - 
+  - - 7
+    - 亚会
+    - 0
+    - 
+    - 
+  - - 8
+    - 明月
+    - 0
+    - 
+    - 
+  - - 9
+    - 朱梦婷
+    - 0
+    - 
+    - 
+  - - 10
+    - 苏甜甜
+    - 0
+    - 
+    - 
+  - - 11
+    - 杨阳
+    - 0
+    - 
+    - 
+updateConfig:
+  uiSentinel: -1
+  contextDepth: 4
+  updateFrequency: 1
+  batchSize: 2
+  skipFloors: -1
+  groupId: 1
+exportConfig:
+  enabled: false
+  splitByRow: false
+  entryName: 浅残留表
+  entryType: constant
+  keywords: ""
+  preventRecursion: true
+  injectionTemplate: ""
+  extraIndexEnabled: false
+  extraIndexEntryName: ""
+  extraIndexColumns: []
+  extraIndexColumnModes: {}
+  extraIndexInjectionTemplate: ""
+  entryPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 103

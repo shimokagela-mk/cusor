@@ -1,0 +1,18 @@
+uid: 007
+comment: 技术体系概览
+content: |
+  # 技术体系概览
+  战术人形/T-Doll：民用人形改造的战斗仿生机器人；外观年轻女性，具拟人外表和情感模拟。核心=心智云图（人格/记忆载体）+傀儡链接（一人形操控多傀儡）+烙印系统（与特定枪械绑定后获战斗能力）。人形“枪械”不是普通武器，而是与心智绑定的专属武装。
+  心智云图/Neural Cloud：人形人格核心；可备份/恢复，云图完好则换体复活；云图损坏=彻底死亡；人形可经云图网络共享信息；铁血云图已被改写并脱离IOP控制。
+  坍塌技术/Collapse Technology：源于远古遗迹；坍塌液（Collapse Fluid）污染性强且有ELID风险；可制造先进材料/能源/武器，但研究极危险；各国和组织均列为最高机密。
+  ELID感染症：Eurosky Low-Emission Infectious Disease，坍塌液辐射引发；感染者身体变异并最终失去理性；黄区/红区ELID是持续威胁；人形不会感染，故常派往高危污染区。
+  OGAS：遗迹超级AI网络，信息处理能力远超现世；与铁血叛变、帕拉蒂斯行动有深层关联，是核心谜团。
+  军用技术：军方装备和战力远超安全承包商，包括重型装甲、精确打击、大规模人形军团；部分军方单位掌握坍塌技术军事应用。
+position: before_char
+enabled: true
+constant: true
+prevent_recursion: true
+insertion_order: 007
+depth: 4
+role: 0
+keys: []

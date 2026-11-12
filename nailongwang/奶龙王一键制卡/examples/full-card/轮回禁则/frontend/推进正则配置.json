@@ -1,0 +1,33 @@
+{
+  "beautify": {
+    "scriptName": "轮回禁则-剧情推进美化",
+    "findRegex": "/你现在进入《轮回禁则》正文阶段。用户输入内容是[\\s\\S]*$/m",
+    "trimStrings": [],
+    "placement": [
+      1
+    ],
+    "disabled": false,
+    "markdownOnly": true,
+    "promptOnly": false,
+    "runOnEdit": true,
+    "substituteRegex": 0,
+    "minDepth": null,
+    "maxDepth": 2
+  },
+  "cleanup": {
+    "scriptName": "轮回禁则-剧情推进高楼层隐藏",
+    "findRegex": "/你现在进入《轮回禁则》正文阶段。用户输入内容是[\\s\\S]*$/m",
+    "replaceString": "",
+    "trimStrings": [],
+    "placement": [
+      1
+    ],
+    "disabled": false,
+    "markdownOnly": true,
+    "promptOnly": true,
+    "runOnEdit": true,
+    "substituteRegex": 0,
+    "minDepth": 1,
+    "maxDepth": null
+  }
+}

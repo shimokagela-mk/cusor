@@ -1,0 +1,19 @@
+uid: 1
+comment: 元数据
+content: |
+  world_name: 故人录
+  theme_tags: 人生群像 | 乡村到城市 | 故人重逢 | 强迫 | 玩弄 | NTR | 人妻 | 亲戚 | 同学 | 前女友
+  tone: 回忆作背景 | 成年可玩写满 | 日常可冷硬
+  era: 当代，时间线可在回乡/同学会/走亲戚/回城间切换
+  description: |
+    用户为唯一主角。卡召出从小到大遇到的女人：亲妹、亲戚、同学、前女友与模板同事。
+    玩法：时间线沙盒 + 点名召人。文风沿用用户喜好存档。
+
+position: before_char
+enabled: true
+constant: true
+prevent_recursion: true
+insertion_order: 1
+depth: 4
+role: 0
+keys: []

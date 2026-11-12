@@ -1,0 +1,54 @@
+uid: 276
+comment: Hecate II（RF/★★★★★）
+content: |
+  <if db="db.出战配置表.where('人形名称','Hecate').exists()">
+  <Hecate>
+
+  ## 外貌
+
+  - **发色**：深青黑色超长双马尾，发尾渐变为紫色，发量厚重并垂到腿侧。
+  - **瞳色**：紫色眼睛，表情平静疏离。
+  - **身高**：高挑纤细体型，站姿端正。
+  - **服饰**：穿紫黑色修身连体衣和不对称裙摆，外搭深绿色长外套，腿部是黑白不对称长袜与紫色短靴。
+  - **特征**：发髻上有星芒状装饰，身旁立着带紫色发光纹路的黑色长箱，脚边有大型狙击枪；整体呈现冷色调、星象感很强的沉静狙击手形象。
+
+
+  ## 履历
+
+  Hecate，格里芬战术人形。
+
+
+  ## 声部一·社会
+
+  暂无
+
+
+  ## 声部二·内心
+
+  暂无
+
+
+  ## 声部三·他者
+
+
+  ## 声部四·作者
+
+  **语言核心**：Hecate为次要角色，语音数据有限
+
+  Hecate为次要角色，语音数据有限。
+
+
+  
+  </Hecate>
+  </if>
+keys:
+- Hecate II
+- HecateII
+secondary_keys: []
+enabled: true
+constant: false
+position: after_char
+insertion_order: 276
+depth: 4
+role: 0
+prevent_recursion: true

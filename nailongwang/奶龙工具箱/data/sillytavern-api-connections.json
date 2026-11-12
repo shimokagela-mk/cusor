@@ -1,0 +1,45 @@
+{
+  "$schema": "./sillytavern-api-connections.schema.json",
+  "name": "SillyTavern API Connections Knowledge Base",
+  "language": "zh-CN",
+  "updated_at": "2026-06-08",
+  "sources": [
+    "https://docs.sillytavern.app/usage/api-connections/",
+    "https://docs.sillytavern.app/for-contributors/function-calling/"
+  ],
+  "source_audit": {
+    "checked_at": "2026-06-08",
+    "upstream_refs": [
+      "https://docs.sillytavern.app/usage/api_connections/index.md",
+      "SillyTavern/SillyTavern-Docs:For_Contributors/Function-Calling.md"
+    ]
+  },
+  "scope_note": "本知识库用于审查预设与 LLM 后端/API Connections 的兼容性，不保存真实 endpoint、token 或用户密钥。",
+  "connections": [
+    { "name": "OpenAI-compatible", "type": "chat_completion", "notes": ["常见于 OpenAI、OpenRouter、自建兼容网关，也包括部分本地后端以 OpenAI Chat Completion 兼容模式接入。", "通常支持 role、stream、stop strings；工具调用取决于供应商与模型。"] },
+    { "name": "Claude", "type": "chat_completion", "notes": ["system prompt 与 messages 会经适配层发送。", "上下文长度、工具调用和安全策略以模型为准。"] },
+    { "name": "Gemini", "type": "chat_completion", "notes": ["role、安全设置和函数能力依赖当前 ST 适配。", "长上下文模型也需匹配预设 max context。"] },
+    { "name": "OpenRouter", "type": "router", "notes": ["可路由多家模型。", "同一预设在不同模型上 function calling/stop/stream/reasoning 支持不同。"] },
+    { "name": "Kobold/Text Completion", "type": "text_completion", "notes": ["更依赖 Advanced Formatting。", "通常不支持 Chat Completion function calling。"] }
+  ],
+  "capability_matrix": [
+    { "capability": "Function Calling", "chat_completion": "部分支持；需用户启用 Enable function calling", "text_completion": "通常不支持；若本地后端转 OpenAI-compatible Chat Completion 则另行判断" },
+    { "capability": "Interleaved Thinking", "chat_completion": "仅 reasoning/tool-capable 模型和适配源可用", "text_completion": "通常不支持" },
+    { "capability": "Streaming", "chat_completion": "多数支持", "text_completion": "依后端而定" },
+    { "capability": "Stop strings", "chat_completion": "字段和行为依供应商而定", "text_completion": "常见但实现差异大" },
+    { "capability": "Role messages", "chat_completion": "核心语义", "text_completion": "通常被拼接为纯文本" }
+  ],
+  "compatibility_notes": [
+    "预设中的 role、depth prompt、prompt_order 对 Chat Completion 更直接；Text Completion 可能需要 Advanced Formatting。",
+    "上下文长度应同时考虑 ST 设置、模型真实上限和代理网关限制。",
+    "stop strings 可能截断世界书、Regex 输出或 HTML 片段，应与预设一起审查。",
+    "Function Calling 只在支持的 Chat Completion 源且启用时可用；Continue/Impersonate/Quiet/background prompts 不允许触发工具调用。",
+    "官方 Function Calling 支持源包括 Custom(OpenAI-compatible)、AI/ML API、AI21、Azure OpenAI、Chutes、Claude、Cloudflare Workers AI、Cohere、DeepSeek、Electron Hub、Fireworks、Google AI Studio、Google Vertex AI、Groq、MiniMax、MistralAI、Moonshot(Kimi)、NanoGPT、OpenAI、OpenRouter、Pollinations、SiliconFlow、xAI(Grok)、Z.AI(GLM)。",
+    "工具调用有默认 5 轮递归限制；reasoning 模型可配置 interleaved thinking 策略，避免工具链上下文丢失。"
+  ],
+  "security_notes": [
+    "不要把真实 API key、cookie、代理 token 写入 data、docs、examples 或测试夹具。",
+    "示例 endpoint 应使用占位符。",
+    "分享 preset 前检查是否包含供应商私有 header、组织 ID 或日志 URL。"
+  ]
+}
