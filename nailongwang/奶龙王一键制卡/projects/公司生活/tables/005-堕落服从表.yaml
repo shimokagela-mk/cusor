@@ -18,7 +18,7 @@ sourceData:
 
     变化口径：有效黑化互动 +3~12；强烈公开/强制成功 +8~15；成功反制可令服从-5~10（堕落未必降）。无互动不涨。
   initNode: |-
-    初始化尹安琪、陈亦勤、丁丁、婉婷各一行，堕落0，服从0，当前玩法标记「无」。
+    初始化尹安琪、陈亦勤、丁丁、婉婷、杨新亮各一行，堕落0，服从0，当前玩法标记「无」。
     SQL示例: INSERT INTO corruption (row_id, char_name, corruption, obedience, play_flag, note) VALUES (1, '尹安琪', 0, 0, '无', '');
     SQL示例: INSERT INTO corruption (row_id, char_name, corruption, obedience, play_flag, note) VALUES (4, '婉婷', 0, 0, '无', '成年乱伦线');
   deleteNode: 禁止删除。
@@ -68,6 +68,12 @@ content:
     - 0
     - 无
     - 成年乱伦线
+  - - 5
+    - 杨新亮
+    - 0
+    - 0
+    - 无
+    - 冷艳跨部门线
 updateConfig:
   uiSentinel: -1
   contextDepth: 4

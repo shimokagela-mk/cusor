@@ -12,7 +12,7 @@ sourceData:
 
     更新规则：外貌随衣着变化更新；关系只在正文出现实质互动后调整一档或维持；勿无故清空经历式描述。
   initNode: |-
-    初始化时为尹安琪、陈亦勤、丁丁、婉婷各插入一行（在场）；周予安、张恒、陆辰默认不在场。
+    初始化时为尹安琪、陈亦勤、丁丁、婉婷、杨新亮各插入一行（在场）；周予安、张恒、陆辰默认不在场。
     SQL示例: INSERT INTO important_characters (row_id, name, brief_intro, appearance, current_status, relation_to_player, is_present) VALUES (1, '尹安琪', '市场部职员', '163左右，少笑，步态偏性感', '在市场区工位', '同事', '是');
     SQL示例: INSERT INTO important_characters (row_id, name, brief_intro, appearance, current_status, relation_to_player, is_present) VALUES (8, '婉婷', '应届·玩家之女', '159，萝莉脸，C罩杯', '在应届工位', '熟人', '是');
     SQL示例: INSERT INTO important_characters (row_id, name, brief_intro, appearance, current_status, relation_to_player, is_present) VALUES (4, '周予安', '陈亦勤丈夫', '温和清爽', '默认不在公司', '陌生', '否');
@@ -104,6 +104,13 @@ content:
     - 默认不在公司
     - 陌生
     - 否
+  - - 10
+    - 杨新亮
+    - 平台后端
+    - 26，160，110斤，B，冷艳，常吊带+裙子
+    - 在平台研发区/联调中
+    - 同事
+    - 是
 updateConfig:
   uiSentinel: -1
   contextDepth: 4

@@ -16,7 +16,7 @@ sourceData:
     已婚角色（亦勤、丁丁）好感可升，但不自动改写婚姻事实。
     黑深渊进度请写「堕落服从表」，不要把强迫/凌辱强度塞进好感数字里。
   initNode: |-
-    初始化为尹安琪、陈亦勤、丁丁、婉婷各一行；婉婷好感默认35（父女底），备注可写「亲生女儿·成年」。
+    初始化为尹安琪、陈亦勤、丁丁、婉婷、杨新亮各一行；婉婷好感默认35（父女底）；杨新亮默认18（跨部门尚未深交）。
     SQL示例: INSERT INTO affinity (row_id, char_name, affection, last_interaction, note) VALUES (1, '尹安琪', 20, '尚未深交', '');
     SQL示例: INSERT INTO affinity (row_id, char_name, affection, last_interaction, note) VALUES (4, '婉婷', 35, '父女日常', '亲生女儿·22岁成年');
   deleteNode: 禁止删除。
@@ -60,6 +60,11 @@ content:
     - 35
     - 父女日常
     - 亲生女儿·22岁成年
+  - - 5
+    - 杨新亮
+    - 18
+    - 尚未深交
+    - 跨部门平台后端
 updateConfig:
   uiSentinel: -1
   contextDepth: 4

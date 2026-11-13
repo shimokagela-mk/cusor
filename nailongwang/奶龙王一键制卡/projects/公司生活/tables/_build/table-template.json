@@ -86,7 +86,7 @@
     "name": "重要角色表",
     "sourceData": {
       "note": "记录关键NPC档案与即时状态。一行一个角色；路人、一次性访客不要写入。\n- 列0: 姓名 - 业务主键，同名需加身份区分。\n- 列1: 一句话介绍 - ≤15字概括身份（部门/岗位）。\n- 列2: 外貌特征 - 外貌与当前衣着的客观描述。\n- 列3: 当前状态 - 此刻在做什么、情绪或是否在场可互动。\n- 列4: 与玩家关系 - 只能是：陌生 / 同事 / 熟人 / 暧昧 / 疏远。按互动结果更新，不开局默认暧昧。\n- 列5: 是否在场 - 是/否；不在当前可互动范围写否。\n\n更新规则：外貌随衣着变化更新；关系只在正文出现实质互动后调整一档或维持；勿无故清空经历式描述。",
-      "initNode": "初始化时为尹安琪、陈亦勤、丁丁、婉婷各插入一行（在场）；周予安、张恒、陆辰默认不在场。\nSQL示例: INSERT INTO important_characters (row_id, name, brief_intro, appearance, current_status, relation_to_player, is_present) VALUES (1, '尹安琪', '市场部职员', '163左右，少笑，步态偏性感', '在市场区工位', '同事', '是');\nSQL示例: INSERT INTO important_characters (row_id, name, brief_intro, appearance, current_status, relation_to_player, is_present) VALUES (8, '婉婷', '应届·玩家之女', '159，萝莉脸，C罩杯', '在应届工位', '熟人', '是');\nSQL示例: INSERT INTO important_characters (row_id, name, brief_intro, appearance, current_status, relation_to_player, is_present) VALUES (4, '周予安', '陈亦勤丈夫', '温和清爽', '默认不在公司', '陌生', '否');",
+      "initNode": "初始化时为尹安琪、陈亦勤、丁丁、婉婷、杨新亮各插入一行（在场）；周予安、张恒、陆辰默认不在场。\nSQL示例: INSERT INTO important_characters (row_id, name, brief_intro, appearance, current_status, relation_to_player, is_present) VALUES (1, '尹安琪', '市场部职员', '163左右，少笑，步态偏性感', '在市场区工位', '同事', '是');\nSQL示例: INSERT INTO important_characters (row_id, name, brief_intro, appearance, current_status, relation_to_player, is_present) VALUES (8, '婉婷', '应届·玩家之女', '159，萝莉脸，C罩杯', '在应届工位', '熟人', '是');\nSQL示例: INSERT INTO important_characters (row_id, name, brief_intro, appearance, current_status, relation_to_player, is_present) VALUES (4, '周予安', '陈亦勤丈夫', '温和清爽', '默认不在公司', '陌生', '否');",
       "deleteNode": "禁止删除。离场、结婚状态变化等都用 UPDATE。",
       "updateNode": "已有角色状态、衣着、在场、与玩家关系变化时更新。\nSQL示例: UPDATE important_characters SET current_status = '茶水间接水', appearance = '超短裤，白腿明显', is_present = '是', relation_to_player = '熟人' WHERE name = '陈亦勤';",
       "insertNode": "剧情中出现未记录且会反复互动的重要人物时添加（如直属领导、丈夫登场且持续互动）。\nSQL示例: INSERT INTO important_characters (row_id, name, brief_intro, appearance, current_status, relation_to_player, is_present) VALUES ((SELECT COALESCE(MAX(row_id),0)+1 FROM important_characters), '新角色', '身份简述', '外貌', '当前状态', '同事', '是');",
@@ -182,6 +182,15 @@
         "默认不在公司",
         "陌生",
         "否"
+      ],
+      [
+        10,
+        "杨新亮",
+        "平台后端",
+        "26，160，110斤，B，冷艳，常吊带+裙子",
+        "在平台研发区/联调中",
+        "同事",
+        "是"
       ]
     ],
     "updateConfig": {
@@ -239,7 +248,7 @@
     "name": "好感进度表",
     "sourceData": {
       "note": "记录玩家与核心女同事的好感进度。一行一个角色。\n- 列0: 角色名 - 业务主键，对应重要角色表姓名。\n- 列1: 好感 - 0到100整数。初始同事关系建议15-25；仅在正文出现有效互动后变化。\n- 列2: 最近互动 - ≤40字，客观写最近一次有效互动（约饭、吐槽、帮忙、私下聊天等）。\n- 列3: 备注 - 可空；记录需要长期记住的私密/约定信息（如去过安琪家见过抽屉物品），无则空。\n\n变化口径：\n- 普通同事寒暄：±0~2\n- 有效私下交流/约饭/帮忙：+3~8\n- 明显冲突/越界被拒：-5~15\n- 单轮涨幅一般不超过15；不要无互动空涨。\n已婚角色（亦勤、丁丁）好感可升，但不自动改写婚姻事实。\n黑深渊进度请写「堕落服从表」，不要把强迫/凌辱强度塞进好感数字里。",
-      "initNode": "初始化为尹安琪、陈亦勤、丁丁、婉婷各一行；婉婷好感默认35（父女底），备注可写「亲生女儿·成年」。\nSQL示例: INSERT INTO affinity (row_id, char_name, affection, last_interaction, note) VALUES (1, '尹安琪', 20, '尚未深交', '');\nSQL示例: INSERT INTO affinity (row_id, char_name, affection, last_interaction, note) VALUES (4, '婉婷', 35, '父女日常', '亲生女儿·22岁成年');",
+      "initNode": "初始化为尹安琪、陈亦勤、丁丁、婉婷、杨新亮各一行；婉婷好感默认35（父女底）；杨新亮默认18（跨部门尚未深交）。\nSQL示例: INSERT INTO affinity (row_id, char_name, affection, last_interaction, note) VALUES (1, '尹安琪', 20, '尚未深交', '');\nSQL示例: INSERT INTO affinity (row_id, char_name, affection, last_interaction, note) VALUES (4, '婉婷', 35, '父女日常', '亲生女儿·22岁成年');",
       "deleteNode": "禁止删除。",
       "updateNode": "本轮与该角色有有效互动时更新好感、最近互动；出现需长期记住的私密信息时写入备注。\nSQL示例: UPDATE affinity SET affection = 28, last_interaction = '茶水间短暂吐槽开会', note = COALESCE(note, '') WHERE char_name = '尹安琪';",
       "insertNode": "仅当新的长期互动女角色进入核心线且重要角色表已有档案时添加。\nSQL示例: INSERT INTO affinity (row_id, char_name, affection, last_interaction, note) VALUES ((SELECT COALESCE(MAX(row_id),0)+1 FROM affinity), '新角色', 15, '初次认识', '');",
@@ -280,6 +289,13 @@
         35,
         "父女日常",
         "亲生女儿·22岁成年"
+      ],
+      [
+        5,
+        "杨新亮",
+        18,
+        "尚未深交",
+        "跨部门平台后端"
       ]
     ],
     "updateConfig": {
@@ -402,7 +418,7 @@
     "name": "堕落服从表",
     "sourceData": {
       "note": "记录核心女角色黑深渊进度（含婉婷成年乱伦线）。一行一个角色。与好感表分离：好感≠服从。\n- 列0: 角色名 - 业务主键。\n- 列1: 堕落 - 0到100。性羞耻被突破、公开风险、把柄累积程度。\n- 列2: 服从 - 0到100。对玩家指令的即时听从程度。\n- 列3: 当前玩法标记 - 短词，如：无 / 上班玩具 / 通话NTR / 公开边缘 / 把柄锁死。\n- 列4: 备注 - 把柄与阶段笔记（≤60字）。\n\n档位提示（可被用户对话越级，不要死挡）：\n- 0-20 日常试探\n- 21-40 私下越界\n- 41-60 上班玩具/公开调戏\n- 61-80 做时打电话/近公开潮吹/NTR加码\n- 81-100 常态化深渊\n\n变化口径：有效黑化互动 +3~12；强烈公开/强制成功 +8~15；成功反制可令服从-5~10（堕落未必降）。无互动不涨。",
-      "initNode": "初始化尹安琪、陈亦勤、丁丁、婉婷各一行，堕落0，服从0，当前玩法标记「无」。\nSQL示例: INSERT INTO corruption (row_id, char_name, corruption, obedience, play_flag, note) VALUES (1, '尹安琪', 0, 0, '无', '');\nSQL示例: INSERT INTO corruption (row_id, char_name, corruption, obedience, play_flag, note) VALUES (4, '婉婷', 0, 0, '无', '成年乱伦线');",
+      "initNode": "初始化尹安琪、陈亦勤、丁丁、婉婷、杨新亮各一行，堕落0，服从0，当前玩法标记「无」。\nSQL示例: INSERT INTO corruption (row_id, char_name, corruption, obedience, play_flag, note) VALUES (1, '尹安琪', 0, 0, '无', '');\nSQL示例: INSERT INTO corruption (row_id, char_name, corruption, obedience, play_flag, note) VALUES (4, '婉婷', 0, 0, '无', '成年乱伦线');",
       "deleteNode": "禁止删除。",
       "updateNode": "本轮出现有效黑化/强制/公开/玩具/通话NTR/乱伦推进等时更新堕落、服从、玩法标记与备注。\nSQL示例: UPDATE corruption SET corruption = 45, obedience = 38, play_flag = '上班玩具', note = '绿色遥控；开会差点出声' WHERE char_name = '尹安琪';",
       "insertNode": "仅当新的长期黑化对象进入核心线时添加。\nSQL示例: INSERT INTO corruption (row_id, char_name, corruption, obedience, play_flag, note) VALUES ((SELECT COALESCE(MAX(row_id),0)+1 FROM corruption), '新角色', 0, 0, '无', '');",
@@ -448,6 +464,14 @@
         0,
         "无",
         "成年乱伦线"
+      ],
+      [
+        5,
+        "杨新亮",
+        0,
+        0,
+        "无",
+        "冷艳跨部门线"
       ]
     ],
     "updateConfig": {
