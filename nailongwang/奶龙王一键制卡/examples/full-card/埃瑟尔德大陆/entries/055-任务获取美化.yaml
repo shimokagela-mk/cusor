@@ -1,0 +1,52 @@
+id: 54
+keys: []
+secondary_keys: []
+comment: 任务获取美化
+content: |-
+  角色领取/获得任务时，将任务信息以如下格式进行包裹后输出
+  以下仅为范例：
+  <获取任务>
+  **【委托：讨伐盘踞在城西废墟的恶霸团伙“黑鼠”】**
+  *   **难度：** ★★☆☆☆（适合5-10人小队）
+  *   **报酬：** 每人10银币，或平分缴获物资。
+  *   **详情：** 一群自称“黑鼠”的地痞流氓占据了城西的一处废弃庄园，欺压过往商旅，抢劫财物。虽然战斗力不强，但人数众多且熟悉地形，需要有经验的战士带队清剿。
+  *   **发布者：** 下城区卫兵队。
+  </获取任务>
+constant: true
+selective: true
+insertion_order: 3
+enabled: true
+position: after_char
+use_regex: true
+extensions:
+  position: 4
+  exclude_recursion: false
+  display_index: 54
+  probability: 100
+  useProbability: true
+  depth: 0
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: false
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

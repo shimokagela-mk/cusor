@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>公司生活 · 状态栏</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0f172a;--muted:#64748b;--line:rgba(15,23,42,.12);--panel:#ffffffcc;--accent:#0369a1;--bg1:#e8eef7;--bg2:#f7f4ef;
+}
+body{font-family:"IBM Plex Sans","Noto Sans SC",sans-serif;background:linear-gradient(135deg,var(--bg1),var(--bg2));color:var(--ink);min-height:100vh}
+.wrap{max-width:980px;margin:0 auto;padding:18px 16px 28px;display:grid;gap:14px}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;min-height:280px}
+@media(max-width:760px){.hero{grid-template-columns:1fr}}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:14px 16px;backdrop-filter:blur(8px)}
+.h{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.loc{font-size:22px;font-weight:700;line-height:1.3}
+.meta{margin-top:8px;display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:12px;padding:4px 8px;border:1px solid var(--line);border-radius:999px;background:#fff}
+.action{margin-top:10px;font-size:13px;color:#334155;line-height:1.6}
+.portrait{position:relative;min-height:280px;overflow:hidden;display:flex;align-items:flex-end;justify-content:center;background:
+  radial-gradient(circle at 30% 20%,rgba(3,105,161,.18),transparent 40%),
+  linear-gradient(180deg,#dbeafe 0%,#f8fafc 55%,#e2e8f0 100%)}
+.portrait img{max-height:100%;max-width:100%;object-fit:contain;display:block}
+.portrait .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;padding:16px;text-align:center}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.tab{border:1px solid var(--line);background:#fff;padding:6px 10px;border-radius:4px;cursor:pointer;font-size:12px}
+.tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.list{display:grid;gap:8px}
+.card{border:1px solid var(--line);border-radius:6px;padding:10px 12px;background:#fff}
+.card .name{font-weight:700}
+.card .sub{font-size:12px;color:var(--muted);margin-top:2px}
+.card .row{margin-top:6px;font-size:13px;line-height:1.55}
+.bar{height:8px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin-top:8px}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,#0284c7,#0ea5e9);width:0%}
+.warn{color:#b45309;font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <section class="panel">
+      <div class="h">当前状态 · 全局数据表</div>
+      <div class="loc" id="loc">等待表格数据…</div>
+      <div class="meta" id="meta"></div>
+      <div class="action" id="action"></div>
+      <div class="warn" id="warn"></div>
+    </section>
+    <section class="panel portrait" id="portrait">
+      <div class="ph" id="portraitPh">立绘位：选择下方角色后显示（需气泡立绘资源或稍后接入）</div>
+      <img id="portraitImg" alt="" hidden>
+    </section>
+  </div>
+  <section class="panel">
+    <div class="h">人物 / 好感 / 堕落服从</div>
+    <div class="tabs" id="tabs"></div>
+    <div class="list" id="list"></div>
+  </section>
+  <section class="panel">
+    <div class="h">把柄清单</div>
+    <div class="list" id="leverage"></div>
+  </section>
+</div>
+<script>
+/* 公司生活 · 表格数据桥（只读展示用） */
+(function (global) {
+  'use strict';
+
+  var TABLES = {
+    global: { name: '全局数据表', uid: 'sheet_GlobalData' },
+    characters: { name: '重要角色表', uid: 'sheet_NcBlYRH5' },
+    affinity: { name: '好感进度表', uid: 'sheet_Affinity' },
+    corruption: { name: '堕落服从表', uid: 'sheet_Corruption' },
+    leverage: { name: '把柄清单表', uid: 'sheet_Leverage' },
+    chronicle: { name: '纪要表', uid: 'sheet_3NoMc1wI' }
+  };
+
+  function roots() {
+    var list = [];
+    try { list.push(window); } catch (e) {}
+    try { if (window.parent && window.parent !== window) list.push(window.parent); } catch (e) {}
+    try { if (window.top && window.top !== window) list.push(window.top); } catch (e) {}
+    return list;
+  }
+
+  function getApi() {
+    var rs = roots();
+    for (var i = 0; i < rs.length; i++) {
+      try {
+        if (rs[i].AutoCardUpdaterAPI) return rs[i].AutoCardUpdaterAPI;
+      } catch (e) {}
+    }
+    return null;
+  }
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function findSheet(all, meta) {
+    if (!all || !meta) return null;
+    if (all[meta.uid]) return all[meta.uid];
+    for (var key in all) {
+      if (!Object.prototype.hasOwnProperty.call(all, key)) continue;
+      if (key.indexOf('sheet_') !== 0) continue;
+      var sheet = all[key];
+      if (sheet && sheet.name === meta.name) return sheet;
+    }
+    return null;
+  }
+
+  function headerIndex(content) {
+    var map = {};
+    if (!content || !content[0]) return map;
+    content[0].forEach(function (h, i) {
+      if (h == null || h === 'row_id' || h === '行号') return;
+      map[String(h)] = i;
+    });
+    return map;
+  }
+
+  function rowsAsObjects(sheet) {
+    var content = sheet && sheet.content;
+    if (!content || content.length < 2) return [];
+    var idx = headerIndex(content);
+    var out = [];
+    for (var r = 1; r < content.length; r++) {
+      var row = content[r] || [];
+      var obj = {};
+      Object.keys(idx).forEach(function (name) {
+        obj[name] = row[idx[name]];
+      });
+      out.push(obj);
+    }
+    return out;
+  }
+
+  function firstRow(sheet) {
+    var rows = rowsAsObjects(sheet);
+    return rows[0] || null;
+  }
+
+  function exportAll() {
+    var api = getApi();
+    if (!api || typeof api.exportTableAsJson !== 'function') return null;
+    try { return api.exportTableAsJson(); } catch (e) { return null; }
+  }
+
+  function snapshot() {
+    var all = exportAll();
+    if (!all) return { ok: false, reason: 'API不可用或尚未导入表格', global: null, characters: [], affinity: [], corruption: [], leverage: [] };
+    var gSheet = findSheet(all, TABLES.global);
+    var cSheet = findSheet(all, TABLES.characters);
+    var aSheet = findSheet(all, TABLES.affinity);
+    var dSheet = findSheet(all, TABLES.corruption);
+    var lSheet = findSheet(all, TABLES.leverage);
+    return {
+      ok: true,
+      global: firstRow(gSheet),
+      characters: rowsAsObjects(cSheet),
+      affinity: rowsAsObjects(aSheet),
+      corruption: rowsAsObjects(dSheet),
+      leverage: rowsAsObjects(lSheet)
+    };
+  }
+
+  function onTableUpdate(cb) {
+    var api = getApi();
+    if (!api) return function () {};
+    var handler = function () { try { cb(snapshot()); } catch (e) {} };
+    if (typeof api.subscribeTableUpdate === 'function') {
+      api.subscribeTableUpdate(handler);
+      return function () {
+        try { if (typeof api.unsubscribeTableUpdate === 'function') api.unsubscribeTableUpdate(handler); } catch (e) {}
+      };
+    }
+    var timer = setInterval(handler, 2500);
+    return function () { clearInterval(timer); };
+  }
+
+  global.OfficeDataBridge = {
+    TABLES: TABLES,
+    getApi: getApi,
+    esc: esc,
+    snapshot: snapshot,
+    onTableUpdate: onTableUpdate
+  };
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script>
+(function(){
+'use strict';
+var B=window.OfficeDataBridge;
+var selectedName='';
+var lastSnap=null;
+
+function nameMap(rows){
+  var m={};
+  (rows||[]).forEach(function(r){ if(r['角色名']) m[r['角色名']]=r; });
+  return m;
+}
+
+function topWin(){
+  try{ if(window.top) return window.top; }catch(e){}
+  try{ if(window.parent) return window.parent; }catch(e){}
+  return window;
+}
+function waitBubble(cb, tries){
+  tries = tries || 0;
+  var t = topWin();
+  if(t && t.BubbleCG){ cb(t.BubbleCG); return; }
+  if(tries > 20){ cb(null); return; }
+  setTimeout(function(){ waitBubble(cb, tries+1); }, 250);
+}
+function setPortrait(name){
+  selectedName=name||'';
+  var img=document.getElementById('portraitImg');
+  var ph=document.getElementById('portraitPh');
+  if(!selectedName){
+    img.hidden=true; img.removeAttribute('src');
+    ph.style.display='flex';
+    ph.textContent='立绘位：选择下方角色后显示';
+    return;
+  }
+  ph.style.display='flex';
+  ph.textContent='正在加载「'+selectedName+'」立绘…';
+  img.hidden=true;
+  waitBubble(function(cg){
+    if(!cg){
+      ph.textContent='「'+selectedName+'」气泡立绘 API 未就绪；资源组名默认=角色名';
+      return;
+    }
+    var done=function(url){
+      if(url){ img.src=url; img.hidden=false; ph.style.display='none'; }
+      else { ph.textContent='「'+selectedName+'」暂无立绘（BubbleCG 组名请用角色名）'; }
+    };
+    try{
+      if(typeof cg.getRandomImage==='function'){
+        Promise.resolve(cg.getRandomImage(selectedName)).then(done).catch(function(){ done(''); });
+      }else if(typeof cg.getImage==='function'){
+        Promise.resolve(cg.getImage(selectedName, 1)).then(done).catch(function(){ done(''); });
+      }else done('');
+    }catch(e){ done(''); }
+  });
+}
+
+function render(snap){
+  lastSnap=snap;
+  var warn=document.getElementById('warn');
+  if(!snap||!snap.ok){
+    document.getElementById('loc').textContent='尚未导入表格';
+    document.getElementById('meta').innerHTML='';
+    document.getElementById('action').textContent='';
+    warn.textContent=(snap&&snap.reason)||'请先在开场白点击导入';
+    document.getElementById('tabs').innerHTML='';
+    document.getElementById('list').innerHTML='';
+    document.getElementById('leverage').innerHTML='';
+    return;
+  }
+  warn.textContent='';
+  var g=snap.global||{};
+  document.getElementById('loc').textContent=g['当前位置']||'（无位置）';
+  document.getElementById('meta').innerHTML=[
+    ['时间', g['当前时间']],
+    ['天数', g['天数']],
+    ['时段', g['时段']]
+  ].map(function(x){return '<span class="chip">'+B.esc(x[0])+': '+B.esc(x[1]==null?'—':x[1])+'</span>';}).join('');
+  document.getElementById('action').textContent=g['主角当前状态']?('正在：'+g['主角当前状态']):'';
+
+  var aff=nameMap(snap.affinity);
+  var cor=nameMap(snap.corruption);
+  var mainNames={'尹安琪':1,'陈亦勤':1,'丁丁':1,'婉婷':1,'杨新亮':1};
+  var chars=(snap.characters||[]).filter(function(c){ return mainNames[c['姓名']]; });
+  if(!chars.length) chars=snap.characters||[];
+  var tabs=document.getElementById('tabs');
+  tabs.innerHTML=chars.map(function(c){
+    var n=c['姓名']||'';
+    var on=n===selectedName?' on':'';
+    return '<button class="tab'+on+'" data-name="'+B.esc(n)+'">'+B.esc(n)+'</button>';
+  }).join('');
+  tabs.querySelectorAll('.tab').forEach(function(btn){
+    btn.addEventListener('click', function(){ setPortrait(btn.getAttribute('data-name')); render(lastSnap); });
+  });
+
+  document.getElementById('list').innerHTML=chars.map(function(c){
+    var n=c['姓名']||'';
+    var a=aff[n]||{};
+    var d=cor[n]||{};
+    var score=Number(a['好感']); if(!isFinite(score)) score=0;
+    var corruption=Number(d['堕落']); if(!isFinite(corruption)) corruption=0;
+    var obedience=Number(d['服从']); if(!isFinite(obedience)) obedience=0;
+    return '<article class="card">'+
+      '<div class="name">'+B.esc(n)+'</div>'+
+      '<div class="sub">'+B.esc(c['一句话介绍']||'')+' · 关系 '+B.esc(c['与玩家关系']||'—')+' · 在场 '+B.esc(c['是否在场']||'—')+'</div>'+
+      '<div class="row">'+B.esc(c['当前状态']||'')+'</div>'+
+      '<div class="row">外貌：'+B.esc(c['外貌特征']||'')+'</div>'+
+      '<div class="row">最近互动：'+B.esc(a['最近互动']||'—')+(a['备注']?('；备注：'+B.esc(a['备注'])):'')+'</div>'+
+      '<div class="row">玩法：'+B.esc(d['当前玩法标记']||'无')+(d['备注']?('；'+B.esc(d['备注'])):'')+'</div>'+
+      '<div class="bar"><i style="width:'+Math.max(0,Math.min(100,score))+'%"></i></div>'+
+      '<div class="sub">好感 '+B.esc(score)+'/100</div>'+
+      '<div class="bar"><i style="width:'+Math.max(0,Math.min(100,corruption))+'%"></i></div>'+
+      '<div class="sub">堕落 '+B.esc(corruption)+'/100 · 服从 '+B.esc(obedience)+'/100</div>'+
+    '</article>';
+  }).join('') || '<div class="warn">重要角色表暂无数据</div>';
+
+  var lev=(snap.leverage||[]).filter(function(r){ return r['状态']!=='已销毁'; });
+  document.getElementById('leverage').innerHTML=lev.length?lev.map(function(r){
+    return '<article class="card">'+
+      '<div class="name">'+B.esc(r['对象']||'')+' · '+B.esc(r['类型']||'')+' · 强度'+B.esc(r['强度']||'')+'</div>'+
+      '<div class="row">'+B.esc(r['内容摘要']||'')+'</div>'+
+      '<div class="sub">状态 '+B.esc(r['状态']||'—')+(r['备注']?('；'+B.esc(r['备注'])):'')+'</div>'+
+    '</article>';
+  }).join(''):'<div class="warn">暂无把柄</div>';
+
+  if(!selectedName && chars[0] && chars[0]['姓名']) setPortrait(chars[0]['姓名']);
+  else setPortrait(selectedName);
+}
+
+function boot(){
+  render(B.snapshot());
+  B.onTableUpdate(render);
+}
+boot();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1939 @@
+{
+  "totalMissingEntries": 332,
+  "matchedDefaultArt": 278,
+  "missingDefaultArt": 54,
+  "missingDefaultArtEntries": [
+    {
+      "file": "114-M&P9.yaml",
+      "name": "M&P9",
+      "img": null
+    },
+    {
+      "file": "122-Maxim 9.yaml",
+      "name": "Maxim 9",
+      "img": null
+    },
+    {
+      "file": "126-P10C.yaml",
+      "name": "P10C",
+      "img": null
+    },
+    {
+      "file": "127-P2000.yaml",
+      "name": "P2000",
+      "img": null
+    },
+    {
+      "file": "145-Unica 6.yaml",
+      "name": "Unica 6",
+      "img": null
+    },
+    {
+      "file": "147-VP9.yaml",
+      "name": "VP9",
+      "img": null
+    },
+    {
+      "file": "153-山田多惠.yaml",
+      "name": "山田多惠",
+      "img": null
+    },
+    {
+      "file": "160-柯尔特M1851N.yaml",
+      "name": "柯尔特M1851N",
+      "img": null
+    },
+    {
+      "file": "170-艾薇塔.yaml",
+      "name": "艾薇塔",
+      "img": null
+    },
+    {
+      "file": "172-草薙素子.yaml",
+      "name": "草薙素子",
+      "img": null
+    },
+    {
+      "file": "186-82式.yaml",
+      "name": "82式",
+      "img": null
+    },
+    {
+      "file": "188-APC9K.yaml",
+      "name": "APC9K",
+      "img": null
+    },
+    {
+      "file": "201-Jatimatic.yaml",
+      "name": "Jatimatic",
+      "img": null
+    },
+    {
+      "file": "217-P50.yaml",
+      "name": "P50",
+      "img": null
+    },
+    {
+      "file": "244-wz.63.yaml",
+      "name": "wz.63",
+      "img": null
+    },
+    {
+      "file": "253-星川莉莉.yaml",
+      "name": "星川莉莉",
+      "img": null
+    },
+    {
+      "file": "255-欧文.yaml",
+      "name": "欧文",
+      "img": null
+    },
+    {
+      "file": "265-黑卡蒂.yaml",
+      "name": "黑卡蒂",
+      "img": null
+    },
+    {
+      "file": "275-HTI.yaml",
+      "name": "HTI",
+      "img": null
+    },
+    {
+      "file": "276-Hecate II.yaml",
+      "name": "Hecate II",
+      "img": null
+    },
+    {
+      "file": "282-M110.yaml",
+      "name": "M110",
+      "img": null
+    },
+    {
+      "file": "290-Mini-14.yaml",
+      "name": "Mini-14",
+      "img": null
+    },
+    {
+      "file": "298-QBU-191.yaml",
+      "name": "QBU-191",
+      "img": null
+    },
+    {
+      "file": "304-SIG CROSS.yaml",
+      "name": "SIG CROSS",
+      "img": null
+    },
+    {
+      "file": "310-SSG M1.yaml",
+      "name": "SSG M1",
+      "img": null
+    },
+    {
+      "file": "330-博斯.yaml",
+      "name": "博斯",
+      "img": null
+    },
+    {
+      "file": "342-源樱.yaml",
+      "name": "源樱",
+      "img": null
+    },
+    {
+      "file": "351-马提尼亨利.yaml",
+      "name": "马提尼亨利",
+      "img": null
+    },
+    {
+      "file": "380-CM901.yaml",
+      "name": "CM901",
+      "img": null
+    },
+    {
+      "file": "385-EF88.yaml",
+      "name": "EF88",
+      "img": null
+    },
+    {
+      "file": "399-HK433.yaml",
+      "name": "HK433",
+      "img": null
+    },
+    {
+      "file": "400-IA2.yaml",
+      "name": "IA2",
+      "img": null
+    },
+    {
+      "file": "410-MSBS.yaml",
+      "name": "MSBS",
+      "img": null
+    },
+    {
+      "file": "411-Mk.18.yaml",
+      "name": "Mk.18",
+      "img": null
+    },
+    {
+      "file": "422-SIG M400.yaml",
+      "name": "SIG M400",
+      "img": null
+    },
+    {
+      "file": "434-VRB.yaml",
+      "name": "VRB",
+      "img": null
+    },
+    {
+      "file": "436-XCR.yaml",
+      "name": "XCR",
+      "img": null
+    },
+    {
+      "file": "443-水野爱.yaml",
+      "name": "水野爱",
+      "img": null
+    },
+    {
+      "file": "444-江崎普林.yaml",
+      "name": "江崎普林",
+      "img": null
+    },
+    {
+      "file": "446-绀野纯子.yaml",
+      "name": "绀野纯子",
+      "img": null
+    },
+    {
+      "file": "450-贝奥武夫.yaml",
+      "name": "贝奥武夫",
+      "img": null
+    },
+    {
+      "file": "460-FM24.yaml",
+      "name": "FM24",
+      "img": null
+    },
+    {
+      "file": "465-LAMG.yaml",
+      "name": "LAMG",
+      "img": null
+    },
+    {
+      "file": "475-MG15.yaml",
+      "name": "MG15",
+      "img": null
+    },
+    {
+      "file": "492-XM556.yaml",
+      "name": "XM556",
+      "img": null
+    },
+    {
+      "file": "493-ZB-26.yaml",
+      "name": "ZB-26",
+      "img": null
+    },
+    {
+      "file": "496-夕雾.yaml",
+      "name": "夕雾",
+      "img": null
+    },
+    {
+      "file": "499-水金铃鹿.yaml",
+      "name": "水金铃鹿",
+      "img": null
+    },
+    {
+      "file": "531-TPS.yaml",
+      "name": "TPS",
+      "img": null
+    },
+    {
+      "file": "536-二阶堂咲.yaml",
+      "name": "二阶堂咲",
+      "img": null
+    },
+    {
+      "file": "537-史蒂文斯520.yaml",
+      "name": "史蒂文斯520",
+      "img": null
+    },
+    {
+      "file": "538-史蒂文斯620.yaml",
+      "name": "史蒂文斯620",
+      "img": null
+    },
+    {
+      "file": "547-达娜·赞恩.yaml",
+      "name": "达娜·赞恩",
+      "img": null
+    },
+    {
+      "file": "550-齐亚帕三重冕.yaml",
+      "name": "齐亚帕三重冕",
+      "img": null
+    }
+  ],
+  "rows": [
+    {
+      "file": "100-59式.yaml",
+      "name": "59式",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/59式_★★★/01_立绘展示/默认立绘/Pic_59type_HD.png"
+    },
+    {
+      "file": "101-92式.yaml",
+      "name": "92式",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/92式_★★★/01_立绘展示/默认立绘/Pic_92type_HD.png"
+    },
+    {
+      "file": "102-C-93.yaml",
+      "name": "C-93",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/C-93_★★★★★/01_立绘展示/默认立绘/Pic_C93_HD.png"
+    },
+    {
+      "file": "104-CZ 100.yaml",
+      "name": "CZ 100",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/CZ 100_★★★★/01_立绘展示/默认立绘/Pic_CZ100_HD.png"
+    },
+    {
+      "file": "105-CZ52.yaml",
+      "name": "CZ52",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/CZ52_★★★/01_立绘展示/默认立绘/Pic_CZ52_HD.png"
+    },
+    {
+      "file": "106-CZ75.yaml",
+      "name": "CZ75",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/CZ75_★★★★★/01_立绘展示/默认立绘/Pic_CZ75_HD.png"
+    },
+    {
+      "file": "107-FN-57.yaml",
+      "name": "FN-57",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/FN-57_★★★★★/01_立绘展示/默认立绘/Pic_FN57_HD.png"
+    },
+    {
+      "file": "109-GSh-18.yaml",
+      "name": "GSh-18",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/GSh-18_★★★/01_立绘展示/默认立绘/Pic_GSH18_HD.png"
+    },
+    {
+      "file": "110-HK45.yaml",
+      "name": "HK45",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/HK45_★★★/01_立绘展示/默认立绘/Pic_HK45_HD.png"
+    },
+    {
+      "file": "111-HP-35.yaml",
+      "name": "HP-35",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/HP-35_★★★★★/01_立绘展示/默认立绘/Pic_BrowningHP_HD.png"
+    },
+    {
+      "file": "112-HS2000.yaml",
+      "name": "HS2000",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/HS2000_★★★★★/01_立绘展示/默认立绘/Pic_HS2000_HD.png"
+    },
+    {
+      "file": "113-K5.yaml",
+      "name": "K5",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/K5_★★★★/01_立绘展示/默认立绘/Pic_K5_HD.png"
+    },
+    {
+      "file": "114-M&P9.yaml",
+      "name": "M&P9",
+      "img": null
+    },
+    {
+      "file": "116-M327.yaml",
+      "name": "M327",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/M327_★★★★★/01_立绘展示/默认立绘/Pic_M327_HD.png"
+    },
+    {
+      "file": "119-MP-443.yaml",
+      "name": "MP-443",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/MP-443_★★★/01_立绘展示/默认立绘/Pic_MP443_HD.png"
+    },
+    {
+      "file": "121-MP-448.yaml",
+      "name": "MP-448",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/MP-448_★★★/01_立绘展示/默认立绘/Pic_MP448_HD.png"
+    },
+    {
+      "file": "122-Maxim 9.yaml",
+      "name": "Maxim 9",
+      "img": null
+    },
+    {
+      "file": "124-NZ75.yaml",
+      "name": "NZ75",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/NZ75_★★★★★/01_立绘展示/默认立绘/Pic_NZ75_HD.png"
+    },
+    {
+      "file": "125-P08.yaml",
+      "name": "P08",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/P08_★★★/01_立绘展示/默认立绘/Pic_P08_HD.png"
+    },
+    {
+      "file": "126-P10C.yaml",
+      "name": "P10C",
+      "img": null
+    },
+    {
+      "file": "127-P2000.yaml",
+      "name": "P2000",
+      "img": null
+    },
+    {
+      "file": "128-P226.yaml",
+      "name": "P226",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/P226_★★★/01_立绘展示/默认立绘/Pic_P226_HD.png"
+    },
+    {
+      "file": "129-P22.yaml",
+      "name": "P22",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/P22_★★★★★/01_立绘展示/默认立绘/Pic_P22_HD.png"
+    },
+    {
+      "file": "130-P290.yaml",
+      "name": "P290",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/P290_★★★★/01_立绘展示/默认立绘/Pic_P290_HD.png"
+    },
+    {
+      "file": "131-P30.yaml",
+      "name": "P30",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/P30_★★★★/01_立绘展示/默认立绘/Pic_P30_HD.png"
+    },
+    {
+      "file": "133-P7.yaml",
+      "name": "P7",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/P7_★★★★/01_立绘展示/默认立绘/Pic_P7_HD.png"
+    },
+    {
+      "file": "134-P99.yaml",
+      "name": "P99",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/P99_★★★/01_立绘展示/默认立绘/Pic_P99_HD.png"
+    },
+    {
+      "file": "137-PPQ.yaml",
+      "name": "PPQ",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/PPQ_★★★★/01_立绘展示/默认立绘/Pic_PPQ_HD.png"
+    },
+    {
+      "file": "138-PSM.yaml",
+      "name": "PSM",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/PSM_★★★/01_立绘展示/默认立绘/Pic_PSM_HD.png"
+    },
+    {
+      "file": "139-Px4 风暴.yaml",
+      "name": "Px4 风暴",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/Px4 风暴_★★★★★/01_立绘展示/默认立绘/Pic_Px4Storm_HD.png"
+    },
+    {
+      "file": "140-QSB-91.yaml",
+      "name": "QSB-91",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/QSB-91_★★★/01_立绘展示/默认立绘/Pic_QSB91_HD.png"
+    },
+    {
+      "file": "141-Rex-0-1.yaml",
+      "name": "Rex-0-1",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/Rex-0-1_★★★★/01_立绘展示/默认立绘/Pic_RexZero1_HD.png"
+    },
+    {
+      "file": "142-SPP-1.yaml",
+      "name": "SPP-1",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/SPP-1_★★★★/01_立绘展示/默认立绘/Pic_SPP1_HD.png"
+    },
+    {
+      "file": "143-TEC-9.yaml",
+      "name": "TEC-9",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/TEC-9_★★★/01_立绘展示/默认立绘/Pic_TEC9_HD.png"
+    },
+    {
+      "file": "145-Unica 6.yaml",
+      "name": "Unica 6",
+      "img": null
+    },
+    {
+      "file": "146-VP70.yaml",
+      "name": "VP70",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/VP70_★★★/01_立绘展示/默认立绘/Pic_VP70_HD.png"
+    },
+    {
+      "file": "147-VP9.yaml",
+      "name": "VP9",
+      "img": null
+    },
+    {
+      "file": "148-WKp.yaml",
+      "name": "WKp",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/WKp_★★★/01_立绘展示/默认立绘/Pic_WKP_HD.png"
+    },
+    {
+      "file": "149-ZiP .22.yaml",
+      "name": "ZiP .22",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/ZiP .22_★★★★/01_立绘展示/默认立绘/Pic_ZIP22_HD.png"
+    },
+    {
+      "file": "150-克莉尔.yaml",
+      "name": "克莉尔",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/克莉尔_★/01_立绘展示/默认立绘/Pic_CLEAR_HD.png"
+    },
+    {
+      "file": "151-吉尔·斯汀雷.yaml",
+      "name": "吉尔·斯汀雷",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/吉尔·斯汀雷_★/01_立绘展示/默认立绘/Pic_Jill_HD.png"
+    },
+    {
+      "file": "152-喷火.yaml",
+      "name": "喷火",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/喷火_★★★★/01_立绘展示/默认立绘/Pic_Spitfire_HD.png"
+    },
+    {
+      "file": "153-山田多惠.yaml",
+      "name": "山田多惠",
+      "img": null
+    },
+    {
+      "file": "155-德丽莎.yaml",
+      "name": "德丽莎",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/德丽莎_★/01_立绘展示/默认立绘/Pic_Theresa_HD.png"
+    },
+    {
+      "file": "156-德林加.yaml",
+      "name": "德林加",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/德林加_★★★★/01_立绘展示/默认立绘/Pic_Derringer_HD.png"
+    },
+    {
+      "file": "160-柯尔特M1851N.yaml",
+      "name": "柯尔特M1851N",
+      "img": null
+    },
+    {
+      "file": "162-柯尔特沃克.yaml",
+      "name": "柯尔特沃克",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/柯尔特沃克_★★★★★/01_立绘展示/默认立绘/Pic_ColtWalker_HD.png"
+    },
+    {
+      "file": "163-格洛克17.yaml",
+      "name": "格洛克17",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/格洛克17_★★★/01_立绘展示/默认立绘/Pic_Glock17_HD.png"
+    },
+    {
+      "file": "164-沙漠之鹰.yaml",
+      "name": "沙漠之鹰",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/沙漠之鹰_★★★★★/01_立绘展示/默认立绘/Pic_DesertEagle_HD.png"
+    },
+    {
+      "file": "165-灰熊MkⅤ.yaml",
+      "name": "灰熊MkⅤ",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/灰熊MkⅤ_★★★★★/01_立绘展示/默认立绘/Pic_Grizzly_HD.png"
+    },
+    {
+      "file": "166-琪亚娜.yaml",
+      "name": "琪亚娜",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/琪亚娜_★/01_立绘展示/默认立绘/Pic_Kiana_HD.png"
+    },
+    {
+      "file": "167-竞争者.yaml",
+      "name": "竞争者",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/竞争者_★★★★★/01_立绘展示/默认立绘/Pic_Contender_HD.png"
+    },
+    {
+      "file": "169-维尔德MkⅡ.yaml",
+      "name": "维尔德MkⅡ",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/维尔德MkⅡ_★★★★★/01_立绘展示/默认立绘/Pic_Welrod_HD.png"
+    },
+    {
+      "file": "170-艾薇塔.yaml",
+      "name": "艾薇塔",
+      "img": null
+    },
+    {
+      "file": "171-芮诺.yaml",
+      "name": "芮诺",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/芮诺_★★★★★/01_立绘展示/默认立绘/Pic_Rhino_HD.png"
+    },
+    {
+      "file": "172-草薙素子.yaml",
+      "name": "草薙素子",
+      "img": null
+    },
+    {
+      "file": "173-菲尔.yaml",
+      "name": "菲尔",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/菲尔_★/01_立绘展示/默认立绘/Pic_FAIL_HD.png"
+    },
+    {
+      "file": "174-蜂鸟.yaml",
+      "name": "蜂鸟",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/蜂鸟_★★★★★/01_立绘展示/默认立绘/Pic_Kolibri_HD.png"
+    },
+    {
+      "file": "175-蟒蛇.yaml",
+      "name": "蟒蛇",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/蟒蛇_★★★★★/01_立绘展示/默认立绘/Pic_Python_HD.png"
+    },
+    {
+      "file": "176-诺爱尔.yaml",
+      "name": "诺爱尔",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/诺爱尔_★/01_立绘展示/默认立绘/Pic_BB_Noel_HD.png"
+    },
+    {
+      "file": "177-谢尔久科夫.yaml",
+      "name": "谢尔久科夫",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/谢尔久科夫_★★★/01_立绘展示/默认立绘/Pic_SPS_HD.png"
+    },
+    {
+      "file": "178-赛伊·朝雾.yaml",
+      "name": "赛伊·朝雾",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/赛伊·朝雾_★/01_立绘展示/默认立绘/Pic_SEI_HD.png"
+    },
+    {
+      "file": "179-阿斯特拉左轮.yaml",
+      "name": "阿斯特拉左轮",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/阿斯特拉左轮_★★★/01_立绘展示/默认立绘/Pic_357_HD.png"
+    },
+    {
+      "file": "181-韦伯利.yaml",
+      "name": "韦伯利",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/01_HG_手枪/韦伯利_★★★★★/01_立绘展示/默认立绘/Pic_Webley_HD.png"
+    },
+    {
+      "file": "183-43M.yaml",
+      "name": "43M",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/43M_★★★/01_立绘展示/默认立绘/Pic_Danuvia43M_HD.png"
+    },
+    {
+      "file": "185-79式.yaml",
+      "name": "79式",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/79式_★★★★★/01_立绘展示/默认立绘/Pic_79type_HD.png"
+    },
+    {
+      "file": "186-82式.yaml",
+      "name": "82式",
+      "img": null
+    },
+    {
+      "file": "188-APC9K.yaml",
+      "name": "APC9K",
+      "img": null
+    },
+    {
+      "file": "189-AR-57.yaml",
+      "name": "AR-57",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/AR-57_★★★★/01_立绘展示/默认立绘/Pic_AR57_HD.png"
+    },
+    {
+      "file": "190-AUG SMG.yaml",
+      "name": "AUG SMG",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/AUG SMG_★★★★★/01_立绘展示/默认立绘/Pic_AUGPARA_HD.png"
+    },
+    {
+      "file": "191-C-MS.yaml",
+      "name": "C-MS",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/C-MS_★★★★★/01_立绘展示/默认立绘/Pic_CBJMS_HD.png"
+    },
+    {
+      "file": "192-CF05.yaml",
+      "name": "CF05",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/CF05_★★★★/01_立绘展示/默认立绘/Pic_06TypeSMG_HD.png"
+    },
+    {
+      "file": "193-Cx4 风暴.yaml",
+      "name": "Cx4 风暴",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/Cx4 风暴_★★★★/01_立绘展示/默认立绘/Pic_Cx4Storm_HD.png"
+    },
+    {
+      "file": "194-EVO 3.yaml",
+      "name": "EVO 3",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/EVO 3_★★★/01_立绘展示/默认立绘/Pic_EVO3_HD.png"
+    },
+    {
+      "file": "195-Erma.yaml",
+      "name": "Erma",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/Erma_★★★★★/01_立绘展示/默认立绘/Pic_Erma_HD.png"
+    },
+    {
+      "file": "196-F1.yaml",
+      "name": "F1",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/F1_★★★/01_立绘展示/默认立绘/Pic_F1_HD.png"
+    },
+    {
+      "file": "197-FMG-9.yaml",
+      "name": "FMG-9",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/FMG-9_★★★/01_立绘展示/默认立绘/Pic_FMG9_HD.png"
+    },
+    {
+      "file": "200-JS 9.yaml",
+      "name": "JS 9",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/JS 9_★★★★★/01_立绘展示/默认立绘/Pic_JS9mm_HD.png"
+    },
+    {
+      "file": "201-Jatimatic.yaml",
+      "name": "Jatimatic",
+      "img": null
+    },
+    {
+      "file": "202-KAC-PDW.yaml",
+      "name": "KAC-PDW",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/KAC-PDW_★★★★/01_立绘展示/默认立绘/Pic_KAC_HD.png"
+    },
+    {
+      "file": "203-KLIN.yaml",
+      "name": "KLIN",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/KLIN_★★★★/01_立绘展示/默认立绘/Pic_KLIN_HD.png"
+    },
+    {
+      "file": "204-M12.yaml",
+      "name": "M12",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/M12_★★★/01_立绘展示/默认立绘/Pic_M12_HD.png"
+    },
+    {
+      "file": "207-MAS-38.yaml",
+      "name": "MAS-38",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/MAS-38_★★★/01_立绘展示/默认立绘/Pic_MAS38_HD.png"
+    },
+    {
+      "file": "208-MAT-49.yaml",
+      "name": "MAT-49",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/MAT-49_★★★★/01_立绘展示/默认立绘/Pic_MAT49_HD.png"
+    },
+    {
+      "file": "210-MP41.yaml",
+      "name": "MP41",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/MP41_★★★/01_立绘展示/默认立绘/Pic_MP41_HD.png"
+    },
+    {
+      "file": "213-MPK.yaml",
+      "name": "MPK",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/MPK_★★★★/01_立绘展示/默认立绘/Pic_MPK_HD.png"
+    },
+    {
+      "file": "214-MPL.yaml",
+      "name": "MPL",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/MPL_★★★★/01_立绘展示/默认立绘/Pic_MPL_HD.png"
+    },
+    {
+      "file": "215-MT-9.yaml",
+      "name": "MT-9",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/MT-9_★★★/01_立绘展示/默认立绘/Pic_MT9_HD.png"
+    },
+    {
+      "file": "216-OTs-39.yaml",
+      "name": "OTs-39",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/OTs-39_★★★/01_立绘展示/默认立绘/Pic_OTs39_HD.png"
+    },
+    {
+      "file": "217-P50.yaml",
+      "name": "P50",
+      "img": null
+    },
+    {
+      "file": "218-P90.yaml",
+      "name": "P90",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/P90_★★★★★/01_立绘展示/默认立绘/Pic_P90_HD.png"
+    },
+    {
+      "file": "219-PM-06.yaml",
+      "name": "PM-06",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/PM-06_★★★★★/01_立绘展示/默认立绘/Pic_PM06_HD.png"
+    },
+    {
+      "file": "220-PM-9.yaml",
+      "name": "PM-9",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/PM-9_★★★★★/01_立绘展示/默认立绘/Pic_PM9_HD.png"
+    },
+    {
+      "file": "225-PPD-40.yaml",
+      "name": "PPD-40",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/PPD-40_★★★★/01_立绘展示/默认立绘/Pic_PPD40_HD.png"
+    },
+    {
+      "file": "229-SAF.yaml",
+      "name": "SAF",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/SAF_★★★★/01_立绘展示/默认立绘/Pic_SAF_HD.png"
+    },
+    {
+      "file": "230-SCW.yaml",
+      "name": "SCW",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/SCW_★★★/01_立绘展示/默认立绘/Pic_ColtSCW_HD.png"
+    },
+    {
+      "file": "231-SP9.yaml",
+      "name": "SP9",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/SP9_★★★★★/01_立绘展示/默认立绘/Pic_SP9_HD.png"
+    },
+    {
+      "file": "232-SR-2.yaml",
+      "name": "SR-2",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/SR-2_★★★★★/01_立绘展示/默认立绘/Pic_SR2_HD.png"
+    },
+    {
+      "file": "233-SR-3MP.yaml",
+      "name": "SR-3MP",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/SR-3MP_★★★★★/01_立绘展示/默认立绘/Pic_SR3MP_HD.png"
+    },
+    {
+      "file": "234-SUB-2000.yaml",
+      "name": "SUB-2000",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/SUB-2000_★★★/01_立绘展示/默认立绘/Pic_SUB2000_HD.png"
+    },
+    {
+      "file": "235-T77.yaml",
+      "name": "T77",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/T77_★★★/01_立绘展示/默认立绘/Pic_T77_HD.png"
+    },
+    {
+      "file": "240-VP1915.yaml",
+      "name": "VP1915",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/VP1915_★★★★★/01_立绘展示/默认立绘/Pic_VP1915_HD.png"
+    },
+    {
+      "file": "241-X95.yaml",
+      "name": "X95",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/X95_★★★★★/01_立绘展示/默认立绘/Pic_X95_HD.png"
+    },
+    {
+      "file": "242-Z-62.yaml",
+      "name": "Z-62",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/Z-62_★★★/01_立绘展示/默认立绘/Pic_Z62_HD.png"
+    },
+    {
+      "file": "244-wz.63.yaml",
+      "name": "wz.63",
+      "img": null
+    },
+    {
+      "file": "246-卢萨.yaml",
+      "name": "卢萨",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/卢萨_★★★★★/01_立绘展示/默认立绘/Pic_Lusa_HD.png"
+    },
+    {
+      "file": "248-多萝西·海兹.yaml",
+      "name": "多萝西·海兹",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/多萝西·海兹_★/01_立绘展示/默认立绘/Pic_Dorothy_HD.png"
+    },
+    {
+      "file": "249-希普卡.yaml",
+      "name": "希普卡",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/希普卡_★★★★/01_立绘展示/默认立绘/Pic_Shipka_HD.png"
+    },
+    {
+      "file": "252-斯特林.yaml",
+      "name": "斯特林",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/斯特林_★★★★★/01_立绘展示/默认立绘/Pic_Sterling_HD.png"
+    },
+    {
+      "file": "253-星川莉莉.yaml",
+      "name": "星川莉莉",
+      "img": null
+    },
+    {
+      "file": "254-樱花.yaml",
+      "name": "樱花",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/樱花_★★★★★/01_立绘展示/默认立绘/Pic_Type100_HD.png"
+    },
+    {
+      "file": "255-欧文.yaml",
+      "name": "欧文",
+      "img": null
+    },
+    {
+      "file": "257-海莉艾塔.yaml",
+      "name": "海莉艾塔",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/海莉艾塔_★/01_立绘展示/默认立绘/Pic_Henrietta_HD.png"
+    },
+    {
+      "file": "258-特工维克托.yaml",
+      "name": "特工维克托",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/特工维克托_★/01_立绘展示/默认立绘/Pic_VectorAgent_HD.png"
+    },
+    {
+      "file": "261-维涅龙M2.yaml",
+      "name": "维涅龙M2",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/维涅龙M2_★★★★/01_立绘展示/默认立绘/Pic_VigneronM2_HD.png"
+    },
+    {
+      "file": "262-蜜獾.yaml",
+      "name": "蜜獾",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/蜜獾_★★★★/01_立绘展示/默认立绘/Pic_PDW_HD.png"
+    },
+    {
+      "file": "264-邪神酱.yaml",
+      "name": "邪神酱",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/02_SMG_冲锋枪/邪神酱_★/01_立绘展示/默认立绘/Pic_Jashinchan_HD.png"
+    },
+    {
+      "file": "265-黑卡蒂.yaml",
+      "name": "黑卡蒂",
+      "img": null
+    },
+    {
+      "file": "266-56式半.yaml",
+      "name": "56式半",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/56式半_★★★/01_立绘展示/默认立绘/Pic_56typeR_HD.png"
+    },
+    {
+      "file": "268-C14.yaml",
+      "name": "C14",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/C14_★★★/01_立绘展示/默认立绘/Pic_C14_HD.png"
+    },
+    {
+      "file": "273-GM6 Lynx.yaml",
+      "name": "GM6 Lynx",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/GM6 Lynx_★★★/01_立绘展示/默认立绘/Pic_Gm6Lynx_HD.png"
+    },
+    {
+      "file": "274-HS.50.yaml",
+      "name": "HS.50",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/HS.50_★★★★★/01_立绘展示/默认立绘/Pic_HS50_HD.png"
+    },
+    {
+      "file": "275-HTI.yaml",
+      "name": "HTI",
+      "img": null
+    },
+    {
+      "file": "276-Hecate II.yaml",
+      "name": "Hecate II",
+      "img": null
+    },
+    {
+      "file": "277-IWS 2000.yaml",
+      "name": "IWS 2000",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/IWS 2000_★★★★★/01_立绘展示/默认立绘/Pic_IWS2000_HD.png"
+    },
+    {
+      "file": "278-JS05.yaml",
+      "name": "JS05",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/JS05_★★★★★/01_立绘展示/默认立绘/Pic_JS-127_HD.png"
+    },
+    {
+      "file": "279-K31.yaml",
+      "name": "K31",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/K31_★★★★/01_立绘展示/默认立绘/Pic_K31_HD.png"
+    },
+    {
+      "file": "282-M110.yaml",
+      "name": "M110",
+      "img": null
+    },
+    {
+      "file": "287-M21.yaml",
+      "name": "M21",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/M21_★★★/01_立绘展示/默认立绘/Pic_M21_HD.png"
+    },
+    {
+      "file": "288-M82A1.yaml",
+      "name": "M82A1",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/M82A1_★★★★★/01_立绘展示/默认立绘/Pic_M82A1_HD.png"
+    },
+    {
+      "file": "289-M99.yaml",
+      "name": "M99",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/M99_★★★★★/01_立绘展示/默认立绘/Pic_M99_HD.png"
+    },
+    {
+      "file": "290-Mini-14.yaml",
+      "name": "Mini-14",
+      "img": null
+    },
+    {
+      "file": "291-Mk 12.yaml",
+      "name": "Mk 12",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/Mk 12_★★★★/01_立绘展示/默认立绘/Pic_Mk12_HD.png"
+    },
+    {
+      "file": "293-OBR.yaml",
+      "name": "OBR",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/OBR_★★★/01_立绘展示/默认立绘/Pic_OBR_HD.png"
+    },
+    {
+      "file": "294-OTs-44.yaml",
+      "name": "OTs-44",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/OTs-44_★★★/01_立绘展示/默认立绘/Pic_OC44_HD.png"
+    },
+    {
+      "file": "297-PzB39.yaml",
+      "name": "PzB39",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/PzB39_★★★★/01_立绘展示/默认立绘/Pic_PzB39_HD.png"
+    },
+    {
+      "file": "298-QBU-191.yaml",
+      "name": "QBU-191",
+      "img": null
+    },
+    {
+      "file": "299-QBU-88.yaml",
+      "name": "QBU-88",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/QBU-88_★★★★★/01_立绘展示/默认立绘/Pic_QBU88_HD.png"
+    },
+    {
+      "file": "300-R93.yaml",
+      "name": "R93",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/R93_★★★★★/01_立绘展示/默认立绘/Pic_R93_HD.png"
+    },
+    {
+      "file": "301-RT-20.yaml",
+      "name": "RT-20",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/RT-20_★★★/01_立绘展示/默认立绘/Pic_RT20_HD.png"
+    },
+    {
+      "file": "303-SCAR-H.yaml",
+      "name": "SCAR-H",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/SCAR-H_★★★★★/01_立绘展示/默认立绘/Pic_SCARH_HD.png"
+    },
+    {
+      "file": "304-SIG CROSS.yaml",
+      "name": "SIG CROSS",
+      "img": null
+    },
+    {
+      "file": "305-SL8.yaml",
+      "name": "SL8",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/SL8_★★★★★/01_立绘展示/默认立绘/Pic_SL8_HD.png"
+    },
+    {
+      "file": "306-SM-1.yaml",
+      "name": "SM-1",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/SM-1_★★★/01_立绘展示/默认立绘/Pic_HEZISM1_HD.png"
+    },
+    {
+      "file": "307-SPR A3G.yaml",
+      "name": "SPR A3G",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/SPR A3G_★★★★/01_立绘展示/默认立绘/Pic_FNSPR_HD.png"
+    },
+    {
+      "file": "308-SRS.yaml",
+      "name": "SRS",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/SRS_★★★★★/01_立绘展示/默认立绘/Pic_DTASRS_HD.png"
+    },
+    {
+      "file": "309-SSG 69.yaml",
+      "name": "SSG 69",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/SSG 69_★★★/01_立绘展示/默认立绘/Pic_SSG69_HD.png"
+    },
+    {
+      "file": "310-SSG M1.yaml",
+      "name": "SSG M1",
+      "img": null
+    },
+    {
+      "file": "311-SSG3000.yaml",
+      "name": "SSG3000",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/SSG3000_★★★★/01_立绘展示/默认立绘/Pic_SSG3000_HD.png"
+    },
+    {
+      "file": "313-SVCh.yaml",
+      "name": "SVCh",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/SVCh_★★★★★/01_立绘展示/默认立绘/Pic_SVCh_HD.png"
+    },
+    {
+      "file": "316-Saiga 308.yaml",
+      "name": "Saiga 308",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/Saiga 308_★★★★/01_立绘展示/默认立绘/Pic_Saiga308_HD.png"
+    },
+    {
+      "file": "318-T-CMS.yaml",
+      "name": "T-CMS",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/T-CMS_★★★/01_立绘展示/默认立绘/Pic_TCMS_HD.png"
+    },
+    {
+      "file": "319-TAC-50.yaml",
+      "name": "TAC-50",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/TAC-50_★★★★★/01_立绘展示/默认立绘/Pic_TAC50_HD.png"
+    },
+    {
+      "file": "320-TF-Q.yaml",
+      "name": "TF-Q",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/TF-Q_★★★★/01_立绘展示/默认立绘/Pic_TFQ_HD.png"
+    },
+    {
+      "file": "321-VSK-94.yaml",
+      "name": "VSK-94",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/VSK-94_★★★★★/01_立绘展示/默认立绘/Pic_VSK_HD.png"
+    },
+    {
+      "file": "323-XM3.yaml",
+      "name": "XM3",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/XM3_★★★★/01_立绘展示/默认立绘/Pic_xm3_HD.png"
+    },
+    {
+      "file": "324-Zas M76.yaml",
+      "name": "Zas M76",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/Zas M76_★★★/01_立绘展示/默认立绘/Pic_ZasM76_HD.png"
+    },
+    {
+      "file": "325-wz.29.yaml",
+      "name": "wz.29",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/wz.29_★★★/01_立绘展示/默认立绘/Pic_wz29_HD.png"
+    },
+    {
+      "file": "326-佩可拉.yaml",
+      "name": "佩可拉",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/佩可拉_★/01_立绘展示/默认立绘/Pic_Pekora_HD.png"
+    },
+    {
+      "file": "327-侦察者.yaml",
+      "name": "侦察者",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/侦察者_★★★/01_立绘展示/默认立绘/Pic_scout_HD.png"
+    },
+    {
+      "file": "328-八一式马.yaml",
+      "name": "八一式马",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/八一式马_★★★/01_立绘展示/默认立绘/Pic_81typeR_HD.png"
+    },
+    {
+      "file": "329-刘氏步枪.yaml",
+      "name": "刘氏步枪",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/刘氏步枪_★★★★★/01_立绘展示/默认立绘/Pic_GeneralLiu_HD.png"
+    },
+    {
+      "file": "330-博斯.yaml",
+      "name": "博斯",
+      "img": null
+    },
+    {
+      "file": "331-卡尔卡诺M1891.yaml",
+      "name": "卡尔卡诺M1891",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/卡尔卡诺M1891_★★★★★/01_立绘展示/默认立绘/Pic_Carcano1891_HD.png"
+    },
+    {
+      "file": "332-卡尔卡诺M91.yaml",
+      "name": "卡尔卡诺M91",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/卡尔卡诺M91_★★★★★/01_立绘展示/默认立绘/Pic_Carcano1938_HD.png"
+    },
+    {
+      "file": "333-史黛拉·星井.yaml",
+      "name": "史黛拉·星井",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/史黛拉·星井_★/01_立绘展示/默认立绘/Pic_Stella_HD.png"
+    },
+    {
+      "file": "334-四式.yaml",
+      "name": "四式",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/四式_★★★★/01_立绘展示/默认立绘/Pic_4type_HD.png"
+    },
+    {
+      "file": "335-塔布克.yaml",
+      "name": "塔布克",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/塔布克_★★★★/01_立绘展示/默认立绘/Pic_Tabuk_HD.png"
+    },
+    {
+      "file": "336-布洛妮娅.yaml",
+      "name": "布洛妮娅",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/布洛妮娅_★/01_立绘展示/默认立绘/Pic_Bronya_HD.png"
+    },
+    {
+      "file": "337-德利尔.yaml",
+      "name": "德利尔",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/德利尔_★★★★★/01_立绘展示/默认立绘/Pic_Delisle_HD.png"
+    },
+    {
+      "file": "341-沙维奇99型.yaml",
+      "name": "沙维奇99型",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/沙维奇99型_★★★★★/01_立绘展示/默认立绘/Pic_Savage99_HD.png"
+    },
+    {
+      "file": "342-源樱.yaml",
+      "name": "源樱",
+      "img": null
+    },
+    {
+      "file": "343-猎豹M1.yaml",
+      "name": "猎豹M1",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/猎豹M1_★★★/01_立绘展示/默认立绘/Pic_GepardM1_HD.png"
+    },
+    {
+      "file": "344-芭莉斯塔.yaml",
+      "name": "芭莉斯塔",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/芭莉斯塔_★★★★★/01_立绘展示/默认立绘/Pic_Ballista_HD.png"
+    },
+    {
+      "file": "345-莉可.yaml",
+      "name": "莉可",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/莉可_★/01_立绘展示/默认立绘/Pic_Rico_HD.png"
+    },
+    {
+      "file": "347-蒙德拉贡M1908.yaml",
+      "name": "蒙德拉贡M1908",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/蒙德拉贡M1908_★★★★/01_立绘展示/默认立绘/Pic_MondragonM1908_HD.png"
+    },
+    {
+      "file": "349-隼.yaml",
+      "name": "隼",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/隼_★★★/01_立绘展示/默认立绘/Pic_Falcon_HD.png"
+    },
+    {
+      "file": "350-雷电芽衣.yaml",
+      "name": "雷电芽衣",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/03_RF_步枪/雷电芽衣_★/01_立绘展示/默认立绘/Pic_RaidenMei_HD.png"
+    },
+    {
+      "file": "351-马提尼亨利.yaml",
+      "name": "马提尼亨利",
+      "img": null
+    },
+    {
+      "file": "352-03式.yaml",
+      "name": "03式",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/03式_★★★/01_立绘展示/默认立绘/Pic_Type03_HD.png"
+    },
+    {
+      "file": "353-56-1式.yaml",
+      "name": "56-1式",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/56-1式_★★★★/01_立绘展示/默认立绘/Pic_56-1type_HD.png"
+    },
+    {
+      "file": "355-64式自.yaml",
+      "name": "64式自",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/64式自_★★★★★/01_立绘展示/默认立绘/Pic_Type64-AR_HD.png"
+    },
+    {
+      "file": "356-6P62.yaml",
+      "name": "6P62",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/6P62_★★★/01_立绘展示/默认立绘/Pic_6P62_HD.png"
+    },
+    {
+      "file": "357-89式自.yaml",
+      "name": "89式自",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/89式自_★★★★★/01_立绘展示/默认立绘/Pic_HowaType89_HD.png"
+    },
+    {
+      "file": "358-95式.yaml",
+      "name": "95式",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/95式_★★★★★/01_立绘展示/默认立绘/Pic_95type_HD.png"
+    },
+    {
+      "file": "359-97式.yaml",
+      "name": "97式",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/97式_★★★★★/01_立绘展示/默认立绘/Pic_97type_HD.png"
+    },
+    {
+      "file": "360-9A-91.yaml",
+      "name": "9A-91",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/9A-91_★★★★/01_立绘展示/默认立绘/Pic_9A91_HD.png"
+    },
+    {
+      "file": "361-A-545.yaml",
+      "name": "A-545",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/A-545_★★★★★/01_立绘展示/默认立绘/Pic_A545_HD.png"
+    },
+    {
+      "file": "362-A-91.yaml",
+      "name": "A-91",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/A-91_★★★★/01_立绘展示/默认立绘/Pic_A91_HD.png"
+    },
+    {
+      "file": "363-ACR.yaml",
+      "name": "ACR",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/ACR_★★★★★/01_立绘展示/默认立绘/Pic_ACR_HD.png"
+    },
+    {
+      "file": "364-ADS.yaml",
+      "name": "ADS",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/ADS_★★★★★/01_立绘展示/默认立绘/Pic_ADS_HD.png"
+    },
+    {
+      "file": "368-AK-阿尔法.yaml",
+      "name": "AK-阿尔法",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/AK-阿尔法_★★★★★/01_立绘展示/默认立绘/Pic_AKAlfa_HD.png"
+    },
+    {
+      "file": "371-APC556.yaml",
+      "name": "APC556",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/APC556_★★★★/01_立绘展示/默认立绘/Pic_APC556_HD.png"
+    },
+    {
+      "file": "372-AR-18.yaml",
+      "name": "AR-18",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/AR-18_★★★★★/01_立绘展示/默认立绘/Pic_AR18_HD.png"
+    },
+    {
+      "file": "373-AR70.yaml",
+      "name": "AR70",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/AR70_★★★/01_立绘展示/默认立绘/Pic_AR70_HD.png"
+    },
+    {
+      "file": "374-ART556.yaml",
+      "name": "ART556",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/ART556_★★★★★/01_立绘展示/默认立绘/Pic_ART556_HD.png"
+    },
+    {
+      "file": "375-ARX-160.yaml",
+      "name": "ARX-160",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/ARX-160_★★★/01_立绘展示/默认立绘/Pic_ARX160_HD.png"
+    },
+    {
+      "file": "377-ASh-12.7.yaml",
+      "name": "ASh-12.7",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/ASh-12.7_★★★/01_立绘展示/默认立绘/Pic_Ash127_HD.png"
+    },
+    {
+      "file": "378-AUG.yaml",
+      "name": "AUG",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/AUG_★★★★★/01_立绘展示/默认立绘/Pic_AUG_HD.png"
+    },
+    {
+      "file": "379-Ak 5.yaml",
+      "name": "Ak 5",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/Ak 5_★★★★/01_立绘展示/默认立绘/Pic_Ak5_HD.png"
+    },
+    {
+      "file": "380-CM901.yaml",
+      "name": "CM901",
+      "img": null
+    },
+    {
+      "file": "381-CMR-30.yaml",
+      "name": "CMR-30",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/CMR-30_★★★★/01_立绘展示/默认立绘/Pic_CMR30_HD.png"
+    },
+    {
+      "file": "382-CR-21.yaml",
+      "name": "CR-21",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/CR-21_★★★★/01_立绘展示/默认立绘/Pic_CR21_HD.png"
+    },
+    {
+      "file": "383-CZ-805.yaml",
+      "name": "CZ-805",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/CZ-805_★★★/01_立绘展示/默认立绘/Pic_CZ805_HD.png"
+    },
+    {
+      "file": "384-CZ2000.yaml",
+      "name": "CZ2000",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/CZ2000_★★★★/01_立绘展示/默认立绘/Pic_CZ2000_HD.png"
+    },
+    {
+      "file": "385-EF88.yaml",
+      "name": "EF88",
+      "img": null
+    },
+    {
+      "file": "386-EM-2.yaml",
+      "name": "EM-2",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/EM-2_★★★★/01_立绘展示/默认立绘/Pic_EM2_HD.png"
+    },
+    {
+      "file": "388-FAL.yaml",
+      "name": "FAL",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/FAL_★★★★★/01_立绘展示/默认立绘/Pic_FNFAL_HD.png"
+    },
+    {
+      "file": "389-FAMAS.yaml",
+      "name": "FAMAS",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/FAMAS_★★★★/01_立绘展示/默认立绘/Pic_FAMAS_HD.png"
+    },
+    {
+      "file": "390-FARA 83.yaml",
+      "name": "FARA 83",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/FARA 83_★★★★/01_立绘展示/默认立绘/Pic_FARA83_HD.png"
+    },
+    {
+      "file": "392-FX-05.yaml",
+      "name": "FX-05",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/FX-05_★★★★/01_立绘展示/默认立绘/Pic_FX05_HD.png"
+    },
+    {
+      "file": "399-HK433.yaml",
+      "name": "HK433",
+      "img": null
+    },
+    {
+      "file": "400-IA2.yaml",
+      "name": "IA2",
+      "img": null
+    },
+    {
+      "file": "401-K11.yaml",
+      "name": "K11",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/K11_★★★★★/01_立绘展示/默认立绘/Pic_K11_HD.png"
+    },
+    {
+      "file": "402-K2.yaml",
+      "name": "K2",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/K2_★★★★★/01_立绘展示/默认立绘/Pic_K2_HD.png"
+    },
+    {
+      "file": "403-KH2002.yaml",
+      "name": "KH2002",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/KH2002_★★★★★/01_立绘展示/默认立绘/Pic_KH2002_HD.png"
+    },
+    {
+      "file": "408-M82.yaml",
+      "name": "M82",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/M82_★★★★/01_立绘展示/默认立绘/Pic_M82_HD.png"
+    },
+    {
+      "file": "409-MDR.yaml",
+      "name": "MDR",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/MDR_★★★★★/01_立绘展示/默认立绘/Pic_MDR_HD.png"
+    },
+    {
+      "file": "410-MSBS.yaml",
+      "name": "MSBS",
+      "img": null
+    },
+    {
+      "file": "411-Mk.18.yaml",
+      "name": "Mk.18",
+      "img": null
+    },
+    {
+      "file": "412-Model L.yaml",
+      "name": "Model L",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/Model L_★★★/01_立绘展示/默认立绘/Pic_CETME556_HD.png"
+    },
+    {
+      "file": "414-OTs-14.yaml",
+      "name": "OTs-14",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/OTs-14_★★★★★/01_立绘展示/默认立绘/Pic_OTs14_HD.png"
+    },
+    {
+      "file": "415-QBZ-191.yaml",
+      "name": "QBZ-191",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/QBZ-191_★★★★★/01_立绘展示/默认立绘/Pic_QBZ191_HD.png"
+    },
+    {
+      "file": "416-R5.yaml",
+      "name": "R5",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/R5_★★★★★/01_立绘展示/默认立绘/Pic_R5RGP_HD.png"
+    },
+    {
+      "file": "417-RFB.yaml",
+      "name": "RFB",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/RFB_★★★★★/01_立绘展示/默认立绘/Pic_RFB_HD.png"
+    },
+    {
+      "file": "418-S-ACR.yaml",
+      "name": "S-ACR",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/S-ACR_★★★★★/01_立绘展示/默认立绘/Pic_SACR_HD.png"
+    },
+    {
+      "file": "419-SAR-21.yaml",
+      "name": "SAR-21",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/SAR-21_★★★★/01_立绘展示/默认立绘/Pic_SAR21_HD.png"
+    },
+    {
+      "file": "420-SCAR-L.yaml",
+      "name": "SCAR-L",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/SCAR-L_★★★★★/01_立绘展示/默认立绘/Pic_SCARL_HD.png"
+    },
+    {
+      "file": "421-SCR.yaml",
+      "name": "SCR",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/SCR_★★★★★/01_立绘展示/默认立绘/Pic_SCR_HD.png"
+    },
+    {
+      "file": "422-SIG M400.yaml",
+      "name": "SIG M400",
+      "img": null
+    },
+    {
+      "file": "423-SIG MCX.yaml",
+      "name": "SIG MCX",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/SIG MCX_★★★★★/01_立绘展示/默认立绘/Pic_SIGMCX_HD.png"
+    },
+    {
+      "file": "425-SIG-556.yaml",
+      "name": "SIG-556",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/SIG-556_★★★★★/01_立绘展示/默认立绘/Pic_SIG556_HD.png"
+    },
+    {
+      "file": "427-StG-940.yaml",
+      "name": "StG-940",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/StG-940_★★★/01_立绘展示/默认立绘/Pic_stg940_HD.png"
+    },
+    {
+      "file": "429-T65.yaml",
+      "name": "T65",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/T65_★★★/01_立绘展示/默认立绘/Pic_T65_HD.png"
+    },
+    {
+      "file": "430-T91.yaml",
+      "name": "T91",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/T91_★★★★★/01_立绘展示/默认立绘/Pic_T91_HD.png"
+    },
+    {
+      "file": "432-TKB-408.yaml",
+      "name": "TKB-408",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/TKB-408_★★★★★/01_立绘展示/默认立绘/Pic_TKB408_HD.png"
+    },
+    {
+      "file": "433-VHS.yaml",
+      "name": "VHS",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/VHS_★★★★★/01_立绘展示/默认立绘/Pic_VHS_HD.png"
+    },
+    {
+      "file": "434-VRB.yaml",
+      "name": "VRB",
+      "img": null
+    },
+    {
+      "file": "435-Vepr.yaml",
+      "name": "Vepr",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/Vepr_★★★/01_立绘展示/默认立绘/Pic_VEPR_HD.png"
+    },
+    {
+      "file": "436-XCR.yaml",
+      "name": "XCR",
+      "img": null
+    },
+    {
+      "file": "437-XM8.yaml",
+      "name": "XM8",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/XM8_★★★★/01_立绘展示/默认立绘/Pic_XM8_HD.png"
+    },
+    {
+      "file": "438-Zas M21.yaml",
+      "name": "Zas M21",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/Zas M21_★★★★★/01_立绘展示/默认立绘/Pic_ZastavaM21_HD.png"
+    },
+    {
+      "file": "439-利贝罗勒.yaml",
+      "name": "利贝罗勒",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/利贝罗勒_★★★★/01_立绘展示/默认立绘/Pic_Ribeyrolles_HD.png"
+    },
+    {
+      "file": "441-安洁莉卡.yaml",
+      "name": "安洁莉卡",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/安洁莉卡_★/01_立绘展示/默认立绘/Pic_Angelica_HD.png"
+    },
+    {
+      "file": "442-无量塔姬子.yaml",
+      "name": "无量塔姬子",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/无量塔姬子_★/01_立绘展示/默认立绘/Pic_Himeko_HD.png"
+    },
+    {
+      "file": "443-水野爱.yaml",
+      "name": "水野爱",
+      "img": null
+    },
+    {
+      "file": "444-江崎普林.yaml",
+      "name": "江崎普林",
+      "img": null
+    },
+    {
+      "file": "445-特工416.yaml",
+      "name": "特工416",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/特工416_★/01_立绘展示/默认立绘/Pic_HK416Agent_HD.png"
+    },
+    {
+      "file": "446-绀野纯子.yaml",
+      "name": "绀野纯子",
+      "img": null
+    },
+    {
+      "file": "447-美杜莎.yaml",
+      "name": "美杜莎",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/美杜莎_★/01_立绘展示/默认立绘/Pic_Medusa_HD.png"
+    },
+    {
+      "file": "448-英萨斯.yaml",
+      "name": "英萨斯",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/英萨斯_★★★/01_立绘展示/默认立绘/Pic_INSAS_HD.png"
+    },
+    {
+      "file": "449-菲德洛夫.yaml",
+      "name": "菲德洛夫",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/菲德洛夫_★★★★/01_立绘展示/默认立绘/Pic_Fedorov_HD.png"
+    },
+    {
+      "file": "450-贝奥武夫.yaml",
+      "name": "贝奥武夫",
+      "img": null
+    },
+    {
+      "file": "451-马盖尔.yaml",
+      "name": "马盖尔",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/04_AR_突击步枪/马盖尔_★★★/01_立绘展示/默认立绘/Pic_Magal_HD.png"
+    },
+    {
+      "file": "452-62式.yaml",
+      "name": "62式",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/62式_★★★/01_立绘展示/默认立绘/Pic_Type62_HD.png"
+    },
+    {
+      "file": "453-80式.yaml",
+      "name": "80式",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/80式_★★★★/01_立绘展示/默认立绘/Pic_80type_HD.png"
+    },
+    {
+      "file": "454-88式.yaml",
+      "name": "88式",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/88式_★★★★★/01_立绘展示/默认立绘/Pic_Type88_HD.png"
+    },
+    {
+      "file": "456-AEK-999.yaml",
+      "name": "AEK-999",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/AEK-999_★★★★/01_立绘展示/默认立绘/Pic_AEK999_HD.png"
+    },
+    {
+      "file": "457-CAR.yaml",
+      "name": "CAR",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/CAR_★★★/01_立绘展示/默认立绘/Pic_CAR_HD.png"
+    },
+    {
+      "file": "460-FM24.yaml",
+      "name": "FM24",
+      "img": null
+    },
+    {
+      "file": "463-K3.yaml",
+      "name": "K3",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/K3_★★★/01_立绘展示/默认立绘/Pic_K3_HD.png"
+    },
+    {
+      "file": "464-Kord.yaml",
+      "name": "Kord",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/Kord_★★★★★/01_立绘展示/默认立绘/Pic_Kord_HD.png"
+    },
+    {
+      "file": "465-LAMG.yaml",
+      "name": "LAMG",
+      "img": null
+    },
+    {
+      "file": "466-LS26.yaml",
+      "name": "LS26",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/LS26_★★★★/01_立绘展示/默认立绘/Pic_LS26_HD.png"
+    },
+    {
+      "file": "468-M1895 CB.yaml",
+      "name": "M1895 CB",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/M1895 CB_★★★★/01_立绘展示/默认立绘/Pic_M1895MG_HD.png"
+    },
+    {
+      "file": "470-M1919A4.yaml",
+      "name": "M1919A4",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/M1919A4_★★★/01_立绘展示/默认立绘/Pic_M1919A4_HD.png"
+    },
+    {
+      "file": "471-M240L.yaml",
+      "name": "M240L",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/M240L_★★★★★/01_立绘展示/默认立绘/Pic_M240L_HD.png"
+    },
+    {
+      "file": "472-M249 SAW.yaml",
+      "name": "M249 SAW",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/M249 SAW_★★★/01_立绘展示/默认立绘/Pic_M249SAW_HD.png"
+    },
+    {
+      "file": "473-M2HB.yaml",
+      "name": "M2HB",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/M2HB_★★★/01_立绘展示/默认立绘/Pic_M2HB_HD.png"
+    },
+    {
+      "file": "474-M60.yaml",
+      "name": "M60",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/M60_★★★★/01_立绘展示/默认立绘/Pic_M60_HD.png"
+    },
+    {
+      "file": "475-MG15.yaml",
+      "name": "MG15",
+      "img": null
+    },
+    {
+      "file": "476-MG338.yaml",
+      "name": "MG338",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/MG338_★★★★★/01_立绘展示/默认立绘/Pic_MG338_HD.png"
+    },
+    {
+      "file": "478-MG36.yaml",
+      "name": "MG36",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/MG36_★★★★★/01_立绘展示/默认立绘/Pic_MG36_HD.png"
+    },
+    {
+      "file": "480-MG42.yaml",
+      "name": "MG42",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/MG42_★★★/01_立绘展示/默认立绘/Pic_MG42_HD.png"
+    },
+    {
+      "file": "482-MG5.yaml",
+      "name": "MG5",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/MG5_★★★★★/01_立绘展示/默认立绘/Pic_MG5_HD.png"
+    },
+    {
+      "file": "483-Mk46.yaml",
+      "name": "Mk46",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/Mk46_★★★★/01_立绘展示/默认立绘/Pic_Mk46_HD.png"
+    },
+    {
+      "file": "484-Mk48.yaml",
+      "name": "Mk48",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/Mk48_★★★★/01_立绘展示/默认立绘/Pic_Mk48_HD.png"
+    },
+    {
+      "file": "485-PKP.yaml",
+      "name": "PKP",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/PKP_★★★★★/01_立绘展示/默认立绘/Pic_PKP_HD.png"
+    },
+    {
+      "file": "486-PK.yaml",
+      "name": "PK",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/PK_★★★★/01_立绘展示/默认立绘/Pic_PK_HD.png"
+    },
+    {
+      "file": "487-PM1910.yaml",
+      "name": "PM1910",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/PM1910_★★★★/01_立绘展示/默认立绘/Pic_PM1910_HD.png"
+    },
+    {
+      "file": "488-RPD.yaml",
+      "name": "RPD",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/RPD_★★★/01_立绘展示/默认立绘/Pic_RPD_HD.png"
+    },
+    {
+      "file": "490-RPK-203.yaml",
+      "name": "RPK-203",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/RPK-203_★★★★★/01_立绘展示/默认立绘/Pic_RPK203_HD.png"
+    },
+    {
+      "file": "491-UKM-2000.yaml",
+      "name": "UKM-2000",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/UKM-2000_★★★★/01_立绘展示/默认立绘/Pic_UKM2000_HD.png"
+    },
+    {
+      "file": "492-XM556.yaml",
+      "name": "XM556",
+      "img": null
+    },
+    {
+      "file": "493-ZB-26.yaml",
+      "name": "ZB-26",
+      "img": null
+    },
+    {
+      "file": "495-刘易斯.yaml",
+      "name": "刘易斯",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/刘易斯_★★★★★/01_立绘展示/默认立绘/Pic_Lewis_HD.png"
+    },
+    {
+      "file": "496-夕雾.yaml",
+      "name": "夕雾",
+      "img": null
+    },
+    {
+      "file": "497-布伦.yaml",
+      "name": "布伦",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/布伦_★★★/01_立绘展示/默认立绘/Pic_BrenMK_HD.png"
+    },
+    {
+      "file": "498-库拉耶丝.yaml",
+      "name": "库拉耶丝",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/库拉耶丝_★/01_立绘展示/默认立绘/Pic_Claes_HD.png"
+    },
+    {
+      "file": "499-水金铃鹿.yaml",
+      "name": "水金铃鹿",
+      "img": null
+    },
+    {
+      "file": "500-绍沙.yaml",
+      "name": "绍沙",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/绍沙_★★★★/01_立绘展示/默认立绘/Pic_ChauchatM1915_HD.png"
+    },
+    {
+      "file": "501-花园百合铃.yaml",
+      "name": "花园百合铃",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/花园百合铃_★/01_立绘展示/默认立绘/Pic_Yurine_HD.png"
+    },
+    {
+      "file": "502-阿尔玛·阿玛斯.yaml",
+      "name": "阿尔玛·阿玛斯",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/阿尔玛·阿玛斯_★/01_立绘展示/默认立绘/Pic_Alma_HD.png"
+    },
+    {
+      "file": "503-阿梅利.yaml",
+      "name": "阿梅利",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/05_MG_机枪/阿梅利_★★★★/01_立绘展示/默认立绘/Pic_Ameli_HD.png"
+    },
+    {
+      "file": "504-97式霰.yaml",
+      "name": "97式霰",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/97式霰_★★★★/01_立绘展示/默认立绘/Pic_97typeS_HD.png"
+    },
+    {
+      "file": "506-CAWS.yaml",
+      "name": "CAWS",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/CAWS_★★★★★/01_立绘展示/默认立绘/Pic_HKCAWS_HD.png"
+    },
+    {
+      "file": "507-CPS-12.yaml",
+      "name": "CPS-12",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/CPS-12_★★★/01_立绘展示/默认立绘/Pic_Six12_HD.png"
+    },
+    {
+      "file": "509-FO-12.yaml",
+      "name": "FO-12",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/FO-12_★★★★★/01_立绘展示/默认立绘/Pic_FO12_HD.png"
+    },
+    {
+      "file": "510-FP-6.yaml",
+      "name": "FP-6",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/FP-6_★★★★★/01_立绘展示/默认立绘/Pic_FP6_HD.png"
+    },
+    {
+      "file": "511-HK512.yaml",
+      "name": "HK512",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/HK512_★★★★/01_立绘展示/默认立绘/Pic_HK512_HD.png"
+    },
+    {
+      "file": "512-KS-23.yaml",
+      "name": "KS-23",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/KS-23_★★★/01_立绘展示/默认立绘/Pic_KS23_HD.png"
+    },
+    {
+      "file": "514-LTLX7000.yaml",
+      "name": "LTLX7000",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/LTLX7000_★★★★★/01_立绘展示/默认立绘/Pic_LTLX7000_HD.png"
+    },
+    {
+      "file": "515-M1014.yaml",
+      "name": "M1014",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/M1014_★★★★/01_立绘展示/默认立绘/Pic_M1014_HD.png"
+    },
+    {
+      "file": "517-M1897.yaml",
+      "name": "M1897",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/M1897_★★★/01_立绘展示/默认立绘/Pic_M1897_HD.png"
+    },
+    {
+      "file": "518-M26-MASS.yaml",
+      "name": "M26-MASS",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/M26-MASS_★★★★★/01_立绘展示/默认立绘/Pic_M26MASS_HD.png"
+    },
+    {
+      "file": "519-M37.yaml",
+      "name": "M37",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/M37_★★★★/01_立绘展示/默认立绘/Pic_Ithaca37_HD.png"
+    },
+    {
+      "file": "520-M500.yaml",
+      "name": "M500",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/M500_★★★/01_立绘展示/默认立绘/Pic_M500_HD.png"
+    },
+    {
+      "file": "521-M590.yaml",
+      "name": "M590",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/M590_★★★★/01_立绘展示/默认立绘/Pic_M590_HD.png"
+    },
+    {
+      "file": "522-M6 ASW.yaml",
+      "name": "M6 ASW",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/M6 ASW_★★★★★/01_立绘展示/默认立绘/Pic_M6ASW_HD.png"
+    },
+    {
+      "file": "524-MAG-7.yaml",
+      "name": "MAG-7",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/MAG-7_★★★★/01_立绘展示/默认立绘/Pic_MAG7_HD.png"
+    },
+    {
+      "file": "525-MK3A1.yaml",
+      "name": "MK3A1",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/MK3A1_★★★★★/01_立绘展示/默认立绘/Pic_MK3A1_HD.png"
+    },
+    {
+      "file": "526-NS2000.yaml",
+      "name": "NS2000",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/NS2000_★★★/01_立绘展示/默认立绘/Pic_NS2000_HD.png"
+    },
+    {
+      "file": "527-RMB-93.yaml",
+      "name": "RMB-93",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/RMB-93_★★★/01_立绘展示/默认立绘/Pic_RMB93_HD.png"
+    },
+    {
+      "file": "530-SPAS-15.yaml",
+      "name": "SPAS-15",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/SPAS-15_★★★★★/01_立绘展示/默认立绘/Pic_SPAS15_HD.png"
+    },
+    {
+      "file": "531-TPS.yaml",
+      "name": "TPS",
+      "img": null
+    },
+    {
+      "file": "532-TS12.yaml",
+      "name": "TS12",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/TS12_★★★/01_立绘展示/默认立绘/Pic_TavorTS12_HD.png"
+    },
+    {
+      "file": "533-USAS-12.yaml",
+      "name": "USAS-12",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/USAS-12_★★★★/01_立绘展示/默认立绘/Pic_USAS12_HD.png"
+    },
+    {
+      "file": "534-UTS-15.yaml",
+      "name": "UTS-15",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/UTS-15_★★★★/01_立绘展示/默认立绘/Pic_UTS15_HD.png"
+    },
+    {
+      "file": "535-V-PM5.yaml",
+      "name": "V-PM5",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/V-PM5_★★★★/01_立绘展示/默认立绘/Pic_VPM5_HD.png"
+    },
+    {
+      "file": "536-二阶堂咲.yaml",
+      "name": "二阶堂咲",
+      "img": null
+    },
+    {
+      "file": "537-史蒂文斯520.yaml",
+      "name": "史蒂文斯520",
+      "img": null
+    },
+    {
+      "file": "538-史蒂文斯620.yaml",
+      "name": "史蒂文斯620",
+      "img": null
+    },
+    {
+      "file": "540-崔耶拉.yaml",
+      "name": "崔耶拉",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/崔耶拉_★/01_立绘展示/默认立绘/Pic_Triela_HD.png"
+    },
+    {
+      "file": "541-希儿.yaml",
+      "name": "希儿",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/希儿_★/01_立绘展示/默认立绘/Pic_Seele_HD.png"
+    },
+    {
+      "file": "542-新星.yaml",
+      "name": "新星",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/新星_★★★★/01_立绘展示/默认立绘/Pic_Nova_HD.png"
+    },
+    {
+      "file": "543-米诺斯.yaml",
+      "name": "米诺斯",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/米诺斯_★/01_立绘展示/默认立绘/Pic_Minosu_HD.png"
+    },
+    {
+      "file": "544-艾尔菲尔特.yaml",
+      "name": "艾尔菲尔特",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/艾尔菲尔特_★/01_立绘展示/默认立绘/Pic_GG_elfeldt_HD.png"
+    },
+    {
+      "file": "545-解放者.yaml",
+      "name": "解放者",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/解放者_★★★★/01_立绘展示/默认立绘/Pic_Liberator_HD.png"
+    },
+    {
+      "file": "547-达娜·赞恩.yaml",
+      "name": "达娜·赞恩",
+      "img": null
+    },
+    {
+      "file": "548-防卫者.yaml",
+      "name": "防卫者",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/防卫者_★★★★/01_立绘展示/默认立绘/Pic_ColtDefender_HD.png"
+    },
+    {
+      "file": "549-高标10型.yaml",
+      "name": "高标10型",
+      "img": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data/06_SG_霰弹枪/高标10型_★★★/01_立绘展示/默认立绘/Pic_HSM10_HD.png"
+    },
+    {
+      "file": "550-齐亚帕三重冕.yaml",
+      "name": "齐亚帕三重冕",
+      "img": null
+    }
+  ]
+}

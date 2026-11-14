@@ -1,0 +1,104 @@
+uid: sheet_Affinity
+name: 好感进度表
+sourceData:
+  note: |-
+    记录玩家与核心女同事的好感进度。一行一个角色。
+    - 列0: 角色名 - 业务主键，对应重要角色表姓名。
+    - 列1: 好感 - 0到100整数。初始同事关系建议15-25；仅在正文出现有效互动后变化。
+    - 列2: 最近互动 - ≤40字，客观写最近一次有效互动（约饭、吐槽、帮忙、私下聊天等）。
+    - 列3: 备注 - 可空；记录需要长期记住的私密/约定信息（如去过安琪家见过抽屉物品），无则空。
+
+    变化口径：
+    - 普通同事寒暄：±0~2
+    - 有效私下交流/约饭/帮忙：+3~8
+    - 明显冲突/越界被拒：-5~15
+    - 单轮涨幅一般不超过15；不要无互动空涨。
+    已婚角色（亦勤、丁丁）好感可升，但不自动改写婚姻事实。
+    黑深渊进度请写「堕落服从表」，不要把强迫/凌辱强度塞进好感数字里。
+  initNode: |-
+    初始化为尹安琪、陈亦勤、丁丁、婉婷、杨新亮各一行；婉婷好感默认35（父女底）；杨新亮默认18（跨部门尚未深交）。
+    SQL示例: INSERT INTO affinity (row_id, char_name, affection, last_interaction, note) VALUES (1, '尹安琪', 20, '尚未深交', '');
+    SQL示例: INSERT INTO affinity (row_id, char_name, affection, last_interaction, note) VALUES (4, '婉婷', 35, '父女日常', '亲生女儿·22岁成年');
+  deleteNode: 禁止删除。
+  updateNode: |-
+    本轮与该角色有有效互动时更新好感、最近互动；出现需长期记住的私密信息时写入备注。
+    SQL示例: UPDATE affinity SET affection = 28, last_interaction = '茶水间短暂吐槽开会', note = COALESCE(note, '') WHERE char_name = '尹安琪';
+  insertNode: |-
+    仅当新的长期互动女角色进入核心线且重要角色表已有档案时添加。
+    SQL示例: INSERT INTO affinity (row_id, char_name, affection, last_interaction, note) VALUES ((SELECT COALESCE(MAX(row_id),0)+1 FROM affinity), '新角色', 15, '初次认识', '');
+  ddl: |-
+    CREATE TABLE affinity ( -- 好感进度表
+      row_id INTEGER PRIMARY KEY, -- 行号
+      char_name TEXT NOT NULL UNIQUE, -- 角色名
+      affection INTEGER NOT NULL DEFAULT 20 CHECK(affection >= 0 AND affection <= 100), -- 好感
+      last_interaction TEXT NOT NULL, -- 最近互动
+      note TEXT -- 备注
+    );
+content:
+  - - row_id
+    - 角色名
+    - 好感
+    - 最近互动
+    - 备注
+  - - 1
+    - 尹安琪
+    - 20
+    - 尚未深交
+    - ""
+  - - 2
+    - 陈亦勤
+    - 20
+    - 尚未深交
+    - ""
+  - - 3
+    - 丁丁
+    - 20
+    - 尚未深交
+    - ""
+  - - 4
+    - 婉婷
+    - 35
+    - 父女日常
+    - 亲生女儿·22岁成年
+  - - 5
+    - 杨新亮
+    - 18
+    - 尚未深交
+    - 跨部门平台后端
+updateConfig:
+  uiSentinel: -1
+  contextDepth: 4
+  updateFrequency: 2
+  batchSize: 3
+  skipFloors: -1
+  groupId: 2
+exportConfig:
+  enabled: false
+  splitByRow: false
+  entryName: 好感进度表
+  entryType: constant
+  keywords: ""
+  preventRecursion: true
+  injectionTemplate: ""
+  extraIndexEnabled: false
+  extraIndexEntryName: 好感进度表-索引
+  extraIndexColumns: []
+  extraIndexColumnModes: {}
+  extraIndexInjectionTemplate: ""
+  entryPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 10020
+  extraIndexPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 10030
+  fixedEntryPlacement:
+    position: before_char
+    depth: 2
+    order: 99985
+  fixedIndexPlacement:
+    position: before_char
+    depth: 2
+    order: 99986
+orderNo: 3

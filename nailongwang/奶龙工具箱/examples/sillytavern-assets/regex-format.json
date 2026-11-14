@@ -1,0 +1,17 @@
+{
+  "id": "00000000-0000-4000-8000-000000000010",
+  "scriptName": "Regex Script Name",
+  "findRegex": "/pattern/gi",
+  "replaceString": "replacement placeholder",
+  "trimStrings": [],
+  "placement": [
+    1
+  ],
+  "disabled": false,
+  "markdownOnly": true,
+  "promptOnly": false,
+  "runOnEdit": true,
+  "substituteRegex": 0,
+  "minDepth": null,
+  "maxDepth": null
+}

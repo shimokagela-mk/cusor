@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Card Plan",
+  "type": "object",
+  "properties": {
+    "name": { "type": "string" },
+    "description": { "type": "string" },
+    "personality": { "type": "string" },
+    "scenario": { "type": "string" },
+    "first_mes": { "type": "string" },
+    "creator": { "type": "string" },
+    "character_version": { "type": "string" }
+  },
+  "required": ["name"]
+}

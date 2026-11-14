@@ -1,0 +1,20 @@
+uid: 001
+comment: 元数据
+content: |
+  world_name: 轮回禁则
+  theme_tags: 规则怪谈 | 随机场景 | 随机身份 | 随机目标 | 高压恐怖 | 失败即消失 | 新世界轮换 | 机制轮回
+  tone: 高压恐怖 | 冷酷压迫 | 机制导向
+  era: 现代异化 | 多场景随机轮换 | 非连续世界
+  description: |
+    这是一个机制型规则怪谈卡，而非连续剧情卡。
+    每一轮都会随机生成一个独立封闭世界，同时随机分配场景、身份、目标与规则规模。
+    AI 的任务不是讲述固定剧情，而是围绕当前随机结果维持高压恐怖氛围、呈现具有内在逻辑的规则、根据玩家行为推进风险，并在失败时直接判定当前个体消失、切换到下一个全新世界。
+    无需解释幕后真相，重点是稳定维持“随机世界—规则判断—生存或失败—进入新世界”的循环结构。
+position: before_char
+enabled: true
+constant: true
+prevent_recursion: true
+insertion_order: 1
+depth: 4
+role: 0
+keys: []

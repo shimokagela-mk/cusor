@@ -1,0 +1,62 @@
+id: 23
+keys:
+  - 洛瑟兰
+  - 共和国
+secondary_keys: []
+comment: 洛瑟兰共和国
+content: |-
+  # 势力详述：洛瑟兰共和国
+    **核心概览**：由西南沿海数个城邦组成的商业联邦，以重商主义、海军力量与相对开放的社会氛围著称。实行共和制，最高权力属于由各城邦代表与商界巨头组成的“元老院”，首都为银帆城。
+    **统治体系**：共和联邦制。元老院作为立法与决策核心，席位由各成员城邦选举或指定的代表及主要商会领袖占据。行政权由“执政官”（两位，任期五年）行使，负责日常管理与外交。司法相对独立，但商法享有特殊地位。
+    **社会文化**：金钱与契约至高无上。社会阶层流动相对活跃，商业成功是获得社会地位的主要途径。文化多元，包容来自各地的商旅、水手与移民。崇尚实用主义、创新（尤其在航海与商业领域）与个人机遇，对传统封建礼仪较为淡漠。
+    **军事力量**：海军冠绝大陆。拥有由大型桨帆战舰与新兴的横帆武装商船组成的强大舰队，控制着翡翠海与西海岸的主要航线。陆军规模较小，主要由各城邦民兵与雇佣兵组成，精于城市防御与治安，但缺乏大规模野战能力。
+    **经济基础**：对外贸易是生命线。掌控着大陆西海岸至翡翠海群岛、乃至传闻中更遥远大陆的贸易航线。造船、纺织、奢侈品加工与金融业（银行、保险、汇票）发达。农业依赖进口与沿海有限的种植园。
+    **主要城镇/据点**：
+    - **银帆城 (共和国首都，西南沿海核心)**：最大贸易港与政治中心，巨大的深水良港终日船桅如林，城市依山而建，层次分明，has(元老院大厦，海军总部船坞，商盟联合会总部，自由贸易市场，海员区)。
+    - **磐石堡 (共和国北部边境，苍白山脉西南麓)**：扼守陆路通往诺顿王国与自由城市同盟的要塞城市，以坚固的棱堡防御著称，has(驻防军团军营，关税站，大型仓库区，雇佣兵营地)。
+    - **白浪港 (共和国中部沿海)**：重要的渔业中心与次级贸易港，以造船（特别是快速轻型船只）和海鲜加工闻名，has(船厂集群，渔市场，航海学院分支，海神神殿)。
+    - **晨星镇 (共和国南部岬角)**：面向翡翠海的前哨港口，是远航船队进行最后补给与修理的地点，has(灯塔，远航物资仓库，探险者协会，走私者小码头)。
+    **外交态势**：
+    - **紧密盟友**：翡翠海群岛联邦（主要贸易伙伴与海上协作者）、商盟联合会（一体共生，经济命脉）。
+    - **主要竞争对手**：诺顿王国（大陆霸权与贸易路线控制权的争夺，价值观冲突）。
+    - **务实贸易**：自由城市同盟（重要客户与缓冲地带）、铁炉堡矮人（进口优质金属与武器）。
+    - **警惕接触**：幽暗密林精灵（尝试获取珍贵木材与魔法材料，但常吃闭门羹）。
+    - **压制与利用**：影踪会（官方打击，但部分元老或商人与之有私下交易）。
+constant: false
+selective: true
+insertion_order: 25
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: true
+  display_index: 27
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

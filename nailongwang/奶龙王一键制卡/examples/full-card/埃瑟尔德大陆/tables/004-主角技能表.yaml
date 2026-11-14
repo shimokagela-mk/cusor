@@ -1,0 +1,83 @@
+uid: sheet_lEARaBa8
+name: 主角技能表
+sourceData:
+  note: |-
+    记录主角获得的所有技能项目。一行代表一个技能，技能名称必须唯一。
+    - 列0: 技能名称 - 技能的名称。
+    - 列1: 技能类型 - 推荐填写被动、主动、触发之一；特殊技能可写更具体分类。
+    - 列2: 技能等级 - 当前技能等级，通常从1开始；特殊剧情技能可突破常规上限但需在效果描述中说明。
+    - 列3: 效果描述 - 当前等级下的具体效果说明。
+    - 列4: 消耗类型 - 推荐填写体力、法力、生命、材料、冷却、无等；没有消耗填无。
+    - 列5: 消耗数值 - 使用一次消耗的资源量，没有消耗填0。
+    - 列6: 当前熟练度 - 推荐格式：当前熟练度/升至下级所需熟练度，例如 20/50。
+
+    更新规则：战斗、训练、学习、剧情领悟后必须检查技能熟练度、等级、效果描述和消耗是否变化。技能升级时更新等级、效果描述和熟练度。
+  initNode: 游戏初始化时，根据主角设定添加初始技能。
+  deleteNode: |-
+    技能因剧情被永久剥夺、遗忘、替换且不再可用时删除。临时封印、冷却、沉默或无法使用不删除，应写入效果描述或熟练度状态。
+    SQL示例: DELETE FROM protagonist_skills WHERE skill_name = '已永久剥夺技能';
+  updateNode: |-
+    已有技能的熟练度、等级、效果、消耗或可用状态变化时更新。
+    SQL示例(熟练度增加): UPDATE protagonist_skills SET current_proficiency = '30/50' WHERE skill_name = '火球术';
+    SQL示例(升级): UPDATE protagonist_skills SET skill_level = skill_level + 1, effect_desc = '效果增强后的描述', current_proficiency = '0/100' WHERE skill_name = '火球术';
+    SQL示例(状态变化): UPDATE protagonist_skills SET effect_desc = '技能被临时封印，解除后恢复原效果' WHERE skill_name = '火球术';
+  insertNode: |-
+    主角获得新的技能、天赋、被动能力或可长期复用的战斗技巧时添加。
+    SQL示例: INSERT INTO protagonist_skills (row_id, skill_name, skill_type, skill_level, effect_desc, cost_type, cost_value, current_proficiency) VALUES ((SELECT COALESCE(MAX(row_id), 0)+1 FROM protagonist_skills), '火球术', '主动', 1, '发射一颗火球造成伤害', '法力', 15, '0/50');
+    SQL示例(被动): INSERT INTO protagonist_skills (row_id, skill_name, skill_type, skill_level, effect_desc, cost_type, cost_value, current_proficiency) VALUES ((SELECT COALESCE(MAX(row_id), 0)+1 FROM protagonist_skills), '夜视', '被动', 1, '在昏暗环境中保持清晰视野', '无', 0, '0/50');
+  ddl: |-
+    CREATE TABLE protagonist_skills ( -- 主角技能表
+      row_id INTEGER PRIMARY KEY, -- 行号
+      skill_name TEXT NOT NULL UNIQUE, -- 技能名称
+      skill_type TEXT NOT NULL, -- 技能类型
+      skill_level INTEGER NOT NULL DEFAULT 1, -- 技能等级
+      effect_desc TEXT NOT NULL, -- 效果描述
+      cost_type TEXT NOT NULL DEFAULT '无', -- 消耗类型
+      cost_value INTEGER NOT NULL DEFAULT 0, -- 消耗数值
+      current_proficiency TEXT NOT NULL DEFAULT '0/50' -- 当前熟练度
+    );
+content:
+  - - row_id
+    - 技能名称
+    - 技能类型
+    - 技能等级
+    - 效果描述
+    - 消耗类型
+    - 消耗数值
+    - 当前熟练度
+updateConfig:
+  uiSentinel: -1
+  contextDepth: -1
+  updateFrequency: -1
+  batchSize: -1
+  skipFloors: -1
+exportConfig:
+  enabled: false
+  splitByRow: false
+  entryName: 主角技能表
+  entryType: constant
+  keywords: ""
+  preventRecursion: true
+  injectionTemplate: ""
+  extraIndexEnabled: false
+  extraIndexEntryName: 主角技能表-索引
+  extraIndexColumns: []
+  extraIndexColumnModes: {}
+  extraIndexInjectionTemplate: ""
+  entryPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 10000
+  extraIndexPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 10010
+  fixedEntryPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 99990
+  fixedIndexPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 99991
+orderNo: 3

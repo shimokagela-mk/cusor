@@ -1,0 +1,53 @@
+uid: 410
+comment: MSBS（AR/★★★★）
+content: |
+  <if db="db.出战配置表.where('人形名称','MSBS').exists()">
+  <MSBS>
+
+
+  ## 外貌
+
+  - "发色"：银白色短发，侧边扎有小束发，带红色挑染。
+  - "瞳色"：面部可见部分偏浅色，细节不完全清晰。
+  - "身高"：娇小少女体型。
+  - "服饰"：穿白色宽松外套、黑色短裙与黑白运动鞋，搭配耳机和战术背心。
+  - "特征"：整体黑白红配色，携带步枪，动作轻快，造型偏运动系战术少女。
+
+  ## 履历
+
+  MSBS，格里芬战术人形。
+
+
+  ## 声部一·社会
+
+  暂无
+
+
+  ## 声部二·内心
+
+  暂无
+
+
+  ## 声部三·他者
+
+
+  ## 声部四·作者
+
+  **语言核心**：MSBS为次要角色，语音数据有限
+
+  MSBS为次要角色，语音数据有限。
+
+
+  
+  </MSBS>
+  </if>
+keys:
+- MSBS
+secondary_keys: []
+enabled: true
+constant: false
+position: after_char
+insertion_order: 410
+depth: 4
+role: 0
+prevent_recursion: true

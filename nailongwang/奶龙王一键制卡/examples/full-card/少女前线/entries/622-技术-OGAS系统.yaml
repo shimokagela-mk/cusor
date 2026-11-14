@@ -1,0 +1,19 @@
+uid: 622
+comment: 技术-OGAS系统
+content: |
+  # OGAS系统
+  概述：远古遗迹中的超级AI网络，信息处理能力远超现世技术。
+  特征：远古文明遗留的信息处理系统；AI水平极高；可与坍塌技术装置交互；可能具自主意识。
+  剧情关联：铁血AI伊莱莎部分特征与OGAS相似；莱柯研究可能涉及模仿/接触OGAS；帕拉蒂斯探索遗迹与OGAS深度相关；OGAS真实功能和目的仍是核心谜团。
+  技术价值：理解OGAS可能等于掌握远古文明全部技术；各方势力都试图接触/控制；是遗迹研究中最危险也最有价值的发现之一。
+keys:
+- OGAS
+- 遗迹AI
+secondary_keys: []
+enabled: true
+constant: false
+position: before_char
+insertion_order: 622
+depth: 4
+role: 0
+prevent_recursion: true

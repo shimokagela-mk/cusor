@@ -1,0 +1,31 @@
+{
+  "name": "最小剧情推进预设",
+  "promptGroup": [
+    {
+      "role": "system",
+      "content": "你是剧情推进助手。请根据最近剧情、角色状态和表格数据，输出下一阶段剧情推进建议。",
+      "enabled": true,
+      "mainSlot": "A"
+    },
+    {
+      "role": "user",
+      "content": "请总结当前局势，并给出下一步剧情推进。",
+      "enabled": true
+    }
+  ],
+  "finalSystemDirective": "只输出结构化剧情推进建议，不要写无关解释。",
+  "rateMain": 1,
+  "ratePersonal": 1,
+  "rateErotic": 0,
+  "rateCuckold": 0,
+  "extractTags": "",
+  "minLength": 0,
+  "contextTurnCount": 3,
+  "loopSettings": {
+    "quickReplyContent": "",
+    "loopTags": "",
+    "loopDelay": 5,
+    "loopTotalDuration": 0,
+    "maxRetries": 3
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "contracts": {
+    "root": "只放项目入口文件，不放业务角色卡、临时 JSON 或缓存文件",
+    "prompts": "流程提示词",
+    "docs": "知识资料",
+    "data": "机器可读索引与能力清单",
+    "schemas": "格式校验 schema",
+    "templates": "空白模板",
+    "examples": "完整范例",
+    "projects": "真实卡项目",
+    "output": "临时产物，可清理",
+    "projects/<卡名>": "当前工作项目",
+    "projects/<卡名>/notes": "需求、决策、待办记录",
+    "projects/<卡名>/unpacked": "修改卡拆包后的可编辑资产",
+    "projects/<卡名>/release": "回包或构建后的交付文件"
+  }
+}

@@ -1,0 +1,611 @@
+{
+  "$schema": "./sillytavern-extension-api.schema.json",
+  "name": "SillyTavern Extension Development API Knowledge Base",
+  "language": "zh-CN",
+  "updated_at": "2026-06-09",
+  "sources": [
+    "https://docs.sillytavern.app/for-contributors/writing-extensions/",
+    "https://docs.sillytavern.app/for-contributors/function-calling/",
+    "https://docs.sillytavern.app/usage/user-settings/uicustomization/",
+    "https://docs.sillytavern.app/usage/prompts/prompt-manager/",
+    "https://docs.sillytavern.app/extensions/regex/",
+    "sillyTavern酒馆项目架构详细说明.md"
+  ],
+  "source_audit": {
+    "checked_at": "2026-06-08",
+    "upstream_refs": [
+      "SillyTavern/SillyTavern-Docs:For_Contributors/Writing-Extensions.md",
+      "SillyTavern/SillyTavern-Docs:For_Contributors/Function-Calling.md"
+    ]
+  },
+  "scope_note": "本文件记录 SillyTavern 前端/扩展开发可调用接口和相关功能点：写扩展、替换/注入 UI 与主题、Prompt Manager/对话补全预设、Regex、Function Calling。不要放 JS-Slash-Runner 专属 API，也不要记录模型后端 API Connections 安装说明。",
+  "extension_runtime": {
+    "description": "SillyTavern UI extensions run in the browser context and can hook into ST events and APIs. They have broad access to the page, settings, DOM and frontend state.",
+    "entry_api": "SillyTavern.getContext()",
+    "basic_usage": [
+      "const context = SillyTavern.getContext();",
+      "const { eventSource, event_types } = SillyTavern.getContext();",
+      "const { Popup } = SillyTavern.getContext();"
+    ],
+    "security": [
+      "扩展运行在浏览器上下文，权限很高；只安装可信扩展。",
+      "扩展可以操作 DOM、读取/修改设置、监听事件、请求生成、注册函数工具。",
+      "写扩展时应避免在全局作用域泄露敏感数据。"
+    ]
+  },
+  "extension_manifest": {
+    "file": "manifest.json",
+    "description": "第三方扩展必须包含 manifest.json，声明入口 JS/CSS、版本、依赖、hooks 等。",
+    "fields": {
+      "display_name": "扩展显示名称",
+      "loading_order": "加载顺序，数字越小越早",
+      "requires": "硬依赖扩展列表",
+      "optional": "可选依赖扩展列表",
+      "dependencies": "其他依赖",
+      "js": "入口 JS 文件，例如 index.js",
+      "css": "样式文件，例如 style.css",
+      "author": "作者",
+      "version": "扩展版本",
+      "homePage": "项目主页",
+      "auto_update": "是否允许自动更新",
+      "minimum_client_version": "最低 SillyTavern 客户端版本",
+      "i18n": "国际化 JSON 文件映射",
+      "hooks": "install/update/delete/enable/disable/activate 等生命周期 hook"
+    },
+    "example": "{ \"display_name\": \"My Extension\", \"loading_order\": 1, \"js\": \"index.js\", \"css\": \"style.css\", \"author\": \"Your name\", \"version\": \"1.0.0\" }"
+  },
+  "extension_loading": {
+    "description": "SillyTavern 前端扩展通常通过 manifest.json 声明入口，再由扩展系统读取、排序、检查依赖并加载 JS/CSS。不同版本的内部加载实现可能变化，字段语义以当前 ST 文档和源码为准。",
+    "locations": [
+      { "kind": "user_extension", "path": "data/[user]/extensions/", "notes": "用户级扩展目录，常用于本地或用户安装的扩展。" },
+      { "kind": "global_third_party", "path": "public/scripts/extensions/third-party/", "notes": "全局第三方前端扩展位置，具体部署方式以当前 ST 版本为准。" },
+      { "kind": "built_in", "path": "public/scripts/extensions/", "notes": "内置扩展与前端扩展系统相关文件。" }
+    ],
+    "typical_flow": [
+      "扫描扩展目录并读取 manifest.json。",
+      "按 loading_order 等规则决定加载顺序。",
+      "检查 requires / optional 等依赖声明。",
+      "加载 css 和 js 入口文件。",
+      "扩展入口通过 SillyTavern.getContext() 接入事件、设置、生成、弹窗等能力。"
+    ],
+    "notes": [
+      "loading_order 只能解决加载顺序，不等同于依赖可用性保证；硬依赖应写入 requires。",
+      "扩展 CSS 应限制选择器作用域，避免污染 SillyTavern 全局 UI。",
+      "扩展路径和导入相对路径会因安装位置不同而变化，示例不应硬编码用户真实路径。"
+    ]
+  },
+  "extension_persistence": {
+    "description": "前端扩展常见持久化位置包括用户级扩展设置、角色级扩展数据和聊天级扩展数据。写入前应明确数据归属，避免污染角色卡、聊天或全局设置。",
+    "levels": [
+      {
+        "name": "extension_settings",
+        "scope": "用户/全局扩展设置",
+        "typical_use": "扩展开关、UI 偏好、默认参数。",
+        "risk": "可能跨角色和聊天生效，不应保存密钥或私密正文。"
+      },
+      {
+        "name": "character.data.extensions",
+        "scope": "角色级扩展数据",
+        "typical_use": "角色专属配置、角色附加状态。",
+        "risk": "可能随角色卡导出或迁移；写入前确认字段命名空间。"
+      },
+      {
+        "name": "chat_metadata.extensions",
+        "scope": "聊天级扩展数据",
+        "typical_use": "当前聊天状态、临时索引、会话标记。",
+        "risk": "会影响当前聊天文件；导出、分享聊天前应审查隐私内容。"
+      }
+    ],
+    "best_practices": [
+      "为扩展数据使用稳定命名空间，例如 extension_settings.my_extension。",
+      "保存用户或模型生成内容前先确认是否需要脱敏。",
+      "角色级数据可能进入角色卡资产，聊天级数据可能进入聊天导出。",
+      "复杂结构化状态优先集中在 JS 扩展中维护，不要散落在 STscript 变量和多个资产文件里。"
+    ]
+  },
+  "server_plugin_boundary": {
+    "description": "SillyTavern 服务端插件运行在 Node/Express 侧，客户端扩展运行在浏览器侧。奶龙工具箱当前主要覆盖原生前端扩展、JS-Slash-Runner 脚本和单文件资产，不默认生成或维护服务端插件。",
+    "client_extension": [
+      "运行在浏览器上下文。",
+      "通过 manifest.json 声明 js/css。",
+      "通过 SillyTavern.getContext() 使用前端事件、UI、生成、设置等能力。",
+      "适合 UI、交互、前端状态、轻量 API 调用。"
+    ],
+    "server_plugin": [
+      "运行在 SillyTavern Node.js 服务端。",
+      "可注册 Express Router/API 端点。",
+      "可访问服务端文件系统与用户目录，权限更高。",
+      "涉及鉴权、路径安全、文件读写和部署环境，超出工具箱默认单文件维护范围。"
+    ],
+    "routing_rule": "用户明确要求服务端插件、Express router、plugins/ 目录或 Node 侧文件访问时，应先确认是否扩大到服务端插件开发；否则默认按前端扩展/单文件资产处理。"
+  },
+  "native_button_entrypoints": {
+    "default": "quick_reply",
+    "selection_rule": "短命令、脚本触发、用户可见按钮、上下文按钮默认选择 Quick Reply；扩展设置和配置面板使用设置面板 DOM 挂载流程；魔法棒入口必须使用魔法棒列表 DOM 锚点接入。",
+    "entries": [
+      {
+        "id": "chat_options_menu",
+        "name_zh": "聊天选项菜单 / 聊天选项按钮",
+        "name_en": "Chat options menu / Chat options button",
+        "aliases": ["菜单", "三条杠图标", "左下菜单"],
+        "is_default": false,
+        "method": "UI 位置命名"
+      },
+      {
+        "id": "extras_wand",
+        "name_zh": "魔法棒图标按钮 / 扩展菜单按钮",
+        "name_en": "Extensions menu button",
+        "aliases": ["魔法棒", "Extensions menu"],
+        "is_default": false,
+        "method": "dom_anchor_extensions_menu",
+        "required_method": true,
+        "anchor_lookup_order": ["#extensionsMenu", "#extensions_menu", ".extensions_block .list-group"],
+        "item_classes": ["list-group-item"],
+        "item_tag": "a",
+        "icon_tag": "span",
+        "registration_steps": [
+          "从 window.top.document、window.parent.document、document 中取得包含魔法棒列表锚点的主页面 document。",
+          "按 #extensionsMenu、#extensions_menu、.extensions_block .list-group 顺序读取魔法棒列表锚点。",
+          "移除同 id 的旧菜单项。",
+          "创建 a.list-group-item 菜单项，设置 href 为 javascript:void(0)。",
+          "追加 span.fa-solid.<iconClass> 图标和文本标签。",
+          "绑定 click 事件并 append 到目标容器。"
+        ],
+        "example": "registerWandMenuItem({ id: 'example-wand-menu-item', label: '示例工具', iconClass: 'fa-comments', onClick: () => openExamplePanel() });"
+      },
+      {
+        "id": "extensions_panel",
+        "name_zh": "扩展面板",
+        "name_en": "Extensions panel",
+        "aliases": ["扩展程序", "扩展按钮", "扩展菜单"],
+        "is_default": false,
+        "stability": "settings_panel",
+        "method": "dom_settings_mount",
+        "mount_lookup_order": [
+          "#extensions_settings2",
+          "#extensions_settings",
+          "#third_party_extension_settings",
+          ".extensions_settings",
+          "#rm_extensions_block .inline-drawer-content"
+        ],
+        "panel_tag": "section",
+        "panel_id_pattern": "<plugin-id>-settings",
+        "panel_structure": [
+          "div.inline-drawer",
+          "div.inline-drawer-toggle.inline-drawer-header",
+          "div.inline-drawer-content"
+        ],
+        "retry_ms": 1800,
+        "registration_steps": [
+          "通过 getHostWindow() 取得主页面 window。",
+          "从主页面 document 按固定 selector 顺序查找设置面板挂载点。",
+          "未找到挂载点时清理旧 retry timer，并在 1800ms 后重试 ensureSettingsPanel。",
+          "创建 section#<plugin-id>-settings 面板。",
+          "渲染 inline-drawer、inline-drawer-toggle inline-drawer-header、inline-drawer-content 结构。",
+          "将面板 append 到挂载点并绑定面板事件。"
+        ],
+        "example": "ensureSettingsPanel() 使用 findSettingsMount() 定位挂载点，创建 section#example-extension-settings，renderSettingsPanel(panel) 写入 inline-drawer，再 mount.appendChild(panel)。"
+      },
+      {
+        "id": "quick_reply",
+        "name_zh": "快速回复",
+        "name_en": "Quick Reply",
+        "aliases": ["QR", "qr", "快速回复按钮入口"],
+        "is_default": true,
+        "stability": "native_extension_api",
+        "method": "globalThis.quickReplyApi"
+      }
+    ],
+    "wand_dom_anchor_template": {
+      "function_name": "registerWandMenuItem",
+      "main_document_lookup": ["window.top.document", "window.parent.document", "document"],
+      "container_lookup": ["#extensionsMenu", "#extensions_menu", ".extensions_block .list-group"],
+      "item_structure": ["a.list-group-item", "span.fa-solid.<iconClass>", "text label"]
+    }
+  },
+  "native_ui_surfaces": {
+    "purpose": "识别、隐藏、排序或管理 SillyTavern 已有原生 UI surface；新增可见按钮入口仍按 native_button_entrypoints.selection_rule 处理。",
+    "surfaces": [
+      {
+        "id": "chat_options_menu",
+        "name_zh": "左下菜单 / 聊天选项菜单",
+        "button_selector": "#options_button",
+        "common_item_selectors": [
+          "#option_toggle_AN",
+          "#option_toggle_CFG",
+          "#option_new_bookmark",
+          "#option_start_new_chat",
+          "#option_delete_mes",
+          "#option_regenerate",
+          "#option_continue"
+        ],
+        "management_use": "识别、隐藏、排序左下聊天选项中的原生动作。"
+      },
+      {
+        "id": "extras_wand",
+        "name_zh": "魔法棒",
+        "button_selector": "#extensionsMenuButton",
+        "container_selectors": ["#extensionsMenu"],
+        "item_match": ".list-group-item",
+        "label_selector": "span",
+        "management_use": "识别、隐藏、排序魔法棒列表中的原生和扩展菜单项。"
+      },
+      {
+        "id": "extensions_panel",
+        "name_zh": "扩展菜单 / 扩展面板",
+        "button_selector": "#extensions-settings-button",
+        "container_selectors": ["#extensions_settings", "#extensions_settings2"],
+        "item_header_selector": ".inline-drawer-header",
+        "label_selector": "b, [data-i18n]",
+        "known_excludes": ["#qr_container", "#agent_system_container", "#tauritavern_version_container"],
+        "management_use": "识别、隐藏、排序扩展设置抽屉中的原生和扩展设置项。"
+      },
+      {
+        "id": "top_navigation",
+        "name_zh": "顶部导航栏",
+        "button_selectors": [
+          "#ai-config-button",
+          "#sys-settings-button",
+          "#advanced-formatting-button",
+          "#WI-SP-button",
+          "#user-settings-button",
+          "#backgrounds-button",
+          "#extensions-settings-button",
+          "#persona-management-button",
+          "#rightNavHolder"
+        ],
+        "management_use": "识别顶部导航入口；通常用于隐藏或排序既有导航按钮。"
+      },
+      {
+        "id": "preset_panel",
+        "name_zh": "预设菜单",
+        "container_selectors": ["#range_block_openai", "#openai_settings"],
+        "groups": [
+          "上下文长度及备选回复",
+          "可调参数",
+          "提示词格式相关",
+          "复选框和下拉菜单",
+          "预设条目"
+        ],
+        "management_use": "按结构分组识别预设设置区域，用于清理或折叠既有设置项。"
+      }
+    ]
+  },
+  "native_menu_discovery": {
+    "purpose": "动态发现已有菜单项和扩展注入项，供隐藏、排序、恢复或诊断使用。",
+    "steps": [
+      "按目标 surface 的 container_selectors 扫描直接子元素。",
+      "缺少 id 的运行期节点可补临时 id，并用 #id 作为 selector。",
+      "魔法棒类列表按 .list-group-item 识别，优先从 span 读取标签。",
+      "扩展设置类抽屉按 .inline-drawer-header 识别，标题优先读取 b 或 [data-i18n]。",
+      "遇到 extension_container 包装层时扫描其直接子抽屉，避免多个独立抽屉被合并。",
+      "发现结果维护为 discoveryCache，保留旧缓存中的 column 信息。"
+    ],
+    "refresh_triggers": [
+      "eventSource.on(event_types.CHAT_CHANGED, scheduleAutoRescan)",
+      "MutationObserver 监听 #extensions_settings 与 #extensions_settings2 的 childList 变化",
+      "初始化后延迟 refreshDiscoveryCache，例如 3000ms 后重扫"
+    ]
+  },
+  "native_menu_reorder_guardrails": {
+    "purpose": "移动已有原生 DOM 时保持可恢复和可观察。",
+    "rules": [
+      "优先选择当前可见节点；同 selector 有重复 DOM 时选择可见副本。",
+      "先寻找所有目标节点的共同父容器，再移动该容器下的顶层 unit。",
+      "移动 DOM 期间设置 suppressObserver，避免 MutationObserver 被程序化移动触发。",
+      "重新渲染或停用自定义面板前，把已搬运节点放回 #extensions_settings / #extensions_settings2 等原生容器。",
+      "排序数据只保存 selector 顺序和必要 column 信息，避免保存完整 DOM 或业务正文。"
+    ]
+  },
+  "native_panel_intercept_pattern": {
+    "purpose": "高级菜单管理可接管扩展菜单按钮并重组已有扩展设置项。",
+    "toggle_selector": "#extensions-settings-button > .drawer-toggle",
+    "capture_click": true,
+    "native_sources": ["#extensions_settings", "#extensions_settings2"],
+    "z_index_sources": [
+      "#extensions-settings-button > .drawer-content",
+      "#rm_extensions_block",
+      "#extensions_settings"
+    ],
+    "panel_behavior": [
+      "创建自定义面板容器和列容器。",
+      "点击扩展菜单按钮时阻止原生 toggle，并切换自定义面板显示。",
+      "展示时同步 z-index，渲染时把原生设置项 append 到自定义列。",
+      "关闭时隐藏自定义面板；停用时把节点归还原生容器。"
+    ],
+    "boundary": "该模式用于菜单管理、隐藏、排序和重新分栏；普通扩展配置入口使用 dom_settings_mount。"
+  },
+  "core_apis": [
+    {
+      "name": "SillyTavern.getContext",
+      "category": "extension_core",
+      "signature": "function SillyTavern.getContext(): SillyTavernContext",
+      "description": "扩展开发入口。返回 SillyTavern 前端上下文对象，包含事件、生成、弹窗、宏、预设管理、工具注册等接口。",
+      "examples": [
+        "const context = SillyTavern.getContext();",
+        "const { eventSource, event_types } = SillyTavern.getContext();"
+      ]
+    },
+    {
+      "name": "eventSource / event_types",
+      "category": "events",
+      "signature": "const { eventSource, event_types } = SillyTavern.getContext();",
+      "description": "SillyTavern 前端事件总线和事件枚举。用于监听消息、聊天切换、应用初始化等事件。",
+      "examples": [
+        "eventSource.on(event_types.MESSAGE_RECEIVED, handleIncomingMessage);",
+        "eventSource.on(event_types.CHAT_CHANGED, () => reloadMyExtension());"
+      ],
+      "known_event_types": ["APP_INITIALIZED", "APP_READY", "MESSAGE_SENT", "MESSAGE_RECEIVED", "CHAT_CHANGED"]
+    },
+    {
+      "name": "generateQuietPrompt",
+      "category": "generation",
+      "signature": "import { generateQuietPrompt } from '../../../../script.js';",
+      "description": "静默生成/后台生成常用入口。适合扩展执行摘要、分类、后台分析等不直接作为聊天回复的任务。",
+      "examples": ["const result = await generateQuietPrompt('Generate a summary of the chat history.');"]
+    },
+    {
+      "name": "generateRaw",
+      "category": "generation",
+      "signature": "const { generateRaw } = SillyTavern.getContext();",
+      "description": "使用原始消息/提示词请求生成，适合扩展自定义 prompt 流程。",
+      "examples": ["const { generateRaw } = SillyTavern.getContext();"]
+    },
+    {
+      "name": "Popup",
+      "category": "ui",
+      "signature": "const { Popup } = SillyTavern.getContext();",
+      "description": "SillyTavern 弹窗 UI 工具。用于扩展设置、确认框、输入框等。",
+      "examples": ["const { Popup } = SillyTavern.getContext();"]
+    },
+    {
+      "name": "renderExtensionTemplateAsync",
+      "category": "ui",
+      "signature": "renderExtensionTemplateAsync(extensionPath: string, templateName: string, data?: object): Promise<string>",
+      "description": "渲染扩展模板 HTML。",
+      "examples": ["const html = await renderExtensionTemplateAsync('third-party/my-extension', 'settings', { title: 'My Extension' });"]
+    },
+    {
+      "name": "globalThis.quickReplyApi",
+      "category": "quick_reply",
+      "signature": "const qr = globalThis.quickReplyApi;",
+      "description": "SillyTavern 内置 Quick Reply 扩展暴露的原生 API。可创建和维护快速回复集合、按钮、执行 QR、启用全局/当前聊天 QR 集，以及配置上下文菜单。默认可见按钮入口优先使用 Quick Reply。",
+      "examples": [
+        "const qr = globalThis.quickReplyApi;",
+        "await qr.createSet('My Tools');",
+        "qr.createQuickReply('My Tools', '设置', { icon: 'fa-gear', showLabel: true, message: '/echo 打开设置', title: '打开设置面板' });",
+        "qr.addGlobalSet('My Tools', true);"
+      ],
+      "cautions": [
+        "使用前应检查 globalThis.quickReplyApi 是否存在，Quick Reply 扩展未加载时不可用。",
+        "创建或更新 Quick Reply 会修改用户/聊天的 QR 资产，需明确作用范围。",
+        "JS-Slash-Runner 的 getButtonEvent / getScriptButtons / replaceScriptButtons 属于脚本按钮入口。"
+      ],
+      "source": "SillyTavern/SillyTavern:public/scripts/extensions/quick-reply/index.js"
+    },
+    {
+      "name": "QuickReplyApi.createSet/updateSet/deleteSet",
+      "category": "quick_reply",
+      "signature": "createSet(name, props?) / updateSet(name, props?) / deleteSet(name)",
+      "description": "创建、更新或删除 Quick Reply 集合。props 可包含 disableSend、placeBeforeInput、injectInput。",
+      "source": "SillyTavern/SillyTavern:public/scripts/extensions/quick-reply/api/QuickReplyApi.js"
+    },
+    {
+      "name": "QuickReplyApi.createQuickReply/updateQuickReply/deleteQuickReply",
+      "category": "quick_reply",
+      "signature": "createQuickReply(setName, label, props?) / updateQuickReply(setName, label, props?) / deleteQuickReply(setName, label)",
+      "description": "创建、更新或删除 Quick Reply 按钮。props.message 可写普通文本、slash command 或 STscript；props.icon、showLabel、title、isHidden 和自动执行字段可控制按钮显示与触发。",
+      "source": "SillyTavern/SillyTavern:public/scripts/extensions/quick-reply/api/QuickReplyApi.js"
+    },
+    {
+      "name": "QuickReplyApi.executeQuickReply/executeQuickReplyByIndex",
+      "category": "quick_reply",
+      "signature": "executeQuickReply(setName, label, args?, options?) / executeQuickReplyByIndex(idx)",
+      "description": "执行已有 Quick Reply，并返回执行结果。label 可为按钮文本或数值 ID。",
+      "source": "SillyTavern/SillyTavern:public/scripts/extensions/quick-reply/api/QuickReplyApi.js"
+    },
+    {
+      "name": "QuickReplyApi.addGlobalSet/removeGlobalSet/addChatSet/removeChatSet",
+      "category": "quick_reply",
+      "signature": "addGlobalSet(name, isVisible?) / removeGlobalSet(name) / addChatSet(name, isVisible?) / removeChatSet(name)",
+      "description": "启用或移除全局/当前聊天的 Quick Reply 集合。addChatSet/removeChatSet 依赖当前聊天 quick reply 配置存在。",
+      "source": "SillyTavern/SillyTavern:public/scripts/extensions/quick-reply/api/QuickReplyApi.js"
+    },
+    {
+      "name": "QuickReplyApi.createContextItem/deleteContextItem/clearContextMenu",
+      "category": "quick_reply",
+      "signature": "createContextItem(setName, label, contextSetName, isChained?) / deleteContextItem(setName, label, contextSetName) / clearContextMenu(setName, label)",
+      "description": "为 Quick Reply 按钮配置上下文菜单，或移除/清空上下文菜单。contextSetName 指向另一个已有 Quick Reply 集合。",
+      "source": "SillyTavern/SillyTavern:public/scripts/extensions/quick-reply/api/QuickReplyApi.js"
+    },
+    {
+      "name": "DOMPurify",
+      "category": "security_ui",
+      "signature": "const { DOMPurify } = SillyTavern.libs;",
+      "description": "SillyTavern 暴露的 DOMPurify，用于清理 HTML，防止 XSS。扩展插入用户/模型内容到 DOM 前应使用。",
+      "examples": ["const { DOMPurify } = SillyTavern.libs;"]
+    },
+    {
+      "name": "macros.register",
+      "category": "macros",
+      "signature": "const { macros } = SillyTavern.getContext(); macros.register(name, definition);",
+      "description": "注册自定义宏。新宏系统推荐使用 macros.register()。",
+      "examples": ["macros.register('tomorrow', { replace: () => '...' });"]
+    },
+    {
+      "name": "getPresetManager",
+      "category": "preset_manager",
+      "signature": "const pm = getPresetManager();",
+      "description": "读取/写入 Chat Completion 预设扩展字段等 Prompt Manager 相关能力。官方示例包含 pm.readPresetExtensionField({ path: 'hello' })。",
+      "examples": ["const value = pm.readPresetExtensionField({ path: 'hello' });"]
+    },
+    {
+      "name": "SlashCommandParser.addCommandObject",
+      "category": "slash_commands",
+      "signature": "SlashCommandParser.addCommandObject(SlashCommand.fromProps({...}))",
+      "description": "注册扩展 slash command 的推荐新方式；比旧 registerSlashCommand 提供更完整的参数、帮助和自动补全元数据。"
+    },
+    {
+      "name": "messageFormatter",
+      "category": "message_formatting",
+      "signature": "const { messageFormatter } = SillyTavern.getContext(); messageFormatter.registerHook(...)",
+      "description": "注册消息格式化 hook；官方文档强调 hook 在 DOMPurify 清理前运行，适合做受控的消息内容转换。"
+    },
+    {
+      "name": "loader",
+      "category": "ui",
+      "signature": "const { loader } = SillyTavern.getContext();",
+      "description": "Action loader / loading overlay 辅助工具；适合扩展执行异步长任务时显示可堆叠或非阻塞加载状态。"
+    },
+    {
+      "name": "registerDataBankScraper",
+      "category": "data_bank",
+      "signature": "registerDataBankScraper({ id, name, scrape, ... })",
+      "description": "注册 Data Bank 自定义 scraper，用于从网页、文件或 API 等来源导入数据。"
+    },
+    {
+      "name": "registerDebugFunction",
+      "category": "debug",
+      "signature": "registerDebugFunction(name, description, callback)",
+      "description": "把诊断、缓存清理或手动触发函数注册到 Debug Menu。"
+    },
+    {
+      "name": "doExtrasFetch",
+      "category": "network_extras",
+      "signature": "doExtrasFetch(...)",
+      "description": "扩展与 Extras 服务交互的工具。具体参数需以当前 SillyTavern 源码/类型为准。"
+    },
+    {
+      "name": "addLocaleData",
+      "category": "i18n",
+      "signature": "addLocaleData(...)",
+      "description": "为扩展添加本地化文本数据。"
+    }
+  ],
+  "function_calling": {
+    "description": "Function Calling 允许扩展注册工具，让 LLM 以结构化参数调用扩展功能。",
+    "requirements": [
+      "仅部分 Chat Completion 源支持：Custom(OpenAI-compatible)、AI/ML API、AI21、Azure OpenAI、Chutes、Claude、Cloudflare Workers AI、Cohere、DeepSeek、Electron Hub、Fireworks、Google AI Studio、Google Vertex AI、Groq、MiniMax、MistralAI、Moonshot(Kimi)、NanoGPT、OpenAI、OpenRouter、Pollinations、SiliconFlow、xAI(Grok)、Z.AI(GLM) 等。",
+      "Text Completion APIs 不支持 function calls。部分本地后端可通过 OpenAI-compatible Chat Completion 模式支持。",
+      "用户必须在 AI Response Configuration 中启用 Enable function calling。",
+      "Continue、Impersonate、Quiet/background prompts 不允许触发工具调用。"
+    ],
+    "reasoning_context": [
+      "工具调用可与 reasoning model 的 interleaved thinking 配合；可选策略包括 Disabled、Since Last User Message、Active Tool Chain。",
+      "多轮工具循环有递归轮数限制，默认 5 轮，避免工具调用无限循环。"
+    ],
+    "apis": [
+      {
+        "name": "isToolCallingSupported",
+        "signature": "const { isToolCallingSupported } = SillyTavern.getContext(); isToolCallingSupported(): boolean",
+        "description": "检查当前 API 是否支持并启用了工具调用。"
+      },
+      {
+        "name": "canPerformToolCalls",
+        "signature": "const { canPerformToolCalls } = SillyTavern.getContext(); canPerformToolCalls(generationType): boolean",
+        "description": "检查指定 generation type 是否允许工具调用，例如 normal。"
+      },
+      {
+        "name": "registerFunctionTool",
+        "signature": "registerFunctionTool({ name, displayName?, description, parameters, action, formatMessage?, shouldRegister?, stealth? })",
+        "description": "注册函数工具。parameters 使用 JSON Schema；action 接收已解析参数并返回字符串或可 JSON.stringify 的值。",
+        "fields": {
+          "name": "必填，工具唯一标识",
+          "displayName": "可选，UI 显示名",
+          "description": "必填，发给 LLM 的工具说明",
+          "parameters": "必填，JSON Schema 参数定义",
+          "action": "必填，执行函数，可 async",
+          "formatMessage": "可选，工具执行时 toast 文案；返回空字符串可隐藏",
+          "shouldRegister": "可选，返回 false 时本次请求不注册该工具",
+          "stealth": "可选，true 时工具结果不记录到可见聊天历史且不触发跟进生成"
+        }
+      },
+      {
+        "name": "unregisterFunctionTool",
+        "signature": "unregisterFunctionTool(name: string): void",
+        "description": "注销函数工具。"
+      }
+    ],
+    "css_tip": ".mes.toolCall { display: none; } 可隐藏工具调用消息；或用 opacity 调低显示强度。"
+  },
+  "ui_theme_and_css": {
+    "description": "UI Customization 支持主题管理、显示设置、颜色、布局、开关与 Custom CSS。扩展可通过 CSS 文件、DOM 注入、主题变量覆盖来替换 UI 主题。",
+    "theme_features": [
+      "导入/导出主题文件",
+      "保存当前主题或另存为新主题",
+      "切换主题会替换该主题保存的设置",
+      "Custom CSS 随主题保存；切换主题会替换 Custom CSS"
+    ],
+    "chat_styles": [
+      { "name": "Flat", "slash": ["/flat", "/default"] },
+      { "name": "Bubbles", "slash": ["/bubble", "/bubbles"] },
+      { "name": "Document", "slash": ["/single", "/story"] }
+    ],
+    "custom_css_notes": [
+      "Custom CSS 可进一步自定义聊天界面。",
+      "大量 CSS 或跨主题复用 CSS 时可参考 CSS Snippets 扩展。",
+      "扩展自身 style.css 应尽量限制选择器作用域，避免污染全局。",
+      "可用 DOMPurify 清理用户/模型生成的 HTML 后再插入 DOM。"
+    ]
+  },
+  "prompt_manager_and_presets": {
+    "description": "Prompt Manager 控制 Chat Completion APIs 的 prompt-building 策略、提示词内容和发送顺序。Text Completion 对应功能在 Advanced Formatting。",
+    "preset_naming_rule": "如果预设名与角色卡同名，开始该角色聊天时会自动选择该预设；应使用唯一名称避免误触发。",
+    "sections": [
+      "Quick Prompts Edit：快速编辑 Main Prompt、Auxiliary Prompt、Post-History Instructions。",
+      "Utility Prompts：模型理解信息或特殊交互的辅助提示词。",
+      "Format Templates：World Info / Scenario / Personality 等包装模板。",
+      "Prompts List：拖拽排序；越靠上越早发送，底部最后发送。",
+      "Pinned prompts：默认提示词不能删除，但可关闭。",
+      "Prompt edit fields：Name、Role、Triggers、Position、Depth、Order。"
+    ],
+    "triggers": ["Normal", "Continue", "Impersonate", "Swipe", "Regenerate", "Quiet"],
+    "position_modes": [
+      "Relative：按 Prompt Manager 拖拽列表位置发送。",
+      "In-Chat：按 Depth 插入聊天历史内部，忽略拖拽列表位置。"
+    ],
+    "extension_api_hint": "官方 writing-extensions 示例提到 getPresetManager 与 pm.readPresetExtensionField({ path: 'hello' })，可用于扩展读取预设扩展字段。更完整的写入接口应以当前 ST 源码/类型为准。"
+  },
+  "regex_extension": {
+    "description": "Regex 是 SillyTavern 内置扩展，用于检测文本序列并做替换/删除/样式注入。可与 Quick Replies、STscript、Prompt、聊天显示联动。",
+    "script_scopes": [
+      "Global：应用所有角色，保存到 settings.json。",
+      "Scoped：只应用当前角色，保存到角色卡数据。"
+    ],
+    "editor_fields": {
+      "Name": "脚本显示名，也是 slash command / STscript 触发目标名。",
+      "Find Regex": "查找正则。可按设置替换 {{user}}、{{char}} 等宏。",
+      "Replace With": "替换文本。支持 {{match}} 插入完整匹配，也支持 $1/$2 捕获组。",
+      "Trim Out": "替换前从匹配文本中移除指定内容，可多行。",
+      "Affects": "作用来源：User Input、AI Response、Slash Commands、World Info、Reasoning 等。",
+      "Disabled": "禁用脚本。",
+      "Run on Edit": "编辑消息后也运行。",
+      "Macros in Find Regex": "Don't Substitute / Raw / Escaped。"
+    },
+    "flags": ["i: case-insensitive", "g: global", "s: dotAll", "m: multi-line", "u: unicode"],
+    "depth": {
+      "min_depth": "只影响至少 N 层深的消息；0=最后一条。",
+      "max_depth": "只影响不深于 N 的消息；必须大于 Min Depth。"
+    },
+    "ephemerality": [
+      "默认：直接修改聊天 JSONL，显示和发给模型的内容一致，但不可逆。",
+      "仅显示或仅 outgoing prompt：不会写入聊天文件，但用户看到的和模型看到的可能不同。",
+      "两个 ephemerality 都选：正常运行但不写入聊天文件。"
+    ],
+    "advanced_use": [
+      "Replace With 可插入 HTML/CSS 样式，需注意 User Settings 中 Show <tags> in responses。",
+      "脚本可设置为不在正常聊天触发，只通过 slash command / STscript 作为逻辑判断。"
+    ]
+  },
+  "usage_notes": [
+    "JS-Slash-Runner 脚本资产不是 SillyTavern 原生扩展；两者入口、目录结构和按钮机制不同。",
+    "扩展设置面板入口使用设置面板 DOM 挂载流程。",
+    "默认可见按钮入口选择 Quick Reply；明确要求魔法棒入口时必须使用魔法棒列表 DOM 锚点接入。",
+    "原生 UI surface 管理用于识别、隐藏、排序或接管已有菜单；不改变默认按钮入口选择规则。",
+    "Quick Reply 原生 API 是 globalThis.quickReplyApi；JS-Slash-Runner 脚本按钮 API 是 getButtonEvent/getScriptButtons/replaceScriptButtons 等。",
+    "若用户明确要求把脚本资产改造成 SillyTavern 原生扩展，需要添加 manifest.json、index.js、style.css，并通过 SillyTavern.getContext() 接入 eventSource/event_types、Popup、renderExtensionTemplateAsync 等。",
+    "替换 UI 主题时，应把主题/全局 CSS 信息记录在 SillyTavern 扩展 API 文档，不要混入 JS-Slash-Runner API。",
+    "操作 Prompt Manager/对话补全预设时，关注 getPresetManager、预设扩展字段、Prompt Manager 的 Name/Role/Triggers/Position/Depth/Order。",
+    "Regex 配置是 SillyTavern 内置扩展功能，与脚本内部业务正则不是同一层。"
+  ]
+}

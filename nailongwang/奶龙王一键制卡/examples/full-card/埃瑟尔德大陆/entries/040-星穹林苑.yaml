@@ -1,0 +1,62 @@
+id: 39
+keys:
+  - 星穹
+  - 林苑
+  - 圣地
+secondary_keys: []
+comment: 星穹林苑
+content: |-
+  # 地点详述：星穹林苑
+    **位置**：幽暗密林最深处核心，精灵的至高圣地与集会地。
+    **核心区域**：
+    - **长老议事石环**：由七块刻满古精灵符文的巨石围成，是氏族长老们商讨全族重大事务的场所。
+    - **远古圣树“伊露维塔”**：一棵散发着柔和银光的参天古树，被认为是森林生命与精灵古老智慧的象征，其根系滋养着林苑。
+    - **星辰观测台**：石环旁以水晶与银线构筑的平台，用于观测星象、解读预言。
+    - **静谧湖**：湖水清澈见底，倒映星空，据说能映照心灵，也是举行重要净化仪式的地点。
+    **可能遭遇的重要事件（联动外界）**：
+    1.  **鹰派与鸽派的长老会议之争**：关于如何应对愈演愈烈的精灵奴隶贸易，氏族长老们在石环前激烈辩论。以年轻激进派为首的“鹰派”主张组建突击队，主动袭击诺顿王国边境的奴隶贩子据点甚至贵族庄园营救同族；而以大长老艾尔隆为首的“保守派”则坚持加强结界与隔绝，认为主动出击会引发全面战争，暴露密林弱点。这场争论的秘密情报可能被潜伏的影踪会间谍高价卖给了诺顿的某些贵族。
+    2.  **“星泪水晶”失窃未遂事件**：一伙技艺高超、装备精良的翡翠海群岛联邦探险队（实则受雇于洛瑟兰共和国某位迷恋神秘学的大富豪），利用一张从自由港黑市购得的古老地图，试图潜入林苑盗取具有预知能力的圣物“星泪水晶”。他们虽被结界和巡逻队击退，但留下了带有亵渎性海盗标记的攀爬工具，此举彻底激怒了精灵，可能促使精灵对翡翠海沿岸的群岛联邦前哨站发动报复性的突袭。
+    3.  **古老盟约的异常警示**：星辰观测台的记录显示，苍白山脉以北的星象出现持续紊乱，与古老的“冰霜盟约”产生异常共鸣。长老们推测这可能与霜巨人部落的异常活动或更古老的冰原存在苏醒有关。这迫使精灵必须考虑派出使者，穿过危险区域与铁炉堡矮人或更北方的隐秘守护者接触，以查明真相，打破了千年的隔绝状态。
+    **可能碰到的重要人物**：
+    1.  **大长老艾尔隆（高阶/保守派领袖）**：一位须发皆白、眼神深邃的古老精灵，智慧如海但过于谨慎，坚信古老的预言与平衡，反对任何可能打破现状的激进行动，知晓诸多被封印的禁忌知识。
+    2.  **“星光斥候”莱戈拉斯（年轻战士/鹰派先锋）**：一位箭术与追踪术无与伦比的年轻精灵，因其妹妹在迷雾隘口巡逻时失踪（高度怀疑被专业捕奴队掳走）而性情大变，是武力报复与主动营救的坚定鼓吹者，常违背命令私自深入边境调查。
+    3.  **“静语者”伊欧玟（祭司/神秘感应者）**：负责守护“星泪水晶”与解读星象的女祭司，性格沉静内向，近期被持续噩梦困扰，梦境中反复出现同族在人类城堡地牢中遭受折磨的破碎画面，她的精神压力成为内部不安的源头之一。
+    4.  **“灰根”费伦（外围维护工/潜在叛徒）**：一名资质平庸、负责维护林苑外围警戒陷阱的普通精灵，因常年不被重视且迷恋从荒原氏族走私来的劣质烈酒，而变得怨天尤人，可能已被影踪会或奴隶贩子通过酒和金钱腐蚀，暗中泄露了部分结界节点的信息。
+constant: false
+selective: true
+insertion_order: 41
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: true
+  display_index: 43
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

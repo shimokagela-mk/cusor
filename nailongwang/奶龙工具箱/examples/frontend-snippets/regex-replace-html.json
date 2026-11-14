@@ -1,0 +1,18 @@
+{
+  "name": "Regex Replace HTML Snippet",
+  "kind": "regex_replace_html",
+  "description": "用于 Regex replaceString 的短 HTML 包装骨架。",
+  "scope_class": "nl-regex-chip",
+  "html": "<span class=\"nl-regex-chip\">$1</span>",
+  "css": ".nl-regex-chip { display: inline-flex; max-width: 100%; padding: 0.1rem 0.35rem; border-radius: 999px; border: 1px solid currentColor; }",
+  "mobile_notes": [
+    "inline-flex 应允许换行环境正常布局。"
+  ],
+  "security_notes": [
+    "Regex 捕获组来自消息文本时需避免注入未清理 HTML。",
+    "replaceString 不应包含 script 或 on* 属性。"
+  ],
+  "allowed_contexts": [
+    "regex_replace_html"
+  ]
+}

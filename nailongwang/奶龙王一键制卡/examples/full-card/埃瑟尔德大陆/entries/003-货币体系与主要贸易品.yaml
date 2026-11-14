@@ -1,0 +1,57 @@
+id: 2
+keys: []
+secondary_keys: []
+comment: 货币体系与主要贸易品
+content: |-
+  # 货币体系与主要贸易品
+    ## 通用货币 (被诺顿王国、洛瑟兰共和国等主要势力认可)
+   大陆通用三种铸币：金币(Gold Crown)、银币(Silver Mark)、铜币(Copper Penny)。固定兑换比为：1 金币 = 20 银币 = 2000 铜币。金币主要用于大额交易、地产、高阶服务；银币是日常大宗交易、薪资、装备购置的主货币；铜币用于小额日常消费。
+    ## 购买力基准 (以诺顿王国王城诺顿平民区为基准)
+    *   **一个铜币**：可买一条黑面包、一杯淡啤酒、或一根蜡烛。
+    *   **一个银币**：相当于一名普通非技术短工 (如搬运工) 2-3天的日薪，或一名熟练工匠 (如木匠) 大半天的收入。
+    *   **一个金币**：相当于一名资深士兵一个月的饷银，或一个小农家庭数月的生活费。
+    *   **以物易物**：在偏远乡村、荒原氏族或特定场合（如以魔物材料直接换取特制药剂）仍然普遍。
+    ## 主要贸易品流向
+    *   **从铁炉堡矮人输出**: 精制武器、铠甲、工具、各类宝石、稀有金属锭。
+    *   **从洛瑟兰共和国输出**: 香料、丝绸、琉璃器皿、书籍、航海仪器、奢侈品。
+    *   **从诺顿王国输出**: 粮食、羊毛、皮革、木材、受过训练的军用马匹。
+    *   **从幽暗密林边缘输出 (通过半精灵或特定商人)**: 优质木材、草药、少量精灵工艺品（非魔法）。
+    *   **从冒险者/猎人处流通**: 各种魔物材料（毛皮、爪牙、毒腺、特殊器官）、古代钱币或艺术品。
+constant: true
+selective: true
+insertion_order: 55
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: false
+  display_index: 66
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: false
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false
