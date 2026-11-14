@@ -1,0 +1,50 @@
+uid: sheet_GlobalData
+name: 全局数据表
+sourceData:
+  note: |
+    记录当前主角所在地点及时间相关参数。此表有且仅有一行。
+    - 列0: 主角当前所在地点
+    - 列1: 当前时间 - 格式: YYYY-MM-DD HH:MM
+    - 列2: 本轮故事模式 - 战斗模式/正常模式/NSFW模式
+  initNode: 插入一条关于当前世界状态的记录。
+  deleteNode: 禁止删除。
+  updateNode: 每轮更新地点、时间和故事模式。
+  insertNode: 禁止操作。
+content:
+  - [null, "主角当前所在地点", "当前时间", "本轮故事模式"]
+updateConfig:
+  uiSentinel: -1
+  contextDepth: 4
+  updateFrequency: -1
+  batchSize: 4
+  skipFloors: -1
+exportConfig:
+  enabled: false
+  splitByRow: false
+  entryName: 全局数据表
+  entryType: constant
+  keywords: ""
+  preventRecursion: true
+  injectionTemplate: ""
+  extraIndexEnabled: false
+  extraIndexEntryName: 全局数据表-索引
+  extraIndexColumns: []
+  extraIndexColumnModes: {}
+  extraIndexInjectionTemplate: ""
+  entryPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 10000
+  extraIndexPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 10010
+  fixedEntryPlacement:
+    position: before_char
+    depth: 2
+    order: 99981
+  fixedIndexPlacement:
+    position: before_char
+    depth: 2
+    order: 99982
+orderNo: 0

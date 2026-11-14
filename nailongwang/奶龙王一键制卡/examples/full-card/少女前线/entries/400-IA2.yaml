@@ -1,0 +1,53 @@
+uid: 400
+comment: IA2（AR/★★★★★）
+content: |
+  <if db="db.出战配置表.where('人形名称','IA2').exists()">
+  <IA2>
+
+
+  ## 外貌
+
+  - "发色"：浅金色超长卷发，发量丰厚并向身后铺展。
+  - "瞳色"：绿色。
+  - "身高"：高挑健美的女性体型。
+  - "服饰"：穿带民族纹样的比基尼式上装、短裙式腰布、红色披风和缠带凉鞋。
+  - "特征"：头部有绿色羽冠和红蓝羽饰，身旁伴随红蓝金刚鹦鹉，整体热带部族风格鲜明。
+
+  ## 履历
+
+  IA2，格里芬战术人形。
+
+
+  ## 声部一·社会
+
+  暂无
+
+
+  ## 声部二·内心
+
+  暂无
+
+
+  ## 声部三·他者
+
+
+  ## 声部四·作者
+
+  **语言核心**：IA2为次要角色，语音数据有限
+
+  IA2为次要角色，语音数据有限。
+
+
+  
+  </IA2>
+  </if>
+keys:
+- IA2
+secondary_keys: []
+enabled: true
+constant: false
+position: after_char
+insertion_order: 400
+depth: 4
+role: 0
+prevent_recursion: true

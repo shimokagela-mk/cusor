@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SillyTavern STscript API Knowledge Base",
+  "type": "object",
+  "required": ["name", "language", "updated_at", "sources", "commands", "integration_notes"],
+  "properties": {
+    "name": { "type": "string" },
+    "language": { "type": "string" },
+    "updated_at": { "type": "string" },
+    "sources": { "type": "array", "items": { "type": "string" } },
+    "scope_note": { "type": "string" },
+    "commands": { "type": "array", "items": { "type": "object", "required": ["name", "signature", "description"] } },
+    "pipe": { "type": "object" },
+    "variables": { "type": "object" },
+    "quick_reply_integration": { "type": "array", "items": { "type": "string" } },
+    "js_slash_runner_boundary": { "type": "array", "items": { "type": "string" } },
+    "integration_notes": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": true
+}

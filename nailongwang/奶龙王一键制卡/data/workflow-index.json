@@ -1,0 +1,28 @@
+{
+  "workflows": [
+    {
+      "id": "new-card",
+      "name": "从零写卡",
+      "entry": "prompts/0-总览与启动.md",
+      "steps": [
+        "prompts/1-需求分析.md",
+        "prompts/2-世界观规模判断.md",
+        "prompts/3-世界观框架.md",
+        "prompts/4-人物设计.md",
+        "prompts/5-剧情设计.md",
+        "prompts/6-表格模板讨论.md",
+        "prompts/7-开场白状态栏讨论.md",
+        "prompts/8-打包确认.md"
+      ]
+    },
+    {
+      "id": "edit-card",
+      "name": "修改已有角色卡",
+      "entry": "prompts/9-修改卡启动.md",
+      "steps": [
+        "prompts/9-修改卡启动.md",
+        "prompts/8-打包确认.md"
+      ]
+    }
+  ]
+}

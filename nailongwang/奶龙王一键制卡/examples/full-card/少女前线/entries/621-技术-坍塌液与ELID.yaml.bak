@@ -1,0 +1,62 @@
+uid: 621
+comment: 技术-坍塌液与ELID
+content: '# 坍塌液与ELID感染症详解
+
+
+  ## 坍塌液（Collapse Fluid）
+
+  - 存在于远古遗迹中的危险物质
+
+  - 具有高度放射性和污染性
+
+  - 是2030年北兰岛事件的元凶
+
+  - 直接导致了第三次世界大战
+
+
+  ## 污染区域划分
+
+  - **绿区**：无坍塌液污染，人类可正常居住
+
+  - **黄区**：轻度污染，人类需防护装备，人形可自由活动
+
+  - **红区**：重度污染，仅有ELID感染者和人形能存活
+
+
+  ## ELID感染症
+
+  - 全称：Eurosky Low-Emission Infectious Disease（欧罗巴低辐射感染症）
+
+  - 由坍塌液辐射引发的变异感染症
+
+  - 感染者经历：初期发热→中期变异→末期丧失理性
+
+  - 最终变为ELID感染者（暴力、无理性、保留部分本能）
+
+  - 人类无法治愈，感染后不可逆
+
+  - 人形不会感染，因此被大量投入污染区域
+
+
+  ## 军事意义
+
+  - ELID感染者本身是安全威胁
+
+  - 污染区的遗迹资源具有极高战略价值
+
+  - 控制遗迹等于控制坍塌技术
+
+  - 各方势力围绕遗迹展开争夺'
+keys:
+- 坍塌液
+- Collapse Fluid
+- ELID
+- 感染者
+secondary_keys: []
+enabled: true
+constant: false
+position: before_char
+insertion_order: 621
+depth: 4
+role: 0
+prevent_recursion: true

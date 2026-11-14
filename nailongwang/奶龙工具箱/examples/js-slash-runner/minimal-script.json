@@ -1,0 +1,13 @@
+{
+  "type": "script",
+  "enabled": true,
+  "name": "最小酒馆助手脚本样例",
+  "id": "00000000-0000-4000-8000-000000000001",
+  "content": "\n(function() {\n    'use strict';\n\n    const TH = window.TavernHelper;\n    if (!TH) {\n        console.warn('[最小脚本] 未检测到 JS-Slash-Runner / TavernHelper');\n        return;\n    }\n\n    function notify(message, type = 'info') {\n        if (window.toastr && typeof window.toastr[type] === 'function') {\n            window.toastr[type](message, '最小脚本');\n        } else {\n            console.log('[最小脚本]', message);\n        }\n    }\n\n    async function main() {\n        const lastId = typeof TH.getLastMessageId === 'function' ? TH.getLastMessageId() : 0;\n        const messages = typeof TH.getChatMessages === 'function'\n            ? TH.getChatMessages(`0-${lastId}`, { include_swipes: false })\n            : [];\n\n        notify(`读取到 ${messages.length} 条消息`);\n    }\n\n    main().catch(error => {\n        console.error('[最小脚本] 运行失败:', error);\n        notify(error.message || String(error), 'error');\n    });\n})();\n",
+  "info": "JS-Slash-Runner（酒馆助手）最小脚本样例：检查 TavernHelper、读取消息、弹出通知。",
+  "button": {
+    "enabled": false,
+    "buttons": []
+  },
+  "data": {}
+}

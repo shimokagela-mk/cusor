@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tavern Frontend Snippets API Knowledge Base",
+  "type": "object",
+  "required": ["name", "language", "updated_at", "sources", "snippet_types", "security_notes"],
+  "properties": {
+    "name": { "type": "string" },
+    "language": { "type": "string" },
+    "updated_at": { "type": "string" },
+    "sources": { "type": "array", "items": { "type": "string" } },
+    "scope_note": { "type": "string" },
+    "snippet_types": { "type": "array", "items": { "type": "object", "required": ["name", "use_case"] } },
+    "html_patterns": { "type": "array", "items": { "type": "object" } },
+    "css_rules": { "type": "array", "items": { "type": "string" } },
+    "security_notes": { "type": "array", "items": { "type": "string" } },
+    "related_examples": { "type": "array", "items": { "type": "string" } },
+    "related_schemas": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": true
+}

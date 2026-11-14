@@ -1,0 +1,10 @@
+{
+  "type": "script",
+  "enabled": true,
+  "name": "MVU 脚本但没有等待初始化",
+  "id": "00000000-0000-4000-8000-000000000094",
+  "content": "(function(){ const TH = window.TavernHelper; eventOn(Mvu.events.VARIABLE_UPDATE_ENDED, () => {}); })();",
+  "info": "用于校验失败用例：MVU 脚本必须 await waitGlobalInitialized('Mvu')",
+  "button": { "enabled": false, "buttons": [] },
+  "data": {}
+}

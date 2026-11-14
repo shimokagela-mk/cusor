@@ -1,0 +1,49 @@
+id: 58
+keys: []
+secondary_keys: []
+comment: '核心人物概览: 稀有职业与社会身份'
+content: |-
+  # 埃瑟尔德大陆稀有职业与特殊社会身份 (PList格式)
+    [龙裔 (Dragonkin/Scaled One): 继承巨龙血脉（力量、坚韧、龙息）的罕有物种，天生体魄超凡，has(龙族之力、坚韧鳞甲、喷吐、部分元素抗性、龙威)，个体天资差异巨大，战斗方向不固定。优势：基础属性压制]
+    [德鲁伊 (Druid): 自然/荒野平衡的守护者与变化师，能够动物化形或调用自然之力，has(变形术（如熊/狼/鸟类）、操纵植物/天气、呼唤野兽盟友、治疗），与精灵族关系密切。优势：环境适应与多样性]
+    [吟游诗人 (Bard): 用音乐、诗词与言语编织魔法的艺术大师，既是历史传承者也是精神力场塑造者，has(旋律增幅（勇气、速度）、幻音、话语魅惑、知识渊博（历史）、战斗节奏感），提供团队增益与精神干扰。优势：战斗辅助与控制]
+    [指挥官/战场艺术家 (Commander): 以战术、阵型与鼓舞能力取胜的战场大脑，个人战力可能平庸，has(战场指挥（加成下属）、战局洞察、士气鼓舞、军事诡计），统帅是军队的真正灵魂。优势：集团战力倍增]
+    [平民/特殊专家 (Commoner/Mundane Expert): 不依赖明显超凡力量的普通人，可能精通一项技术（铁匠、医师、学者、盗墓贼），has(专业技能、丰富人脉、社会认知、求生之道)，看似渺小，却构成了世界运行的基石。优势：专业不可替代性]
+constant: true
+selective: true
+insertion_order: 7
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: false
+  display_index: 62
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

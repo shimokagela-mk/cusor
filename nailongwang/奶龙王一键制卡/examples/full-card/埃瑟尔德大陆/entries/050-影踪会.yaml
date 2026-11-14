@@ -1,0 +1,63 @@
+id: 49
+keys:
+  - 影踪
+  - 犯罪
+  - 地下
+  - 黑暗
+secondary_keys: []
+comment: 影踪会
+content: |-
+  # 势力详述：影踪会
+    **核心概览**：一个没有固定旗帜、没有公开领袖、甚至没有公认名称的影子帝国。它是城市夜幕下的毛细血管，是权贵密室中的低语，是打破明面规则的最后手段。并非传统的犯罪帮派，而是专注于高端非法服务（情报、刺杀、走私违禁品、伪造身份）的跨国秘密网络，其存在建立在对人性弱点和体制漏洞的极致利用之上。
+    **统治体系**：极端严密的细胞结构。单个成员（“阴影”）通常只认识自己的直接上线（“联络人”）和少数下线。更高层的“手指”、“手掌”直至传说中的“影瞳”无人知晓其面目。决策通过加密信息链传递，赏罚分明且残酷。忠诚来源于恐惧、利益以及脱离组织必遭灭口的共识。
+    **内部文化**：沉默、高效、多疑。信任是奢侈品，契约（通过密约或抵押物确保）是唯一纽带。成员背景复杂，可能是落魄贵族、退役间谍、不得志的法师学徒或单纯的亡命徒。共同点是精通某种阴暗技艺且善于隐匿。内部等级森严，晋升取决于完成任务的能力与冷酷程度。
+    **行动力量**：无成建制的军队。武力由分散的、互不知情的行动小组提供，包括：精通潜行与刺杀的“幽魂”、擅长撬锁开闸的“窃影”、伪造大师“画皮”、以及负责清理门户和应对威胁的“清道夫”。他们像手术刀一样精准，避免不必要的正面冲突。
+    **资源与网络**：收入来自高昂的佣金。。其最宝贵的资产是渗透到各行各业、各阶层的信息网（“影网”），这使其往往比官方更早获悉秘密。
+    **主要据点与联络点**：
+    - **咸水窖（银帆城）**：一家看起来平凡无奇的地下酒吧，has(密室、密道、可变标识), 是已知最重要的情报交易所与任务接驳点之一。
+    - **褪色天鹅歌剧院（王城诺顿旧城区）**：上演通俗戏剧的场所，has(演员更衣室密门、特定包厢信号), 用于安排高端客户的秘密会面与信息传递。
+    - **流浪者集市暗桩**：在南部荒原流浪者集市设有流动帐篷或伪装成商贩的眼线，has(临时密室、信鸽), 负责监控荒原动态与处理特殊货物。
+    **外交态势**：
+    - **全民公敌**：被所有地表合法政权与组织明面敌视、追捕与诅咒，但因其根系深植于社会阴影而难以根除。
+    - **灰色共生**：与商盟联合会关系复杂，既是其处理“脏活”的白手套，也掌握着足以威胁豪商们的把柄。
+    - **隐蔽对抗**：与法师塔的监管议会在某些涉及禁忌知识或物品的领域存在隐蔽争夺。
+    - **潜在客户与威胁**：对所有势力而言，影踪会既是解决难题的潜在途径（只要你付得起代价且不怕引火烧身），也是需要时刻防备的窃听者与破坏者。
+    - **无永恒盟友**：与其他地下势力（如地精黑帮、独立盗贼公会）保持临时合作或吞并关系，一切以利益为准。
+constant: false
+selective: true
+insertion_order: 51
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: true
+  display_index: 53
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

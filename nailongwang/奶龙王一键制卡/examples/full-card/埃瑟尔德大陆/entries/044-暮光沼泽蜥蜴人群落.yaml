@@ -1,0 +1,62 @@
+id: 43
+keys:
+  - 沼泽
+  - 暮光
+  - 蜥蜴
+secondary_keys: []
+comment: 暮光沼泽蜥蜴人群落
+content: |-
+  # 势力详述：暮光沼泽蜥蜴人群落
+    **核心概览**：栖息于大陆东南部广阔、阴暗的暮光沼泽深处的原始爬行类人生物集群。并非统一王国，而是由众多以血缘和领地划分的松散部落组成，极度排外且具有强烈的领土意识，将整个沼泽视作圣地。与所有试图闯入或开发沼泽的临近文明处于持续的低烈度冲突状态。
+    **统治体系**：母系部落制。每个部落由最年长、智慧最高的“鳞母”或最强壮的“沼泽领主”领导，重大决策由部落长老会商议。部落间通过复杂的血缘纽带和古老的沼泽誓约保持松散联系，在面临外部重大威胁时会暂时联合，推举临时的“战争领袖”。
+    **社会文化**：社会结构简单而紧密，围绕家族和狩猎群体构建。崇拜沼泽本身以及传说中的“深渊古蜥”为自然之灵。拥有独特的喉音语言和以骨头、鳞片雕刻记录事件的原始文字。成年仪式包括独自在沼泽深处生存并带回一件祭品。对“干燥之地”（沼泽外的世界）既恐惧又蔑视。
+    **军事力量**：并非传统军队，而是全民皆兵的狩猎/防卫群体。极度依赖沼泽地形，擅长利用泥沼、毒雾和茂密植被进行伏击与游击。武器多为骨制或石制长矛、吹箭（常淬有沼泽生物毒素）以及沉重的骨质棍棒。个体力量与耐力超越普通人类，但缺乏金属甲胄和大型攻城器械。
+    **经济基础**：自给自足的原始经济。以狩猎沼泽鳄、巨蟾、飞蛇，采集稀有菌类、草药和沼泽珍珠为主。部落间以物易物，交换特产。偶尔会用沼泽特产的荧光苔藓、稀有毒腺或古兽化石与胆大的荒原氏族或黑市商人进行极危险的边缘贸易，换取金属工具或亮晶晶的装饰品。
+    **主要城镇/据点**：
+    - **[沉鳞村(最大部落聚居地): 位于沼泽深处岛屿, 以巨兽骨骸为建材, has(鳞母长屋, 孵化池, 先祖骨坛, 毒素作坊), 部落会议中心, 弥漫腐殖质与草药气味]**
+    - **[迷雾哨站(边境警戒点): 靠近沼泽边缘, 隐蔽于浓雾与芦苇中, has(瞭望树屋, 陷阱区, 独木舟码头), 警戒干燥之地来客, 气氛紧张]**
+    - **[古蜥祭坛(宗教中心): 沼泽腹地神秘石阵, 雕刻古老蜥蜴图腾, has(献祭石, 巫医小屋, 荧光苔藓洞), 举行重要仪式之地, 能量场异常]**
+    **外交态势**：
+    - **绝对敌对**：与所有试图垦殖、砍伐或深入沼泽的人类势力（如诺顿边境拓荒者、洛瑟兰的资源勘探队）持续冲突。
+    - **竞争关系**：与荒原氏族在沼泽边缘地带存在狩猎领土纠纷和水源争夺。
+    - **蔑视与掠夺**：视地精为肮脏的窃贼和破坏者，会主动攻击发现的地精团伙。
+    - **无交涉**：与圣光教会等其他意识形态势力毫无接触，将其传教士视为入侵者驱逐。
+    - **潜在利用**：极少数精通荒野知识的向导或巫医可能了解与特定部落进行有限、危险的交易或通行谈判的古老仪式。
+constant: false
+selective: true
+insertion_order: 45
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: true
+  display_index: 47
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

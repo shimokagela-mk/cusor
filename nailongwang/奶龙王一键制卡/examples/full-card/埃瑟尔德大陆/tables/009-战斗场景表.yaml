@@ -1,0 +1,115 @@
+uid: sheet_BattleScene
+name: 战斗场景表
+sourceData:
+  note: |-
+    【战斗场景专用表】仅在战斗进行时启用。战斗结束后清空。
+    此表必须客观记录正文中发生的战斗结果，不得擅自编造或推测战斗过程。不要用SQL枚举硬拦阵营或角色类型，剧情中可能出现友方、敌方、第三方、召唤物、Boss等复杂标签。
+
+    - 列0: 角色名称 - 参战角色名称，敌方杂兵使用通用名称如哥布林A、哥布林B；同名单位需要追加编号。
+    - 列1: 阵营 - 推荐写主角方/敌方/中立；无法归类时可写友方、第三方、临时盟友等剧情实际阵营。
+    - 列2: 职业 - 角色职业或战斗定位，如战士、法师、弓手、魔物、召唤物。
+    - 列3: 当前等级 - 角色当前等级；未知时按剧情强度估算，不要留空。
+    - 列4: 力量 - 力量属性值。
+    - 列5: 敏捷 - 敏捷属性值。
+    - 列6: 体质 - 体质属性值。
+    - 列7: 智力 - 智力属性值。
+    - 列8: 感知 - 感知属性值。
+    - 列9: 魅力 - 魅力属性值。
+    - 列10: 生命值 - 格式：当前值/最大值，降为0表示战败。
+    - 列11: 体力值 - 格式：当前值/最大值。
+    - 列12: 法力值 - 格式：当前值/最大值。
+    - 列13: 可用技能 - 当前可使用的技能列表，用中文逗号或分号分隔。
+    - 列14: 当前状态 - 正常/眩晕/中毒/束缚/沉默/倒地/濒死等状态，可多状态并列。
+    - 列15: 角色类型 - 推荐写重要人物/杂兵；也可写召唤物、Boss、临时单位。只有重要人物需要在战斗结束后同步到重要角色表。
+
+    重要规则：
+    1. 战斗开始时，根据正文分析录入所有参战角色。
+    2. 每个战斗轮次必须更新生命值、体力值、法力值、当前状态和可用技能变化。
+    3. 必须客观记录正文中实际发生的战斗结果，不得让表格结果反向改写正文。
+    4. 战斗结束时先把重要人物状态同步到重要角色表，再清空本表。
+    5. 杂兵、召唤物、临时单位数据战斗结束后直接丢弃，不录入重要人物表。
+  initNode: 战斗开始时，根据正文分析录入所有参战角色。若已有旧战斗残留，先 DELETE FROM battle_scene; 再插入当前战斗角色。
+  deleteNode: |-
+    仅在战斗明确结束、逃离、全员脱战或切换到非战斗场景时清空全表。
+    SQL示例: DELETE FROM battle_scene;
+  updateNode: |-
+    根据正文战况客观更新角色状态。必须带 WHERE，优先用 row_id；无法确认 row_id 时用唯一角色名称。
+    SQL示例(受伤与异常): UPDATE battle_scene SET hp = '30/40', stamina = '12/20', current_status = '眩晕' WHERE character_name = '哥布林A';
+    SQL示例(消耗法力并追加技能限制): UPDATE battle_scene SET mp = '4/20', available_skills = '火球术;魔力护盾(冷却中)' WHERE character_name = '敌方法师';
+  insertNode: |-
+    战斗开始或战斗中有新角色加入时添加。row_id 使用 COALESCE，避免空表插入失败。
+    SQL示例: INSERT INTO battle_scene (row_id, character_name, faction, profession, current_level, strength, agility, constitution, intelligence, perception, charisma, hp, stamina, mp, available_skills, current_status, character_type) VALUES ((SELECT COALESCE(MAX(row_id), 0)+1 FROM battle_scene), '哥布林A', '敌方', '战士', 3, 5, 4, 4, 2, 3, 2, '40/40', '20/20', '10/10', '攻击', '正常', '杂兵');
+  ddl: |-
+    CREATE TABLE battle_scene ( -- 战斗场景表
+      row_id INTEGER PRIMARY KEY, -- 行号
+      character_name TEXT NOT NULL, -- 角色名称
+      faction TEXT NOT NULL, -- 阵营
+      profession TEXT, -- 职业
+      current_level INTEGER, -- 当前等级
+      strength INTEGER, -- 力量
+      agility INTEGER, -- 敏捷
+      constitution INTEGER, -- 体质
+      intelligence INTEGER, -- 智力
+      perception INTEGER, -- 感知
+      charisma INTEGER, -- 魅力
+      hp TEXT NOT NULL, -- 生命值
+      stamina TEXT NOT NULL, -- 体力值
+      mp TEXT NOT NULL, -- 法力值
+      available_skills TEXT, -- 可用技能
+      current_status TEXT NOT NULL DEFAULT '正常', -- 当前状态
+      character_type TEXT NOT NULL DEFAULT '杂兵' -- 角色类型
+    );
+content:
+  - - row_id
+    - 角色名称
+    - 阵营
+    - 职业
+    - 当前等级
+    - 力量
+    - 敏捷
+    - 体质
+    - 智力
+    - 感知
+    - 魅力
+    - 生命值
+    - 体力值
+    - 法力值
+    - 可用技能
+    - 当前状态
+    - 角色类型
+updateConfig:
+  uiSentinel: -1
+  contextDepth: -1
+  updateFrequency: -1
+  batchSize: -1
+  skipFloors: -1
+exportConfig:
+  enabled: false
+  splitByRow: false
+  entryName: 战斗场景表
+  entryType: constant
+  keywords: ""
+  preventRecursion: true
+  injectionTemplate: ""
+  extraIndexEnabled: false
+  extraIndexEntryName: 战斗场景表-索引
+  extraIndexColumns: []
+  extraIndexColumnModes: {}
+  extraIndexInjectionTemplate: ""
+  entryPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 10000
+  extraIndexPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 10010
+  fixedEntryPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 99990
+  fixedIndexPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 99991
+orderNo: 8

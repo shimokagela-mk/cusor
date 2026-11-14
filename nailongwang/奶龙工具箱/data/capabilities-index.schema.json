@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tavern Ecosystem Capabilities Index",
+  "type": "object",
+  "required": ["name", "language", "updated_at", "modes"],
+  "properties": {
+    "name": { "type": "string" },
+    "language": { "type": "string" },
+    "updated_at": { "type": "string" },
+    "modes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["code", "name", "intent", "entry"],
+        "properties": {
+          "code": { "type": "string" },
+          "name": { "type": "string" },
+          "intent": { "type": "string" },
+          "entry": { "type": "string" },
+          "data": { "type": "array", "items": { "type": "string" } },
+          "docs": { "type": "array", "items": { "type": "string" } },
+          "examples": { "type": "array", "items": { "type": "string" } },
+          "schemas": { "type": "array", "items": { "type": "string" } },
+          "generators": { "type": "array", "items": { "type": "string" } }
+        },
+        "additionalProperties": true
+      }
+    },
+    "trigger_phrases": { "type": "object" }
+  },
+  "additionalProperties": true
+}

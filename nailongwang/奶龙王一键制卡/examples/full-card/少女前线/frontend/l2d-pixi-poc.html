@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Girls' Frontline Pixi Live2D IndexedDB PoC</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#090909;color:#eee;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif}.page{min-height:100vh;display:grid;grid-template-columns:280px 1fr;gap:0}.panel{padding:18px;background:#141414;border-right:1px solid #2c2c2c}.panel h1{font-size:17px;margin:0 0 12px;color:#e8c840}.panel p{font-size:12px;line-height:1.7;color:#aaa;margin:0 0 14px}.btns{display:grid;gap:8px;margin-bottom:16px}.btn{border:1px solid #444;background:#202020;color:#eee;padding:10px 12px;text-align:left;cursor:pointer}.btn:hover,.btn.active{border-color:#e8c840;color:#e8c840}.ops{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.op{border:1px solid #365;background:#102027;color:#9ee;padding:8px;cursor:pointer}.op.danger{border-color:#633;background:#241111;color:#f9aaa}.status{white-space:pre-wrap;min-height:120px;padding:10px;background:#080808;border:1px solid #333;color:#9ee;font-size:12px;line-height:1.55}.stage-wrap{position:relative;min-height:100vh;background:radial-gradient(circle at center,#252525 0,#070707 62%);overflow:hidden}.stage{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:min(520px,70vw);height:min(760px,92vh);border:1px dashed rgba(232,200,64,.28);background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(0,0,0,.08));overflow:hidden}.hint{position:absolute;left:18px;bottom:18px;color:#777;font-size:12px}.badge{display:inline-block;margin-left:6px;padding:1px 6px;border:1px solid #555;color:#aaa;font-size:10px}@media(max-width:760px){.page{grid-template-columns:1fr}.panel{border-right:none;border-bottom:1px solid #2c2c2c}.stage-wrap{min-height:70vh}.stage{width:92vw;height:68vh}}
+</style>
+</head>
+<body>
+<div class="page">
+  <aside class="panel">
+    <h1>Pixi Live2D PoC <span class="badge">IndexedDB Blob</span></h1>
+    <p>独立测试页，只验证 79type_1402、rfb_1601、gelina。链路严格保持：seed JS 写 IndexedDB → l2d-indexeddb-loader.js 转 Blob URL → Pixi runtime 加载 Blob URL。</p>
+    <div class="btns" id="model-buttons"></div>
+    <div class="ops">
+      <button class="op" id="tap-center" type="button">模拟点击中心</button>
+      <button class="op danger" id="destroy" type="button">销毁实例</button>
+    </div>
+    <div class="status" id="status">等待加载。</div>
+  </aside>
+  <main class="stage-wrap">
+    <div class="stage" id="l2d-stage"></div>
+    <div class="hint">点击模型区域会尝试触发 hit area motion，失败则 fallback 到 tap_body。</div>
+  </main>
+</div>
+<script src="l2d-indexeddb-loader.js"></script>
+<script src="l2d-pixi-runtime.js"></script>
+<script src="l2d-indexeddb-seed-79type.js"></script>
+<script src="l2d-indexeddb-seed-rfb.js"></script>
+<script src="l2d-indexeddb-seed-gelina.js"></script>
+<script>
+(function(){
+  'use strict';
+
+  var MODELS = [
+    { id:'79type_1402', name:'79式 1402', dir:'79type_1402', seedGlobal:'GFLSeed79typeLive2D' },
+    { id:'rfb_1601', name:'RFB 1601', dir:'rfb_1601', seedGlobal:'GFLSeedRFB1601Live2D' },
+    { id:'gelina', name:'格琳娜', dir:'gelina', seedGlobal:'GFLSeedGelinaLive2D' }
+  ];
+
+  var stage = document.getElementById('l2d-stage');
+  var statusEl = document.getElementById('status');
+  var buttonsEl = document.getElementById('model-buttons');
+  var activeButton = null;
+
+  function setStatus(text){ statusEl.textContent = text; }
+  function appendStatus(text){ statusEl.textContent += '\n' + text; }
+
+  function getSeedApi(model){
+    var api = window[model.seedGlobal];
+    if(!api || typeof api.ensure !== 'function'){
+      throw new Error('缺少 IndexedDB seed API: window.' + model.seedGlobal);
+    }
+    return api;
+  }
+
+  function ensureLoader(){
+    if(!window.GFLIndexedDBLive2D || typeof window.GFLIndexedDBLive2D.resolveLive2DState !== 'function'){
+      throw new Error('缺少 GFLIndexedDBLive2D.resolveLive2DState');
+    }
+  }
+
+  function ensureRuntime(){
+    if(!window.GFLPixiLive2D || typeof window.GFLPixiLive2D.mount !== 'function'){
+      throw new Error('缺少 GFLPixiLive2D runtime');
+    }
+  }
+
+  function cleanupLive2D(){
+    if(window.GFLPixiLive2D && typeof window.GFLPixiLive2D.destroy === 'function'){
+      window.GFLPixiLive2D.destroy();
+    }
+    if(window.GFLIndexedDBLive2D && typeof window.GFLIndexedDBLive2D.revokeObjectUrls === 'function'){
+      window.GFLIndexedDBLive2D.revokeObjectUrls();
+    }
+  }
+
+  async function resolveIndexedDBModelUrl(model){
+    ensureLoader();
+    var seedApi = getSeedApi(model);
+    var seedResult = await seedApi.ensure();
+    appendStatus('seed: ' + JSON.stringify(seedResult));
+    var resolved = await window.GFLIndexedDBLive2D.resolveLive2DState({dir:model.dir});
+    if(!resolved || !resolved.jsonPath){
+      throw new Error('IndexedDB loader 未返回 jsonPath: ' + model.dir);
+    }
+    appendStatus('resolved: ' + resolved.source + ' / ' + model.dir);
+    return resolved.jsonPath;
+  }
+
+  async function loadModel(model, button){
+    if(activeButton) activeButton.classList.remove('active');
+    activeButton = button;
+    if(activeButton) activeButton.classList.add('active');
+    setStatus('加载中: ' + model.name + '\ndir: ' + model.dir);
+    try{
+      ensureRuntime();
+      cleanupLive2D();
+      var jsonUrl = await resolveIndexedDBModelUrl(model);
+      await window.GFLPixiLive2D.mount({
+        container: stage,
+        jsonPath: jsonUrl,
+        width: stage.clientWidth,
+        height: stage.clientHeight
+      });
+      appendStatus('已挂载: ' + model.id);
+      appendStatus('vendor: ' + JSON.stringify(window.GFLPixiLive2D.vendorUrls(), null, 2));
+    }catch(error){
+      console.error(error);
+      appendStatus('失败: ' + (error && error.message ? error.message : error));
+    }
+  }
+
+  MODELS.forEach(function(model){
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'btn';
+    btn.textContent = model.name + ' / ' + model.id;
+    btn.addEventListener('click', function(){ loadModel(model, btn); });
+    buttonsEl.appendChild(btn);
+  });
+
+  document.getElementById('tap-center').addEventListener('click', function(){
+    var rect = stage.getBoundingClientRect();
+    var ok = !!(window.GFLPixiLive2D && window.GFLPixiLive2D.tap && window.GFLPixiLive2D.tap(rect.left + rect.width / 2, rect.top + rect.height / 2));
+    appendStatus('模拟点击中心: ' + (ok ? 'motion requested' : 'no motion'));
+  });
+
+  document.getElementById('destroy').addEventListener('click', function(){
+    cleanupLive2D();
+    if(activeButton) activeButton.classList.remove('active');
+    activeButton = null;
+    setStatus('实例已销毁。');
+  });
+
+  stage.addEventListener('click', function(event){
+    if(!window.GFLPixiLive2D) return;
+    window.GFLPixiLive2D.tap(event.clientX, event.clientY);
+  });
+
+  window.addEventListener('resize', function(){
+    if(window.GFLPixiLive2D) window.GFLPixiLive2D.resize(stage.clientWidth, stage.clientHeight);
+  });
+})();
+</script>
+</body>
+</html>
