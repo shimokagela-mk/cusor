@@ -7,11 +7,12 @@ sourceData:
     - 列1: 类型 - 只能是：照片 / 录音 / 物品 / 目击 / 聊天记录 / 其他。
     - 列2: 内容摘要 - ≤40字，客观写把柄是什么（如「绿色自慰棒抽屉照」「前台玩具接待短视频」）。
     - 列3: 强度 - 1到5整数。1暗示级，3可迫使服从一次，5可接近锁死公开线。
-    - 列4: 状态 - 只能是：持有 / 已使用 / 已销毁 / 泄露风险。
-    - 列5: 备注 - 可空；记录何时取得、是否给过丈夫看等。
+    - 列4: 状态 - 只能是：持有 / 已使用 / 已销毁 / 泄露风险 / 反持有 / 已过期。
+    - 列5: 备注 - 可空；记录何时取得、是否反录、是否贬值等。
 
-    更新口径：正文中明确取得/使用/销毁/泄露时才改；不要无中生有。
-    反制：角色成功销毁或夺回时，状态改为已销毁或删除该行（优先改状态）。
+    更新口径：正文中明确取得/使用/销毁/泄露/反持有/过期时才改；不要无中生有。
+    反制：角色成功销毁或夺回→已销毁；她反录你→反持有；同一把柄反复威胁失效→已过期。
+    详规见世界书「把柄反噬」。
   initNode: |-
     初始化可为空表；若需要示范结构，可不插行。故事开始无把柄。
     SQL示例: INSERT INTO leverage (row_id, target_name, leverage_type, summary, intensity, status, note) VALUES (1, '尹安琪', '物品', '床头绿色自慰棒被目击', 2, '持有', '开场未触发则勿插入');
@@ -31,7 +32,7 @@ sourceData:
       leverage_type TEXT NOT NULL CHECK(leverage_type IN ('照片', '录音', '物品', '目击', '聊天记录', '其他')), -- 类型
       summary TEXT NOT NULL, -- 内容摘要
       intensity INTEGER NOT NULL DEFAULT 1 CHECK(intensity >= 1 AND intensity <= 5), -- 强度
-      status TEXT NOT NULL DEFAULT '持有' CHECK(status IN ('持有', '已使用', '已销毁', '泄露风险')), -- 状态
+      status TEXT NOT NULL DEFAULT '持有' CHECK(status IN ('持有', '已使用', '已销毁', '泄露风险', '反持有', '已过期')), -- 状态
       note TEXT -- 备注
     );
 content:
