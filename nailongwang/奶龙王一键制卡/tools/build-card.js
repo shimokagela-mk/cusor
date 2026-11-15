@@ -400,6 +400,14 @@ function inlineMultiplayerRuntime(html, runtimeJs) {
   return `${finalHtml}\n${scriptTag}`;
 }
 
+// 代码围栏给酒馆助手画成 iframe。没有助手时，围栏会把整页源码贴在回复下面。
+// 样式只藏 html 代码块；开场白在围栏后再放一份正文，助手画出 iframe 后由相邻选择器藏起这份正文。
+const FRONTEND_SOURCE_HIDE_STYLE = '<style>pre:has(code[class*="language-html"]){display:none !important}div:has(iframe)+div{display:none !important}</style>\n';
+
+function wrapFrontendHtml(html, trailingHtml = '') {
+  return FRONTEND_SOURCE_HIDE_STYLE + '====\n```html\n' + html + '\n```' + trailingHtml;
+}
+
 function createOpeningRegex(openingHtml, tablesJson, presetJson, openingAssets = {}) {
   // 检查并补全 <start> 标签
   let finalHtml = ensureStartTags(openingHtml);
@@ -407,7 +415,7 @@ function createOpeningRegex(openingHtml, tablesJson, presetJson, openingAssets =
   
   // 使用 $1 占位符来引用正则匹配的第一个捕获组（即 <start> 标签内的内容）
   // 这样开场白内容会被插入到 HTML 中显示
-  const replaceString = "====\n```html\n" + finalHtml + "\n```";
+  const replaceString = wrapFrontendHtml(finalHtml, '\n<div style="white-space:pre-wrap">$1</div>');
   
   return {
     id: generateUUID(),
@@ -432,7 +440,7 @@ function createOpeningRegexFromHtml(openingHtml, tablesJson, presetJson, opening
   finalHtml = injectAssetsIntoOpening(finalHtml, tablesJson, presetJson, openingAssets);
   
   // opening-regex.html 是完整的HTML文档，直接使用
-  const replaceString = "====\n```html\n" + finalHtml + "\n```";
+  const replaceString = wrapFrontendHtml(finalHtml, '\n<div style="white-space:pre-wrap">$1</div>');
   
   return {
     id: generateUUID(),
@@ -471,7 +479,7 @@ function createRegexScriptFromConfig(scriptConfig, replaceString) {
 
 function createPlotBeautifyRegex(plotBeautifyHtml, scriptConfig) {
   const finalHtml = ensureCompleteHtml(plotBeautifyHtml);
-  const replaceString = "====\n```html\n" + finalHtml + "\n```";
+  const replaceString = wrapFrontendHtml(finalHtml);
   return createRegexScriptFromConfig(scriptConfig, replaceString);
 }
 
@@ -483,7 +491,7 @@ function createStatusBarRegex(statusBarHtml, runtimeJs = '') {
   // 检查并补全完整HTML格式
   const finalHtml = inlineMultiplayerRuntime(statusBarHtml, runtimeJs);
   
-  const replaceString = "====\n```html\n" + finalHtml + "\n```";
+  const replaceString = wrapFrontendHtml(finalHtml);
   
   return {
     id: generateUUID(),

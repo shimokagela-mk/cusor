@@ -43,7 +43,7 @@ function getChat(){
   return null;
 }
 function esc(s){return String(s==null?'':s).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
-function escapeRegex(s){return String(s).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}
+function escapeRegex(s){return String(s).replace(/[.*+?^${}()|[\]\\]/g,function(ch){return '\\'+ch;});}
 function sourcesOf(msg){
   var out=[], seen={};
   function add(v){if(typeof v!=='string')return; var t=v.trim(); if(!t||seen[t])return; seen[t]=1; out.push(t);}
