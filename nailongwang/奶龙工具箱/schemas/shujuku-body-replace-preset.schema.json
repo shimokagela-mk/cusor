@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "shujuku Body Replace Preset",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["name", "promptGroup"],
+    "properties": {
+      "name": { "type": "string" },
+      "promptGroup": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["role", "content"],
+          "properties": {
+            "role": { "type": "string" },
+            "content": { "type": "string" },
+            "deletable": { "type": "boolean" }
+          },
+          "additionalProperties": true
+        }
+      }
+    },
+    "additionalProperties": true
+  }
+}

@@ -1,0 +1,430 @@
+{
+  "mate": {
+    "type": "chatSheets",
+    "version": 1,
+    "updateConfigUiSentinel": -1,
+    "globalInjectionConfig": {
+      "readableEntryPlacement": {
+        "position": "before_char",
+        "depth": 2,
+        "order": 99981
+      },
+      "wrapperPlacement": {
+        "position": "before_char",
+        "depth": 2,
+        "order": 99980
+      }
+    }
+  },
+  "sheet_GlobalData": {
+    "uid": "sheet_GlobalData",
+    "name": "全局数据表",
+    "sourceData": {
+      "note": "记录当前关卡与场景壳。有且仅有一行，更新必须 WHERE row_id = 1。\n- 当前位置：本关场景\n- 当前时间：可按关虚构\n- 天数：周目天数\n- 时段：关卡中 / 结算后 / 待命\n- 主角当前状态：本关身份+正在做的事",
+      "initNode": "INSERT INTO global_state (row_id, current_location, cur_time, day_count, time_slot, protagonist_action) VALUES (1, '模拟器大厅', '2026-11-10 10:00', 1, '待命', '等待抽关');",
+      "deleteNode": "禁止删除。",
+      "updateNode": "抽关/换场景/结算时更新。",
+      "insertNode": "禁止操作。",
+      "ddl": "CREATE TABLE global_state (\n  row_id INTEGER PRIMARY KEY,\n  current_location TEXT NOT NULL,\n  cur_time TEXT NOT NULL,\n  day_count INTEGER NOT NULL DEFAULT 1,\n  time_slot TEXT NOT NULL DEFAULT '待命' CHECK(time_slot IN ('关卡中', '结算后', '待命')),\n  protagonist_action TEXT NOT NULL\n);"
+    },
+    "content": [
+      [
+        "row_id",
+        "当前位置",
+        "当前时间",
+        "天数",
+        "时段",
+        "主角当前状态"
+      ],
+      [
+        1,
+        "模拟器大厅",
+        "2026-11-10 10:00",
+        1,
+        "待命",
+        "等待抽关"
+      ]
+    ],
+    "updateConfig": {
+      "uiSentinel": -1,
+      "contextDepth": 4,
+      "updateFrequency": 1,
+      "batchSize": 2,
+      "skipFloors": -1,
+      "groupId": 1
+    },
+    "exportConfig": {
+      "enabled": false,
+      "splitByRow": false,
+      "entryName": "全局数据表",
+      "entryType": "constant",
+      "keywords": "",
+      "preventRecursion": true,
+      "injectionTemplate": "",
+      "extraIndexEnabled": false,
+      "extraIndexEntryName": "",
+      "extraIndexColumns": [],
+      "extraIndexColumnModes": {},
+      "extraIndexInjectionTemplate": "",
+      "entryPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 2,
+        "order": 100
+      }
+    }
+  },
+  "sheet_Stage": {
+    "uid": "sheet_Stage",
+    "name": "关卡进度表",
+    "sourceData": {
+      "note": "当前关卡一行（可历史追加）。记录 id、标题、标签、模式、身份、浅三条。",
+      "initNode": "初始可空表；抽关后插入或更新当前关。",
+      "deleteNode": "允许在重抽时删除未结算行。",
+      "updateNode": "每轮可更新反抗/风险/服从与备注。",
+      "insertNode": "抽关时插入新关。",
+      "ddl": "CREATE TABLE stage_progress (\n  row_id INTEGER PRIMARY KEY,\n  stage_id TEXT NOT NULL,\n  title TEXT NOT NULL,\n  tags TEXT,\n  mode TEXT CHECK(mode IN ('速暴','渐进')),\n  identity TEXT,\n  cast_text TEXT,\n  resist INTEGER DEFAULT 50,\n  risk INTEGER DEFAULT 30,\n  obey INTEGER DEFAULT 20,\n  status TEXT DEFAULT '进行中',\n  note TEXT\n);"
+    },
+    "content": [
+      [
+        "row_id",
+        "关卡ID",
+        "标题",
+        "标签",
+        "模式",
+        "身份",
+        "出场",
+        "反抗",
+        "风险",
+        "服从",
+        "状态",
+        "备注"
+      ]
+    ],
+    "updateConfig": {
+      "uiSentinel": -1,
+      "contextDepth": 4,
+      "updateFrequency": 1,
+      "batchSize": 2,
+      "skipFloors": -1,
+      "groupId": 1
+    },
+    "exportConfig": {
+      "enabled": false,
+      "splitByRow": false,
+      "entryName": "关卡进度表",
+      "entryType": "constant",
+      "keywords": "",
+      "preventRecursion": true,
+      "injectionTemplate": "",
+      "extraIndexEnabled": false,
+      "extraIndexEntryName": "",
+      "extraIndexColumns": [],
+      "extraIndexColumnModes": {},
+      "extraIndexInjectionTemplate": "",
+      "entryPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 2,
+        "order": 101
+      }
+    }
+  },
+  "sheet_NcBlYRH5": {
+    "uid": "sheet_NcBlYRH5",
+    "name": "重要角色表",
+    "sourceData": {
+      "note": "固定团名册。一行一人。",
+      "initNode": "初始化五位女主。",
+      "deleteNode": "禁止删除固定团。",
+      "updateNode": "更新在场与当前状态。",
+      "insertNode": "模板路人一般不进此表。",
+      "ddl": "CREATE TABLE important_chars (\n  row_id INTEGER PRIMARY KEY,\n  name TEXT NOT NULL UNIQUE,\n  intro TEXT,\n  relation TEXT,\n  present TEXT,\n  state TEXT,\n  look TEXT\n);"
+    },
+    "content": [
+      [
+        "row_id",
+        "姓名",
+        "一句话介绍",
+        "与玩家关系",
+        "是否在场",
+        "当前状态",
+        "外貌特征"
+      ],
+      [
+        1,
+        "沈晚晴",
+        "28·姐线·嘴硬",
+        "本关可切换",
+        "否",
+        "待命",
+        "成熟身材"
+      ],
+      [
+        2,
+        "沈婉婷",
+        "22·女儿线·反差",
+        "本关可切换",
+        "否",
+        "待命",
+        "萝莉脸成年身"
+      ],
+      [
+        3,
+        "陈亦勤",
+        "27·人妻·温柔",
+        "本关可切换",
+        "否",
+        "待命",
+        "高挑白腿"
+      ],
+      [
+        4,
+        "尹安琪",
+        "30·冷脸同事",
+        "本关可切换",
+        "否",
+        "待命",
+        "163臀摆"
+      ],
+      [
+        5,
+        "丁可",
+        "26·孕期泼辣",
+        "本关可切换",
+        "否",
+        "待命",
+        "C罩杯热肿"
+      ]
+    ],
+    "updateConfig": {
+      "uiSentinel": -1,
+      "contextDepth": 4,
+      "updateFrequency": 1,
+      "batchSize": 2,
+      "skipFloors": -1,
+      "groupId": 1
+    },
+    "exportConfig": {
+      "enabled": false,
+      "splitByRow": false,
+      "entryName": "重要角色表",
+      "entryType": "constant",
+      "keywords": "",
+      "preventRecursion": true,
+      "injectionTemplate": "",
+      "extraIndexEnabled": false,
+      "extraIndexEntryName": "",
+      "extraIndexColumns": [],
+      "extraIndexColumnModes": {},
+      "extraIndexInjectionTemplate": "",
+      "entryPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 2,
+        "order": 102
+      }
+    }
+  },
+  "sheet_Residue": {
+    "uid": "sheet_Residue",
+    "name": "浅残留表",
+    "sourceData": {
+      "note": "固定团跨关浅残留。模板路人不要写入。\n服从余味/把柄摘要/心理余味。",
+      "initNode": "五人各一行，初始空余味。",
+      "deleteNode": "禁止删除。",
+      "updateNode": "结算时微量更新。",
+      "insertNode": "仅固定团。",
+      "ddl": "CREATE TABLE residue (\n  row_id INTEGER PRIMARY KEY,\n  char_name TEXT NOT NULL UNIQUE,\n  obey_echo INTEGER DEFAULT 0,\n  leverage_echo TEXT,\n  mind_echo TEXT\n);"
+    },
+    "content": [
+      [
+        "row_id",
+        "角色名",
+        "服从余味",
+        "把柄余味",
+        "心理余味"
+      ],
+      [
+        1,
+        "沈晚晴",
+        0,
+        null,
+        null,
+        [
+          2,
+          "沈婉婷",
+          0,
+          null,
+          null,
+          [
+            3,
+            "陈亦勤",
+            0,
+            null,
+            null,
+            [
+              4,
+              "尹安琪",
+              0,
+              null,
+              null,
+              [
+                5,
+                "丁可",
+                0,
+                null,
+                null
+              ]
+            ]
+          ]
+        ]
+      ]
+    ],
+    "updateConfig": {
+      "uiSentinel": -1,
+      "contextDepth": 4,
+      "updateFrequency": 1,
+      "batchSize": 2,
+      "skipFloors": -1,
+      "groupId": 1
+    },
+    "exportConfig": {
+      "enabled": false,
+      "splitByRow": false,
+      "entryName": "浅残留表",
+      "entryType": "constant",
+      "keywords": "",
+      "preventRecursion": true,
+      "injectionTemplate": "",
+      "extraIndexEnabled": false,
+      "extraIndexEntryName": "",
+      "extraIndexColumns": [],
+      "extraIndexColumnModes": {},
+      "extraIndexInjectionTemplate": "",
+      "entryPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 2,
+        "order": 103
+      }
+    }
+  },
+  "sheet_Leverage": {
+    "uid": "sheet_Leverage",
+    "name": "把柄清单表",
+    "sourceData": {
+      "note": "把柄一行一条。状态：有效/已销毁。",
+      "initNode": "可空。",
+      "deleteNode": "可标记销毁，不物理删。",
+      "updateNode": "取得/使用/销毁时更新。",
+      "insertNode": "新把柄插入。",
+      "ddl": "CREATE TABLE leverage (\n  row_id INTEGER PRIMARY KEY,\n  target TEXT,\n  kind TEXT,\n  strength INTEGER,\n  summary TEXT,\n  status TEXT,\n  note TEXT\n);"
+    },
+    "content": [
+      [
+        "row_id",
+        "对象",
+        "类型",
+        "强度",
+        "内容摘要",
+        "状态",
+        "备注"
+      ]
+    ],
+    "updateConfig": {
+      "uiSentinel": -1,
+      "contextDepth": 4,
+      "updateFrequency": 1,
+      "batchSize": 2,
+      "skipFloors": -1,
+      "groupId": 1
+    },
+    "exportConfig": {
+      "enabled": false,
+      "splitByRow": false,
+      "entryName": "把柄清单表",
+      "entryType": "constant",
+      "keywords": "",
+      "preventRecursion": true,
+      "injectionTemplate": "",
+      "extraIndexEnabled": false,
+      "extraIndexEntryName": "",
+      "extraIndexColumns": [],
+      "extraIndexColumnModes": {},
+      "extraIndexInjectionTemplate": "",
+      "entryPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 2,
+        "order": 104
+      }
+    }
+  },
+  "sheet_3NoMc1wI": {
+    "uid": "sheet_3NoMc1wI",
+    "name": "纪要表",
+    "sourceData": {
+      "note": "轮次日志，每轮交互后必须立即插入一条新记录。\n- 列0: 时间跨度 - 本轮事件时间范围，格式 YYYY-MM-DD HH:MM 或 YYYY-MM-DD HH:MM ~ YYYY-MM-DD HH:MM。\n- 列1: 地点 - 本轮主要地点，从大到小。\n- 列2: 纪要 - 第三方视角客观记录本轮事实，不少于200字，不总结升华，不编造未出现情节。\n- 列3: 概览 - 30字以内一句话概括。\n- 列4: 编码索引 - 格式 AMXXXX，从 AM0001 递增，全表唯一。",
+      "initNode": "故事初始化时插入 AM0001，记录开场。\nSQL示例: INSERT INTO chronicle (row_id, time_span, location, chronicle_text, summary, code_index) VALUES (1, '2026-03-10 10:00 ~ 2026-03-10 10:20', '澄禾科技-工程区', '工作日上午，玩家在工程区处理任务。公司前台、市场与后勤按日常运转。本轮尚未与核心同事展开深入互动，场景停留在到岗后的正常工作氛围。', '开场：工作日上午到岗。', 'AM0001');",
+      "deleteNode": "禁止删除。",
+      "updateNode": "禁止操作。",
+      "insertNode": "每轮交互结束后插入一条新记录，编码索引递增。\nSQL示例: INSERT INTO chronicle (row_id, time_span, location, chronicle_text, summary, code_index) VALUES ((SELECT COALESCE(MAX(row_id),0)+1 FROM chronicle), '2026-03-10 12:05 ~ 2026-03-10 12:40', '公司附近-餐馆', '纪要正文……', '与同事午饭短聚。', 'AM0002');",
+      "ddl": "CREATE TABLE chronicle ( -- 纪要表\n  row_id INTEGER PRIMARY KEY, -- 行号\n  time_span TEXT NOT NULL CHECK(time_span GLOB '????-??-?? ??:??' OR time_span GLOB '????-??-?? ??:?? ~ ????-??-?? ??:??'), -- 时间跨度\n  location TEXT NOT NULL, -- 地点\n  chronicle_text TEXT NOT NULL, -- 纪要\n  summary TEXT NOT NULL CHECK(LENGTH(summary) <= 60), -- 概览\n  code_index TEXT NOT NULL UNIQUE CHECK(code_index GLOB 'AM[0-9][0-9][0-9][0-9]') -- 编码索引\n);"
+    },
+    "content": [
+      [
+        "row_id",
+        "时间跨度",
+        "地点",
+        "纪要",
+        "概览",
+        "编码索引"
+      ]
+    ],
+    "updateConfig": {
+      "uiSentinel": -1,
+      "contextDepth": 6,
+      "updateFrequency": 1,
+      "batchSize": 4,
+      "skipFloors": -1,
+      "groupId": 3
+    },
+    "exportConfig": {
+      "enabled": true,
+      "splitByRow": true,
+      "entryName": "纪要",
+      "entryType": "keyword",
+      "keywords": "编码索引",
+      "preventRecursion": true,
+      "injectionTemplate": "<记忆回溯>\n$1\n</记忆回溯>",
+      "extraIndexEnabled": true,
+      "extraIndexEntryName": "纪要索引",
+      "extraIndexColumns": [
+        "概览",
+        "编码索引"
+      ],
+      "extraIndexColumnModes": {
+        "概览": "index_only",
+        "编码索引": "both"
+      },
+      "extraIndexInjectionTemplate": "<已发生的事件概览>\n$1\n</已发生的事件概览>",
+      "entryPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 999,
+        "order": 10000
+      },
+      "extraIndexPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 1000,
+        "order": 10010
+      },
+      "fixedEntryPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 9999,
+        "order": 99987
+      },
+      "fixedIndexPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 9999,
+        "order": 99988
+      }
+    },
+    "orderNo": 4
+  }
+}

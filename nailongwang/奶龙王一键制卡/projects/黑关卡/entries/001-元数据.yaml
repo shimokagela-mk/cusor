@@ -1,0 +1,20 @@
+uid: 1
+comment: 元数据
+content: |
+  world_name: 黑关卡
+  theme_tags: 随机关卡 | 强奸模拟器 | AV题材大全包 | 强迫 | 玩弄 | NTR | 人妻 | 女儿 | 姐姐 | 多人
+  tone: 关卡壳轻系统 | 正文色情写满 | 反抗必须再被压
+  era: 当代都市（场景可按关切换）
+  description: |
+    随机抽关的成人向强制模拟器。每关人物/场景/玩家身份可不同。
+    固定团负责深度与浅残留；模板路人负责题材广度。
+    模式：速暴 / 渐进。口令驱动抽关与结算。
+
+position: before_char
+enabled: true
+constant: true
+prevent_recursion: true
+insertion_order: 1
+depth: 4
+role: 0
+keys: []

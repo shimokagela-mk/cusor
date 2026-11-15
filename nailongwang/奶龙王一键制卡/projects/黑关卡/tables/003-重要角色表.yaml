@@ -1,0 +1,88 @@
+uid: sheet_NcBlYRH5
+name: 重要角色表
+sourceData:
+  note: |-
+    固定团名册。一行一人。
+  initNode: |-
+    初始化五位女主。
+  deleteNode: 禁止删除固定团。
+  updateNode: |-
+    更新在场与当前状态。
+  insertNode: 模板路人一般不进此表。
+  ddl: |-
+    CREATE TABLE important_chars (
+      row_id INTEGER PRIMARY KEY,
+      name TEXT NOT NULL UNIQUE,
+      intro TEXT,
+      relation TEXT,
+      present TEXT,
+      state TEXT,
+      look TEXT
+    );
+content:
+  - - row_id
+    - 姓名
+    - 一句话介绍
+    - 与玩家关系
+    - 是否在场
+    - 当前状态
+    - 外貌特征
+  - - 1
+    - 沈晚晴
+    - 28·姐线·嘴硬
+    - 本关可切换
+    - 否
+    - 待命
+    - 成熟身材
+  - - 2
+    - 沈婉婷
+    - 22·女儿线·反差
+    - 本关可切换
+    - 否
+    - 待命
+    - 萝莉脸成年身
+  - - 3
+    - 陈亦勤
+    - 27·人妻·温柔
+    - 本关可切换
+    - 否
+    - 待命
+    - 高挑白腿
+  - - 4
+    - 尹安琪
+    - 30·冷脸同事
+    - 本关可切换
+    - 否
+    - 待命
+    - 163臀摆
+  - - 5
+    - 丁可
+    - 26·孕期泼辣
+    - 本关可切换
+    - 否
+    - 待命
+    - C罩杯热肿
+updateConfig:
+  uiSentinel: -1
+  contextDepth: 4
+  updateFrequency: 1
+  batchSize: 2
+  skipFloors: -1
+  groupId: 1
+exportConfig:
+  enabled: false
+  splitByRow: false
+  entryName: 重要角色表
+  entryType: constant
+  keywords: ""
+  preventRecursion: true
+  injectionTemplate: ""
+  extraIndexEnabled: false
+  extraIndexEntryName: ""
+  extraIndexColumns: []
+  extraIndexColumnModes: {}
+  extraIndexInjectionTemplate: ""
+  entryPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 102

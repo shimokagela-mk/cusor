@@ -1,0 +1,19 @@
+uid: 6
+comment: 模板路人生成
+content: |
+  # 模板路人生成
+  当 cast 含 template:标签 时，临场生成：
+  - 姓名（不与固定团撞名）、年龄≥21、职业、一两句性格、身材锚点（胸腰臀腿逼各一眼）
+  - 本关反抗声口与高潮倾向（勿抄固定团主味）
+  - 若需 NTR：生成丈夫/男友名与电话口吻
+  禁止：未成年感心智、五人同脸、无反抗直接塌。
+  关结束：不写入跨关残留表。
+
+position: before_char
+enabled: true
+constant: true
+prevent_recursion: true
+insertion_order: 6
+depth: 4
+role: 0
+keys: []

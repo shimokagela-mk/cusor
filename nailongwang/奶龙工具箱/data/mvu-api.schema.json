@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MVU API Knowledge Base",
+  "type": "object",
+  "required": ["name", "language", "updated_at", "sources", "runtime", "events", "apis"],
+  "properties": {
+    "name": { "type": "string" },
+    "language": { "type": "string" },
+    "updated_at": { "type": "string" },
+    "sources": { "type": "array", "items": { "type": "string" } },
+    "scope_note": { "type": "string" },
+    "runtime": { "type": "object" },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "trigger", "listener_signature"],
+        "additionalProperties": true
+      }
+    },
+    "legacy_event_names": { "type": "object" },
+    "apis": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "signature", "description"],
+        "additionalProperties": true
+      }
+    },
+    "command_syntax": { "type": "object" },
+    "prompt_template": { "type": "object" },
+    "frontend_helpers": { "type": "object" },
+    "common_patterns": { "type": "array" },
+    "integration_notes": { "type": "array" }
+  },
+  "additionalProperties": true
+}

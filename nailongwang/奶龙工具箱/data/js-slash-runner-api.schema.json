@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "JS-Slash-Runner API Knowledge Base",
+  "type": "object",
+  "required": ["name", "language", "updated_at", "sources", "apis"],
+  "properties": {
+    "name": { "type": "string" },
+    "language": { "type": "string" },
+    "updated_at": { "type": "string" },
+    "sources": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "security_notice": { "type": "string" },
+    "runtime": { "type": "object" },
+    "types": { "type": "object" },
+    "apis": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "category", "signature", "description"],
+        "properties": {
+          "name": { "type": "string" },
+          "category": { "type": "string" },
+          "signature": { "type": "string" },
+          "description": { "type": "string" },
+          "parameters": { "type": "object" },
+          "returns": { "type": "string" },
+          "examples": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "cautions": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "key_options": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "events": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "source": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "sillytavern_native_common_context": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "usage_notes": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": true
+}

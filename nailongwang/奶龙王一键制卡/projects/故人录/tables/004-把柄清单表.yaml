@@ -1,0 +1,51 @@
+uid: sheet_Leverage
+name: 把柄清单表
+sourceData:
+  note: |-
+    把柄一行一条。状态：有效/已销毁。
+  initNode: 可空。
+  deleteNode: 可标记销毁，不物理删。
+  updateNode: 取得/使用/销毁时更新。
+  insertNode: 新把柄插入。
+  ddl: |-
+    CREATE TABLE leverage (
+      row_id INTEGER PRIMARY KEY,
+      target TEXT,
+      kind TEXT,
+      strength INTEGER,
+      summary TEXT,
+      status TEXT,
+      note TEXT
+    );
+content:
+  - - row_id
+    - 对象
+    - 类型
+    - 强度
+    - 内容摘要
+    - 状态
+    - 备注
+updateConfig:
+  uiSentinel: -1
+  contextDepth: 4
+  updateFrequency: 1
+  batchSize: 2
+  skipFloors: -1
+  groupId: 1
+exportConfig:
+  enabled: false
+  splitByRow: false
+  entryName: 把柄清单表
+  entryType: constant
+  keywords: ""
+  preventRecursion: true
+  injectionTemplate: ""
+  extraIndexEnabled: false
+  extraIndexEntryName: ""
+  extraIndexColumns: []
+  extraIndexColumnModes: {}
+  extraIndexInjectionTemplate: ""
+  entryPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 104

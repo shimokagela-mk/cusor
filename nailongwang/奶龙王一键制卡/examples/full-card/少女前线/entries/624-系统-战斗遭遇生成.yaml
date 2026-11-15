@@ -1,0 +1,54 @@
+uid: 624
+comment: 系统-战斗遭遇生成
+content: |
+  # 战斗遭遇 JSON 协议
+  用途：只约束战斗时如何输出 `<gfl-battle-encounter>`；这是前端战斗UI读取的机器协议块，不是自然语言描写；块内必须是严格JSON对象。
+
+  # 触发条件
+  仅当当前楼正文已让具体敌方单位进入可交战范围，才允许在正文最后追加1个协议块。
+  允许：敌方已接敌/交火/伏击/追击/守点/突围/增援；当前 `<战役>` 允许的Boss正式进入可交战阶段；上一轮已在战斗中且本轮继续处理同一批敌人。
+  禁止：行军、侦察、对话、整备、撤退、战后复盘、情报分析；只有雷达发现/远处目击/背景战况但无具体接敌；只有“铁血/军方/帕拉蒂斯”等势力名而无具体可战斗单位。
+
+  # 敌人来源
+  `enemyType` 必须来自当前 `<战役>` 敌人池；`enemyName` 是当前战斗唯一实例名，不是兵种类型，同战斗不得重复；当前章节没给出的敌人禁止写入；禁止跨章节提前引入后期Boss/阵营/未解锁敌人；禁止把势力名/组织名/抽象目标当 `enemyType`；普通遭遇优先当前章节普通敌人，Boss只在决战/关键据点/追击高潮/明确遭遇时出现。
+
+  # 唯一合法格式
+  协议块必须在正文最后；同一楼最多1个；块内只能放1个JSON对象；不要Markdown代码块、中文key-value行或解释文本。
+  <gfl-battle-encounter>
+  {"version":1,"current":[],"additions":[{"enemyName":"兵蚁-街口1","enemyType":"兵蚁","count":1,"threatLevel":"low","reason":"街道巡逻单位进入交火距离"},{"enemyName":"兵蚁-街口2","enemyType":"兵蚁","count":1,"threatLevel":"low","reason":"街道巡逻单位进入交火距离"}],"total":2}
+  </gfl-battle-encounter>
+
+  # JSON Schema
+  顶层只能有：`version`=数字1；`current`=上一轮已在场且继续战斗敌人数组；`additions`=本楼新进入战斗敌人数组；`total`=当前战斗敌人总数。
+  `current[]` 字段：`slot`=1到5出战位；`enemyName`=当前战斗唯一实例名，沿用敌人配置表/地图元素表名称；`enemyType`=当前章节敌人池兵种；`status`=短状态，如“继续战斗”“受损追击”。
+  `additions[]` 字段：`enemyName`=本战斗唯一实例名，如“兵蚁-街口1”；`enemyType`=当前章节敌人池兵种；`count`=1到5；`threatLevel`=`low|mid|high|boss`；`reason`=不超过30字短原因。
+
+  # 命名与计数
+  `enemyType`=兵种类型，可重复，只查敌人池属性；`enemyName`=实例名，写入配置/地图元素，同战斗唯一。不要把 `enemyType` 直接复制成 `enemyName`，除非该兵种只有1个。同兵种多个单位推荐拆多个 `count:1` 条目；若 `count>1`，`enemyName` 必须是可加序号前缀，前端会展开为 `enemyName-1/2`。`current[].enemyName` 必须沿用已有实例名，不得改回兵种名。
+  `total=current.length+sum(additions[].count)`；范围1到5；已有5敌人时 `additions=[]`；已在场敌人不要重复进 `additions`；Boss不要重复新增；增援只写真正新进入当前战斗的单位；按实例数统计，不按兵种数。
+
+  # 稳定输出硬规则
+  JSON必须合法，推荐一行压缩；key只能用英文：`version/current/additions/total/slot/enemyName/enemyType/status/count/threatLevel/reason`；字符串用英文双引号；不要单引号、尾随逗号、JSON外说明/注释/编号/项目符号/Markdown代码块；不要旧格式如“新增敌人: 敌人名称=...”；不要自然语言行格式；顶层必须对象，不能数组；不要 `items/enemies/data` 等未定义字段；协议块内不要写生命/伤害/命中/回避/护甲等数值。
+
+  # 示例
+  首次遭遇：<gfl-battle-encounter>{"version":1,"current":[],"additions":[{"enemyName":"兵蚁-街口1","enemyType":"兵蚁","count":1,"threatLevel":"low","reason":"街道巡逻单位进入交火距离"},{"enemyName":"兵蚁-街口2","enemyType":"兵蚁","count":1,"threatLevel":"low","reason":"街道巡逻单位进入交火距离"}],"total":2}</gfl-battle-encounter>
+  继续战斗+新增：<gfl-battle-encounter>{"version":1,"current":[{"slot":1,"enemyName":"兵蚁-街口1","enemyType":"兵蚁","status":"继续战斗"},{"slot":2,"enemyName":"兵蚁-街口2","enemyType":"兵蚁","status":"继续战斗"}],"additions":[{"enemyName":"巡游者-北巷","enemyType":"巡游者","count":1,"threatLevel":"low","reason":"增援从路口进入交火距离"}],"total":3}</gfl-battle-encounter>
+
+  # 输出前自检
+  1. 当前楼是否真的接敌；没有则不输出。
+  2. `enemyType` 是否来自当前 `<战役>` 敌人池；不确定则不写。
+  3. `enemyName` 是否本战斗唯一且不是直接重复兵种名。
+  4. 协议块是否位于正文最后且只有1个。
+  5. 块内是否严格JSON对象。
+  6. 顶层是否只有 `version/current/additions/total`。
+  7. `version` 是否为数字1。
+  8. `total` 是否等于 `current.length+sum(additions[].count)` 且不超过5。
+keys: []
+secondary_keys: []
+enabled: true
+constant: true
+position: before_char
+insertion_order: 624
+depth: 4
+role: 0
+prevent_recursion: true

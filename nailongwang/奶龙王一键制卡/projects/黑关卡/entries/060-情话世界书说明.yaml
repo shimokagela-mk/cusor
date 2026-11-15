@@ -1,0 +1,17 @@
+uid: 60
+comment: 情话世界书说明
+content: |
+  # 情话包默认不进上下文
+  assets/liaosao/worldinfo-v9.4.1.json 仍留在项目里，但不再合并进本卡。
+  七百多条绿灯会占掉预算，把叙述洗淡。
+  脏度、逼过程、电话、玩弄、女儿破处、公共潮喷，只以本卡蓝灯和本卡正例为准。
+  若要玩法灵感，可在酒馆单独导入那个 json，插入顺序必须低于 1000，并且不要开常量。
+
+position: before_char
+enabled: true
+constant: true
+prevent_recursion: true
+insertion_order: 9790
+depth: 4
+role: 0
+keys: []

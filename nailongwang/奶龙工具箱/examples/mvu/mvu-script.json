@@ -1,0 +1,13 @@
+{
+  "type": "script",
+  "enabled": true,
+  "name": "MVU 变量控制脚本样例",
+  "id": "00000000-0000-4000-8000-000000000020",
+  "content": "\n(function () {\n    'use strict';\n\n    const TH = window.TavernHelper;\n    if (!TH) {\n        console.warn('[MVU 样例] 未检测到 JS-Slash-Runner / TavernHelper');\n        return;\n    }\n\n    function notify(msg, level = 'info') {\n        if (window.toastr && typeof window.toastr[level] === 'function') {\n            window.toastr[level](msg, 'MVU 样例');\n        } else {\n            console.log(`[MVU 样例][${level}]`, msg);\n        }\n    }\n\n    async function main() {\n        // 等待 MVU 初始化\n        await waitGlobalInitialized('Mvu');\n\n        // 1. 命令解析后清理路径\n        eventOn(Mvu.events.COMMAND_PARSED, commands => {\n            commands.forEach(c => {\n                c.args[0] = c.args[0].replaceAll('-', '');\n            });\n        });\n\n        // 2. 数值范围限制\n        eventOn(Mvu.events.VARIABLE_UPDATE_ENDED, (next, prev) => {\n            _.update(next, 'stat_data.白娅.依存度', v => _.clamp(v, 0, 100));\n        });\n\n        // 3. 限制单轮变化幅度\n        eventOn(Mvu.events.VARIABLE_UPDATE_ENDED, (next, prev) => {\n            const old = _.get(prev, 'stat_data.白娅.依存度');\n            if (typeof old === 'number') {\n                _.update(next, 'stat_data.白娅.依存度', v => _.clamp(v, old - 3, old + 3));\n            }\n        });\n\n        // 4. 注入阶段提示词激活绿灯\n        eventOn(Mvu.events.VARIABLE_UPDATE_ENDED, vars => {\n            const value = _.get(vars, 'stat_data.白娅.依存度');\n            let stage = '一';\n            if (typeof value === 'number') {\n                if (value >= 80) stage = '五';\n                else if (value >= 60) stage = '四';\n                else if (value >= 40) stage = '三';\n                else if (value >= 20) stage = '二';\n            }\n            injectPrompts([{\n                id: '激活-白娅阶段',\n                content: `白娅阶段${stage}`,\n                position: 'none',\n                depth: 0,\n                role: 'user',\n                should_scan: true,\n            }]);\n        });\n\n        notify('MVU 样例脚本已就绪', 'success');\n    }\n\n    main().catch(error => {\n        console.error('[MVU 样例] 初始化失败', error);\n        notify(error.message || String(error), 'error');\n    });\n})();\n",
+  "info": "JS-Slash-Runner 上的 MVU 控制脚本样例：等待 Mvu 初始化、命令解析清理、数值范围限制、单轮幅度限制、变量驱动绿灯激活。",
+  "button": {
+    "enabled": false,
+    "buttons": []
+  },
+  "data": {}
+}

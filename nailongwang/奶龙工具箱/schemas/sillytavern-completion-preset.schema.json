@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SillyTavern Completion Preset",
+  "type": "object",
+  "required": ["prompts", "prompt_order"],
+  "properties": {
+    "temperature": { "type": "number" },
+    "openai_max_context": { "type": "number" },
+    "openai_max_tokens": { "type": "number" },
+    "prompts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["identifier", "name"],
+        "properties": {
+          "identifier": { "type": "string" },
+          "name": { "type": "string" },
+          "role": { "type": "string" },
+          "content": { "type": "string" },
+          "system_prompt": { "type": "boolean" },
+          "marker": { "type": "boolean" },
+          "position": { "type": "string" },
+          "depth": { "type": ["number", "null"] },
+          "order": { "type": "number" },
+          "triggers": { "type": "array", "items": { "type": "string" } }
+        },
+        "additionalProperties": true
+      }
+    },
+    "prompt_order": { "type": "array" }
+  },
+  "additionalProperties": true
+}

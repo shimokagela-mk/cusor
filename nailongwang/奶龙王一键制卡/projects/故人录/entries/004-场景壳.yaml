@@ -1,0 +1,26 @@
+uid: 4
+comment: 场景壳
+content: |
+  # 场景壳
+  ## 回村/老家
+  易遇：小妹、小娇、周雅琴；偶遇亲戚来串门。
+  ## 走亲戚
+  易遇：小静、小萌、亚会、明月；可开姐妹花。
+  ## 同学会
+  初中：赵慧（红雨/史可对照）+模板
+  高中：朱梦婷、苏甜甜
+  大学：杨阳
+  ## 回城/工作
+  模板女同事；故人来城偶遇。
+  ## 电话/线上
+  约见、NTR、把柄。
+  每轮点明场景、在场者、风险（丈夫/家人/同学）。
+
+position: before_char
+enabled: true
+constant: true
+prevent_recursion: true
+insertion_order: 4
+depth: 4
+role: 0
+keys: []
