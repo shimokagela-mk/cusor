@@ -1,0 +1,9 @@
+{
+  "name": "窥私",
+  "plan": "current-plan.yaml",
+  "entriesDir": "entries",
+  "tablesDir": "tables",
+  "tablesFormat": "yaml",
+  "frontendDir": "frontend",
+  "releaseDir": "release"
+}
