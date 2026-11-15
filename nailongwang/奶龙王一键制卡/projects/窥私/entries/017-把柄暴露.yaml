@@ -14,6 +14,9 @@ content: |
   ## 与讲述
   讲述验收的脏话复述可直接沉淀为把柄摘要写入表。
 
+  ## 开局种子
+  模式2/模式3的把柄与交叉原文在「口令与模式」。点模式当轮照写进表，禁止换成另一套自拍或另一段录音。
+
 position: after_char
 enabled: true
 constant: true
