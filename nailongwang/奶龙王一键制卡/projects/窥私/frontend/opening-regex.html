@@ -14,6 +14,9 @@ body{background:transparent;color:#1f2937;font-family:"Noto Serif SC","Source Ha
 .import-btn{min-width:220px;border:0;border-radius:4px;padding:12px 26px;background:#0f172a;color:#f8fafc;font-weight:700;font-size:14px;letter-spacing:1px;cursor:pointer;transition:transform .2s,background .2s}
 .import-btn:hover{transform:translateY(-1px);background:#1e293b}
 .import-btn:disabled{cursor:not-allowed;background:#94a3b8;transform:none}
+.mode-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:12px}
+.mode-btn{border:1px solid #0f172a;border-radius:4px;padding:8px 14px;background:#fff;color:#0f172a;font-weight:700;font-size:13px;cursor:pointer}
+.mode-btn:disabled{cursor:not-allowed;opacity:.45}
 .status{margin-top:10px;min-height:20px;font-size:12px;color:#0369a1;opacity:0;transition:opacity .25s;font-family:"IBM Plex Sans","Noto Sans SC",sans-serif}
 .status.show{opacity:1}.status.err{color:#b91c1c}.status.ok{color:#047857}
 @media(max-width:680px){.opening-content{padding:18px 16px}.office-actions{padding:0 16px 18px}.import-btn{width:100%;min-width:0}}
@@ -23,8 +26,13 @@ body{background:transparent;color:#1f2937;font-family:"Noto Serif SC","Source Ha
 <div class="office-opening">
   <div class="opening-content" id="openingContent">$1</div>
   <div class="office-actions">
-    <button class="import-btn" id="importTableButton">导入表格并开始</button>
-    <div class="status" id="statusMessage">等待导入</div>
+    <button class="import-btn" id="importTableButton">导入表格</button>
+    <div class="mode-row" id="modeRow">
+      <button class="mode-btn" id="mode1" disabled>模式1 日常</button>
+      <button class="mode-btn" id="mode2" disabled>模式2 把柄</button>
+      <button class="mode-btn" id="mode3" disabled>模式3 高堕落</button>
+    </div>
+    <div class="status show" id="statusMessage">先导入，再点模式。模式2/3会把种子直接写入表。</div>
   </div>
 </div>
 <script>
@@ -35,7 +43,7 @@ var PRESET_ENTRY_KEY='__ACU_PRESET_DATA__';
 var button=document.getElementById('importTableButton');
 var statusEl=document.getElementById('statusMessage');
 function setStatus(text,type){statusEl.textContent=text;statusEl.className='status show '+(type||'');}
-function resetButton(){button.disabled=false;button.textContent='导入表格并开始';}
+function resetButton(){button.disabled=false;button.textContent='导入表格';}
 function roots(){var list=[window];try{if(window.parent&&window.parent!==window)list.push(window.parent)}catch(e){}try{if(window.top&&window.top!==window)list.push(window.top)}catch(e){}return list;}
 function getApi(){var rs=roots();for(var i=0;i<rs.length;i++){try{if(rs[i].AutoCardUpdaterAPI&&typeof rs[i].AutoCardUpdaterAPI.initGameSession==='function')return rs[i].AutoCardUpdaterAPI;}catch(e){}}return null;}
 function getEntryKeys(entry){
@@ -106,8 +114,8 @@ async function importTables(){
     if(presetData)opts.presetData=presetData;
     var result=await api.initGameSession({}, opts);
     if(result&&result.success===false){setStatus('导入失败：'+(result.message||'未知错误'),'err');resetButton();return;}
-    var sent=sendToTavern('开始');
-    setStatus(sent?'已导入，开始指令已发送':'已导入，但未找到酒馆发送按钮','ok');
+    ['mode1','mode2','mode3'].forEach(function(id){document.getElementById(id).disabled=false;});
+    setStatus('表已导入。点模式后才会开场；模式2/3会先写入种子。','ok');
     button.textContent='已导入';
   }catch(e){
     console.error('[窥私开场初始化] 导入失败:',e);
@@ -115,7 +123,93 @@ async function importTables(){
     resetButton();
   }
 }
+var LEV2=[
+  {对象:'陈亦宁',类型:'照片',内容摘要:'浴室穴口拉丝自拍未删，备孕聊天写射里面',强度:'3',可威胁谁:'周予安',状态:'持有',备注:'模式2种子'},
+  {对象:'沈知夏',类型:'录音',内容摘要:'云盘婚内录音叫老公，门锁有弟弟进出',强度:'4',可威胁谁:'陆远峰',状态:'持有',备注:'她反握你射在姐穴里'},
+  {对象:'尹可',类型:'聊天记录',内容摘要:'检索潮喷怎么忍的截图在茶水间公用盘',强度:'2',可威胁谁:'陈亦宁',状态:'泄露风险',备注:'亦宁只看见文件名'},
+  {对象:'周晚棠',类型:'监控',内容摘要:'猫眼：未拉帘换衣，阴唇轮廓',强度:'2',可威胁谁:'梁叙',状态:'持有',备注:'模式2种子'}
+];
+var CROSS2=[
+  {隐私主人:'尹可',感知者:'陈亦宁',媒介:'误发',感知程度:'2',摘要:'公用盘文件名被看见，正文未打开',状态:'升温'},
+  {隐私主人:'陈亦宁',感知者:'沈知夏',媒介:'聊天记录',感知程度:'1',摘要:'亦宁跟姐姐吐槽有人翻相册，不知是弟弟',状态:'潜伏'},
+  {隐私主人:'周晚棠',感知者:'丁可儿',媒介:'隔墙',感知程度:'2',摘要:'可儿听过对门叫床，当作风言',状态:'潜伏'}
+];
+var LEV3={对象:'丁可儿',类型:'录音',内容摘要:'报平安语音里夹着操、要漏了',强度:'3',可威胁谁:'张恒',状态:'持有',备注:'模式3'};
+var CROSS3={隐私主人:'沈知夏',感知者:'陈亦宁',媒介:'误发',感知程度:'3',摘要:'亦宁收到过一段不像给丈夫的破音，已压下未外传',状态:'升温'};
+var CONF=[
+  {对象:'陈亦宁',问题摘要:'和丈夫怎么做',供词摘要:'予安喜欢正面，射里面，她潮到袜边',是否对质:'是',可沉淀把柄:'是',编码:'CF0001'},
+  {对象:'沈知夏',问题摘要:'高潮叫谁',供词摘要:'叫老公；被追问后骂完承认想过弟弟',是否对质:'是',可沉淀把柄:'是',编码:'CF0002'},
+  {对象:'丁可儿',问题摘要:'隔墙知不知道',供词摘要:'知道有人听，懒得管；后入，潮得比张恒快',是否对质:'是',可沉淀把柄:'否',编码:'CF0003'}
+];
+var CORR={
+  '陈亦宁':{堕落:'62',服从:'48',当前玩法标记:'通话NTR',备注:'模式3'},
+  '沈知夏':{堕落:'58',服从:'35',当前玩法标记:'互胁',备注:'模式3'},
+  '尹可':{堕落:'44',服从:'22',当前玩法标记:'反录',备注:'模式3'},
+  '丁可儿':{堕落:'70',服从:'40',当前玩法标记:'电话NTR',备注:'模式3'},
+  '周晚棠':{堕落:'55',服从:'30',当前玩法标记:'半公开',备注:'模式3'}
+};
+var RES={
+  '陈亦宁':{服从余味:'24',把柄余味:'自拍',心理余味:'愧',备注:'袜边还记得'},
+  '沈知夏':{服从余味:'17',把柄余味:'录音',心理余味:'恨',备注:'门没锁死'},
+  '尹可':{服从余味:'11',把柄余味:'反录',心理余味:'不认账',备注:'工牌是干净的'},
+  '丁可儿':{服从余味:'20',把柄余味:'语音',心理余味:'骂',备注:'门反锁过'},
+  '周晚棠':{服从余味:'15',把柄余味:'猫眼',心理余味:'懒刺',备注:'阳台藏过人'}
+};
+function contentOf(all,name){
+  if(!all)return [];
+  var direct=all[name];
+  if(Array.isArray(direct))return direct;
+  if(direct&&Array.isArray(direct.content))return direct.content;
+  for(var k in all){
+    var v=all[k];
+    if(v&&v.name===name&&Array.isArray(v.content))return v.content;
+  }
+  return [];
+}
+function dataRows(rows){return rows.length>1?rows.slice(1):[];}
+function hasText(rows,col,text){return rows.some(function(r){return String(r[col]||'')===text;});}
+async function applyMode(mode){
+  var api=getApi();
+  if(!api||!api.exportTableAsJson){setStatus('表还不能写，请先导入','err');return;}
+  ['mode1','mode2','mode3'].forEach(function(id){document.getElementById(id).disabled=true;});
+  try{
+    if(api.updateRow)await api.updateRow('全局数据表',1,{模式:mode,主角当前状态:mode==='模式1'?'准备撞见一次具体隐私':mode==='模式2'?'持有模式2种子，准备对质':'交叉网已成，准备续玩'});
+    if(mode!=='模式1'&&api.insertRow){
+      var all=api.exportTableAsJson();
+      var lev=dataRows(contentOf(all,'把柄清单表'));
+      var cross=dataRows(contentOf(all,'隐私交叉表'));
+      var conf=dataRows(contentOf(all,'隐私供词录'));
+      if(!hasText(lev,1,'陈亦宁')){for(var i=0;i<LEV2.length;i++)await api.insertRow('把柄清单表',LEV2[i]);}
+      if(!hasText(cross,1,'尹可')){for(var j=0;j<CROSS2.length;j++)await api.insertRow('隐私交叉表',CROSS2[j]);}
+      if(mode==='模式3'){
+        all=api.exportTableAsJson();
+        lev=dataRows(contentOf(all,'把柄清单表'));
+        cross=dataRows(contentOf(all,'隐私交叉表'));
+        conf=dataRows(contentOf(all,'隐私供词录'));
+        if(!hasText(lev,1,'丁可儿'))await api.insertRow('把柄清单表',LEV3);
+        if(!hasText(cross,5,'亦宁收到过一段不像给丈夫的破音，已压下未外传'))await api.insertRow('隐私交叉表',CROSS3);
+        if(!conf.length){for(var c=0;c<CONF.length;c++)await api.insertRow('隐私供词录',CONF[c]);}
+        var names=['陈亦宁','沈知夏','尹可','丁可儿','周晚棠'];
+        for(var n=0;n<names.length;n++){
+          if(api.updateRow){
+            await api.updateRow('堕落服从表',n+1,CORR[names[n]]);
+            await api.updateRow('浅残留表',n+1,RES[names[n]]);
+          }
+        }
+      }
+    }
+    var sent=sendToTavern(mode);
+    setStatus(sent?mode+' 已写入表并发送':'表已写入，请手动发送：'+mode,'ok');
+  }catch(e){
+    console.error('[窥私开场初始化] 模式写入失败:',e);
+    setStatus('写入失败：'+(e&&e.message?e.message:mode),'err');
+    ['mode1','mode2','mode3'].forEach(function(id){document.getElementById(id).disabled=false;});
+  }
+}
 button.addEventListener('click', importTables);
+document.getElementById('mode1').addEventListener('click', function(){applyMode('模式1');});
+document.getElementById('mode2').addEventListener('click', function(){applyMode('模式2');});
+document.getElementById('mode3').addEventListener('click', function(){applyMode('模式3');});
 })();
 </script>
 </body>
