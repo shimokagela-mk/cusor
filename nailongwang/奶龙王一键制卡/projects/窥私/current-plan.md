@@ -3,13 +3,23 @@
 ## 基本信息
 
 - 卡名：窥私 · Mid · 完整新卡 · 五件套无立绘
-- 版本：v0.4.0-tables
+- 版本：v0.5.0
 
 ## 当前阶段
 
-阶段6 表格 — **八张表已写入**  
-下一阶段：阶段7 组件（开场白/状态栏/推进预设/推进前端）  
-另：`prompts/11` shujuku 本地测（无密钥可先 fake smoke）
+阶段8 打包确认 — **组件五件套已齐；verify-release 通过；等用户说「确认打包」**
+
+## 组件
+
+| 资产 | 路径 |
+|------|------|
+| 开场白 | frontend/opening.html |
+| 开场正则 | frontend/opening-regex.html |
+| 状态栏 | frontend/status-bar.html |
+| 剧情推进预设 | frontend/剧情推进.json + entries/998-ACU |
+| 推进美化/正则 | frontend/推进美化.html + 推进正则配置.json |
+| 表格 ACU | entries/999-ACU-表格模板.yaml |
+| release | release/窥私.json（已 build+verify） |
 
 ## 表格
 
@@ -24,7 +34,13 @@
 | 007 | 隐私交叉表 |
 | 008 | 纪要表 |
 
+## 验收
+
+- verify-release：passed（21 条目；ACU 模板/预设匹配）
+- shujuku fake both：填表变化数 6；`api.callAI 已生成`；上游 bundle 404 走 fallback，正式填表验收需本机有 shujuku dist
+
 ## 进度记录
 
 - 001–019 世界书；五女语料；019+first_mes
 - 表格八张写入
+- 前端五件套 + 998/999 ACU + release JSON

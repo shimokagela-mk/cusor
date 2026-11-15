@@ -5,5 +5,7 @@
   "tablesDir": "tables",
   "tablesFormat": "yaml",
   "frontendDir": "frontend",
-  "releaseDir": "release"
+  "assetsDir": "assets",
+  "releaseDir": "release",
+  "sourceCard": "card.json"
 }
