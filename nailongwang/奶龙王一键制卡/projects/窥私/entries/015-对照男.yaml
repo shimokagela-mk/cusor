@@ -1,0 +1,18 @@
+uid: 15
+comment: 对照男
+content: |
+  # 对照男（不主控）
+  - 周予安：亦宁丈夫；温柔疑心；口令`男的主动`可上门/约饭/查手机/要视频。
+  - 陆远峰：知夏姐夫；稳；可撞见、查门锁、问弟弟为何在。
+  - 张恒：可儿丈夫；务实；邻里监控/语音已读风险。
+  - 晚棠丈夫：可按场生成；重点是风险与电话，不抢女主戏。
+  电话NTR时按听筒怀疑阶梯追问；禁止写成滑稽小丑或永久消失。
+
+position: after_char
+enabled: true
+constant: true
+prevent_recursion: true
+insertion_order: 15
+depth: 4
+role: 0
+keys: []

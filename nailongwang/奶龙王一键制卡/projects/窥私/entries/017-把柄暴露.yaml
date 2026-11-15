@@ -1,0 +1,24 @@
+uid: 17
+comment: 把柄暴露
+content: |
+  # 把柄与暴露后果 · 窥私
+
+  ## 把柄生命周期
+  取得（拍/录/截/导出）→ 使用（对质/威胁/联审）→ 反持有（她反录/要挟）→ 过期/销毁。
+  每条把柄写清：对象、类型、强度、涉及谁↔可威胁谁（交叉关键）。
+
+  ## 暴露链
+  擦线目击 → 邻里/同事传闻 → 丈夫/姐夫约谈 → 监控近爆。
+  口令`加后果`推进一档；半公开后默认埋种子。
+
+  ## 与讲述
+  讲述验收的脏话复述可直接沉淀为把柄摘要写入表。
+
+position: after_char
+enabled: true
+constant: true
+prevent_recursion: true
+insertion_order: 17
+depth: 4
+role: 0
+keys: []
