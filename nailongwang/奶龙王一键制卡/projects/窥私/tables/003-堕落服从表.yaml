@@ -1,0 +1,88 @@
+uid: sheet_Corruption
+name: 堕落服从表
+sourceData:
+  note: |-
+    固定团黑深渊进度。一行一人。好感≠服从。
+    - 列0: 角色名
+    - 列1: 堕落 0-100
+    - 列2: 服从 0-100
+    - 列3: 当前玩法标记 - 无/讲述中/上班玩具/通话NTR/取证中/串线中 等
+    - 列4: 备注 ≤60字
+    档位提示可被对话越级：0-20试探；21-40私下；41-60半公开；61-80电话NTR/近暴露；81-100常态深渊仍禁整场全配合。
+    有效黑化 +3~12；强烈公开/强制 +8~15；成功反制服从-5~10。
+  initNode: |-
+    五女各一行，堕落0服从0。
+  deleteNode: 禁止删除。
+  updateNode: 有效黑化/讲述推进/反制时更新。
+  insertNode: 仅长期升格对象进入核心线时添加。
+  ddl: |-
+    CREATE TABLE corruption (
+      row_id INTEGER PRIMARY KEY,
+      char_name TEXT NOT NULL UNIQUE,
+      corruption INTEGER NOT NULL DEFAULT 0 CHECK(corruption >= 0 AND corruption <= 100),
+      obedience INTEGER NOT NULL DEFAULT 0 CHECK(obedience >= 0 AND obedience <= 100),
+      play_flag TEXT NOT NULL DEFAULT '无',
+      note TEXT
+    );
+content:
+  - - row_id
+    - 角色名
+    - 堕落
+    - 服从
+    - 当前玩法标记
+    - 备注
+  - - 1
+    - 陈亦宁
+    - 0
+    - 0
+    - 无
+    - ""
+  - - 2
+    - 沈知夏
+    - 0
+    - 0
+    - 无
+    - ""
+  - - 3
+    - 尹可
+    - 0
+    - 0
+    - 无
+    - ""
+  - - 4
+    - 丁可儿
+    - 0
+    - 0
+    - 无
+    - ""
+  - - 5
+    - 周晚棠
+    - 0
+    - 0
+    - 无
+    - ""
+updateConfig:
+  uiSentinel: -1
+  contextDepth: 4
+  updateFrequency: 1
+  batchSize: 3
+  skipFloors: -1
+  groupId: 2
+exportConfig:
+  enabled: false
+  splitByRow: false
+  entryName: 堕落服从表
+  entryType: constant
+  keywords: ""
+  preventRecursion: true
+  injectionTemplate: ""
+  extraIndexEnabled: false
+  extraIndexEntryName: ""
+  extraIndexColumns: []
+  extraIndexColumnModes: {}
+  extraIndexInjectionTemplate: ""
+  entryPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 120
+orderNo: 3

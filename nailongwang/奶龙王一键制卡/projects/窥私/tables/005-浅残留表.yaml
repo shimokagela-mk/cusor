@@ -1,0 +1,86 @@
+uid: sheet_Residue
+name: 浅残留表
+sourceData:
+  note: |-
+    固定团与升格路人的跨场余味。一行一人。
+    - 列0: 角色名
+    - 列1: 服从余味 0-100
+    - 列2: 把柄余味 - 短词
+    - 列3: 心理余味 - 短词（恨/愧/懒刺等）
+    - 列4: 备注
+    无互动不涨；有效压迫后微调；反制可降服从余味。
+  initNode: 五女各一行，余味0。
+  deleteNode: 禁止删固定团行。
+  updateNode: 场后更新余味。
+  insertNode: 升格路人时添加。
+  ddl: |-
+    CREATE TABLE residue (
+      row_id INTEGER PRIMARY KEY,
+      char_name TEXT NOT NULL UNIQUE,
+      obey_echo INTEGER NOT NULL DEFAULT 0 CHECK(obey_echo >= 0 AND obey_echo <= 100),
+      leverage_echo TEXT,
+      mind_echo TEXT,
+      note TEXT
+    );
+content:
+  - - row_id
+    - 角色名
+    - 服从余味
+    - 把柄余味
+    - 心理余味
+    - 备注
+  - - 1
+    - 陈亦宁
+    - 0
+    - ""
+    - ""
+    - ""
+  - - 2
+    - 沈知夏
+    - 0
+    - ""
+    - ""
+    - ""
+  - - 3
+    - 尹可
+    - 0
+    - ""
+    - ""
+    - ""
+  - - 4
+    - 丁可儿
+    - 0
+    - ""
+    - ""
+    - ""
+  - - 5
+    - 周晚棠
+    - 0
+    - ""
+    - ""
+    - ""
+updateConfig:
+  uiSentinel: -1
+  contextDepth: 3
+  updateFrequency: 2
+  batchSize: 3
+  skipFloors: -1
+  groupId: 2
+exportConfig:
+  enabled: false
+  splitByRow: false
+  entryName: 浅残留表
+  entryType: constant
+  keywords: ""
+  preventRecursion: true
+  injectionTemplate: ""
+  extraIndexEnabled: false
+  extraIndexEntryName: ""
+  extraIndexColumns: []
+  extraIndexColumnModes: {}
+  extraIndexInjectionTemplate: ""
+  entryPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 140
+orderNo: 5

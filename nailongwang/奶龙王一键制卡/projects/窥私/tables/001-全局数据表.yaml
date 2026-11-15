@@ -1,0 +1,68 @@
+uid: sheet_GlobalData
+name: 全局数据表
+sourceData:
+  note: |-
+    记录当前场景壳、位置、时间、模式与主角即时状态。有且仅有一行，WHERE row_id = 1。
+    - 列0: 场景壳 - 只能是：公司 / 邻里 / 亲戚 / 酒店 / 线上 / 地铁 / 街头 / 小区逛。
+    - 列1: 当前位置 - 从大到小，如：澄禾附近-茶水间、某小区-12栋电梯。
+    - 列2: 当前时间 - YYYY-MM-DD HH:MM。
+    - 列3: 天数 - 整数≥1；过00:00 +1。
+    - 列4: 模式 - 只能是：模式1 / 模式2 / 模式3 / 未选。
+    - 列5: 主角当前状态 - 正在做的具体事（含讲述中/取证中等）。
+  initNode: |-
+    INSERT INTO global_state (row_id, scene_shell, current_location, cur_time, day_count, play_mode, protagonist_action) VALUES (1, '邻里', '城市-回家路上', '2026-11-15 18:30', 1, '未选', '准备进入窥私日常');
+  deleteNode: 禁止删除。
+  updateNode: |-
+    切壳、换地、换模式、推进时间或行动时更新。
+    SQL示例: UPDATE global_state SET scene_shell = '公司', current_location = '公司-茶水间', cur_time = '2026-11-16 10:20', play_mode = '模式1', protagonist_action = '撞见亦宁锁屏' WHERE row_id = 1;
+  insertNode: 禁止。
+  ddl: |-
+    CREATE TABLE global_state (
+      row_id INTEGER PRIMARY KEY,
+      scene_shell TEXT NOT NULL CHECK(scene_shell IN ('公司','邻里','亲戚','酒店','线上','地铁','街头','小区逛')),
+      current_location TEXT NOT NULL,
+      cur_time TEXT NOT NULL,
+      day_count INTEGER NOT NULL DEFAULT 1 CHECK(day_count >= 1),
+      play_mode TEXT NOT NULL DEFAULT '未选' CHECK(play_mode IN ('模式1','模式2','模式3','未选')),
+      protagonist_action TEXT NOT NULL
+    );
+content:
+  - - row_id
+    - 场景壳
+    - 当前位置
+    - 当前时间
+    - 天数
+    - 模式
+    - 主角当前状态
+  - - 1
+    - 邻里
+    - 城市-回家路上
+    - 2026-11-15 18:30
+    - 1
+    - 未选
+    - 准备进入窥私日常
+updateConfig:
+  uiSentinel: -1
+  contextDepth: 4
+  updateFrequency: 1
+  batchSize: 2
+  skipFloors: -1
+  groupId: 1
+exportConfig:
+  enabled: false
+  splitByRow: false
+  entryName: 全局数据表
+  entryType: constant
+  keywords: ""
+  preventRecursion: true
+  injectionTemplate: ""
+  extraIndexEnabled: false
+  extraIndexEntryName: ""
+  extraIndexColumns: []
+  extraIndexColumnModes: {}
+  extraIndexInjectionTemplate: ""
+  entryPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 100
+orderNo: 1

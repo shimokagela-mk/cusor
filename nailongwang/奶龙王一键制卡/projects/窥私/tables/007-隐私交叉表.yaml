@@ -1,0 +1,59 @@
+uid: sheet_CrossPrivacy
+name: 隐私交叉表
+sourceData:
+  note: |-
+    记录 A 的隐私被 B 感知的程度。一行一条交叉边。
+    - 列0: 隐私主人 - A
+    - 列1: 感知者 - B（或「路人/监控」）
+    - 列2: 媒介 - 误发/监控/隔墙/茶水间目击/门禁/调包 等
+    - 列3: 感知程度 - 0未知/1听说/2半知情/3确凿/4已引爆
+    - 列4: 摘要 ≤40字
+    - 列5: 状态 - 潜伏/升温/已引爆/已压下
+    口令串线时应插入或升级一行；无媒介禁止无端升高到确凿。
+  initNode: 可空。
+  deleteNode: 一般改状态不删。
+  updateNode: 感知程度/状态变化时更新。
+  insertNode: 新交叉边出现时插入。
+  ddl: |-
+    CREATE TABLE cross_privacy (
+      row_id INTEGER PRIMARY KEY,
+      owner_name TEXT NOT NULL,
+      perceiver TEXT NOT NULL,
+      medium TEXT NOT NULL,
+      level INTEGER NOT NULL DEFAULT 0 CHECK(level >= 0 AND level <= 4),
+      summary TEXT,
+      status TEXT NOT NULL DEFAULT '潜伏' CHECK(status IN ('潜伏','升温','已引爆','已压下'))
+    );
+content:
+  - - row_id
+    - 隐私主人
+    - 感知者
+    - 媒介
+    - 感知程度
+    - 摘要
+    - 状态
+updateConfig:
+  uiSentinel: -1
+  contextDepth: 4
+  updateFrequency: 2
+  batchSize: 3
+  skipFloors: -1
+  groupId: 2
+exportConfig:
+  enabled: false
+  splitByRow: false
+  entryName: 隐私交叉表
+  entryType: constant
+  keywords: ""
+  preventRecursion: true
+  injectionTemplate: ""
+  extraIndexEnabled: false
+  extraIndexEntryName: ""
+  extraIndexColumns: []
+  extraIndexColumnModes: {}
+  extraIndexInjectionTemplate: ""
+  entryPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 160
+orderNo: 7
