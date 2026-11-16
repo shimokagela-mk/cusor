@@ -1,0 +1,62 @@
+uid: sheet_Leverage
+name: 把柄清单表
+sourceData:
+  note: |-
+    一行一个把柄。
+    - 列0: 对象
+    - 列1: 类型 - 照片/录音/物品/目击/聊天记录/监控/其他
+    - 列2: 内容摘要 ≤40字
+    - 列3: 强度 1-5
+    - 列4: 可威胁谁 - 可空；交叉关键（如「可威胁周予安/沈知夏」）
+    - 列5: 状态 - 持有/已使用/已销毁/泄露风险/反持有/已过期
+    - 列6: 备注
+    模式2/3开局种子原文在世界书「口令与模式」，点模式当轮照写，禁止另编。
+  initNode: 导入时空表（模式1）。用户点模式2或模式3的当轮，按世界书种子插入，不得改摘要。
+  deleteNode: 彻底销毁且无需留痕才删，否则改已销毁。
+  updateNode: 强度/状态/可威胁谁变化时更新。
+  insertNode: 新把柄出现时插入。
+  ddl: |-
+    CREATE TABLE leverage (
+      row_id INTEGER PRIMARY KEY,
+      target_name TEXT NOT NULL,
+      leverage_type TEXT NOT NULL CHECK(leverage_type IN ('照片','录音','物品','目击','聊天记录','监控','其他')),
+      summary TEXT NOT NULL,
+      intensity INTEGER NOT NULL DEFAULT 1 CHECK(intensity >= 1 AND intensity <= 5),
+      threaten TEXT,
+      status TEXT NOT NULL DEFAULT '持有' CHECK(status IN ('持有','已使用','已销毁','泄露风险','反持有','已过期')),
+      note TEXT
+    );
+content:
+  - - row_id
+    - 对象
+    - 类型
+    - 内容摘要
+    - 强度
+    - 可威胁谁
+    - 状态
+    - 备注
+updateConfig:
+  uiSentinel: -1
+  contextDepth: 4
+  updateFrequency: 2
+  batchSize: 3
+  skipFloors: -1
+  groupId: 2
+exportConfig:
+  enabled: false
+  splitByRow: false
+  entryName: 把柄清单表
+  entryType: constant
+  keywords: ""
+  preventRecursion: true
+  injectionTemplate: ""
+  extraIndexEnabled: false
+  extraIndexEntryName: ""
+  extraIndexColumns: []
+  extraIndexColumnModes: {}
+  extraIndexInjectionTemplate: ""
+  entryPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 130
+orderNo: 4

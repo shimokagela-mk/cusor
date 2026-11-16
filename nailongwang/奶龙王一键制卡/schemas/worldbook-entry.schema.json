@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Worldbook Entry",
+  "type": "object",
+  "properties": {
+    "comment": { "type": "string" },
+    "content": { "type": "string" },
+    "keys": { "type": "array", "items": { "type": "string" } },
+    "secondary_keys": { "type": "array", "items": { "type": "string" } },
+    "enabled": { "type": "boolean" },
+    "constant": { "type": "boolean" },
+    "position": { "type": "string" },
+    "insertion_order": { "type": "number" }
+  },
+  "required": ["content"]
+}

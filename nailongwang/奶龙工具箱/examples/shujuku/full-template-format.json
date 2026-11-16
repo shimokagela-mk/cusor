@@ -1,0 +1,63 @@
+{
+  "sheet_example": {
+    "uid": "sheet_example",
+    "name": "Table Name",
+    "sourceData": {
+      "note": "Table note placeholder. Describe table purpose and column semantics here.",
+      "initNode": "Initialization instruction placeholder.",
+      "deleteNode": "Delete instruction placeholder.",
+      "updateNode": "Update instruction placeholder.",
+      "insertNode": "Insert instruction placeholder.",
+      "ddl": "CREATE TABLE example_table (row_id INTEGER PRIMARY KEY, field_a TEXT, field_b TEXT);"
+    },
+    "content": [
+      [
+        "row_id",
+        "field_a",
+        "field_b"
+      ]
+    ],
+    "updateConfig": {
+      "uiSentinel": -1,
+      "contextDepth": -1,
+      "updateFrequency": -1,
+      "batchSize": -1,
+      "skipFloors": -1
+    },
+    "exportConfig": {
+      "enabled": false,
+      "splitByRow": false,
+      "entryName": "Worldbook Entry Name",
+      "entryType": "constant",
+      "keywords": "",
+      "preventRecursion": true,
+      "injectionTemplate": "",
+      "extraIndexEnabled": false,
+      "extraIndexEntryName": "Worldbook Index Entry Name",
+      "extraIndexColumns": [],
+      "extraIndexColumnModes": {},
+      "extraIndexInjectionTemplate": "",
+      "entryPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 2,
+        "order": 10000
+      },
+      "extraIndexPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 2,
+        "order": 10010
+      },
+      "fixedEntryPlacement": {
+        "position": "before_character_definition",
+        "depth": 2,
+        "order": 99981
+      },
+      "fixedIndexPlacement": {
+        "position": "before_character_definition",
+        "depth": 2,
+        "order": 99980
+      }
+    },
+    "orderNo": 0
+  }
+}

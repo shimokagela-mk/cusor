@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Body Replace Preset Name",
+    "promptGroup": [
+      {
+        "role": "SYSTEM",
+        "content": "System instruction placeholder. Define rewriting/replacement rules here.",
+        "deletable": true
+      },
+      {
+        "role": "USER",
+        "content": "User example/input placeholder.",
+        "deletable": true
+      },
+      {
+        "role": "assistant",
+        "content": "Assistant example/output placeholder.",
+        "deletable": true
+      },
+      {
+        "role": "USER",
+        "content": "Output template placeholder. Include required JSON response shape if needed.",
+        "deletable": true
+      },
+      {
+        "role": "assistant",
+        "content": "Assistant prefill placeholder.",
+        "deletable": true
+      }
+    ]
+  }
+]

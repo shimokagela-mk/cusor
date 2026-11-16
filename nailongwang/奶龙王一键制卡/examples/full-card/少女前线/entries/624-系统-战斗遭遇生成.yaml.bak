@@ -1,0 +1,128 @@
+uid: 624
+comment: 系统-战斗遭遇生成
+content: |
+  # 战斗遭遇 JSON 协议
+
+  本条目只约束正文作者在发生战斗时如何输出 `<gfl-battle-encounter>`。这是前端战斗 UI 读取的机器协议块，不是自然语言描写。协议块内必须是严格 JSON 对象。
+
+  ## 触发条件
+
+  只有当前楼正文已经让具体敌方单位进入当前可交战范围时，才允许在正文末尾追加一个 `<gfl-battle-encounter>` 协议块。
+
+  允许输出：
+  - 敌方单位已经接敌、交火、伏击、追击、守点、突围或增援。
+  - 当前 `<战役>` 明确允许的 Boss 已正式进入可交战阶段。
+  - 上一轮已经在战斗中，本轮继续处理同一批敌人。
+
+  禁止输出：
+  - 行军、侦察、对话、整备、撤退、战后复盘、情报分析。
+  - 雷达发现、远处目击、大规模背景战况，但没有具体敌人接敌。
+  - 只有势力或组织出现，例如“铁血”“军方”“帕拉蒂斯”，没有具体可战斗单位。
+
+  ## 敌人来源
+
+  - `enemyType` 必须来自当前 `<战役>` 明确允许的敌人池。
+  - `enemyName` 是当前战斗中的唯一敌方实例名，不是兵种类型；同一战斗内不得重复。
+  - 当前章节没有给出的敌人，禁止写进协议块。
+  - 禁止跨章节提前引入后期 Boss、后期阵营单位或未解锁敌人。
+  - 禁止把势力名、组织名、抽象目标当作 `enemyType`。
+  - 普通遭遇优先使用当前章节普通敌人；Boss 只能在章节决战、关键据点、追击高潮或明确遭遇时出现。
+
+  ## 唯一合法格式
+
+  协议块必须位于正文最后，且同一楼最多输出 1 个。协议块内只能放一个 JSON 对象。不要使用 Markdown 代码块，不要使用中文 key-value 行，不要添加解释文本。
+
+  ```text
+  <gfl-battle-encounter>
+  {"version":1,"current":[],"additions":[{"enemyName":"兵蚁-街口1","enemyType":"兵蚁","count":1,"threatLevel":"low","reason":"街道巡逻单位进入交火距离"},{"enemyName":"兵蚁-街口2","enemyType":"兵蚁","count":1,"threatLevel":"low","reason":"街道巡逻单位进入交火距离"}],"total":2}
+  </gfl-battle-encounter>
+  ```
+
+  ## JSON Schema
+
+  顶层对象必须且只能包含以下字段：
+  - `version`: 固定数字 `1`。
+  - `current`: 数组，上一轮已经在场且本轮继续战斗的敌人。
+  - `additions`: 数组，本楼新进入当前战斗的敌人。
+  - `total`: 数字，当前战斗敌人总数。
+
+  `current` 数组元素字段：
+  - `slot`: 数字，敌方出战位，1 到 5。
+  - `enemyName`: 字符串，当前战斗中的唯一敌方实例名，必须与敌人配置表/地图元素表中的名称一致。
+  - `enemyType`: 字符串，兵种类型，必须来自当前章节敌人池。
+  - `status`: 字符串，短状态，例如 `"继续战斗"`、`"受损追击"`。
+
+  `additions` 数组元素字段：
+  - `enemyName`: 字符串，当前战斗中的唯一敌方实例名，必须在本次战斗内唯一，例如 `"兵蚁-街口1"`、`"兵蚁-街口2"`、`"巡游者-北巷"`。
+  - `enemyType`: 字符串，兵种类型，必须来自当前章节敌人池，例如 `"兵蚁"`、`"巡游者"`、`"稻草人"`。
+  - `count`: 数字，本楼新增数量，1 到 5。
+  - `threatLevel`: 字符串，只能用以下枚举之一：`"low"`、`"mid"`、`"high"`、`"boss"`。
+  - `reason`: 字符串，一句短原因，不超过 30 个汉字。
+
+  ## 命名规则
+
+  - `enemyType` 是兵种类型，只负责查敌人池属性；可以重复。
+  - `enemyName` 是实例名，只负责写入敌人配置表和地图元素表；同一场战斗内必须唯一。
+  - 不要把 `enemyType` 直接复制成 `enemyName`，除非当前战斗中该兵种只有 1 个。
+  - 同一兵种多个单位必须拆成多个 `additions` 条目或使用可展开的唯一前缀，推荐直接拆成多个 `count:1` 条目。
+  - 当 `count > 1` 时，`enemyName` 必须是可加序号的唯一前缀；前端会展开为 `enemyName-1`、`enemyName-2`，所以推荐直接输出多个 `count:1` 条目避免歧义。
+  - `current[].enemyName` 必须沿用敌人配置表已有实例名，不得改回兵种名。
+
+  ## 稳定输出硬规则
+
+  - JSON 必须是一行或多行合法 JSON；推荐一行压缩 JSON。
+  - JSON key 必须使用英文 key：`version/current/additions/total/slot/enemyName/enemyType/status/count/threatLevel/reason`。
+  - 字符串必须使用英文双引号 `"`。
+  - 不要使用单引号。
+  - 不要添加尾随逗号。
+  - 不要在 JSON 外添加任何说明、注释、编号、项目符号或 Markdown 代码块。
+  - 不要输出旧格式，例如 `新增敌人: 敌人名称=...`。
+  - 不要输出自然语言行格式。
+  - 不要输出数组作为顶层；顶层必须是对象。
+  - 不要输出 `items`、`enemies`、`data` 等未定义字段。
+  - 不要在协议块内写生命、伤害、命中、回避、护甲等战斗数值。
+
+  ## 计数规则
+
+  - `total` = `current.length` + 所有 `additions[].count` 合计。
+  - `total` 最小为 1，最大为 5。
+  - 如果已经有 5 个当前敌人，`additions` 必须是空数组。
+  - 已经在场的敌人不要重复写进 `additions`。
+  - 已经登场的 Boss 不要重复新增。
+  - 增援只写真正新进入当前战斗的单位。
+  - 统计 `total` 时按实例数统计，不按兵种数统计。
+
+  ## 示例
+
+  首次遭遇普通敌人：
+
+  <gfl-battle-encounter>
+  {"version":1,"current":[],"additions":[{"enemyName":"兵蚁-街口1","enemyType":"兵蚁","count":1,"threatLevel":"low","reason":"街道巡逻单位进入交火距离"},{"enemyName":"兵蚁-街口2","enemyType":"兵蚁","count":1,"threatLevel":"low","reason":"街道巡逻单位进入交火距离"}],"total":2}
+  </gfl-battle-encounter>
+
+  已有敌人继续战斗且新增 1 个敌人：
+
+  <gfl-battle-encounter>
+  {"version":1,"current":[{"slot":1,"enemyName":"兵蚁-街口1","enemyType":"兵蚁","status":"继续战斗"},{"slot":2,"enemyName":"兵蚁-街口2","enemyType":"兵蚁","status":"继续战斗"}],"additions":[{"enemyName":"巡游者-北巷","enemyType":"巡游者","count":1,"threatLevel":"low","reason":"增援从路口进入交火距离"}],"total":3}
+  </gfl-battle-encounter>
+
+  ## 输出前自检
+
+  输出协议块前必须自检：
+  1. 当前楼是否真的已经接敌；没有接敌则不输出协议块。
+  2. `enemyType` 是否来自当前 `<战役>` 允许敌人池；不确定则不写。
+  3. `enemyName` 是否是当前战斗内唯一实例名，且不是直接重复兵种名。
+  4. 协议块是否位于正文最后且只有 1 个。
+  5. 协议块内部是否是严格 JSON 对象。
+  6. 顶层是否只有 `version/current/additions/total`。
+  7. `version` 是否为数字 `1`。
+  8. `total` 是否等于 `current.length + sum(additions[].count)`，且不超过 5。
+keys: []
+secondary_keys: []
+enabled: true
+constant: true
+position: before_char
+insertion_order: 624
+depth: 4
+role: 0
+prevent_recursion: true

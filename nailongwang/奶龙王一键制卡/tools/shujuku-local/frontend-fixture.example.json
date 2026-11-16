@@ -1,0 +1,48 @@
+{
+  "scenarios": [
+    {
+      "name": "opening",
+      "type": "opening",
+      "files": ["frontend/opening.html"],
+      "seedTables": {
+        "纪要表": [
+          ["行号", "纪要"],
+          [1, "星辉港发现银钥匙"]
+        ]
+      },
+      "expectText": ["星辉港", "银钥匙"],
+      "expectApiCalls": ["exportTableAsJson"],
+      "interactions": []
+    },
+    {
+      "name": "status",
+      "type": "status",
+      "files": ["frontend/status.html"],
+      "seedTables": {
+        "主角状态表": [
+          ["行号", "状态", "体力"],
+          [1, "紧张", "80"]
+        ]
+      },
+      "expectText": ["紧张", "80"],
+      "expectApiCalls": ["exportTableAsJson"],
+      "interactions": []
+    },
+    {
+      "name": "progression",
+      "type": "progression",
+      "files": ["frontend/progression.html"],
+      "seedTables": {
+        "任务表": [
+          ["行号", "任务", "状态"],
+          [1, "调查旧灯塔", "进行中"]
+        ]
+      },
+      "expectText": ["调查旧灯塔"],
+      "expectApiCalls": ["exportTableAsJson", "insertRow"],
+      "interactions": [
+        { "selector": "[data-test=\"advance\"]", "type": "click" }
+      ]
+    }
+  ]
+}

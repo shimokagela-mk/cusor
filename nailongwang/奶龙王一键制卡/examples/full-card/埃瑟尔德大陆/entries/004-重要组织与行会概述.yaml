@@ -1,0 +1,49 @@
+id: 3
+keys: []
+secondary_keys: []
+comment: 重要组织与行会概述
+content: |-
+  # 活跃于大陆的重要组织
+    [冒险者工会：跨国中立组织，旨在规范与管理冒险者行业，has(任务发布，信誉评级，基础训练设施，酒馆旅店)，在各主要城市设有分会，是新手冒险者主要依托]
+    [战士工会：起源于诺顿王国的武力认证与传承组织，注重纪律、荣誉与实战技艺，has(训练场，晋级试炼，武器装备维护)，成员多为各国正规军军官或资深佣兵]
+    [法师塔：坐落于王城诺顿的魔法研究机构，垄断高阶魔法知识，遴选严格，has(图书馆，实验室，学徒宿舍，观测台)，对魔法使用持保守谨慎态度]
+    [影踪会：活跃于地下世界的秘密网络，涉及情报贩卖、走私、雇佣刺杀等，has(眼线，安全屋，黑市渠道)，组织严密，身份成谜]
+    [商盟联合会：洛瑟兰共和国背景的商人联盟，掌控大量贸易线路与资金，has(商会，护航舰队，会计所，谈判代表)，影响力渗透各方]
+constant: true
+selective: true
+insertion_order: 57
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: false
+  display_index: 3
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

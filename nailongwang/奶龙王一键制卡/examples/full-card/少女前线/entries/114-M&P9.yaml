@@ -1,0 +1,44 @@
+uid: 114
+comment: M&P9（HG/★★★★）
+content: |
+  <if db="db.出战配置表.where('人形名称','M&P9').exists()">
+  <M&P9>
+
+
+  ## 履历
+
+  M&P9，格里芬战术人形。
+
+
+  ## 声部一·社会
+
+  [暂无语音/剧情数据]
+
+
+  ## 声部二·内心
+
+  [暂无语音/剧情数据]
+
+
+  ## 声部三·他者
+
+
+  ## 声部四·作者
+
+  **语言核心**：暂无
+
+  M&P9的语言核心目前无法判定——她在ref数据中自身对话为0条、他者提及为0条，是整条目完全空白的状态。从角色定位看，M&P（Smith & Wesson M&P）系列在少女前线中属于★★★★手枪，理论上应有完整的语音列表，但当前数据源未收录她的任何台词。声部一和声部二的"暂无"标注不是偷懒，而是数据层面的真实空缺。后续如果有新的数据源补充她的语音和剧情台词，需要重新分析语言特征、重写声部四。
+
+
+  </M&P9>
+  </if>
+position: after_char
+enabled: true
+constant: false
+prevent_recursion: true
+insertion_order: 114
+depth: 4
+role: 0
+keys:
+- M&P9
+secondary_keys: []

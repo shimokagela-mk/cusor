@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "shujuku Database UI Theme",
+  "type": "object",
+  "required": ["formatVersion", "theme"],
+  "properties": {
+    "formatVersion": { "type": "number" },
+    "exportedAt": { "type": "string" },
+    "templateMeta": { "type": "object" },
+    "editableModules": { "type": "array" },
+    "guide": { "type": "object" },
+    "theme": {
+      "type": "object",
+      "required": ["id", "name"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "variables": { "type": "object" },
+        "customCSS": { "type": "string" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

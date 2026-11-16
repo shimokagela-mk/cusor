@@ -1,0 +1,19 @@
+uid: 1
+comment: 元数据
+content: |
+  world_name: 窥私
+  theme_tags: 他人隐私 | 偷窥 | 查手机 | 把柄 | 讲述逼问 | 强迫 | 玩弄 | NTR | 人妻 | 亲姐 | 多人交叉
+  tone: 日常冷硬 | 动手写满 | 隐私据为己有
+  era: 当代一线城市生活圈（职场 / 邻里 / 亲戚家 / 酒店 / 线上）
+  description: |
+    用户为唯一主角。舞台是可切换的场景壳；核心玩法是窥探、取证、讲述逼问与强迫占用。
+    固定团多人隐私交叉，彼此不知或半知。文风与硬边界见喜好存档与核心规则。
+
+position: before_char
+enabled: true
+constant: true
+prevent_recursion: true
+insertion_order: 1
+depth: 4
+role: 0
+keys: []

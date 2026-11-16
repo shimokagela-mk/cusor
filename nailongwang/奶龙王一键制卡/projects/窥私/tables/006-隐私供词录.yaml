@@ -1,0 +1,59 @@
+uid: sheet_Confession
+name: 隐私供词录
+sourceData:
+  note: |-
+    讲述/招 环节验收。一行一条供词。
+    - 列0: 对象
+    - 列1: 问题摘要 ≤30字（问了什么隐私）
+    - 列2: 供词摘要 ≤60字（必须具体：和谁/在哪/部位或次数等；禁「还好」）
+    - 列3: 是否对质 - 是/否（是否用已有把柄逼问）
+    - 列4: 可沉淀把柄 - 是/否（复述验收后是否写入把柄清单）
+    - 列5: 编码 - CF0001 递增
+    讲述完成后应插入；空答不合格需在正文逼问补全后再记。
+  initNode: 导入时空表。模式3当轮插入 CF0001–CF0003（原文见世界书）。模式1/2保持空表直到讲述验收。
+  deleteNode: 禁止随意删；用户明确作废才删。
+  updateNode: 供词补全或对质状态变化时更新。
+  insertNode: 每完成一轮有效讲述验收插入。
+  ddl: |-
+    CREATE TABLE confession (
+      row_id INTEGER PRIMARY KEY,
+      target_name TEXT NOT NULL,
+      question TEXT NOT NULL,
+      answer TEXT NOT NULL,
+      confronted TEXT NOT NULL DEFAULT '否' CHECK(confronted IN ('是','否')),
+      to_leverage TEXT NOT NULL DEFAULT '否' CHECK(to_leverage IN ('是','否')),
+      code_index TEXT NOT NULL UNIQUE CHECK(code_index GLOB 'CF[0-9][0-9][0-9][0-9]')
+    );
+content:
+  - - row_id
+    - 对象
+    - 问题摘要
+    - 供词摘要
+    - 是否对质
+    - 可沉淀把柄
+    - 编码
+updateConfig:
+  uiSentinel: -1
+  contextDepth: 4
+  updateFrequency: 1
+  batchSize: 3
+  skipFloors: -1
+  groupId: 2
+exportConfig:
+  enabled: false
+  splitByRow: false
+  entryName: 隐私供词录
+  entryType: constant
+  keywords: ""
+  preventRecursion: true
+  injectionTemplate: ""
+  extraIndexEnabled: false
+  extraIndexEntryName: ""
+  extraIndexColumns: []
+  extraIndexColumnModes: {}
+  extraIndexInjectionTemplate: ""
+  entryPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 150
+orderNo: 6

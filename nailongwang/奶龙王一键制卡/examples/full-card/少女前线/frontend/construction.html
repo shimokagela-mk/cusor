@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>少女前方 - 人形建造</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --y:#e8c840;--y-light:#f0d860;--y-dark:#b89820;
+  --k:#111;--k2:#1a1a1a;--k3:#222;
+  --wh:#f0f0f0;--gr:#999;--gr2:#666;--gr3:#444;
+  --warn:#e04040;--ok:#68c080;
+  --res-mp:#7cb8e0;--res-am:#e0a848;--res-ra:#68c080;--res-pt:#b888e0;--res-core:#ff6f9f;
+  --type-hg:#e8c840;--type-smg:#68c080;--type-rf:#7cb8e0;--type-ar:#e0a040;--type-mg:#c070d0;--type-sg:#e07070;
+}
+body{font-family:'Microsoft YaHei','PingFang SC','Noto Sans SC',sans-serif;background:#000;color:var(--wh);font-size:14px;line-height:1.4;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.gfl-page{position:relative;width:100%;min-height:100vh;min-height:100dvh;background:#0a0a0a;overflow:hidden}
+.gfl-page-bg{position:fixed;inset:0;background:radial-gradient(circle at 28% 18%,rgba(232,200,64,.16),transparent 34%),linear-gradient(135deg,#151515 0%,#080808 54%,#180808 100%);background-position:center;background-size:cover;background-repeat:no-repeat;z-index:0;opacity:.18}
+.gfl-page-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.18) 42%,rgba(0,0,0,.72))}
+.gfl-page-content{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:20px 16px 40px}
+.gfl-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--y)}
+.gfl-header h1{font-size:20px;letter-spacing:3px;color:var(--y);text-shadow:0 0 12px rgba(232,200,64,.2)}
+.gfl-header-back{background:none;border:2px solid var(--gr3);color:var(--gr);padding:6px 14px;font-size:12px;letter-spacing:1px;cursor:pointer;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);transition:all .15s}
+.gfl-header-back:hover{border-color:var(--y);color:var(--y)}
+.gfl-layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;align-items:start}
+.gfl-panel{background:rgba(18,18,18,.82);border:1px solid rgba(255,255,255,.08);box-shadow:0 12px 32px rgba(0,0,0,.32);overflow:hidden}
+.gfl-panel-title{display:flex;align-items:center;gap:8px;padding:9px 14px;background:linear-gradient(90deg,rgba(232,200,64,.18),rgba(255,255,255,.03));border-bottom:1px solid rgba(232,200,64,.22);font-size:13px;font-weight:700;letter-spacing:2px;color:var(--y)}
+.gfl-panel-title .tag{font-size:9px;color:var(--gr2);letter-spacing:1px}
+.gfl-panel-body{padding:14px}
+.gfl-res-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}
+.gfl-res-card{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07);padding:10px 9px;min-width:0}
+.gfl-res-name{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--gr);letter-spacing:1px;margin-bottom:4px}
+.gfl-res-dot{width:8px;height:8px;border-radius:50%;display:inline-block}.mp{background:var(--res-mp)}.am{background:var(--res-am)}.ra{background:var(--res-ra)}.pt{background:var(--res-pt)}.core{background:var(--res-core)}
+.gfl-res-val{font-size:18px;font-weight:700;letter-spacing:1px}.gfl-res-val.low{color:var(--warn)}
+.gfl-input-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.gfl-mode-tabs{display:flex;gap:8px;margin-bottom:12px}.gfl-mode-tab{border:1px solid var(--gr3);background:rgba(255,255,255,.035);color:var(--gr);padding:8px 14px;font-size:12px;font-weight:900;letter-spacing:1px;cursor:pointer}.gfl-mode-tab.active{border-color:var(--y);background:var(--y);color:#111}.gfl-equip-res{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;font-size:11px;color:var(--gr)}.gfl-equip-res span{background:rgba(0,0,0,.25);padding:4px 8px;border-left:3px solid var(--y)}
+.gfl-input-block{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);padding:10px}
+.gfl-input-label{display:flex;align-items:center;gap:6px;color:var(--gr);font-size:11px;letter-spacing:1px;margin-bottom:8px}
+.gfl-input-block input{width:100%;background:#090909;border:1px solid var(--gr3);color:var(--wh);font-size:18px;font-weight:700;text-align:center;padding:8px 4px;outline:none}
+.gfl-input-block input:focus{border-color:var(--y);box-shadow:0 0 0 1px rgba(232,200,64,.2)}
+.gfl-quick{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.gfl-equip-targets{display:none;margin:12px 0;padding:10px;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.07)}.gfl-equip-targets.show{display:block}.gfl-equip-target-title{font-size:10px;color:var(--gr2);letter-spacing:1px;margin:0 0 7px}.gfl-equip-target-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:9px}.gfl-equip-chip{border:1px solid var(--gr3);background:rgba(255,255,255,.035);color:var(--gr);padding:5px 10px;font-size:10px;letter-spacing:1px;cursor:pointer}.gfl-equip-chip:hover,.gfl-equip-chip.active{border-color:var(--y);color:#111;background:var(--y)}.gfl-equip-odds{font-size:10px;color:var(--gr);line-height:1.6;margin-bottom:8px}.gfl-equip-odds strong{color:var(--y)}.gfl-equip-pager{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:8px 0;color:var(--gr);font-size:10px}.gfl-equip-pager-controls{display:flex;gap:6px;align-items:center}.gfl-equip-page-btn{border:1px solid var(--gr3);background:rgba(255,255,255,.035);color:var(--gr);padding:4px 9px;font-size:10px;cursor:pointer}.gfl-equip-page-btn:hover:not(:disabled){border-color:var(--y);color:var(--y)}.gfl-equip-page-btn:disabled{opacity:.35;cursor:not-allowed}.gfl-equip-pool{margin-top:10px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}.gfl-equip-candidate{background:rgba(0,0,0,.24);border:1px solid rgba(255,255,255,.07);padding:8px}.gfl-equip-candidate strong{display:block;color:var(--y);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.gfl-equip-candidate span{display:block;margin-top:3px;color:var(--gr);font-size:9px;line-height:1.4}
+.gfl-build-count{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:10px 0 12px;padding:10px 12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07)}
+.gfl-build-count label{color:var(--gr);font-size:11px;letter-spacing:1px}.gfl-build-count input{width:88px;background:#090909;border:1px solid var(--gr3);color:var(--wh);font-size:18px;font-weight:800;text-align:center;padding:7px 4px;outline:none}.gfl-build-count input:focus{border-color:var(--y);box-shadow:0 0 0 1px rgba(232,200,64,.2)}.gfl-build-count-hint{font-size:10px;color:var(--gr2);letter-spacing:1px}
+.gfl-quick button,.gfl-build-btn,.gfl-claim-btn{border:1px solid var(--gr3);background:rgba(255,255,255,.035);color:var(--gr);padding:7px 12px;font-size:11px;letter-spacing:1px;cursor:pointer;transition:all .15s;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%)}
+.gfl-quick button:hover,.gfl-build-btn:hover,.gfl-claim-btn:hover{border-color:var(--y);color:var(--y);background:rgba(232,200,64,.06)}
+.gfl-build-summary{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.gfl-summary-box{background:rgba(0,0,0,.24);border-left:3px solid var(--y);padding:10px 12px}
+.gfl-summary-label{font-size:10px;color:var(--gr2);letter-spacing:1px}.gfl-summary-value{font-size:16px;font-weight:700;margin-top:2px}.gfl-summary-hint{font-size:11px;color:var(--gr);margin-top:10px}
+.gfl-action-status{min-height:18px;margin-top:8px;color:var(--gr);font-size:11px;letter-spacing:1px}.gfl-action-status.ok{color:var(--ok)}.gfl-action-status.err{color:#ff9b9b}
+.gfl-build-btn{width:100%;margin-top:14px;padding:12px;border-color:var(--y);background:linear-gradient(180deg,var(--y),var(--y-dark));color:#111;font-weight:800;font-size:14px}.gfl-build-btn:disabled{opacity:.45;cursor:not-allowed;filter:grayscale(.7)}
+.gfl-test-btn{width:100%;margin-top:8px;padding:9px;border:1px dashed var(--gr3);background:rgba(255,255,255,.025);color:var(--gr);font-size:11px;letter-spacing:1px;cursor:pointer}.gfl-test-btn:hover{border-color:var(--ok);color:var(--ok)}
+.gfl-queue{display:flex;flex-direction:column;gap:10px}
+.gfl-queue-item{position:relative;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);padding:12px;min-height:94px;overflow:hidden}
+.gfl-queue-item.ready{border-color:rgba(104,192,128,.55);box-shadow:inset 3px 0 0 var(--ok);cursor:pointer}
+.gfl-queue-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:8px}.gfl-queue-title{font-weight:700;color:var(--y);letter-spacing:1px}.gfl-queue-time{font-size:18px;font-weight:800}.gfl-queue-time.ready{color:var(--ok)}
+.gfl-cost-line{display:flex;flex-wrap:wrap;gap:8px;color:var(--gr);font-size:11px}.gfl-cost-line span{background:rgba(0,0,0,.22);padding:2px 6px}.gfl-progress{height:5px;background:#050505;margin-top:10px;overflow:hidden}.gfl-progress-bar{height:100%;width:0;background:linear-gradient(90deg,var(--y-dark),var(--y-light));transition:width .3s}.gfl-claim-btn{margin-top:10px;border-color:var(--ok);color:var(--ok)}
+.gfl-result{display:flex;gap:10px;align-items:center;margin-top:10px}.gfl-result-img{width:58px;height:72px;object-fit:contain;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.08)}.gfl-result-name{font-size:15px;font-weight:800}.gfl-result-meta{font-size:11px;color:var(--gr);margin-top:2px}.gfl-type{display:inline-block;padding:1px 6px;margin-right:4px;color:#111;font-weight:800;font-size:9px}.hg{background:var(--type-hg)}.smg{background:var(--type-smg)}.rf{background:var(--type-rf)}.ar{background:var(--type-ar)}.mg{background:var(--type-mg);color:#fff}.sg{background:var(--type-sg);color:#fff}
+.gfl-empty{padding:24px 12px;text-align:center;color:var(--gr2);border:1px dashed rgba(255,255,255,.12)}
+.gfl-log{font-size:11px;color:var(--gr);line-height:1.7}.gfl-log strong{color:var(--y)}
+.gfl-acquire-overlay{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.92);padding:18px;animation:gflBgLayerIn .28s ease-out both}
+.gfl-acquire-overlay.open{display:flex}
+.gfl-acquire{position:relative;width:min(900px,100%);height:min(620px,calc(100vh - 36px));overflow:hidden;border:2px solid rgba(232,200,64,.86);background:#080808;box-shadow:0 28px 80px rgba(0,0,0,.9);clip-path:polygon(18px 0,100% 0,100% calc(100% - 18px),calc(100% - 18px) 100%,0 100%,0 18px);animation:gflCardUnfold .34s cubic-bezier(.2,.9,.15,1) both}
+.gfl-acquire::before{content:'';position:absolute;inset:0;z-index:4;pointer-events:none;background:repeating-linear-gradient(180deg,rgba(255,255,255,.08) 0 1px,transparent 1px 7px);mix-blend-mode:screen;opacity:0;animation:gflScanLines 1.05s ease-out .12s both}.gfl-acquire::after{content:'';position:absolute;left:-30%;right:-30%;top:70px;height:2px;background:linear-gradient(90deg,transparent,var(--y),#fff,var(--y),transparent);box-shadow:0 0 14px rgba(232,200,64,.8);z-index:5;animation:gflScanBar .92s ease-out .1s both}
+.gfl-acquire-bg{position:absolute;inset:0;background:radial-gradient(circle at 28% 18%,rgba(232,200,64,.16),transparent 34%),linear-gradient(135deg,#151515 0%,#080808 54%,#180808 100%);background-position:center;background-size:cover;background-repeat:no-repeat;opacity:.26;transform:scale(1.08);animation:gflBgDepth .48s ease-out both}.gfl-acquire-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.72),rgba(0,0,0,.24) 42%,rgba(0,0,0,.86)),linear-gradient(90deg,rgba(232,200,64,.18),transparent 22%,transparent 78%,rgba(232,200,64,.13))}
+.gfl-acquire-title{position:relative;z-index:6;margin:12px 14px 0;padding:14px 22px;color:var(--y);font-size:22px;font-weight:900;letter-spacing:5px;text-align:left;text-shadow:0 2px 0 #000;background:linear-gradient(90deg,rgba(232,200,64,.22),rgba(0,0,0,.62) 48%,rgba(0,0,0,.18));border-left:6px solid var(--y);border-bottom:1px solid rgba(232,200,64,.58);clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%)}
+.gfl-acquire-title.duplicate{color:var(--res-core);border-left-color:var(--res-core);border-bottom-color:rgba(255,111,159,.58);background:linear-gradient(90deg,rgba(255,111,159,.24),rgba(0,0,0,.62) 48%,rgba(0,0,0,.18))}
+.gfl-acquire-body{position:relative;z-index:3;height:calc(100% - 132px);min-height:430px;padding:0 28px 0}.gfl-acquire-info{position:absolute;left:24px;right:24px;bottom:12px;z-index:6;padding:16px 20px 18px;background:linear-gradient(90deg,rgba(0,0,0,.88),rgba(0,0,0,.58) 55%,rgba(0,0,0,.22));border-top:1px solid rgba(232,200,64,.58);border-left:5px solid var(--y);box-shadow:0 -12px 28px rgba(0,0,0,.46);animation:gflInfoSlide .36s ease-out .28s both}.gfl-acquire-stars{font-size:34px;color:var(--y);letter-spacing:6px;text-shadow:0 0 16px rgba(232,200,64,.55);margin-bottom:7px}.gfl-acquire-stars .star{display:inline-block;opacity:0;transform:translateY(8px) scale(.72);animation:gflStarPop .28s cubic-bezier(.2,1.4,.35,1) forwards}.gfl-acquire-stars .star:nth-child(1){animation-delay:.42s}.gfl-acquire-stars .star:nth-child(2){animation-delay:.52s}.gfl-acquire-stars .star:nth-child(3){animation-delay:.62s}.gfl-acquire-stars .star:nth-child(4){animation-delay:.72s}.gfl-acquire-stars .star:nth-child(5){animation-delay:.82s}.gfl-acquire-name{font-size:42px;font-weight:900;letter-spacing:3px;line-height:1.05;text-shadow:0 3px 0 #000}.gfl-acquire-meta{margin-top:10px;color:#ddd;font-size:15px;letter-spacing:1px}.gfl-acquire-img{position:absolute;left:50%;bottom:-4px;z-index:4;width:72%;height:500px;max-width:590px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 28px 30px rgba(0,0,0,.86));transform:translateX(-50%) translateY(20px) scale(.96);animation:gflPortraitRise .42s ease-out .18s both}
+.gfl-acquire-actions{position:absolute;right:22px;bottom:18px;z-index:7;display:flex;justify-content:flex-end;gap:10px}.gfl-acquire-btn{border:1px solid var(--y);background:linear-gradient(180deg,var(--y),var(--y-dark));color:#111;padding:12px 28px;font-weight:900;letter-spacing:2px;cursor:pointer;clip-path:polygon(7px 0,100% 0,calc(100% - 7px) 100%,0 100%)}.gfl-acquire-close{border:1px solid var(--gr3);background:rgba(0,0,0,.56);color:var(--gr);padding:12px 20px;cursor:pointer;letter-spacing:1px}
+@keyframes gflBgLayerIn{from{opacity:0}to{opacity:1}}@keyframes gflCardUnfold{from{opacity:0;transform:scaleX(.08) scaleY(.96)}55%{opacity:1;transform:scaleX(1.03) scaleY(.96)}to{opacity:1;transform:scale(1)}}@keyframes gflBgDepth{from{opacity:0;transform:scale(1.16)}to{opacity:.26;transform:scale(1.08)}}@keyframes gflScanLines{0%{opacity:0}18%{opacity:.38}100%{opacity:.08}}@keyframes gflScanBar{from{transform:translateY(-90px);opacity:0}35%{opacity:1}to{transform:translateY(470px);opacity:0}}@keyframes gflPortraitRise{from{opacity:0;transform:translateX(-50%) translateY(58px) scale(.9)}to{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}}@keyframes gflInfoSlide{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}@keyframes gflStarPop{to{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-width:760px){.gfl-acquire{height:min(620px,calc(100vh - 24px))}.gfl-acquire-title{font-size:16px;letter-spacing:3px}.gfl-acquire-body{height:calc(100% - 126px);padding:0 12px}.gfl-acquire-img{width:106%;height:390px;max-width:none}.gfl-acquire-info{left:12px;right:12px;bottom:10px}.gfl-acquire-name{font-size:30px}.gfl-acquire-stars{font-size:24px}.gfl-acquire-actions{right:14px;bottom:14px}}
+@media(max-width:760px){.gfl-page-content{padding:12px 8px 24px}.gfl-layout{grid-template-columns:1fr}.gfl-res-row,.gfl-input-grid{grid-template-columns:repeat(2,1fr)}.gfl-build-summary{grid-template-columns:1fr}.gfl-header h1{font-size:16px}}
+</style>
+</head>
+<body>
+<div class="gfl-page">
+  <div class="gfl-page-bg"></div>
+  <div class="gfl-page-content">
+    <div class="gfl-header"><h1 id="page-title">人形建造</h1></div>
+    <div class="gfl-res-row" id="resource-row"></div>
+    <div class="gfl-layout">
+      <section class="gfl-panel">
+        <div class="gfl-panel-title"><span class="tag">FACTORY</span> 建造投入</div>
+        <div class="gfl-panel-body">
+          <div class="gfl-mode-tabs"><button class="gfl-mode-tab active" data-mode="tdoll">人形制造</button><button class="gfl-mode-tab" data-mode="equipment">装备制造</button></div>
+          <div class="gfl-equip-res" id="equip-resource-row"></div>
+          <div class="gfl-input-grid" id="input-grid"></div>
+          <div class="gfl-quick" id="quick-recipes"></div>
+          <div class="gfl-equip-targets" id="equip-targets">
+            <div class="gfl-equip-target-title">制造方向</div>
+            <div class="gfl-equip-target-row" id="equip-slot-filters"></div>
+            <div class="gfl-equip-target-title">候选池排序</div>
+            <div class="gfl-equip-target-row" id="equip-sort-filters"></div>
+            <div class="gfl-equip-odds" id="equip-odds"></div>
+            <div class="gfl-equip-pager" id="equip-pager"></div>
+            <div class="gfl-equip-pool" id="equip-pool-preview"></div>
+          </div>
+          <div class="gfl-build-count">
+            <label for="build-count">建造次数</label>
+            <input id="build-count" type="number" min="1" max="20" step="1" value="1" data-build-count="1">
+            <div class="gfl-build-count-hint" id="build-count-hint">一次写入 1 条队列</div>
+          </div>
+          <div class="gfl-build-summary">
+            <div class="gfl-summary-box"><div class="gfl-summary-label">预计建造时间</div><div class="gfl-summary-value" id="time-preview">00:30:00</div></div>
+            <div class="gfl-summary-box"><div class="gfl-summary-label">产出倾向</div><div class="gfl-summary-value" id="type-preview">HG</div></div>
+          </div>
+          <div class="gfl-summary-hint">使用用户提供的少女前线建造时间表；AI扮演游戏内等待时间=原表时间×10。资源配方决定合格枪种池，合格池内概率众生平等；未列入时间表的人形会按枪种和星级生成稳定自定义时间。</div>
+          <button class="gfl-build-btn" id="build-btn">开始建造</button>
+          <div class="gfl-action-status" id="action-status"></div>
+          <button class="gfl-test-btn" id="demo-ready-btn" type="button">生成测试完成队列</button>
+        </div>
+      </section>
+      <aside class="gfl-panel">
+        <div class="gfl-panel-title"><span class="tag">QUEUE</span> 建造队列</div>
+        <div class="gfl-panel-body"><div class="gfl-queue" id="queue"></div></div>
+      </aside>
+    </div>
+    <section class="gfl-panel" style="margin-top:16px"><div class="gfl-panel-title"><span class="tag">RULE</span> 建造规则记录</div><div class="gfl-panel-body"><div class="gfl-log" id="rule-log"></div></div></section>
+  </div>
+</div>
+<div class="gfl-acquire-overlay" id="acquire-modal">
+  <div class="gfl-acquire">
+    <div class="gfl-acquire-bg"></div>
+    <div class="gfl-acquire-title" id="acquire-title">建造完成 · 人形接收</div>
+    <div class="gfl-acquire-body">
+      <div class="gfl-acquire-info">
+        <div class="gfl-acquire-stars" id="acquire-stars"></div>
+        <div class="gfl-acquire-name" id="acquire-name"></div>
+        <div class="gfl-acquire-meta" id="acquire-meta"></div>
+      </div>
+      <img class="gfl-acquire-img" id="acquire-img" alt="">
+    </div>
+    <div class="gfl-acquire-actions"><button class="gfl-acquire-close" id="acquire-close">稍后</button><button class="gfl-acquire-btn" id="acquire-confirm">接收</button></div>
+  </div>
+</div>
+<script src="gfl-data-bridge.js"></script>
+<script src="construction-time-data.js"></script>
+<script>
+(function(){
+  'use strict';
+
+  var Bridge = window.GFLDataBridge;
+  var RES = [
+    {key:'manpower', label:'人力', cls:'mp', tableCol:'人力', costCol:'消耗人力'},
+    {key:'ammo', label:'弹药', cls:'am', tableCol:'弹药', costCol:'消耗弹药'},
+    {key:'ration', label:'口粮', cls:'ra', tableCol:'口粮', costCol:'消耗口粮'},
+    {key:'parts', label:'零件', cls:'pt', tableCol:'零件', costCol:'消耗零件'}
+  ];
+  var RESOURCE_DISPLAY = RES.concat([{key:'memoryCore', label:'心智核心', cls:'core'}]);
+  var currentMode = 'tdoll';
+  var inputs = {manpower:130, ammo:130, ration:130, parts:30};
+  var resources = {manpower:0, ammo:0, ration:0, parts:0, memoryCore:0, enhanceMaterial:0, calibrationTicket:0};
+  var TDOLLS = [];
+  var EQUIP_CATALOG = [];
+  var equipmentQueue = [];
+  var queue = [];
+  var currentGlobalTime = '';
+  var acquireTargetId = null;
+  var demoForced = false;
+  var demoClaimed = false;
+  var buildInProgress = false;
+  var claimInProgress = false;
+  var pageDisposed = false;
+  var lastBuildDurationText = '';
+  var buildCount = 1;
+  var equipSlotFilter = 'ALL';
+  var equipSort = 'weight';
+  var equipPage = 1;
+  var EQUIP_PAGE_SIZE = 12;
+  var BUBBLE_BG_GROUP = '少女前线待机背景';
+
+  function getNativeUpdaterApi(){
+    try{ if(window.AutoCardUpdaterAPI) return window.AutoCardUpdaterAPI; }catch(e){}
+    try{ if(window.parent && window.parent.AutoCardUpdaterAPI) return window.parent.AutoCardUpdaterAPI; }catch(e){}
+    try{ if(window.top && window.top.AutoCardUpdaterAPI) return window.top.AutoCardUpdaterAPI; }catch(e){}
+    return null;
+  }
+  function nativeExecuteSqlBatch(sql, targetSheetKeys){
+    if(Bridge && typeof Bridge.executeSqlBatch === 'function') return Bridge.executeSqlBatch({sql:sql, targetSheetKeys:targetSheetKeys});
+    var api = getNativeUpdaterApi();
+    if(!api || typeof api.executeSqlBatch !== 'function') return Promise.reject(new Error('AutoCardUpdaterAPI.executeSqlBatch 不可用，无法在单事务内批量写入'));
+    return api.executeSqlBatch({sql:sql, targetSheetKeys:targetSheetKeys});
+  }
+  function updateResourceAmounts(delta){
+    var pairs = [
+      ['人力', delta.manpower || 0, resources.manpower || 0],
+      ['弹药', delta.ammo || 0, resources.ammo || 0],
+      ['口粮', delta.ration || 0, resources.ration || 0],
+      ['零件', delta.parts || 0, resources.parts || 0],
+      ['心智核心', delta.memoryCore || 0, resources.memoryCore || 0]
+    ];
+    var statements = pairs.filter(function(pair){ return !!pair[1]; }).map(function(pair){ return 'UPDATE resource_status SET amount = ' + sqlNumber(Math.max(0, pair[2] + pair[1])) + ' WHERE resource_name = ' + sqlValue(pair[0]); });
+    if(!statements.length) return Promise.resolve(true);
+    return nativeExecuteSqlBatch(statements.join(';\n') + ';', ['sheet_resource_status']);
+  }
+
+  function getBubbleApi(name){
+    try{ if(window.top && window.top[name]) return window.top[name]; }catch(e){}
+    try{ if(window.parent && window.parent[name]) return window.parent[name]; }catch(e){}
+    try{ if(window[name]) return window[name]; }catch(e){}
+    return null;
+  }
+
+  function waitForBubbleApi(name, attempt){
+    attempt = attempt || 0;
+    var api = getBubbleApi(name);
+    if(api) return Promise.resolve(api);
+    if(attempt >= 20) return Promise.resolve(null);
+    return new Promise(function(resolve){
+      window.setTimeout(function(){ resolve(waitForBubbleApi(name, attempt + 1)); }, 250);
+    });
+  }
+
+  function applyBubbleBackground(selector){
+    var nodes = document.querySelectorAll(selector);
+    if(!nodes.length) return;
+    waitForBubbleApi('BubbleCG').then(function(api){
+      if(!api || typeof api.getImage !== 'function') return '';
+      return api.getImage(BUBBLE_BG_GROUP, 1);
+    }).then(function(url){
+      if(!url) return;
+      nodes.forEach(function(bg){
+        bg.style.backgroundImage = 'url("' + String(url).replace(/"/g, '%22') + '")';
+        bg.style.backgroundPosition = 'center';
+        bg.style.backgroundSize = 'cover';
+        bg.style.backgroundRepeat = 'no-repeat';
+      });
+    }).catch(function(error){
+      console.warn('建造背景气泡图片加载失败:', error);
+    });
+  }
+
+  if(!Bridge){
+    document.getElementById('queue').innerHTML = '<div class="gfl-empty">数据桥接层缺失：gfl-data-bridge.js 未加载</div>';
+    return;
+  }
+
+  function esc(s){ return Bridge.esc(s); }
+  function clampNum(v){ v=parseInt(v,10); if(isNaN(v)) return 0; return Math.max(0, Math.min(9999, v)); }
+  function clampBuildCount(v){ v=parseInt(v,10); if(isNaN(v)) return 1; return Math.max(1, Math.min(20, v)); }
+  function pad(n){ return n<10?'0'+n:''+n; }
+  function sqlValue(value){ return value == null ? 'NULL' : "'" + String(value).replace(/'/g, "''") + "'"; }
+  function sqlNumber(value){ value=parseInt(value,10); return isNaN(value) ? '0' : String(value); }
+  function formatMs(ms){ ms=Math.max(0,ms); var s=Math.ceil(ms/1000), h=Math.floor(s/3600), m=Math.floor((s%3600)/60), ss=s%60; return pad(h)+':'+pad(m)+':'+pad(ss); }
+  function parseTimeMs(text){ var p=String(text||'').split(':').map(function(n){return parseInt(n,10)||0;}); return ((p[0]||0)*3600+(p[1]||0)*60+(p[2]||0))*1000; }
+  function formatDateTime(date){ return date.getFullYear()+'-'+pad(date.getMonth()+1)+'-'+pad(date.getDate())+' '+pad(date.getHours())+':'+pad(date.getMinutes()); }
+  function parseGlobalTime(text){
+    var m=String(text||'').trim().match(/^(\d{4})-(\d{2})-(\d{2})\s+(\d{2}):(\d{2})(?::(\d{2}))?$/);
+    if(!m) return null;
+    var d=new Date(parseInt(m[1],10), parseInt(m[2],10)-1, parseInt(m[3],10), parseInt(m[4],10), parseInt(m[5],10), parseInt(m[6]||'0',10), 0);
+    return isNaN(d.getTime()) ? null : d;
+  }
+  function addMsToGlobalTime(text, ms){ var d=parseGlobalTime(text); if(!d) return ''; return formatDateTime(new Date(d.getTime()+ms)); }
+  function nowMs(){ var d=parseGlobalTime(currentGlobalTime); return d ? d.getTime() : Date.now(); }
+  function recipeArray(){ return [inputs.manpower, inputs.ammo, inputs.ration, inputs.parts]; }
+  function totalBuildCost(){ return {manpower:inputs.manpower*buildCount, ammo:inputs.ammo*buildCount, ration:inputs.ration*buildCount, parts:inputs.parts*buildCount}; }
+  function normalizeName(name){ return String(name||'').replace(/[\s·・.．\-_/]/g,'').toLowerCase(); }
+  function isHeavyOnlyName(name,note){ note=String(note||''); if(note.indexOf('重型制造限定')<0) return false; if(normalizeName(note)===normalizeName('重型制造限定')) return true; return normalizeName(note).indexOf(normalizeName(name))>=0; }
+
+  var TIME_SCALE = (typeof GFL_CONSTRUCTION_TIME_SCALE === 'number') ? GFL_CONSTRUCTION_TIME_SCALE : 10;
+  var TIME_ROWS = (typeof GFL_CONSTRUCTION_TIME_ROWS !== 'undefined') ? GFL_CONSTRUCTION_TIME_ROWS : [];
+  var TIME_BY_NAME = {};
+  TIME_ROWS.forEach(function(row){
+    var baseMs=parseTimeMs(row[0]);
+    var note=String(row[2]||'');
+    String(row[1]||'').split('/').forEach(function(name){
+      var key=normalizeName(name);
+      if(key) TIME_BY_NAME[key]={baseMs:baseMs, scaledMs:baseMs*TIME_SCALE, durationText:formatMs(baseMs*TIME_SCALE), heavyOnly:isHeavyOnlyName(name,note), source:'table'};
+    });
+  });
+
+  function constructionMeta(tdoll){
+    var found = TIME_BY_NAME[normalizeName(tdoll && tdoll.name)];
+    if(found) return found;
+    var baseByType={HG:20,SMG:80,RF:190,AR:160,MG:300,SG:430};
+    var stepByType={HG:7,SMG:13,RF:16,AR:15,MG:22,SG:18};
+    var stars=Math.max(2, tdoll && tdoll.stars || 3);
+    var hash=0, name=String(tdoll && tdoll.name || '');
+    for(var i=0;i<name.length;i++) hash=(hash*31+name.charCodeAt(i))%997;
+    var minutes=(baseByType[tdoll && tdoll.type]||120)+(stars-2)*(stepByType[tdoll && tdoll.type]||12)+(hash%10);
+    var scaledMs=minutes*60*1000*TIME_SCALE;
+    return {baseMs:minutes*60*1000, scaledMs:scaledMs, durationText:formatMs(scaledMs), heavyOnly:tdoll && tdoll.type==='SG', source:'custom'};
+  }
+
+  function isHeavyRecipe(cost){ return cost.parts>=2000 || cost.manpower>=4000 || cost.ammo>=4000 || cost.ration>=4000; }
+  function inRange(v,min,max){ return v>=min && v<=max; }
+  function eligibleTypesFor(cost){
+    var mp=cost.manpower, am=cost.ammo, ra=cost.ration, pt=cost.parts, types=[];
+    if(inRange(mp,400,4000)&&inRange(am,400,4000)&&inRange(ra,400,4000)&&inRange(pt,200,2000)) types=['HG','SMG','RF','AR','MG'];
+    if(mp===130&&am===130&&ra===130&&pt===30) types.push('HG');
+    if(inRange(mp,400,4000)&&inRange(am,400,4000)&&inRange(ra,100,1000)&&inRange(pt,200,2000)) types.push('SMG');
+    if(inRange(mp,400,4000)&&inRange(am,100,1000)&&inRange(ra,400,4000)&&inRange(pt,200,2000)) types.push('RF');
+    if(inRange(mp,100,1000)&&inRange(am,400,4000)&&inRange(ra,400,4000)&&inRange(pt,200,2000)) types.push('AR');
+    if(inRange(mp,800,8000)&&inRange(am,800,8000)&&inRange(ra,100,1000)&&inRange(pt,400,4000)) types.push('MG');
+    if((mp===8000&&am===1000&&ra===8000&&pt===4000)||(mp===6000&&am===1000&&ra===6000&&pt===4000)) types.push('SG');
+    if(!types.length) types=['HG'];
+    return types.filter(function(t,i,a){return a.indexOf(t)===i;});
+  }
+  function eligiblePoolFor(cost){
+    var types=eligibleTypesFor(cost), heavy=isHeavyRecipe(cost);
+    var pool=TDOLLS.filter(function(t){ if(types.indexOf(t.type)<0) return false; var meta=constructionMeta(t); return heavy || !meta.heavyOnly; });
+    return pool.length ? pool : TDOLLS.filter(function(t){ return types.indexOf(t.type)>=0; });
+  }
+  function equipmentRecipeType(cost){
+    if(cost.parts>=220 && cost.ammo>=40) return '精密倾向';
+    if(cost.manpower>=120 && cost.parts>=120) return '重装倾向';
+    if(cost.ammo>=120) return '弹药倾向';
+    if(cost.parts>=80 && cost.manpower<=60 && cost.ration<=60) return '配件倾向';
+    return '通用低耗';
+  }
+  function equipmentRecipeTargetCategories(recipe){
+    if(recipe==='配件倾向') return ['光学瞄具','全息瞄具','红点瞄具','夜战装备','消音器','备用瞄具','喉缩管'];
+    if(recipe==='弹药倾向') return ['穿甲弹','特殊穿甲弹','状态弹','信号弹','高速弹','霰弹'];
+    if(recipe==='重装倾向') return ['外骨骼','弹链箱','固定脚架','防弹插板'];
+    if(recipe==='精密倾向') return ['芯片','测距仪','特殊穿甲弹'];
+    return [];
+  }
+  function equipmentEffectiveWeight(e, recipe, cost){
+    var weight=Math.max(1,e.constructionWeight||1), tags=e.recipeTags||[], targetCats=equipmentRecipeTargetCategories(recipe);
+    if(recipe==='通用低耗'){
+      if(e.stars>=5) weight*=0.12;
+      else if(e.stars===4) weight*=0.35;
+      else if(e.stars===3) weight*=1.1;
+      else weight*=1.8;
+      return Math.max(1,Math.round(weight));
+    }
+    if(tags.indexOf(recipe)>=0 || targetCats.indexOf(e.category)>=0) weight*=3;
+    else weight*=0.25;
+    if(cost.parts>=220 || cost.ammo>=150 || cost.manpower>=150){
+      if(e.stars>=5) weight*=1.75;
+      else if(e.stars===4) weight*=1.25;
+      else if(e.stars<=2) weight*=0.45;
+    }
+    return Math.max(1,Math.round(weight));
+  }
+  function equipmentPoolFor(cost){
+    var recipe=equipmentRecipeType(cost);
+    var targetCats=equipmentRecipeTargetCategories(recipe);
+    var pool=EQUIP_CATALOG.filter(function(e){
+      if(recipe==='通用低耗') return e.recipeTags.indexOf('通用低耗')>=0;
+      return e.recipeTags.indexOf(recipe)>=0 || targetCats.indexOf(e.category)>=0 || e.recipeTags.indexOf('通用低耗')>=0;
+    });
+    if(!pool.length) pool=EQUIP_CATALOG.filter(function(e){ return e.recipeTags.indexOf('通用低耗')>=0; });
+    pool=pool.filter(function(e){
+      if(equipSlotFilter!=='ALL' && e.slotType!==equipSlotFilter) return false;
+      return true;
+    }).map(function(e){ var copy=Object.assign({},e); copy.effectiveWeight=equipmentEffectiveWeight(e,recipe,cost); return copy; });
+    return pool;
+  }
+  function weightedPickEquipment(pool, seed){
+    var total=pool.reduce(function(s,e){return s+Math.max(1,e.effectiveWeight||e.constructionWeight||1);},0), roll=stableHash(seed)%Math.max(1,total), acc=0;
+    for(var i=0;i<pool.length;i++){ acc+=Math.max(1,pool[i].effectiveWeight||pool[i].constructionWeight||1); if(roll<acc)return pool[i]; }
+    return pool[0]||null;
+  }
+  function poolHash(pool){ return stableHash(pool.map(function(e){return e.id;}).sort().join('|')).toString(36); }
+  function stableHash(text){ var h=0, s=String(text||''); for(var i=0;i<s.length;i++) h=(h*131+s.charCodeAt(i))>>>0; return h; }
+  function randomIndex(length){ return Math.floor(Math.random() * length); }
+  function pickRandomResultForBuild(cost){
+    var pool=eligiblePoolFor(cost);
+    if(!pool.length) return null;
+    var varied=pool;
+    if(lastBuildDurationText){
+      varied=pool.filter(function(t){ return constructionMeta(t).durationText !== lastBuildDurationText; });
+      if(!varied.length) varied=pool;
+    }
+    return varied[randomIndex(varied.length)];
+  }
+  function duplicateCoreReward(tdoll){
+    var stars=parseInt(tdoll && tdoll.stars, 10);
+    if(isNaN(stars) || stars < 1) stars = 1;
+    if(stars>=6) return 10;
+    if(stars>=5) return 5;
+    if(stars>=4) return 3;
+    return 1;
+  }
+  function isTdollAcquiredNow(name){
+    var rows = Bridge.warehouseTdolls();
+    for(var i=0;i<rows.length;i++){
+      if(rows[i].name === name) return !!rows[i].acquired;
+    }
+    return false;
+  }
+  function pickResultForQueue(q){
+    var pool=eligiblePoolFor(q.cost);
+    if(!pool.length) return null;
+    var target=parseTimeMs(q.constructionTime);
+    var exact=pool.filter(function(t){ return constructionMeta(t).scaledMs === target; });
+    var candidates=exact.length ? exact : pool;
+    candidates=candidates.slice().sort(function(a,b){ return String(a.name).localeCompare(String(b.name), 'zh-Hans-CN'); });
+    return candidates[stableHash(q.rowId+'|'+q.startTime+'|'+q.constructionTime+'|'+[q.cost.manpower,q.cost.ammo,q.cost.ration,q.cost.parts].join('/')) % candidates.length];
+  }
+  function canPay(){ var total=totalBuildCost(); return RES.every(function(r){ return resources[r.key] >= total[r.key]; }); }
+  function setActionStatus(text, kind){ var el=document.getElementById('action-status'); if(!el) return; el.textContent=text||''; el.className='gfl-action-status '+(kind||''); }
+
+  function refreshData(){
+    var resourceState=Bridge.resourceState();
+    resources={manpower:resourceState.manpower, ammo:resourceState.ammo, ration:resourceState.ration, parts:resourceState.parts, memoryCore:resourceState.memoryCore, enhanceMaterial:resourceState.enhanceMaterial, calibrationTicket:resourceState.calibrationTicket};
+    TDOLLS=Bridge.warehouseTdolls();
+    EQUIP_CATALOG=Bridge.equipmentCatalogRows ? Bridge.equipmentCatalogRows() : [];
+    currentGlobalTime=Bridge.currentStatus().currentTime;
+    queue=Bridge.constructionRows().map(function(q){
+      q.id=String(q.rowId);
+      q.duration=parseTimeMs(q.constructionTime);
+      var start=parseGlobalTime(q.startTime);
+      var end=start ? start.getTime()+q.duration : nowMs()+q.duration;
+      q.remainingMs=Math.max(0, end-nowMs());
+      q.ready=q.remainingMs<=0;
+      q.result=pickResultForQueue(q);
+      return q;
+    });
+    equipmentQueue=(Bridge.equipmentConstructionRows?Bridge.equipmentConstructionRows():[]).map(function(q){
+      q.id='eq-'+q.rowId; q.duration=parseTimeMs(q.constructionTime); var start=parseGlobalTime(q.startTime); var end=start?start.getTime()+q.duration:nowMs()+q.duration; q.remainingMs=Math.max(0,end-nowMs()); q.ready=q.remainingMs<=0; q.result=(Bridge.equipmentCatalogMap()[q.resultEquipmentId]||null); return q;
+    });
+  }
+
+  function renderResources(){
+    document.getElementById('resource-row').innerHTML=RESOURCE_DISPLAY.map(function(r){ var val=resources[r.key]||0; return '<div class="gfl-res-card"><div class="gfl-res-name"><span class="gfl-res-dot '+r.cls+'"></span>'+esc(r.label)+'</div><div class="gfl-res-val '+(r.key!=='memoryCore'&&val<200?'low':'')+'">'+esc(val)+'</div></div>'; }).join('');
+    document.getElementById('equip-resource-row').innerHTML=currentMode==='equipment'?'<span>强化材料 '+esc(resources.enhanceMaterial||0)+'</span><span>校准券 '+esc(resources.calibrationTicket||0)+'</span><span>装备图鉴 '+esc(EQUIP_CATALOG.length)+' 项</span>':'';
+  }
+  function renderInputs(){
+    document.getElementById('input-grid').innerHTML=RES.map(function(r){ return '<label class="gfl-input-block"><div class="gfl-input-label"><span class="gfl-res-dot '+r.cls+'"></span>'+esc(r.label)+'</div><input type="number" min="0" max="9999" step="10" data-input="'+esc(r.key)+'" value="'+esc(inputs[r.key])+'"></label>'; }).join('');
+    var countInput=document.getElementById('build-count');
+    if(countInput) countInput.value=String(buildCount);
+  }
+  function renderQuickRecipes(){
+    var tdollRecipes=[['HG标准','130,130,130,30'],['人形混合','400,400,400,200'],['SMG','400,400,100,200'],['RF','400,100,400,200'],['AR','100,400,400,200'],['MG','800,800,100,400'],['SG重型','8000,1000,8000,4000']];
+    var equipRecipes=[['通用低耗','30,30,30,30'],['配件倾向','30,30,30,90'],['弹药倾向','60,130,60,30'],['重装倾向','130,30,30,130'],['精密倾向','60,60,60,230']];
+    var rows=currentMode==='equipment'?equipRecipes:tdollRecipes;
+    document.getElementById('quick-recipes').innerHTML=rows.map(function(r){return '<button data-recipe="'+esc(r[1])+'">'+esc(r[0])+'</button>';}).join('');
+  }
+  function uniqueEquipValues(key){
+    var out=[]; EQUIP_CATALOG.forEach(function(e){ var v=e[key]; if(v && out.indexOf(v)<0) out.push(v); });
+    return out.sort(function(a,b){return String(a).localeCompare(String(b),'zh-Hans-CN');});
+  }
+  function equipSortOptions(){ return [['weight','默认权重'],['rarity','星级高'],['time','时间长'],['slot','槽位'],['name','名称']]; }
+  function sortedEquipmentPool(pool){
+    var list=pool.slice();
+    list.sort(function(a,b){
+      if(equipSort==='rarity') return (b.stars||0)-(a.stars||0) || (b.effectiveWeight||b.constructionWeight||0)-(a.effectiveWeight||a.constructionWeight||0) || String(a.name).localeCompare(String(b.name),'zh-Hans-CN');
+      if(equipSort==='time') return parseTimeMs(b.constructionTime)-parseTimeMs(a.constructionTime) || (b.stars||0)-(a.stars||0) || String(a.name).localeCompare(String(b.name),'zh-Hans-CN');
+      if(equipSort==='slot') return String(a.slotType).localeCompare(String(b.slotType),'zh-Hans-CN') || String(a.category).localeCompare(String(b.category),'zh-Hans-CN') || (b.stars||0)-(a.stars||0);
+      if(equipSort==='name') return String(a.name).localeCompare(String(b.name),'zh-Hans-CN');
+      return (b.effectiveWeight||b.constructionWeight||0)-(a.effectiveWeight||a.constructionWeight||0) || (a.stars||0)-(b.stars||0) || String(a.name).localeCompare(String(b.name),'zh-Hans-CN');
+    });
+    return list;
+  }
+  function rarityDistribution(pool){
+    var total=pool.reduce(function(s,e){return s+Math.max(1,e.effectiveWeight||e.constructionWeight||1);},0), by={};
+    pool.forEach(function(e){ var k=e.rarity||'未知'; by[k]=(by[k]||0)+Math.max(1,e.effectiveWeight||e.constructionWeight||1); });
+    return Object.keys(by).sort(function(a,b){return String(a).localeCompare(String(b),'zh-Hans-CN');}).map(function(k){return '<strong>'+esc(k)+'</strong> '+(total?Math.round(by[k]*100/total):0)+'%';}).join(' · ');
+  }
+  function renderEquipmentTargets(pool){
+    var box=document.getElementById('equip-targets');
+    box.classList.toggle('show', currentMode==='equipment');
+    if(currentMode!=='equipment') return;
+    var slots=['ALL'].concat(uniqueEquipValues('slotType'));
+    document.getElementById('equip-slot-filters').innerHTML=slots.map(function(v){return '<button class="gfl-equip-chip '+(equipSlotFilter===v?'active':'')+'" data-equip-slot="'+esc(v)+'">'+esc(v==='ALL'?'全部槽位':v)+'</button>';}).join('');
+    document.getElementById('equip-sort-filters').innerHTML=equipSortOptions().map(function(o){return '<button class="gfl-equip-chip '+(equipSort===o[0]?'active':'')+'" data-equip-sort="'+esc(o[0])+'">'+esc(o[1])+'</button>';}).join('');
+    var sorted=sortedEquipmentPool(pool), totalPages=Math.max(1,Math.ceil(sorted.length/EQUIP_PAGE_SIZE));
+    if(equipPage>totalPages) equipPage=totalPages;
+    if(equipPage<1) equipPage=1;
+    var start=(equipPage-1)*EQUIP_PAGE_SIZE, pageRows=sorted.slice(start,start+EQUIP_PAGE_SIZE);
+    document.getElementById('equip-odds').innerHTML=pool.length ? '候选 <strong>'+esc(pool.length)+'</strong> 项。星级由资源投入和当前倾向权重决定：'+rarityDistribution(pool) : '当前没有候选装备。';
+    document.getElementById('equip-pager').innerHTML=pool.length ? '<span>第 '+esc(equipPage)+' / '+esc(totalPages)+' 页，显示 '+esc(start+1)+'-'+esc(Math.min(start+EQUIP_PAGE_SIZE,sorted.length))+' / '+esc(sorted.length)+'</span><span class="gfl-equip-pager-controls"><button class="gfl-equip-page-btn" data-equip-page="prev" '+(equipPage<=1?'disabled':'')+'>上一页</button><button class="gfl-equip-page-btn" data-equip-page="next" '+(equipPage>=totalPages?'disabled':'')+'>下一页</button></span>' : '';
+    document.getElementById('equip-pool-preview').innerHTML=pageRows.map(function(e){return '<div class="gfl-equip-candidate"><strong>'+esc(e.name)+'</strong><span>'+esc(e.rarity)+' · '+esc(e.category)+' · '+esc(e.slotType)+' · 当前权重 '+esc(e.effectiveWeight||e.constructionWeight)+'</span><span>'+esc(e.statMin||e.description||'')+'</span></div>';}).join('') || '<div class="gfl-empty">没有符合筛选的装备</div>';
+  }
+  function renderPreview(){
+    var pool=currentMode==='equipment'?equipmentPoolFor(inputs):eligiblePoolFor(inputs);
+    var times=currentMode==='equipment'?pool.map(function(e){return parseTimeMs(e.constructionTime)*TIME_SCALE;}):pool.map(function(t){return constructionMeta(t).scaledMs;});
+    var min=times.length?Math.min.apply(Math,times):0;
+    var max=times.length?Math.max.apply(Math,times):0;
+    document.getElementById('time-preview').textContent=times.length ? (formatMs(min)+' - '+formatMs(max)) : '--:--:--';
+    document.getElementById('type-preview').textContent=currentMode==='equipment'?equipmentRecipeType(inputs):eligibleTypesFor(inputs).join(' / ');
+    var total=totalBuildCost();
+    var countHint=document.getElementById('build-count-hint');
+    if(countHint) countHint.textContent='一次写入 '+buildCount+' 条队列；总消耗 '+total.manpower+' / '+total.ammo+' / '+total.ration+' / '+total.parts;
+    document.getElementById('build-btn').disabled=buildInProgress || !canPay() || !pool.length;
+    document.getElementById('build-btn').textContent=buildInProgress?'写入中...':(currentMode==='equipment'?'开始装备制造 × ':'开始建造 × ')+buildCount;
+    document.getElementById('page-title').textContent=currentMode==='equipment'?'装备制造':'人形建造';
+    document.querySelectorAll('.gfl-mode-tab').forEach(function(btn){btn.classList.toggle('active',btn.dataset.mode===currentMode);});
+    renderQuickRecipes();
+    renderEquipmentTargets(pool);
+    document.getElementById('rule-log').innerHTML=currentMode==='equipment'?'当前投入：<strong>'+esc(recipeArray().join(' / '))+'</strong>，倾向 <strong>'+esc(equipmentRecipeType(inputs))+'</strong>，槽位 <strong>'+esc(equipSlotFilter==='ALL'?'全部':equipSlotFilter)+'</strong>，候选装备 <strong>'+esc(pool.length)+'</strong> 项。星级不允许直接点选，由资源投入和候选池权重决定；低星装备用于低耗过渡、强化/分解材料来源。':'当前投入：<strong>'+esc(recipeArray().join(' / '))+'</strong>，次数 <strong>'+esc(buildCount)+'</strong>，总消耗 <strong>'+esc([total.manpower,total.ammo,total.ration,total.parts].join(' / '))+'</strong>。合格池 <strong>'+esc(pool.length)+'</strong> 人，类型 <strong>'+esc(eligibleTypesFor(inputs).join('、'))+'</strong>。建造队列批量写入人形建造表；完成状态由全局时间 <strong>'+esc(currentGlobalTime||'未设置')+'</strong> 推导。';
+  }
+  function createDemoReadyQueueItem(){
+    var result=TDOLLS.filter(function(t){return t.name==='M1911';})[0] || TDOLLS[0];
+    if(!result) return null;
+    var meta=constructionMeta(result);
+    return {id:'demo-ready', demo:true, rowId:null, displayIndex:'测试', cost:{manpower:130,ammo:130,ration:130,parts:30}, startTime:currentGlobalTime||formatDateTime(new Date()), constructionTime:meta.durationText, duration:meta.scaledMs, remainingMs:0, ready:true, result:result};
+  }
+  function displayQueue(){ var visible=queue.slice(); if(demoForced&&!demoClaimed){ var demo=createDemoReadyQueueItem(); if(demo) visible.unshift(demo); } return visible; }
+  function renderQueue(){
+    var el=document.getElementById('queue'), visibleQueue=currentMode==='equipment'?equipmentQueue:displayQueue();
+    if(!visibleQueue.length){ el.innerHTML='<div class="gfl-empty">建造队列为空</div>'; return; }
+    el.innerHTML=visibleQueue.map(function(q){
+      var ready=q.remainingMs<=0;
+      var progress=q.duration>0?Math.min(100,Math.max(0,((q.duration-q.remainingMs)/q.duration)*100)):0;
+      var title=currentMode==='equipment'?'装备制造 #'+(q.displayIndex||q.rowId):(q.demo?'测试完成队列':'建造队列 #'+(q.displayIndex||q.rowId));
+      return '<div class="gfl-queue-item '+(ready?'ready':'')+'" data-id="'+esc(q.id)+'">'
+        +'<div class="gfl-queue-head"><div class="gfl-queue-title">'+esc(title)+'</div><div class="gfl-queue-time '+(ready?'ready':'')+'">'+(ready?'完成':formatMs(q.remainingMs))+'</div></div>'
+        +'<div class="gfl-cost-line"><span>人力 '+esc(q.cost.manpower)+'</span><span>弹药 '+esc(q.cost.ammo)+'</span><span>口粮 '+esc(q.cost.ration)+'</span><span>零件 '+esc(q.cost.parts)+'</span></div>'
+        +'<div class="gfl-progress"><div class="gfl-progress-bar" style="width:'+progress+'%"></div></div>'
+        +(ready?'<div class="gfl-result-meta">制造完成，点击队列查看获取结果</div>':'<div class="gfl-result-meta">结束时间：'+esc(addMsToGlobalTime(q.startTime, q.duration)||'未知')+'</div>')
+        +'</div>';
+    }).join('');
+  }
+  function starHtml(n){ var s=''; for(var i=0;i<(n||0);i++) s+='<span class="star">★</span>'; return s; }
+  function getQueueItem(id){ if(id==='demo-ready'&&!demoClaimed) return createDemoReadyQueueItem(); for(var i=0;i<queue.length;i++){ if(String(queue[i].id)===String(id)) return queue[i]; } return null; }
+  function openAcquire(id){
+    var q=currentMode==='equipment'?equipmentQueue.filter(function(x){return x.id===id;})[0]:getQueueItem(id); if(!q || q.remainingMs>0 || !q.result) return;
+    acquireTargetId=id;
+    var result=q.result;
+    if(currentMode==='equipment'){
+      document.getElementById('acquire-title').textContent='制造完成 · 装备入库';
+      document.getElementById('acquire-title').classList.remove('duplicate');
+      document.getElementById('acquire-stars').innerHTML=starHtml(result.stars);
+      document.getElementById('acquire-name').textContent=result.name;
+      document.getElementById('acquire-meta').innerHTML=esc(result.rarity+' '+result.category+' · '+result.slotType+' · '+result.description);
+      document.getElementById('acquire-img').style.display='none';
+      document.getElementById('acquire-modal').classList.add('open');
+      return;
+    }
+    var isDuplicate=!!result.acquired;
+    var coreReward=duplicateCoreReward(result);
+    var title=document.getElementById('acquire-title');
+    title.textContent=isDuplicate?'重复人形 · 核心转化':'建造完成 · 人形接收';
+    title.classList.toggle('duplicate', isDuplicate);
+    document.getElementById('acquire-stars').innerHTML=starHtml(result.stars);
+    document.getElementById('acquire-name').textContent=result.name||'未知人形';
+    document.getElementById('acquire-meta').innerHTML='<span class="gfl-type '+esc(String(result.type||'').toLowerCase())+'">'+esc(result.type)+'</span>'+esc(result.stars||0)+' 星人形 · '+(isDuplicate?'已拥有，转化为心智核心 ×'+esc(coreReward):'由建造时间推导');
+    var img=document.getElementById('acquire-img');
+    img.removeAttribute('src'); img.alt=result.name||''; img.style.display='block';
+    var displaySkin = result.currentSkin || '默认立绘';
+    var displaySkinGroup = result.currentSkinGroup || Bridge.skinImageGroup(result.name || '', displaySkin);
+    Bridge.applyImageFromSkin(img, displaySkinGroup, false).then(function(url){ if(!url) img.style.display='none'; });
+    document.getElementById('acquire-modal').classList.add('open');
+  }
+  function closeAcquire(){ acquireTargetId=null; document.getElementById('acquire-modal').classList.remove('open'); }
+
+  function startBuild(){
+    if(buildInProgress || !canPay() || !TDOLLS.length) return;
+    if(!Bridge || typeof Bridge.executeSqlBatch !== 'function'){
+      setActionStatus('建造失败：当前环境不支持 executeSqlBatch，无法保证单事务批量写入。','err');
+      return;
+    }
+    if(currentMode==='equipment'){ startEquipmentBuild(); return; }
+    var resultPool=eligiblePoolFor(inputs);
+    if(!resultPool.length) return;
+    var cost={manpower:inputs.manpower, ammo:inputs.ammo, ration:inputs.ration, parts:inputs.parts};
+    var totalCost=totalBuildCost();
+    var batch=[];
+    for(var i=0;i<buildCount;i++){
+      var picked=pickRandomResultForBuild(cost);
+      if(!picked) return;
+      var meta=constructionMeta(picked);
+      batch.push({picked:picked, meta:meta});
+      lastBuildDurationText=meta.durationText;
+    }
+    var startTime=currentGlobalTime;
+    if(!parseGlobalTime(startTime)){
+      console.error('建造写入失败: 全局数据表.当前时间无效，无法作为建造开始时间:', startTime);
+      setActionStatus('建造失败：全局数据表.当前时间无效，无法作为建造开始时间。','err');
+      return;
+    }
+    var nextResources={manpower:resources.manpower-totalCost.manpower, ammo:resources.ammo-totalCost.ammo, ration:resources.ration-totalCost.ration, parts:resources.parts-totalCost.parts, memoryCore:resources.memoryCore};
+    var statements=[
+      "UPDATE resource_status SET amount = amount - "+sqlNumber(totalCost.manpower)+" WHERE resource_name = '人力'",
+      "UPDATE resource_status SET amount = amount - "+sqlNumber(totalCost.ammo)+" WHERE resource_name = '弹药'",
+      "UPDATE resource_status SET amount = amount - "+sqlNumber(totalCost.ration)+" WHERE resource_name = '口粮'",
+      "UPDATE resource_status SET amount = amount - "+sqlNumber(totalCost.parts)+" WHERE resource_name = '零件'"
+    ];
+    batch.forEach(function(item){
+      statements.push('INSERT INTO tdoll_construction (start_time, construction_time, cost_manpower, cost_ammo, cost_ration, cost_parts) VALUES ('+
+        [sqlValue(startTime), sqlValue(item.meta.durationText), sqlNumber(cost.manpower), sqlNumber(cost.ammo), sqlNumber(cost.ration), sqlNumber(cost.parts)].join(', ')+')');
+    });
+    buildInProgress = true;
+    setActionStatus('正在通过 executeSqlBatch 单事务写入 '+buildCount+' 条建造队列，请不要重复点击。');
+    renderPreview();
+    nativeExecuteSqlBatch(statements.join(';\n') + ';', ['sheet_resource_status','sheet_tdoll_construction'])
+      .then(function(){
+        resources = nextResources;
+        buildInProgress = false;
+        reloadAndRender();
+        setActionStatus('已在单事务内扣减资源并写入 '+batch.length+' 条建造队列。','ok');
+      })
+      .catch(function(error){
+        console.error('建造批量 SQL 写入失败:', error);
+        buildInProgress = false;
+        setActionStatus('建造失败：'+(error&&error.message?error.message:error),'err');
+        renderAll();
+      });
+  }
+
+  function startEquipmentBuild(){
+    if(buildInProgress || !canPay() || !EQUIP_CATALOG.length) return;
+    var cost={manpower:inputs.manpower, ammo:inputs.ammo, ration:inputs.ration, parts:inputs.parts};
+    var totalCost=totalBuildCost(), startTime=currentGlobalTime;
+    if(!parseGlobalTime(startTime)){ setActionStatus('制造失败：全局数据表.当前时间无效。','err'); return; }
+    var pool=equipmentPoolFor(cost); if(!pool.length){ setActionStatus('制造失败：当前装备筛选没有候选装备。','err'); return; }
+    var hash=poolHash(pool), recipe=equipmentRecipeType(cost), statements=["UPDATE resource_status SET amount = amount - "+sqlNumber(totalCost.manpower)+" WHERE resource_name = '人力'","UPDATE resource_status SET amount = amount - "+sqlNumber(totalCost.ammo)+" WHERE resource_name = '弹药'","UPDATE resource_status SET amount = amount - "+sqlNumber(totalCost.ration)+" WHERE resource_name = '口粮'","UPDATE resource_status SET amount = amount - "+sqlNumber(totalCost.parts)+" WHERE resource_name = '零件'"];
+    for(var i=0;i<buildCount;i++){
+      var seed=startTime+'|'+Date.now()+'|'+Math.random()+'|'+i+'|'+recipe, picked=weightedPickEquipment(pool,seed);
+      statements.push('INSERT INTO equipment_construction (start_time, construction_time, cost_manpower, cost_ammo, cost_ration, cost_parts, recipe_type, result_seed, result_equipment_id, candidate_pool_hash) VALUES ('+[sqlValue(startTime),sqlValue(formatMs(parseTimeMs(picked.constructionTime)*TIME_SCALE)),sqlNumber(cost.manpower),sqlNumber(cost.ammo),sqlNumber(cost.ration),sqlNumber(cost.parts),sqlValue(recipe),sqlValue(seed),sqlValue(picked.id),sqlValue(hash)].join(', ')+')');
+    }
+    buildInProgress=true; setActionStatus('正在写入装备制造队列。'); renderPreview();
+    nativeExecuteSqlBatch(statements.join(';\n')+';',['sheet_resource_status','sheet_equipment_construction']).then(function(){buildInProgress=false;reloadAndRender();setActionStatus('装备制造队列已写入。','ok');}).catch(function(error){buildInProgress=false;setActionStatus('装备制造失败：'+(error&&error.message?error.message:error),'err');renderAll();});
+  }
+
+  function claim(id){
+    if(currentMode==='equipment'){ claimEquipment(id); return; }
+    if(id==='demo-ready'){ demoClaimed=true; demoForced=false; closeAcquire(); renderAll(); return; }
+    if(claimInProgress) return;
+    var q=getQueueItem(id); if(!q || q.remainingMs>0 || !q.result) return;
+    if(!q.demo && !q.rowId){
+      setActionStatus('接收失败：建造队列缺少数据库主键 row_id，禁止领取。','err');
+      return;
+    }
+    var alreadyAcquired = isTdollAcquiredNow(q.result.name);
+    claimInProgress = true;
+    var confirmBtn=document.getElementById('acquire-confirm');
+    if(confirmBtn){ confirmBtn.disabled=true; confirmBtn.textContent='接收中...'; }
+    setActionStatus('正在接收人形并写回仓库，请等待。');
+    var statements = [];
+    if(q.result && q.result.rowIndex){
+      if(alreadyAcquired){
+        statements.push("UPDATE resource_status SET amount = MAX(0, CAST(COALESCE(amount, 0) AS INTEGER) + " + sqlNumber(duplicateCoreReward(q.result)) + ") WHERE resource_name = '心智核心'");
+      }else{
+        statements.push('UPDATE tdoll_warehouse SET acquired = ' + sqlValue('是') + ', current_skin = ' + sqlValue('默认立绘') + ' WHERE row_id = ' + sqlValue(q.result.rowIndex));
+      }
+    }
+    if(!q.demo) statements.push('DELETE FROM tdoll_construction WHERE row_id = ' + sqlValue(q.rowId));
+    var batch = nativeExecuteSqlBatch(statements.join(';\n') + ';', ['sheet_resource_status','sheet_tdoll_warehouse','sheet_tdoll_construction']);
+    batch.then(function(){
+      if(q.result){
+        if(alreadyAcquired){
+          resources.memoryCore = Math.max(0, (resources.memoryCore || 0) + duplicateCoreReward(q.result));
+        }else{
+          q.result.acquired = true;
+          q.result.currentSkin = '默认立绘';
+        }
+      }
+      closeAcquire();
+      claimInProgress = false;
+      if(confirmBtn){ confirmBtn.disabled=false; confirmBtn.textContent='接收'; }
+      setActionStatus('人形接收完成。','ok');
+      reloadAndRender();
+    }).catch(function(error){
+      console.error('建造领取写回失败，队列未确认删除:', error);
+      claimInProgress = false;
+      if(confirmBtn){ confirmBtn.disabled=false; confirmBtn.textContent='接收'; }
+      setActionStatus('接收失败：'+(error&&error.message?error.message:error),'err');
+    });
+  }
+  function claimEquipment(id){
+    if(claimInProgress) return;
+    var q=equipmentQueue.filter(function(x){return x.id===id;})[0]; if(!q||q.remainingMs>0||!q.result)return;
+    var currentHash=poolHash(equipmentPoolFor(q.cost||inputs));
+    var poolChanged=q.candidatePoolHash&&currentHash!==q.candidatePoolHash;
+    var stats=Bridge.generateEquipmentStats(q.result,q.resultSeed), text=Bridge.statText(stats);
+    if(!q.rowId){
+      setActionStatus('领取装备失败：制造队列缺少数据库主键 row_id，禁止无主键删除。','err');
+      return;
+    }
+    claimInProgress=true; setActionStatus('正在生成装备实例并删除制造队列。');
+    var sql='INSERT INTO equipment_warehouse (equipment_id, base_stats, stats, level, calibration, exp, locked, acquired, source) VALUES ('+[sqlValue(q.result.id),sqlValue(text),sqlValue(text),0,sqlValue(''),0,sqlValue('否'),sqlValue('是'),sqlValue('装备制造')].join(', ')+');\nDELETE FROM equipment_construction WHERE row_id = '+sqlValue(q.rowId)+';';
+    nativeExecuteSqlBatch(sql,['sheet_equipment_warehouse','sheet_equipment_construction']).then(function(){claimInProgress=false;closeAcquire();setActionStatus('装备已入库：'+q.result.name+'（'+text+'）。'+(poolChanged?' 图鉴候选池已变化，本次仍按队列记录结果领取。':''),'ok');reloadAndRender();}).catch(function(error){claimInProgress=false;setActionStatus('领取装备失败：'+(error&&error.message?error.message:error),'err');});
+  }
+
+  function renderAll(){ renderResources(); renderInputs(); renderPreview(); renderQueue(); }
+  function reloadAndRender(){ refreshData(); renderAll(); }
+
+  document.addEventListener('input', function(e){
+    var countKey=e.target&&e.target.dataset&&e.target.dataset.buildCount;
+    if(countKey){ buildCount=clampBuildCount(e.target.value); renderPreview(); return; }
+    var key=e.target&&e.target.dataset&&e.target.dataset.input;
+    if(!key) return;
+    inputs[key]=clampNum(e.target.value);
+    renderPreview();
+  });
+  document.addEventListener('click', function(e){
+    var recipe=e.target&&e.target.dataset&&e.target.dataset.recipe;
+    var mode=e.target&&e.target.dataset&&e.target.dataset.mode;
+    if(mode){ currentMode=mode; equipPage=1; closeAcquire(); renderAll(); return; }
+    var equipSlot=e.target&&e.target.dataset&&e.target.dataset.equipSlot;
+    if(equipSlot){ equipSlotFilter=equipSlot; equipPage=1; renderPreview(); return; }
+    var equipSortKey=e.target&&e.target.dataset&&e.target.dataset.equipSort;
+    if(equipSortKey){ equipSort=equipSortKey; equipPage=1; renderPreview(); return; }
+    var equipPageAction=e.target&&e.target.dataset&&e.target.dataset.equipPage;
+    if(equipPageAction){ equipPage += equipPageAction==='next' ? 1 : -1; renderPreview(); return; }
+    if(recipe){ var a=recipe.split(',').map(clampNum); RES.forEach(function(r,i){ inputs[r.key]=a[i]||0; }); equipPage=1; renderAll(); return; }
+    if(e.target&&e.target.id==='build-btn'){ startBuild(); return; }
+    if(e.target&&e.target.id==='demo-ready-btn'){ demoForced=true; demoClaimed=false; renderQueue(); return; }
+    if(e.target&&e.target.id==='acquire-close'){ closeAcquire(); return; }
+    if(e.target&&e.target.id==='acquire-confirm'&&acquireTargetId){ claim(acquireTargetId); return; }
+    if(e.target&&e.target.id==='acquire-modal'){ closeAcquire(); return; }
+    var item=e.target&&e.target.closest&&e.target.closest('.gfl-queue-item');
+    if(item) openAcquire(item.dataset.id);
+  });
+  function safeReloadAndRender(){ if(pageDisposed || !document.getElementById('queue')) return; reloadAndRender(); }
+  function cleanupPage(){ pageDisposed = true; }
+  window.addEventListener('pagehide', cleanupPage, {once:true});
+  window.addEventListener('beforeunload', cleanupPage, {once:true});
+  window.addEventListener('unload', cleanupPage, {once:true});
+
+  applyBubbleBackground('.gfl-page-bg,.gfl-acquire-bg');
+  safeReloadAndRender();
+})();
+</script>
+</body>
+</html>

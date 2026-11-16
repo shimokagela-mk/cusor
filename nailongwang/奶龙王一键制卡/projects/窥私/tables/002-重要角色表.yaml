@@ -1,0 +1,95 @@
+uid: sheet_ImportantChars
+name: 重要角色表
+sourceData:
+  note: |-
+    固定团与已升格路人。一行一人。
+    - 列0: 姓名
+    - 列1: 一句话介绍 / 隐私锚
+    - 列2: 与玩家关系
+    - 列3: 是否在场 - 是/否
+    - 列4: 当前状态
+    - 列5: 外貌特征
+    升格：`留她` 或第二次出场的路人可 INSERT；固定团禁止删除。
+  initNode: |-
+    初始化五女。
+  deleteNode: 禁止删固定团；升格路人仅当用户明确放弃时删。
+  updateNode: 更新在场与状态、隐私锚摘要。
+  insertNode: 升格路人时添加。
+  ddl: |-
+    CREATE TABLE important_chars (
+      row_id INTEGER PRIMARY KEY,
+      name TEXT NOT NULL UNIQUE,
+      intro TEXT,
+      relation TEXT,
+      present TEXT NOT NULL DEFAULT '否' CHECK(present IN ('是','否')),
+      state TEXT,
+      look TEXT
+    );
+content:
+  - - row_id
+    - 姓名
+    - 一句话介绍
+    - 与玩家关系
+    - 是否在场
+    - 当前状态
+    - 外貌特征
+  - - 1
+    - 陈亦宁
+    - 人妻前台·浴室自拍/备孕
+    - 同事
+    - 否
+    - 待命
+    - 165丰胸淡妆
+  - - 2
+    - 沈知夏
+    - 亲姐已婚·云盘录音
+    - 亲姐
+    - 否
+    - 待命
+    - 168熟稳肉感
+  - - 3
+    - 尹可
+    - 冷感同事·抽屉玩具
+    - 同事
+    - 否
+    - 待命
+    - 163少笑有肉
+  - - 4
+    - 丁可儿
+    - 人妻邻里·语音换衣
+    - 同事兼邻居
+    - 否
+    - 待命
+    - 162胸大嗓门亮
+  - - 5
+    - 周晚棠
+    - 邻居人妻·隔墙窗帘
+    - 邻居
+    - 否
+    - 待命
+    - 166丰腴家居
+updateConfig:
+  uiSentinel: -1
+  contextDepth: 4
+  updateFrequency: 1
+  batchSize: 3
+  skipFloors: -1
+  groupId: 1
+exportConfig:
+  enabled: false
+  splitByRow: false
+  entryName: 重要角色表
+  entryType: constant
+  keywords: ""
+  preventRecursion: true
+  injectionTemplate: ""
+  extraIndexEnabled: false
+  extraIndexEntryName: ""
+  extraIndexColumns: []
+  extraIndexColumnModes: {}
+  extraIndexInjectionTemplate: ""
+  entryPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 110
+orderNo: 2

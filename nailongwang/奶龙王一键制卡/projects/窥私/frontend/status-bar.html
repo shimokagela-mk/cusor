@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>窥私 · 状态</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"IBM Plex Sans","Noto Sans SC",sans-serif;background:linear-gradient(135deg,#111827,#1f2937);color:#e5e7eb;min-height:100vh}
+.wrap{max-width:920px;margin:0 auto;padding:16px;display:grid;gap:12px}
+.panel{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:14px}
+.h{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#9ca3af;margin-bottom:8px}
+.loc{font-size:20px;font-weight:700}
+.meta{margin-top:8px;display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:12px;padding:4px 8px;border:1px solid rgba(255,255,255,.14);border-radius:999px}
+.bar{height:8px;background:#374151;border-radius:99px;overflow:hidden;margin-top:6px}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,#f59e0b,#ef4444);width:0%}
+.card{border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:10px;margin-top:8px;background:rgba(0,0,0,.2)}
+.warn{color:#fbbf24;font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="panel">
+    <div class="h">全局 · 场景壳</div>
+    <div class="loc" id="title">等待导入…</div>
+    <div class="meta" id="meta"></div>
+    <div class="warn" id="warn"></div>
+  </section>
+  <section class="panel">
+    <div class="h">堕落 / 服从</div>
+    <div id="corr"></div>
+  </section>
+  <section class="panel">
+    <div class="h">浅残留</div>
+    <div id="residue"></div>
+  </section>
+  <section class="panel">
+    <div class="h">把柄</div>
+    <div id="leverage"></div>
+  </section>
+  <section class="panel">
+    <div class="h">供词 / 交叉</div>
+    <div id="extra"></div>
+  </section>
+</div>
+<script>
+(function(){
+function roots(){var a=[window];try{if(parent!==window)a.push(parent)}catch(e){}try{if(top!==window)a.push(top)}catch(e){}return a;}
+function api(){var rs=roots();for(var i=0;i<rs.length;i++){try{if(rs[i].AutoCardUpdaterAPI)return rs[i].AutoCardUpdaterAPI;}catch(e){}}return null;}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function findSheet(all,name){if(!all)return null;for(var k in all){if(all[k]&&all[k].name===name)return all[k];}return null;}
+function rows(sheet){var c=sheet&&sheet.content;if(!c||c.length<2)return[];var idx={};c[0].forEach(function(h,i){if(h&&h!=='row_id'&&h!=='行号')idx[h]=i;});return c.slice(1).map(function(r){var o={};Object.keys(idx).forEach(function(n){o[n]=r[idx[n]];});return o;});}
+function snap(){var a=api();if(!a||!a.exportTableAsJson)return null;try{return a.exportTableAsJson();}catch(e){return null;}}
+function bar(label,v){v=Number(v)||0;return '<div class="chip">'+esc(label)+' '+v+'</div><div class="bar"><i style="width:'+Math.max(0,Math.min(100,v))+'%"></i></div>';}
+function render(){
+  var all=snap();
+  if(!all){document.getElementById('warn').textContent='尚未导入表格';return;}
+  document.getElementById('warn').textContent='';
+  var g=rows(findSheet(all,'全局数据表'))[0];
+  if(g){
+    document.getElementById('title').textContent=(g['场景壳']||'')+' · '+(g['当前位置']||'');
+    document.getElementById('meta').innerHTML=[
+      ['时间',g['当前时间']],['天数',g['天数']],['模式',g['模式']],['行动',g['主角当前状态']]
+    ].map(function(x){return '<span class="chip">'+esc(x[0])+': '+esc(x[1]==null?'—':x[1])+'</span>';}).join('');
+  }
+  var corr=rows(findSheet(all,'堕落服从表'));
+  document.getElementById('corr').innerHTML=corr.map(function(r){
+    return '<div class="card"><b>'+esc(r['角色名'])+'</b> · '+esc(r['当前玩法标记']||'无')+bar('堕落',r['堕落'])+bar('服从',r['服从'])+'</div>';
+  }).join('')||'<div class="warn">无</div>';
+  var res=rows(findSheet(all,'浅残留表'));
+  document.getElementById('residue').innerHTML=res.map(function(r){
+    return '<div class="card"><b>'+esc(r['角色名'])+'</b> · 余味 '+esc(r['服从余味']||0)+'<div style="margin-top:4px;font-size:12px;color:#9ca3af">'+esc(r['把柄余味']||'')+' '+esc(r['心理余味']||'')+'</div></div>';
+  }).join('')||'<div class="warn">无</div>';
+  var lev=rows(findSheet(all,'把柄清单表')).filter(function(r){return r['状态']!=='已销毁';});
+  document.getElementById('leverage').innerHTML=lev.length?lev.map(function(r){
+    return '<div class="card"><b>'+esc(r['对象'])+'</b> · '+esc(r['类型'])+' · 强度'+esc(r['强度'])+'<div style="margin-top:4px;font-size:12px">'+esc(r['内容摘要']||'')+(r['可威胁谁']?' → '+esc(r['可威胁谁']):'')+'</div></div>';
+  }).join(''):'<div class="warn">暂无把柄</div>';
+  var conf=rows(findSheet(all,'隐私供词录')).slice(-3).reverse();
+  var cross=rows(findSheet(all,'隐私交叉表')).filter(function(r){return r['状态']!=='已压下';}).slice(-3);
+  document.getElementById('extra').innerHTML=
+    '<div class="chip">供词最近</div>'+(conf.map(function(r){return '<div class="card"><b>'+esc(r['对象'])+'</b> '+esc(r['编码']||'')+'<div style="margin-top:4px;font-size:12px">'+esc(r['问题摘要']||'')+' → '+esc(r['供词摘要']||'')+'</div></div>';}).join('')||'<div class="warn">暂无供词</div>')+
+    '<div class="chip" style="margin-top:10px">交叉</div>'+(cross.map(function(r){return '<div class="card">'+esc(r['隐私主人'])+' ← '+esc(r['感知者'])+' · Lv'+esc(r['感知程度'])+' · '+esc(r['状态'])+'<div style="margin-top:4px;font-size:12px">'+esc(r['媒介']||'')+' '+esc(r['摘要']||'')+'</div></div>';}).join('')||'<div class="warn">暂无交叉</div>');
+}
+render();
+var a=api();
+if(a&&a.subscribeTableUpdate)a.subscribeTableUpdate(render);else setInterval(render,2500);
+})();
+</script>
+</body>
+</html>

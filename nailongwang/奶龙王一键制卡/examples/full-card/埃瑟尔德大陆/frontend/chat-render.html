@@ -1,0 +1,292 @@
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+/* === 基础重置 === */
+.dc-root q{quotes:none}
+.dc-root q::before,.dc-root q::after{content:''}
+.dc-root{font-family:"Noto Sans SC","Source Han Sans SC",sans-serif;font-size:1rem;line-height:1.75;color:rgba(255,255,255,0.85)}
+
+/* === 旁白块：思源黑体 + 浅底色 === */
+.dc-narration-block{position:relative;padding:0 16px 0 76px;margin:8px 0;font-family:"Noto Sans SC","Source Han Sans SC",sans-serif;background:rgba(255,255,255,0.04)}
+.dc-narration-block p{margin:0.5em 0;text-indent:var(--dc-text-indent,0em)}
+
+/* === 对话消息 === */
+.dc-msg{position:relative;padding:10px 16px 10px 76px;margin:10px 0;min-height:56px}
+
+/* === 头像 === */
+.dc-msg-avatar{position:absolute;left:16px;top:10px;width:52px;height:52px;border-radius:8px;overflow:hidden}
+.dc-msg-avatar img{width:100%;height:100%;object-fit:cover;border-radius:8px}
+.dc-msg-avatar-ph{width:100%;height:100%;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:600;color:#fff}
+
+/* === 消息头部：名字 + 情绪标签 === */
+.dc-msg-header{display:flex;align-items:flex-end;flex-wrap:wrap;column-gap:6px;row-gap:2px;margin:0 0 2px;line-height:1}
+
+/* 名字容器 */
+.dc-msg-name{display:inline-flex;align-items:baseline;font-family:"Noto Serif SC","Source Han Serif SC",serif;font-size:16px;font-weight:800;letter-spacing:1.5px;line-height:1;color:inherit}
+/* 第1字：大字染色 */
+.dc-msg-name .dc-ch{font-size:22px;line-height:0.95}
+/* 第3字：小字染色 */
+.dc-msg-name .dc-cs{font-size:16px;line-height:1}
+/* 其余字：小字默认色 */
+.dc-msg-name .dc-cn{font-size:16px;line-height:1;color:inherit}
+
+/* 情绪标签（胶囊样式） */
+.dc-msg-mood{display:inline-flex;align-items:center;align-self:flex-end;flex:0 0 auto;font-size:0.60rem;padding:1px 6px;border-radius:999px;font-weight:500;line-height:1.2;font-family:"Noto Sans SC","Source Han Sans SC",sans-serif;margin:0 0 1px}
+
+/* === 台词文本：思源宋体 === */
+.dc-msg-text{display:block;margin-top:0;font-size:14.5px;color:rgba(255,255,255,0.85);line-height:1.41;word-wrap:break-word;overflow-wrap:break-word;font-family:"Noto Serif SC","Source Han Serif SC",serif}
+.dc-msg-text-content{display:inline}
+.dc-msg-text-content-thought{display:inline;font-style:italic;vertical-align:baseline}
+
+/* === 装饰大引号 / 心里话装饰符 === */
+.dc-msg-quote{display:inline-block;position:relative;font-size:2.3rem;font-family:Georgia,"Times New Roman",serif;line-height:0;height:0.5em;margin-left:5px;top:0.45em;transform:scaleY(0.96);transform-origin:center bottom;overflow:visible;vertical-align:baseline;pointer-events:none;font-weight:400}
+.dc-msg-quote-thought{font-size:1.4rem;top:0;line-height:1;height:auto;transform:none;font-family:Georgia,"Times New Roman",serif;font-style:normal;vertical-align:baseline}
+
+/* === HTML 嵌入块兼容 === */
+.dc-html-embed{margin:12px 0}
+.dc-html-iframe{display:block;width:100%;min-height:120px;border:0;background:transparent;overflow:hidden;border-radius:12px}
+
+/* === 颜色系统（8色） === */
+.dc-c1{color:#f47b67}.dc-c2{color:#45ddc0}.dc-c3{color:#e78bff}.dc-c4{color:#f0b232}
+.dc-c5{color:#58a6ff}.dc-c6{color:#ff9a76}.dc-c7{color:#7ee787}.dc-c8{color:#d2a8ff}
+.dc-bg1{background:#f47b67}.dc-bg2{background:#45ddc0}.dc-bg3{background:#e78bff}.dc-bg4{background:#f0b232}
+.dc-bg5{background:#58a6ff}.dc-bg6{background:#ff9a76}.dc-bg7{background:#7ee787}.dc-bg8{background:#d2a8ff}
+/* 情绪标签背景（低透明度） */
+.dc-mood1{background:rgba(244,123,103,0.15);color:#f47b67}
+.dc-mood2{background:rgba(69,221,192,0.15);color:#45ddc0}
+.dc-mood3{background:rgba(231,139,255,0.15);color:#e78bff}
+.dc-mood4{background:rgba(240,178,50,0.15);color:#f0b232}
+.dc-mood5{background:rgba(88,166,255,0.15);color:#58a6ff}
+.dc-mood6{background:rgba(255,154,118,0.15);color:#ff9a76}
+.dc-mood7{background:rgba(126,231,135,0.15);color:#7ee787}
+.dc-mood8{background:rgba(210,168,255,0.15);color:#d2a8ff}
+
+/* === Markdown 样式（旁白用） === */
+.dc-narration-block strong{font-weight:700}
+.dc-narration-block em{font-style:italic}
+.dc-narration-block del{text-decoration:line-through;opacity:0.7}
+.dc-narration-block code{background:rgba(255,255,255,0.08);padding:1px 5px;border-radius:3px;font-family:"Fira Code","Source Code Pro",monospace;font-size:0.9em}
+.dc-narration-block pre{background:rgba(255,255,255,0.06);padding:10px 14px;border-radius:6px;overflow-x:auto;margin:0.5em 0}
+.dc-narration-block pre code{background:none;padding:0}
+.dc-narration-block blockquote{border-left:3px solid rgba(255,255,255,0.2);padding-left:12px;margin:0.5em 0;color:rgba(255,255,255,0.6)}
+.dc-narration-block ul,.dc-narration-block ol{padding-left:24px;margin:0.5em 0}
+.dc-narration-block li{margin:2px 0}
+.dc-narration-block table{border-collapse:collapse;margin:0.5em 0;width:100%}
+.dc-narration-block th,.dc-narration-block td{border:1px solid rgba(255,255,255,0.15);padding:4px 8px;text-align:left}
+.dc-narration-block th{background:rgba(255,255,255,0.06)}
+.dc-narration-block h1,.dc-narration-block h2,.dc-narration-block h3,.dc-narration-block h4,.dc-narration-block h5,.dc-narration-block h6{margin:0.6em 0 0.3em;font-weight:700;color:rgba(255,255,255,0.9)}
+.dc-narration-block h1{font-size:1.4em}.dc-narration-block h2{font-size:1.25em}.dc-narration-block h3{font-size:1.1em}
+.dc-narration-block hr{border:none;border-top:1px solid rgba(255,255,255,0.15);margin:0.8em 0}
+.dc-narration-block a{color:#58a6ff;text-decoration:underline}
+.dc-narration-block img{max-width:100%;border-radius:4px}
+</style>
+</head>
+<body>
+<xmp id="dcSource" style="display:none;">$1</xmp>
+<div class="dc-root" id="dcRoot"></div>
+<script>
+(function(){
+  var DB_NAME='BubbleDialogueAvatars',DB_VERSION=4,ST_AV='avatars',ST_CF='config';
+  var cMap={},cIdx=0;
+
+  /* 分配颜色索引(1-8) */
+  function gc(name){
+    if(cMap[name])return cMap[name];
+    cIdx=(cIdx%8)+1;
+    cMap[name]=cIdx;
+    return cIdx;
+  }
+
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+  function hex2rgba(h,a){
+    var r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);
+    return'rgba('+r+','+g+','+b+','+a+')';
+  }
+
+  function decodeHtmlEntities(html){
+    var textarea=document.createElement('textarea');
+    textarea.innerHTML=html;
+    return textarea.value;
+  }
+
+  function getHtmlEmbedToken(index){
+    return '@@DC_HTML_EMBED_'+index+'@@';
+  }
+
+  function getInlineHtmlToken(index){
+    return '@@DC_INLINE_HTML_'+index+'@@';
+  }
+
+  function restoreInlineHtmlTokens(text, inlineHtmlTokens){
+    text=String(text==null?'':text);
+    inlineHtmlTokens=Array.isArray(inlineHtmlTokens)?inlineHtmlTokens:[];
+    return text.replace(/@@DC_INLINE_HTML_(\d+)@@/g,function(_,idx){
+      idx=parseInt(idx,10);
+      return idx>=0&&idx<inlineHtmlTokens.length?inlineHtmlTokens[idx]:'';
+    });
+  }
+
+  function normalizeSourceText(rawHtml){
+    return decodeHtmlEntities(rawHtml||'')
+      .replace(/\u00a0/g,' ')
+      .replace(/\r\n?/g,'\n')
+      .replace(/<\/?(now_plot|content)\b[^>]*>/gi,'');
+  }
+
+  function stripBubbleLineHtmlWrappers(line){
+    var current=String(line==null?'':line).trim();
+    if(!current) return '';
+
+    var htmlTagWrapperPattern=/^<([a-z][\w:-]*)(?:\s[^<>]*?)?>([\s\S]*)<\/\1>$/i;
+    var inlineTokenWrapperPattern=/^(@@DC_INLINE_HTML_(\d+)@@)([\s\S]*)(@@DC_INLINE_HTML_(\d+)@@)$/;
+    var bubbleLinePattern=/^@bubble:/;
+    var maxDepth=12;
+
+    for(var depth=0;depth<maxDepth;depth++){
+      if(bubbleLinePattern.test(current)) break;
+
+      var next=current;
+      var htmlMatch=current.match(htmlTagWrapperPattern);
+      if(htmlMatch){
+        next=String(htmlMatch[2]||'').trim();
+      }else{
+        var tokenMatch=current.match(inlineTokenWrapperPattern);
+        if(tokenMatch&&tokenMatch[2]===tokenMatch[5]){
+          next=String(tokenMatch[3]||'').trim();
+        }
+      }
+
+      if(next===current) break;
+      current=next;
+    }
+
+    return current;
+  }
+
+  function protectInlineHtml(rawHtml){
+    var tokens=[];
+    var htmlCommentOrTagPattern=new RegExp('(?:'+'<!'+'--[\\s\\S]*?--'+'>)|(?:<\\/?[a-z][\\w:-]*(?:\\s[^<>]*?)?>)','gi');
+    rawHtml=rawHtml||'';
+    if(!rawHtml)return {text:'',tokens:tokens};
+    rawHtml=rawHtml.replace(htmlCommentOrTagPattern,function(match){
+      var token=getInlineHtmlToken(tokens.length);
+      tokens.push(match);
+      return token;
+    });
+    return {text:rawHtml,tokens:tokens};
+  }
+
+  function buildBubbleDetectionLine(line){
+    var cleaned=String(line==null?'':line);
+    var htmlCommentPattern=new RegExp('<!'+'--[\\s\\S]*?--'+'>','g');
+    if(!cleaned) return '';
+
+    var previous='';
+    var maxDepth=12;
+    for(var depth=0;depth<maxDepth&&cleaned!==previous;depth++){
+      previous=cleaned;
+      cleaned=cleaned.replace(/@@DC_INLINE_HTML_\d+@@/g,'');
+      cleaned=cleaned.replace(htmlCommentPattern,'');
+      cleaned=cleaned.replace(/<\/?[a-z][\w:-]*(?:\s[^<>]*?)?>/gi,'');
+      cleaned=stripBubbleLineHtmlWrappers(cleaned);
+    }
+
+    return cleaned.replace(/\s+/g,' ').trim();
+  }
+
+  function protectHtmlFences(rawHtml){
+    var embeds=[];
+    rawHtml=rawHtml||'';
+    if(!rawHtml)return {text:'',embeds:embeds};
+    rawHtml=rawHtml.replace(/`{3,}\s*(html|htm|xhtml)\s*([\s\S]*?)`{3,}/gi,function(_,lang,inner){
+      var token=getHtmlEmbedToken(embeds.length);
+      embeds.push((inner||'').replace(/^\s+|\s+$/g,''));
+      return '\n'+token+'\n';
+    });
+    return {text:rawHtml,embeds:embeds};
+  }
+
+  function extractSourceText(rawHtml){
+    return (rawHtml||'')
+      .replace(/\r\n?/g,'\n')
+      .split(/\n/)
+      .map(function(line){
+        return stripBubbleLineHtmlWrappers(line);
+      })
+      .join('\n')
+      .replace(/([^\n])\s*(@bubble:)/g,function(_,prefix,marker){
+        return prefix+'\n'+marker;
+      });
+  }
+
+  function encodeUtf8Base64(text){
+    try{return btoa(unescape(encodeURIComponent(text||'')));}
+    catch(e){return '';}
+  }
+
+  function decodeUtf8Base64(text){
+    try{return decodeURIComponent(escape(atob(text||'')));}
+    catch(e){return '';}
+  }
+
+  function isHtmlFenceLang(lang){
+    return /^(html|htm|xhtml)$/i.test((lang||'').trim());
+  }
+
+  function buildHtmlEmbedPlaceholder(source){
+    return '<div class="dc-html-embed" data-html-b64="'+encodeUtf8Base64(source)+'"></div>';
+  }
+
+  function normalizeHtmlEmbedSource(source){
+    var normalized=source||'';
+    if(!normalized)return '';
+    return normalized.replace(/<q\b[^>]*>/gi,'').replace(/<\/q>/gi,'');
+  }
+
+  var HOST_BRIDGE_GLOBAL_ALIASES={
+    '$':['$','jQuery'],
+    'jQuery':['jQuery','$'],
+    'getChatMessages':['getChatMessages'],
+    'getCurrentMessageId':['getCurrentMessageId'],
+    'getContext':['getContext','SillyTavern.getContext'],
+    'SillyTavern':['SillyTavern'],
+    'toastr':['toastr','SillyTavern.toastr'],
+    'eventSource':['eventSource','SillyTavern.eventSource'],
+    'event_types':['event_types','SillyTavern.event_types'],
+    'power_user':['power_user','SillyTavern.power_user'],
+    'chat':['chat','SillyTavern.chat'],
+    'chat_metadata':['chat_metadata','SillyTavern.chat_metadata'],
+    'extension_settings':['extension_settings','SillyTavern.extension_settings'],
+    'characters':['characters','SillyTavern.characters'],
+    'this_chid':['this_chid','SillyTavern.this_chid'],
+    'selected_group':['selected_group','SillyTavern.selected_group'],
+    'eventOn':['eventOn','SillyTavern.eventOn'],
+    'getButtonEvent':['getButtonEvent','SillyTavern.getButtonEvent'],
+    'callGenericPopup':['callGenericPopup','SillyTavern.callGenericPopup'],
+    'Popup':['Popup','SillyTavern.Popup'],
+    'executeSlashCommands':['executeSlashCommands','SillyTavern.executeSlashCommands'],
+    'renderExtensionTemplateAsync':['renderExtensionTemplateAsync','SillyTavern.renderExtensionTemplateAsync'],
+    'Generate':['Generate','SillyTavern.Generate'],
+    'activateSendButtons':['activateSendButtons','SillyTavern.activateSendButtons'],
+    'deactivateSendButtons':['deactivateSendButtons','SillyTavern.deactivateSendButtons'],
+    'BubbleCG':['BubbleCG']
+  };
+
+  function buildHtmlEmbedBridgeConfig(messageText){
+    return {
+      messageText:messageText||'',
+      globalAliases:HOST_BRIDGE_GLOBAL_ALIASES
+    };
+  }
+
+  function buildHtmlEmbedScriptDataUrl(code){
+    return 'data:text/javascript;charset=utf-8;base64,'+encodeUtf8Base64(code||'');
+  }
+
+  function buildHtmlEmbedSrcdoc(source, context){
+    var raw=normalizeHtmlEmbedSource(source).trim();
+    if(!raw)return '';
+    if(!/<(?:!doctype|html|body|head)\b/i.test(raw)){
+      raw='<!DOCTYPE html>

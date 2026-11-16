@@ -1,0 +1,22 @@
+/* SillyTavern 原生扩展样式样例
+   选择器必须带扩展前缀，避免污染全局 UI。 */
+
+.example-extension-settings {
+    margin: 0.75rem 0;
+}
+
+.example-extension-card {
+    border: 1px solid var(--SmartThemeBorderColor, rgba(255, 255, 255, 0.2));
+    border-radius: 8px;
+    padding: 0.75rem;
+    background: var(--SmartThemeBlurTintColor, rgba(0, 0, 0, 0.2));
+}
+
+.example-extension-card h3 {
+    margin: 0 0 0.5rem;
+}
+
+.example-extension-card p {
+    margin: 0 0 0.75rem;
+    opacity: 0.85;
+}
