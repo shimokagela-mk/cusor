@@ -153,16 +153,30 @@ function createTextChunk(keyword, text) {
   ]));
 }
 
+function withSpec(card, spec, specVersion) {
+  const next = { ...card, spec, spec_version: specVersion };
+  if (spec === 'chara_card_v3' && next.data && typeof next.data === 'object' && !Array.isArray(next.data.group_only_greetings)) {
+    next.data = { ...next.data, group_only_greetings: [] };
+  }
+  if (spec === 'chara_card_v2' && next.data && typeof next.data === 'object' && Object.prototype.hasOwnProperty.call(next.data, 'group_only_greetings')) {
+    next.data = { ...next.data };
+    delete next.data.group_only_greetings;
+  }
+  return next;
+}
+
 function writePngWithCardMetadata(sourceBuffer, card, outputPath) {
   const chunks = parseChunks(sourceBuffer);
-  const cardBase64 = Buffer.from(JSON.stringify(card), 'utf-8').toString('base64');
-  const cardChunk = createTextChunk('chara', cardBase64);
+  const v2Base64 = Buffer.from(JSON.stringify(withSpec(card, 'chara_card_v2', '2.0')), 'utf-8').toString('base64');
+  const v3Base64 = Buffer.from(JSON.stringify(withSpec(card, 'chara_card_v3', '3.0')), 'utf-8').toString('base64');
+  const charaChunk = createTextChunk('chara', v2Base64);
+  const ccv3Chunk = createTextChunk('ccv3', v3Base64);
   const outputParts = [PNG_SIGNATURE];
   let removedCount = 0;
 
   for (const chunk of chunks) {
     if (chunk.type === 'IEND') {
-      outputParts.push(cardChunk, chunk.raw);
+      outputParts.push(charaChunk, ccv3Chunk, chunk.raw);
       continue;
     }
 
@@ -203,7 +217,7 @@ function main() {
   const dataRoot = card && card.data && typeof card.data === 'object' ? card.data : card;
 
   console.log(`已封装 PNG 角色卡: ${dataRoot.name || path.basename(jsonPath)}`);
-  console.log(`写入字段: chara`);
+  console.log('写入字段: chara (v2), ccv3 (v3)');
   console.log(`已删除旧角色卡元数据字段数: ${removedCount}`);
   console.log(`输出 PNG: ${outputPath}`);
 }

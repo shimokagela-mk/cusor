@@ -906,8 +906,8 @@ function buildCharacterCard(planPath) {
     talkativeness: planData.extensions?.talkativeness || "0.5",
     fav: planData.extensions?.fav || false,
     tags: [],
-    spec: "chara_card_v3",
-    spec_version: "3.0",
+    spec: "chara_card_v2",
+    spec_version: "2.0",
     data: {
       name: cardName,
       description: planData.description || "",
@@ -937,7 +937,6 @@ function buildCharacterCard(planPath) {
         },
         regex_scripts: regexScripts
       },
-      group_only_greetings: [],
       character_book: {
         entries: entries,
         name: cardName

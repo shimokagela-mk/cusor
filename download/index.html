@@ -17,18 +17,19 @@
 </head>
 <body>
   <div class="card">
-    <h1>公司生活 · v0.6.29</h1>
-    <p>点下面直接保存角色卡。这一份和页面在同一处，不经过打不开的旧链接。</p>
-    <a class="btn primary" href="card.json" download="公司生活.json">下载 公司生活.json</a>
+    <h1>公司生活 · v0.6.30</h1>
+    <p>酒馆请导入 PNG。JSON 已改成通用的 v2，不要用上一份 v3 文件。</p>
+    <a class="btn primary" href="card.png" download="公司生活.png">下载 公司生活.png</a>
+    <a class="btn secondary" href="card.json" download="公司生活.json">下载 v2 JSON</a>
     <a class="btn secondary" href="prompt.txt" download="主提示-替换用-公司生活.txt">下载主提示词</a>
     <a class="btn secondary" id="m1" target="_blank" rel="noopener">镜像 1（gh-proxy）</a>
     <a class="btn secondary" id="m2" target="_blank" rel="noopener">镜像 2（jsDelivr 国内）</a>
     <a class="btn secondary" id="m3" target="_blank" rel="noopener">镜像 3（jsDelivr）</a>
-    <small>导入 SillyTavern：角色卡 → 导入 JSON。保存后文件名用「公司生活.json」即可。</small>
+    <small>导入：角色列表里点导入，选「公司生活.png」。JSON 用 v2 这份，扩展名必须是 .json 或 .png。</small>
   </div>
   <script>
     const branch = 'cursor/company-life-card-pack-96ab';
-    const file = 'release/card.json';
+    const file = 'release/card.png';
     const raw = 'https://raw.githubusercontent.com/shimokagela-mk/cusor/' + branch + '/' + file;
     document.getElementById('m1').href = 'https://gh-proxy.com/' + raw;
     document.getElementById('m2').href = 'https://cdn.jsdmirror.com/gh/shimokagela-mk/cusor@' + encodeURIComponent(branch) + '/' + file;
