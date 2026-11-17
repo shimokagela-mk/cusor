@@ -1,0 +1,62 @@
+id: 7
+keys:
+  - 矮人
+  - 铁炉堡
+secondary_keys: []
+comment: 铁炉堡矮人氏族
+content: |-
+  # 势力详述：铁炉堡矮人氏族
+    **核心概览**：居住于西北苍白山脉深处、由多个氏族联合而成的矮人城邦联盟。以无与伦比的锻造技艺、深入山脉的矿业和顽固的脾气闻名。社会结构基于氏族与工匠行会，最高权力属于“高山之王”及氏族长老会议。
+    **统治体系**：联盟制。铁炉堡为首都和最大城邦，其他山腹中的要塞城邦（如深炉城、坚石堡）享有高度自治，但在外交、战争等重大事务上服从高山之王与长老会议的决议。
+    **社会文化**：极端重视家族血脉、工匠荣誉与古老誓言。社会以工匠（铁匠、石匠、酿酒师等）为核心。历史、族谱和契约被精心记录在石板上。盛大的饮酒宴会和锻造比赛是重要社交活动。
+    **军事力量**：全民皆兵。矮人战士身着最精良的板甲，使用战斧与盾牌，擅长山地防御与坑道战。拥有强大的攻城器械和守城装置。但人口有限，不喜远离山脉的长期远征。
+    **经济基础**：矿业（铁、银、秘银等）和锻造业是命脉。出产的武器、盔甲与工艺品享誉大陆，是重要的出口商品。内部经济以物物交换和金属货币为主。
+    **主要城镇/据点**：
+    - **铁炉堡 (苍白山脉深处)**：矮人都城，山腹中的宏伟都市，以“大锻炉”和“国王大厅”为中心，迷宫般的隧道连接着居住区、工坊与宝库。
+    - **深炉城 (铁炉堡东南方)**：以深井矿坑和稀有宝石切割闻名的重要矿业城邦。
+    - **坚石堡 (苍白山脉南麓)**：把守主要下山通道的军事要塞，是矮人与诺顿王国陆地贸易的主要关卡和前沿防御点。
+    - **回声前哨 (山脉北部边缘)**：小型采矿与侦查哨站，负责监视霜巨人与兽人动向，环境艰苦。
+    **外交态势**：
+    - **坚定盟友**：诺顿王国（长期的矿产贸易与军事同盟，互相尊重）。
+    - **世仇死敌**：黑岩堡地精王国（无尽的地下战争与资源争夺）。
+    - **谨慎中立**：对绝大多数其他地表势力（包括人类、精灵等）保持贸易关系但不过度亲近，不信任其短暂的生命与善变的政策。
+    - **敌对**：苍白山脉兽人部落（争夺山脉栖息地与资源）、霜巨人部落（古老的天敌）。
+    - **无视/轻视**：暮光沼泽蜥蜴人、荒原氏族等地理遥远的势力。
+constant: false
+selective: true
+insertion_order: 15
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: true
+  display_index: 11
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

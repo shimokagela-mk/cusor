@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>轮回禁则 - 剧情推进面板</title>
+    <style>
+        :root {
+            --bg-primary: #07090f;
+            --bg-secondary: #0f1724;
+            --bg-panel: rgba(12, 18, 30, 0.95);
+            --bg-card: #131d2c;
+            --bg-soft: #0b1320;
+            --text-primary: #edf2ff;
+            --text-secondary: #9aa7c2;
+            --accent-cyan: #7dd3fc;
+            --accent-red: #ef4444;
+            --accent-yellow: #f59e0b;
+            --accent-green: #22c55e;
+            --accent-purple: #a78bfa;
+            --border-color: rgba(125, 211, 252, 0.18);
+            --danger-border: rgba(239, 68, 68, 0.26);
+            --warning-border: rgba(245, 158, 11, 0.22);
+            --shadow: 0 14px 34px rgba(0, 0, 0, 0.42);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: transparent;
+            color: var(--text-primary);
+            font-family: 'Microsoft YaHei', sans-serif;
+            font-size: 13px;
+            line-height: 1.7;
+            padding: 4px;
+        }
+
+        .panel {
+            background: linear-gradient(160deg, rgba(7, 9, 15, 0.98), rgba(15, 23, 36, 0.96));
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at top right, rgba(239, 68, 68, 0.14), transparent 34%),
+                radial-gradient(circle at left center, rgba(125, 211, 252, 0.10), transparent 30%);
+        }
+
+        .hero {
+            position: relative;
+            padding: 18px 18px 14px;
+            border-bottom: 1px solid rgba(125, 211, 252, 0.12);
+        }
+
+        .hero-title {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .hero-subtitle {
+            margin-top: 6px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .hero-warning {
+            margin-top: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(239, 68, 68, 0.30);
+            background: rgba(127, 29, 29, 0.28);
+            color: #fecaca;
+            font-size: 11px;
+        }
+
+        .metrics {
+            position: relative;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+            padding: 14px 18px 0;
+        }
+
+        .metric {
+            background: linear-gradient(180deg, var(--bg-card), var(--bg-secondary));
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px;
+            min-width: 0;
+        }
+
+        .metric-label {
+            color: var(--text-secondary);
+            font-size: 11px;
+            margin-bottom: 6px;
+        }
+
+        .metric-value {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-primary);
+            word-break: break-word;
+        }
+
+        .metric-value.chaos-safe {
+            color: var(--accent-green);
+        }
+
+        .metric-value.chaos-mid {
+            color: var(--accent-yellow);
+        }
+
+        .metric-value.chaos-high {
+            color: #fca5a5;
+        }
+
+        .tabs {
+            position: relative;
+            display: flex;
+            gap: 8px;
+            padding: 14px 18px;
+            overflow-x: auto;
+            border-bottom: 1px solid rgba(125, 211, 252, 0.10);
+        }
+
+        .tab-btn {
+            border: 1px solid var(--border-color);
+            background: rgba(12, 18, 30, 0.82);
+            color: var(--text-secondary);
+            border-radius: 999px;
+            padding: 8px 12px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            font-size: 12px;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, rgba(125, 211, 252, 0.20), rgba(125, 211, 252, 0.06));
+            color: var(--text-primary);
+            border-color: rgba(125, 211, 252, 0.28);
+            box-shadow: inset 0 0 0 1px rgba(125, 211, 252, 0.10);
+        }
+
+        .content {
+            position: relative;
+            padding: 16px 18px 18px;
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        .section {
+            background: linear-gradient(180deg, rgba(19, 29, 44, 0.92), rgba(11, 19, 32, 0.96));
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+
+        .section.danger {
+            border-color: var(--danger-border);
+            box-shadow: inset 0 0 0 1px rgba(239, 68, 68, 0.06);
+        }
+
+        .section.warning {
+            border-color: var(--warning-border);
+        }
+
+        .section-title {
+            font-size: 12px;
+            color: var(--accent-cyan);
+            letter-spacing: 0.6px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .section-text {
+            color: var(--text-primary);
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .section-text.dim {
+            color: var(--text-secondary);
+        }
+
+        .pill-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .pill {
+            border-radius: 999px;
+            padding: 4px 10px;
+            font-size: 11px;
+            border: 1px solid var(--border-color);
+            background: rgba(12, 18, 30, 0.82);
+            color: var(--text-secondary);
+        }
+
+        .pill.safe {
+            color: #bbf7d0;
+            border-color: rgba(34, 197, 94, 0.30);
+            background: rgba(20, 83, 45, 0.24);
+        }
+
+        .pill.mid {
+            color: #fde68a;
+            border-color: rgba(245, 158, 11, 0.28);
+            background: rgba(120, 53, 15, 0.24);
+        }
+
+        .pill.high {
+            color: #fecaca;
+            border-color: rgba(239, 68, 68, 0.30);
+            background: rgba(127, 29, 29, 0.26);
+        }
+
+        .list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .list-item {
+            padding: 10px 12px;
+            border-radius: 10px;
+            background: rgba(11, 19, 32, 0.92);
+            border: 1px solid rgba(125, 211, 252, 0.10);
+        }
+
+        .list-item-title {
+            color: var(--text-primary);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .list-item-desc {
+            color: var(--text-secondary);
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .code-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .code-tag {
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(125, 211, 252, 0.10);
+            border: 1px solid rgba(125, 211, 252, 0.18);
+            color: var(--accent-cyan);
+            font-family: Consolas, monospace;
+            font-size: 12px;
+        }
+
+        .mono {
+            font-family: Consolas, monospace;
+        }
+
+        .empty {
+            color: var(--text-secondary);
+            text-align: center;
+            padding: 32px 12px;
+            border: 1px dashed rgba(125, 211, 252, 0.18);
+            border-radius: 12px;
+            background: rgba(11, 19, 32, 0.60);
+        }
+
+        @media (max-width: 760px) {
+            .metrics {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="panel">
+        <div class="hero">
+            <div class="hero-title">轮回禁则 · 推进书记官回执</div>
+            <div class="hero-subtitle">违规判定 / 风险推进 / 关键对象 / 记忆召回</div>
+            <div class="hero-warning">⚠ 高风险轮次将优先执行后果裁定，不保留错误试探的安全幻觉</div>
+        </div>
+
+        <div class="metrics">
+            <div class="metric">
+                <div class="metric-label">违规结论</div>
+                <div class="metric-value" id="metricViolation">待判定</div>
+            </div>
+            <div class="metric">
+                <div class="metric-label">后果等级</div>
+                <div class="metric-value" id="metricConsequence">待生成</div>
+            </div>
+            <div class="metric">
+                <div class="metric-label">危险累积</div>
+                <div class="metric-value" id="metricChaos">0</div>
+            </div>
+            <div class="metric">
+                <div class="metric-label">召回条目</div>
+                <div class="metric-value" id="metricRecall">0</div>
+            </div>
+        </div>
+
+        <div class="tabs" id="tabs"></div>
+
+        <div class="content">
+            <div class="tab-pane active" id="pane-overview"></div>
+            <div class="tab-pane" id="pane-violation"></div>
+            <div class="tab-pane" id="pane-consequence"></div>
+            <div class="tab-pane" id="pane-objects"></div>
+            <div class="tab-pane" id="pane-clues"></div>
+            <div class="tab-pane" id="pane-recall"></div>
+        </div>
+    </div>
+
+    <script>
+    (function () {
+        const TAB_ITEMS = [
+            { id: 'overview', label: '轮次总览' },
+            { id: 'violation', label: '违规判定' },
+            { id: 'consequence', label: '后果裁定' },
+            { id: 'objects', label: '关键对象' },
+            { id: 'clues', label: '线索伏笔' },
+            { id: 'recall', label: '记忆召回' }
+        ];
+
+        function escapeHtml(text) {
+            var div = document.createElement('div');
+            div.textContent = text == null ? '' : String(text);
+            return div.innerHTML;
+        }
+
+        function escapeRegex(text) {
+            return String(text).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        function updateHeight() {
+            setTimeout(function () {
+                const height = document.body.scrollHeight;
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage({ type: 'resizeIframe', height: height }, '*');
+                }
+            }, 60);
+        }
+
+        function getChatMessages() {
+            try {
+                if (typeof getContext === 'function') {
+                    const ctx = getContext();
+                    if (ctx && Array.isArray(ctx.chat)) return ctx.chat;
+                }
+            } catch (e) {}
+
+            try {
+                if (typeof window.SillyTavern !== 'undefined' && Array.isArray(window.SillyTavern.chat)) {
+                    return window.SillyTavern.chat;
+                }
+            } catch (e) {}
+
+            return null;
+        }
+
+        function collectMessageSources(msg) {
+            const sources = [];
+
+            function pushUnique(value) {
+                if (typeof value !== 'string') return;
+                const normalized = value.trim();
+                if (!normalized || sources.includes(normalized)) return;
+                sources.push(normalized);
+            }
+
+            if (!msg) return sources;
+
+            pushUnique(msg.extra && msg.extra.qrf_plot ? msg.extra.qrf_plot : null);
+            pushUnique(msg.qrf_plot);
+            pushUnique(msg.mes);
+
+            if (Array.isArray(msg.swipes)) {
+                for (let s = 0; s < msg.swipes.length; s++) {
+                    const swipe = msg.swipes[s];
+                    if (typeof swipe === 'string') {
+                        pushUnique(swipe);
+                    } else if (swipe && swipe.extra && swipe.extra.qrf_plot) {
+                        pushUnique(swipe.extra.qrf_plot);
+                    }
+                }
+            }
+
+            return sources;
+        }
+
+        function extractTagFromChat(tagName) {
+            const chat = getChatMessages();
+            if (!chat) return '';
+
+            const safeTagName = escapeRegex(tagName);
+            const standaloneRegex = new RegExp('(?:^|\\r?\\n)\\s*<' + safeTagName + '>\\s*(?:\\r?\\n)?([\\s\\S]*?)(?:\\r?\\n)\\s*<\\/' + safeTagName + '>\\s*(?=\\r?\\n|$)', 'i');
+
+            for (let i = chat.length - 1; i >= 0; i--) {
+                const msg = chat[i];
+                const sources = collectMessageSources(msg);
+
+                for (let j = 0; j < sources.length; j++) {
+                    const source = sources[j];
+                    const match = source.match(standaloneRegex);
+                    if (match && match[1]) return match[1].trim();
+                }
+            }
+
+            return '';
+        }
+
+        function extractUserInputBlock() {
+            const chat = getChatMessages();
+            if (!chat) return '';
+            const regex = /用户输入内容是([\s\S]*?)(?:\n请先吸收以下推进结果，再基于当前轮次机制继续正文：|$)/i;
+
+            for (let i = chat.length - 1; i >= 0; i--) {
+                const msg = chat[i];
+                const sources = collectMessageSources(msg);
+                for (let j = 0; j < sources.length; j++) {
+                    const source = sources[j];
+                    const match = source.match(regex);
+                    if (match && match[1]) return match[1].trim();
+                }
+            }
+
+            return '';
+        }
+
+        function splitLines(text) {
+            return String(text || '')
+                .split(/\r?\n/)
+                .map(line => line.trim())
+                .filter(Boolean);
+        }
+
+        function getViolationLevel(text) {
+            if (!text) return { label: '待判定', className: '' };
+            if (text.includes('明确违规')) return { label: '明确违规', className: 'high' };
+            if (text.includes('高风险疑似违规')) return { label: '高风险疑似违规', className: 'high' };
+            if (text.includes('边缘试探')) return { label: '边缘试探', className: 'mid' };
+            if (text.includes('安全行动')) return { label: '安全行动', className: 'safe' };
+            return { label: '已生成', className: '' };
+        }
+
+        function getConsequenceLevel(text) {
+            if (!text) return { label: '待生成', className: '' };
+            if (text.includes('致命') || text.includes('抹除') || text.includes('消失')) return { label: '致命裁定', className: 'high' };
+            if (text.includes('即时后果') || text.includes('即时惩罚')) return { label: '即时惩罚', className: 'high' };
+            if (text.includes('延迟后果') || text.includes('延迟惩罚') || text.includes('倒计时')) return { label: '延迟惩罚', className: 'mid' };
+            if (text.includes('征兆') || text.includes('压迫')) return { label: '征兆反馈', className: 'mid' };
+            return { label: '已生成', className: '' };
+        }
+
+        function getChaosLevel(num) {
+            if (num >= 7) return 'chaos-high';
+            if (num >= 4) return 'chaos-mid';
+            return 'chaos-safe';
+        }
+
+        function parseChaos(text) {
+            const raw = String(text || '').trim();
+            const num = parseInt(raw, 10);
+            return Number.isFinite(num) ? num : 0;
+        }
+
+        function renderEmpty(targetId, label) {
+            document.getElementById(targetId).innerHTML = '<div class="empty">' + escapeHtml(label) + '</div>';
+        }
+
+        function renderOverview(firstText, secondText, userInput) {
+            const target = document.getElementById('pane-overview');
+            if (!firstText && !secondText && !userInput) {
+                renderEmpty('pane-overview', '暂无轮次总览数据');
+                return;
+            }
+
+            let html = '';
+            if (userInput) {
+                html += '<div class="section">';
+                html += '<div class="section-title">用户最终注入</div>';
+                html += '<div class="section-text">' + escapeHtml(userInput) + '</div>';
+                html += '</div>';
+            }
+            if (firstText) {
+                html += '<div class="section">';
+                html += '<div class="section-title">当前轮次总览</div>';
+                html += '<div class="section-text">' + escapeHtml(firstText) + '</div>';
+                html += '</div>';
+            }
+            if (secondText) {
+                html += '<div class="section warning">';
+                html += '<div class="section-title">规则与风险判断</div>';
+                html += '<div class="section-text">' + escapeHtml(secondText) + '</div>';
+                html += '</div>';
+            }
+            target.innerHTML = html;
+        }
+
+        function renderViolation(text) {
+            if (!text) {
+                renderEmpty('pane-violation', '暂无违规判定');
+                return;
+            }
+
+            const level = getViolationLevel(text);
+            let html = '<div class="section danger">';
+            html += '<div class="section-title">本轮违规判定</div>';
+            html += '<div class="pill-row"><div class="pill ' + level.className + '">' + escapeHtml(level.label) + '</div></div>';
+            html += '<div class="section-text">' + escapeHtml(text) + '</div>';
+            html += '</div>';
+            document.getElementById('pane-violation').innerHTML = html;
+            document.getElementById('metricViolation').textContent = level.label;
+        }
+
+        function renderConsequence(text, chaos) {
+            if (!text) {
+                renderEmpty('pane-consequence', '暂无后果裁定');
+                return;
+            }
+
+            const level = getConsequenceLevel(text);
+            let html = '<div class="section danger">';
+            html += '<div class="section-title">后果裁定与危险升级</div>';
+            html += '<div class="pill-row">';
+            html += '<div class="pill ' + level.className + '">' + escapeHtml(level.label) + '</div>';
+            html += '<div class="pill ' + getChaosLevel(chaos).replace('chaos-', '') + '">CHAOS ' + chaos + '</div>';
+            html += '</div>';
+            html += '<div class="section-text">' + escapeHtml(text) + '</div>';
+            html += '</div>';
+            document.getElementById('pane-consequence').innerHTML = html;
+            document.getElementById('metricConsequence').textContent = level.label;
+        }
+
+        function renderObjects(text) {
+            if (!text) {
+                renderEmpty('pane-objects', '暂无关键对象分析');
+                return;
+            }
+            const html = '<div class="section"><div class="section-title">关键对象与行动倾向</div><div class="section-text">' + escapeHtml(text) + '</div></div>';
+            document.getElementById('pane-objects').innerHTML = html;
+        }
+
+        function renderClues(text) {
+            if (!text) {
+                renderEmpty('pane-clues', '暂无线索与伏笔分析');
+                return;
+            }
+            const html = '<div class="section warning"><div class="section-title">线索、道具与伏笔</div><div class="section-text">' + escapeHtml(text) + '</div></div>';
+            document.getElementById('pane-clues').innerHTML = html;
+        }
+
+        function renderRecall(text) {
+            const lines = splitLines(text);
+            document.getElementById('metricRecall').textContent = String(lines.length);
+            if (!lines.length) {
+                renderEmpty('pane-recall', '暂无记忆召回');
+                return;
+            }
+
+            const tags = lines.map(line => '<div class="code-tag">' + escapeHtml(line) + '</div>').join('');
+            const html = '<div class="section"><div class="section-title">召回编码</div><div class="code-tags">' + tags + '</div></div>';
+            document.getElementById('pane-recall').innerHTML = html;
+        }
+
+        function buildTabs() {
+            const html = TAB_ITEMS.map(function (item, index) {
+                return '<button class="tab-btn ' + (index === 0 ? 'active' : '') + '" data-tab="' + item.id + '">' + item.label + '</button>';
+            }).join('');
+            const tabsRoot = document.getElementById('tabs');
+            tabsRoot.innerHTML = html;
+
+            tabsRoot.querySelectorAll('.tab-btn').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    const tabId = btn.getAttribute('data-tab');
+                    tabsRoot.querySelectorAll('.tab-btn').forEach(function (node) {
+                        node.classList.toggle('active', node === btn);
+                    });
+                    document.querySelectorAll('.tab-pane').forEach(function (pane) {
+                        pane.classList.toggle('active', pane.id === 'pane-' + tabId);
+                    });
+                    updateHeight();
+                });
+            });
+        }
+
+        function init() {
+            buildTabs();
+
+            const userInput = extractUserInputBlock();
+            const firstText = extractTagFromChat('first');
+            const secondText = extractTagFromChat('second');
+            const violationText = extractTagFromChat('violation');
+            const consequenceText = extractTagFromChat('consequence');
+            const thirdText = extractTagFromChat('third');
+            const fourthText = extractTagFromChat('fourth');
+            const recallText = extractTagFromChat('recall');
+            const chaos = parseChaos(extractTagFromChat('chaos'));
+
+            document.getElementById('metricChaos').textContent = String(chaos);
+            document.getElementById('metricChaos').className = 'metric-value ' + getChaosLevel(chaos);
+
+            renderOverview(firstText, secondText, userInput);
+            renderViolation(violationText);
+            renderConsequence(consequenceText, chaos);
+            renderObjects(thirdText);
+            renderClues(fourthText);
+            renderRecall(recallText);
+            updateHeight();
+        }
+
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            setTimeout(init, 0);
+        }
+        document.addEventListener('DOMContentLoaded', init);
+        setTimeout(init, 120);
+        setTimeout(init, 320);
+    })();
+    </script>
+</body>
+</html>

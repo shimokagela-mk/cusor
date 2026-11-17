@@ -1,0 +1,10 @@
+{
+  "name": "少女前线",
+  "plan": "current-plan.yaml",
+  "entriesDir": "entries",
+  "tablesDir": "tables",
+  "tablesFormat": "json",
+  "frontendDir": "frontend",
+  "assetsDir": "assets",
+  "releaseDir": "release"
+}

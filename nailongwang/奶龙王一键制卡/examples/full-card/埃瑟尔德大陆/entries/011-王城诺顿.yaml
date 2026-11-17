@@ -1,0 +1,61 @@
+id: 10
+keys:
+  - 王城
+  - 王室
+secondary_keys: []
+comment: 王城诺顿
+content: |-
+  # 王城诺顿详情
+    **核心区域**：
+    巨石王宫坐落于内城高地，是王室与最高议政厅所在；圣光大教堂位于王宫东侧，是信仰与司祭团核心；国王大道连接城门、中央广场与王宫，两侧林立着贵族宅邸、商会总部及法师塔入口；下城区则遍布市集、工匠坊和冒险者工会总会。
+
+  **可能遭遇的重要事件（具体发生取决于主角的冒险轨迹与世界实时动态）**：
+  1.  **王室继承暗流**：奥德里克三世国王病重，王子与派系贵族围绕继承权展开明争暗斗，可能导致政局动荡，甚至引发贵族私兵的小规模冲突。此事件可能触发王宫守卫力量的异常调动，并可能牵涉影踪会的间谍活动。
+  2.  **圣光教会审判异端**：教会宣布发现城内潜伏崇拜“暗影”的异端分子，发起全城搜查与公开审判。此事件可能导致部分街区戒严、无辜者受牵连，并激化与对魔法持保守态度的法师塔的潜在矛盾，甚至引来影踪会等地下势力的关注与利用。
+  3.  **重大外交使团抵达**：洛瑟兰共和国的庞大贸易使团或翡翠海群岛的外交舰队抵达圣裔港后，其核心成员前来王城进行高层谈判。此事件将导致城内外宾馆区域戒备森严，商盟联合会的代表异常活跃，也可能成为间谍与情报交易的温床。
+  4.  **前线危机波及王城**：若苍白山脉兽人发动大规模南侵或荒原氏族突破东部防线，战败或求援的消息传回，可能导致王城紧急征兵、物价飞涨、流民涌入，主战派与主和派在朝堂上激烈争论，社会气氛趋于紧张。
+
+  **可能碰到的重要人物**：
+  1.  **奥德里克三世国王**：诺顿王国现任君主，年迈但威严尚存，正为继承人问题与国家边疆不稳而忧心忡忡。
+  2.  **大主教伊格纳修斯**：圣光教会在诺顿的最高领袖，虔诚而强势，致力于维护教会权威与道德秩序，视一切“异端”与地下魔法为威胁。
+  3.  **“铁腕”瑞文斯顿公爵**：王国军事统帅，出身于世代将门，以冷酷的实战派作风闻名，是主战派的代表人物，负责统筹对兽人与荒原氏族的防务。
+  4.  **商会会长奥利弗·银币**：商盟联合会在诺顿王国的首席代表，精明圆滑的富商，掌握着庞大的贸易网络与金钱力量，与王室、贵族乃至地下世界都有若即若离的联系。
+  5.  **高阶法师阿尔维斯**：法师塔派驻王室的顾问之一，博学但有些孤傲，专注于魔法研究的同时，也谨慎地处理着与王室及教会的微妙关系。
+constant: false
+selective: true
+insertion_order: 11
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: true
+  display_index: 14
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

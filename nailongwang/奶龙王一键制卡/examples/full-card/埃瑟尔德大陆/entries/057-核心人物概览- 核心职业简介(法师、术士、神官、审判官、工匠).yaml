@@ -1,0 +1,50 @@
+id: 57
+keys: []
+secondary_keys: []
+comment: '核心人物概览: 核心职业简介(法师、术士、神官、审判官、工匠)'
+content: |-
+  # 埃瑟尔德大陆常见核心职业简介 (PList格式) (续)
+    [法师 (Mage/Wizard): 魔法研究与知识掌握者，系统学习奥术，has(多种学派法术、魔法道具、结界与防护、知识广博)，通过准备实现多场合用途。优势：知识广度与战术多变性]
+    [术士 (Sorcerer): 天选施法者，拥有天生的、独特的魔力血脉，has(天赋法术、血脉觉醒能力、直觉性施法、无需过多材料)，施法更依赖本能。优势：魔力强度与直接爆发]
+    [神官 (Priest/Cleric): 信仰力量的代言人，神术施法者与精神领袖，has(神圣魔法（治疗/祝福/驱魔）、圣契、信仰武器、神徽赐福），为队伍提供治疗与精神支援。优势：恢复与士气维持]
+    [审判官 (Inquisitor/Judge): 融合神术或律法之力的异端猎人与秩序执法者，has(神术战斗技巧、真实视域、罪证侦测、拷问与震慑)，半战斗半法系的净化者。优势：对抗异常与精神压制]
+    [工匠 (Artificer/Crafter): 物质能量转化与创物师，专精锻造、炼金、符文或附魔等物质工艺，has(制造装备/魔药/工程造物、附魔武器、能量护盾、爆炸物），能力更多体现在制造的物品上。优势：装备赋予的持久战力提升]
+    *注：工匠的战斗能力可能较弱，但其制造的装备、魔药或炼金产物的战略价值巨大。高阶工匠本身即是一个组织的技术核心。*
+constant: true
+selective: true
+insertion_order: 6
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: false
+  display_index: 61
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

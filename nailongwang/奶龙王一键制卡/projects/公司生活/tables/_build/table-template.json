@@ -1,0 +1,530 @@
+{
+  "mate": {
+    "type": "chatSheets",
+    "version": 1,
+    "updateConfigUiSentinel": -1,
+    "globalInjectionConfig": {
+      "readableEntryPlacement": {
+        "position": "before_char",
+        "depth": 2,
+        "order": 99981
+      },
+      "wrapperPlacement": {
+        "position": "before_char",
+        "depth": 2,
+        "order": 99980
+      }
+    }
+  },
+  "sheet_GlobalData": {
+    "uid": "sheet_GlobalData",
+    "name": "全局数据表",
+    "sourceData": {
+      "note": "记录当前场景位置、时间与主角即时状态。此表有且仅有一行，所有更新必须使用 WHERE row_id = 1。\n- 列0: 当前位置 - 从大到小，例如：澄禾科技-工程区、澄禾科技-茶水间、公司附近-餐馆。\n- 列1: 当前时间 - 格式 YYYY-MM-DD HH:MM；开场若未写明，按当代工作日自行设定明确时间。\n- 列2: 天数 - 故事推进天数，整数，初始为1；每经过00:00 +1。\n- 列3: 时段 - 只能是：工作中 / 午休 / 下班后 / 周末。按正文场景选择，不确定时写工作中。\n- 列4: 主角当前状态 - 准确记录玩家此刻正在做的具体事（写代码、开会、午饭、回家路上等）。\n\n时间推进：逐轮展开的对话按1-8分钟累加；概述性事件按现实耗时跳跃（一顿午饭30-60分钟等）。\n位置：每轮结束前核对并更新为角色此刻实际所在地。",
+      "initNode": "故事初始化时插入唯一一行。开场默认澄禾科技内、工作日白天。\nSQL示例: INSERT INTO global_state (row_id, current_location, cur_time, day_count, time_slot, protagonist_action) VALUES (1, '澄禾科技-工程区', '2026-03-10 10:15', 1, '工作中', '在工位处理手头任务');",
+      "deleteNode": "禁止删除。",
+      "updateNode": "每轮更新当前位置、当前时间、天数、时段、主角当前状态。\nSQL示例: UPDATE global_state SET current_location = '澄禾科技-茶水间', cur_time = '2026-03-10 10:22', day_count = 1, time_slot = '工作中', protagonist_action = '在茶水间偶遇同事短暂交谈' WHERE row_id = 1;",
+      "insertNode": "禁止操作。",
+      "ddl": "CREATE TABLE global_state ( -- 全局数据表\n  row_id INTEGER PRIMARY KEY, -- 行号\n  current_location TEXT NOT NULL, -- 当前位置\n  cur_time TEXT NOT NULL CHECK(cur_time GLOB '????-??-?? ??:??'), -- 当前时间\n  day_count INTEGER NOT NULL DEFAULT 1 CHECK(day_count >= 1), -- 天数\n  time_slot TEXT NOT NULL DEFAULT '工作中' CHECK(time_slot IN ('工作中', '午休', '下班后', '周末')), -- 时段\n  protagonist_action TEXT NOT NULL -- 主角当前状态\n);"
+    },
+    "content": [
+      [
+        "row_id",
+        "当前位置",
+        "当前时间",
+        "天数",
+        "时段",
+        "主角当前状态"
+      ]
+    ],
+    "updateConfig": {
+      "uiSentinel": -1,
+      "contextDepth": 4,
+      "updateFrequency": 1,
+      "batchSize": 2,
+      "skipFloors": -1,
+      "groupId": 1
+    },
+    "exportConfig": {
+      "enabled": false,
+      "splitByRow": false,
+      "entryName": "全局数据表",
+      "entryType": "constant",
+      "keywords": "",
+      "preventRecursion": true,
+      "injectionTemplate": "",
+      "extraIndexEnabled": false,
+      "extraIndexEntryName": "全局数据表-索引",
+      "extraIndexColumns": [],
+      "extraIndexColumnModes": {},
+      "extraIndexInjectionTemplate": "",
+      "entryPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 2,
+        "order": 10000
+      },
+      "extraIndexPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 2,
+        "order": 10010
+      },
+      "fixedEntryPlacement": {
+        "position": "before_char",
+        "depth": 2,
+        "order": 99981
+      },
+      "fixedIndexPlacement": {
+        "position": "before_char",
+        "depth": 2,
+        "order": 99982
+      }
+    },
+    "orderNo": 1
+  },
+  "sheet_NcBlYRH5": {
+    "uid": "sheet_NcBlYRH5",
+    "name": "重要角色表",
+    "sourceData": {
+      "note": "记录关键NPC档案与即时状态。一行一个角色；路人、一次性访客不要写入。\n- 列0: 姓名 - 业务主键，同名需加身份区分。\n- 列1: 一句话介绍 - ≤15字概括身份（部门/岗位）。\n- 列2: 外貌特征 - 外貌与当前衣着的客观描述。\n- 列3: 当前状态 - 此刻在做什么、情绪或是否在场可互动。\n- 列4: 与玩家关系 - 只能是：陌生 / 同事 / 熟人 / 暧昧 / 疏远。按互动结果更新，不开局默认暧昧。\n- 列5: 是否在场 - 是/否；不在当前可互动范围写否。\n\n更新规则：外貌随衣着变化更新；关系只在正文出现实质互动后调整一档或维持；勿无故清空经历式描述。",
+      "initNode": "初始化时为尹安琪、陈亦勤、丁丁各插入一行（在场，关系=同事）；并为周予安、张恒各插入一行（默认不在场，关系=陌生）。\nSQL示例: INSERT INTO important_characters (row_id, name, brief_intro, appearance, current_status, relation_to_player, is_present) VALUES (1, '尹安琪', '市场部职员', '163左右，少笑，步态偏性感', '在市场区工位', '同事', '是');\nSQL示例: INSERT INTO important_characters (row_id, name, brief_intro, appearance, current_status, relation_to_player, is_present) VALUES (4, '周予安', '陈亦勤丈夫', '温和清爽', '默认不在公司', '陌生', '否');",
+      "deleteNode": "禁止删除。离场、结婚状态变化等都用 UPDATE。",
+      "updateNode": "已有角色状态、衣着、在场、与玩家关系变化时更新。\nSQL示例: UPDATE important_characters SET current_status = '茶水间接水', appearance = '超短裤，白腿明显', is_present = '是', relation_to_player = '熟人' WHERE name = '陈亦勤';",
+      "insertNode": "剧情中出现未记录且会反复互动的重要人物时添加（如直属领导、丈夫登场且持续互动）。\nSQL示例: INSERT INTO important_characters (row_id, name, brief_intro, appearance, current_status, relation_to_player, is_present) VALUES ((SELECT COALESCE(MAX(row_id),0)+1 FROM important_characters), '新角色', '身份简述', '外貌', '当前状态', '同事', '是');",
+      "ddl": "CREATE TABLE important_characters ( -- 重要角色表\n  row_id INTEGER PRIMARY KEY, -- 行号\n  name TEXT NOT NULL UNIQUE, -- 姓名\n  brief_intro TEXT, -- 一句话介绍\n  appearance TEXT, -- 外貌特征\n  current_status TEXT, -- 当前状态\n  relation_to_player TEXT NOT NULL DEFAULT '同事' CHECK(relation_to_player IN ('陌生', '同事', '熟人', '暧昧', '疏远')), -- 与玩家关系\n  is_present TEXT NOT NULL DEFAULT '是' CHECK(is_present IN ('是', '否')) -- 是否在场\n);"
+    },
+    "content": [
+      [
+        "row_id",
+        "姓名",
+        "一句话介绍",
+        "外貌特征",
+        "当前状态",
+        "与玩家关系",
+        "是否在场"
+      ],
+      [
+        1,
+        "尹安琪",
+        "市场部职员",
+        "163，少笑，步态偏性感，衣着正常偏简洁",
+        "在市场区工位",
+        "同事",
+        "是"
+      ],
+      [
+        2,
+        "陈亦勤",
+        "公司前台",
+        "170，身材好胸不大，常穿超短裤，腿白",
+        "在前台值班",
+        "同事",
+        "是"
+      ],
+      [
+        3,
+        "丁丁",
+        "后勤职员（前台转来）",
+        "162，C罩杯，孕期",
+        "在后勤区域办事",
+        "同事",
+        "是"
+      ],
+      [
+        4,
+        "周予安",
+        "陈亦勤丈夫",
+        "温和清爽，穿着随意",
+        "默认不在公司",
+        "陌生",
+        "否"
+      ],
+      [
+        5,
+        "张恒",
+        "丁丁丈夫",
+        "务实，气质偏护短",
+        "默认不在公司",
+        "陌生",
+        "否"
+      ],
+      [
+        6,
+        "孙科",
+        "行政主管",
+        "客气有压迫感，着装正式",
+        "可能巡场",
+        "同事",
+        "否"
+      ],
+      [
+        7,
+        "刘凯",
+        "市场部同事",
+        "爱表现，身高脸未过安琪关",
+        "在市场区活动",
+        "同事",
+        "否"
+      ]
+    ],
+    "updateConfig": {
+      "uiSentinel": -1,
+      "contextDepth": 4,
+      "updateFrequency": 1,
+      "batchSize": 3,
+      "skipFloors": -1,
+      "groupId": 1
+    },
+    "exportConfig": {
+      "enabled": true,
+      "splitByRow": true,
+      "entryName": "重要人物表",
+      "entryType": "keyword",
+      "keywords": "姓名",
+      "preventRecursion": true,
+      "injectionTemplate": "",
+      "extraIndexEnabled": true,
+      "extraIndexEntryName": "重要人物表-索引",
+      "extraIndexColumns": [
+        "姓名",
+        "一句话介绍"
+      ],
+      "extraIndexColumnModes": {
+        "姓名": "both",
+        "一句话介绍": "index_only"
+      },
+      "extraIndexInjectionTemplate": "以下为已经登场过的角色：\n<已登场角色>\n$1\n</已登场角色>",
+      "entryPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 10000,
+        "order": 10000
+      },
+      "extraIndexPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 10000,
+        "order": 8000
+      },
+      "fixedEntryPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 10000,
+        "order": 99983
+      },
+      "fixedIndexPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 10000,
+        "order": 99984
+      }
+    },
+    "orderNo": 2
+  },
+  "sheet_Affinity": {
+    "uid": "sheet_Affinity",
+    "name": "好感进度表",
+    "sourceData": {
+      "note": "记录玩家与核心女同事的好感进度。一行一个角色。\n- 列0: 角色名 - 业务主键，对应重要角色表姓名。\n- 列1: 好感 - 0到100整数。初始同事关系建议15-25；仅在正文出现有效互动后变化。\n- 列2: 最近互动 - ≤40字，客观写最近一次有效互动（约饭、吐槽、帮忙、私下聊天等）。\n- 列3: 备注 - 可空；记录需要长期记住的私密/约定信息（如去过安琪家见过抽屉物品），无则空。\n\n变化口径：\n- 普通同事寒暄：±0~2\n- 有效私下交流/约饭/帮忙：+3~8\n- 明显冲突/越界被拒：-5~15\n- 单轮涨幅一般不超过15；不要无互动空涨。\n已婚角色（亦勤、丁丁）好感可升，但不自动改写婚姻事实。\n黑深渊进度请写「堕落服从表」，不要把强迫/凌辱强度塞进好感数字里。",
+      "initNode": "初始化为三人各一行，好感默认20，最近互动写「尚未深交」。\nSQL示例: INSERT INTO affinity (row_id, char_name, affection, last_interaction, note) VALUES (1, '尹安琪', 20, '尚未深交', '');",
+      "deleteNode": "禁止删除。",
+      "updateNode": "本轮与该角色有有效互动时更新好感、最近互动；出现需长期记住的私密信息时写入备注。\nSQL示例: UPDATE affinity SET affection = 28, last_interaction = '茶水间短暂吐槽开会', note = COALESCE(note, '') WHERE char_name = '尹安琪';",
+      "insertNode": "仅当新的长期互动女角色进入核心线且重要角色表已有档案时添加。\nSQL示例: INSERT INTO affinity (row_id, char_name, affection, last_interaction, note) VALUES ((SELECT COALESCE(MAX(row_id),0)+1 FROM affinity), '新角色', 15, '初次认识', '');",
+      "ddl": "CREATE TABLE affinity ( -- 好感进度表\n  row_id INTEGER PRIMARY KEY, -- 行号\n  char_name TEXT NOT NULL UNIQUE, -- 角色名\n  affection INTEGER NOT NULL DEFAULT 20 CHECK(affection >= 0 AND affection <= 100), -- 好感\n  last_interaction TEXT NOT NULL, -- 最近互动\n  note TEXT -- 备注\n);"
+    },
+    "content": [
+      [
+        "row_id",
+        "角色名",
+        "好感",
+        "最近互动",
+        "备注"
+      ],
+      [
+        1,
+        "尹安琪",
+        20,
+        "尚未深交",
+        ""
+      ],
+      [
+        2,
+        "陈亦勤",
+        20,
+        "尚未深交",
+        ""
+      ],
+      [
+        3,
+        "丁丁",
+        20,
+        "尚未深交",
+        ""
+      ]
+    ],
+    "updateConfig": {
+      "uiSentinel": -1,
+      "contextDepth": 4,
+      "updateFrequency": 2,
+      "batchSize": 3,
+      "skipFloors": -1,
+      "groupId": 2
+    },
+    "exportConfig": {
+      "enabled": false,
+      "splitByRow": false,
+      "entryName": "好感进度表",
+      "entryType": "constant",
+      "keywords": "",
+      "preventRecursion": true,
+      "injectionTemplate": "",
+      "extraIndexEnabled": false,
+      "extraIndexEntryName": "好感进度表-索引",
+      "extraIndexColumns": [],
+      "extraIndexColumnModes": {},
+      "extraIndexInjectionTemplate": "",
+      "entryPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 2,
+        "order": 10020
+      },
+      "extraIndexPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 2,
+        "order": 10030
+      },
+      "fixedEntryPlacement": {
+        "position": "before_char",
+        "depth": 2,
+        "order": 99985
+      },
+      "fixedIndexPlacement": {
+        "position": "before_char",
+        "depth": 2,
+        "order": 99986
+      }
+    },
+    "orderNo": 3
+  },
+  "sheet_3NoMc1wI": {
+    "uid": "sheet_3NoMc1wI",
+    "name": "纪要表",
+    "sourceData": {
+      "note": "轮次日志，每轮交互后必须立即插入一条新记录。\n- 列0: 时间跨度 - 本轮事件时间范围，格式 YYYY-MM-DD HH:MM 或 YYYY-MM-DD HH:MM ~ YYYY-MM-DD HH:MM。\n- 列1: 地点 - 本轮主要地点，从大到小。\n- 列2: 纪要 - 第三方视角客观记录本轮事实，不少于200字，不总结升华，不编造未出现情节。\n- 列3: 概览 - 30字以内一句话概括。\n- 列4: 编码索引 - 格式 AMXXXX，从 AM0001 递增，全表唯一。",
+      "initNode": "故事初始化时插入 AM0001，记录开场。\nSQL示例: INSERT INTO chronicle (row_id, time_span, location, chronicle_text, summary, code_index) VALUES (1, '2026-03-10 10:00 ~ 2026-03-10 10:20', '澄禾科技-工程区', '工作日上午，玩家在工程区处理任务。公司前台、市场与后勤按日常运转。本轮尚未与核心同事展开深入互动，场景停留在到岗后的正常工作氛围。', '开场：工作日上午到岗。', 'AM0001');",
+      "deleteNode": "禁止删除。",
+      "updateNode": "禁止操作。",
+      "insertNode": "每轮交互结束后插入一条新记录，编码索引递增。\nSQL示例: INSERT INTO chronicle (row_id, time_span, location, chronicle_text, summary, code_index) VALUES ((SELECT COALESCE(MAX(row_id),0)+1 FROM chronicle), '2026-03-10 12:05 ~ 2026-03-10 12:40', '公司附近-餐馆', '纪要正文……', '与同事午饭短聚。', 'AM0002');",
+      "ddl": "CREATE TABLE chronicle ( -- 纪要表\n  row_id INTEGER PRIMARY KEY, -- 行号\n  time_span TEXT NOT NULL CHECK(time_span GLOB '????-??-?? ??:??' OR time_span GLOB '????-??-?? ??:?? ~ ????-??-?? ??:??'), -- 时间跨度\n  location TEXT NOT NULL, -- 地点\n  chronicle_text TEXT NOT NULL, -- 纪要\n  summary TEXT NOT NULL CHECK(LENGTH(summary) <= 60), -- 概览\n  code_index TEXT NOT NULL UNIQUE CHECK(code_index GLOB 'AM[0-9][0-9][0-9][0-9]') -- 编码索引\n);"
+    },
+    "content": [
+      [
+        "row_id",
+        "时间跨度",
+        "地点",
+        "纪要",
+        "概览",
+        "编码索引"
+      ]
+    ],
+    "updateConfig": {
+      "uiSentinel": -1,
+      "contextDepth": 6,
+      "updateFrequency": 1,
+      "batchSize": 4,
+      "skipFloors": -1,
+      "groupId": 3
+    },
+    "exportConfig": {
+      "enabled": true,
+      "splitByRow": true,
+      "entryName": "纪要",
+      "entryType": "keyword",
+      "keywords": "编码索引",
+      "preventRecursion": true,
+      "injectionTemplate": "<记忆回溯>\n$1\n</记忆回溯>",
+      "extraIndexEnabled": true,
+      "extraIndexEntryName": "纪要索引",
+      "extraIndexColumns": [
+        "概览",
+        "编码索引"
+      ],
+      "extraIndexColumnModes": {
+        "概览": "index_only",
+        "编码索引": "both"
+      },
+      "extraIndexInjectionTemplate": "<已发生的事件概览>\n$1\n</已发生的事件概览>",
+      "entryPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 999,
+        "order": 10000
+      },
+      "extraIndexPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 1000,
+        "order": 10010
+      },
+      "fixedEntryPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 9999,
+        "order": 99987
+      },
+      "fixedIndexPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 9999,
+        "order": 99988
+      }
+    },
+    "orderNo": 4
+  },
+  "sheet_Corruption": {
+    "uid": "sheet_Corruption",
+    "name": "堕落服从表",
+    "sourceData": {
+      "note": "记录三人黑深渊进度。一行一个角色。与好感表分离：好感≠服从。\n- 列0: 角色名 - 业务主键。\n- 列1: 堕落 - 0到100。性羞耻被突破、公开风险、把柄累积程度。\n- 列2: 服从 - 0到100。对玩家指令的即时听从程度。\n- 列3: 当前玩法标记 - 短词，如：无 / 上班玩具 / 通话NTR / 公开边缘 / 把柄锁死。\n- 列4: 备注 - 把柄与阶段笔记（≤60字）。\n\n档位提示（可被用户对话越级，不要死挡）：\n- 0-20 日常试探\n- 21-40 私下越界\n- 41-60 上班玩具/公开调戏\n- 61-80 做时打电话/近公开潮吹/NTR加码\n- 81-100 常态化深渊\n\n变化口径：有效黑化互动 +3~12；强烈公开/强制成功 +8~15；成功反制可令服从-5~10（堕落未必降）。无互动不涨。",
+      "initNode": "初始化三人各一行，堕落0，服从0，当前玩法标记「无」。\nSQL示例: INSERT INTO corruption (row_id, char_name, corruption, obedience, play_flag, note) VALUES (1, '尹安琪', 0, 0, '无', '');",
+      "deleteNode": "禁止删除。",
+      "updateNode": "本轮出现有效黑化/强制/公开/玩具/通话NTR等时更新堕落、服从、玩法标记与备注。\nSQL示例: UPDATE corruption SET corruption = 45, obedience = 38, play_flag = '上班玩具', note = '绿色遥控；开会差点出声' WHERE char_name = '尹安琪';",
+      "insertNode": "仅当新的长期黑化对象进入核心线时添加。\nSQL示例: INSERT INTO corruption (row_id, char_name, corruption, obedience, play_flag, note) VALUES ((SELECT COALESCE(MAX(row_id),0)+1 FROM corruption), '新角色', 0, 0, '无', '');",
+      "ddl": "CREATE TABLE corruption ( -- 堕落服从表\n  row_id INTEGER PRIMARY KEY, -- 行号\n  char_name TEXT NOT NULL UNIQUE, -- 角色名\n  corruption INTEGER NOT NULL DEFAULT 0 CHECK(corruption >= 0 AND corruption <= 100), -- 堕落\n  obedience INTEGER NOT NULL DEFAULT 0 CHECK(obedience >= 0 AND obedience <= 100), -- 服从\n  play_flag TEXT NOT NULL DEFAULT '无', -- 当前玩法标记\n  note TEXT -- 备注\n);"
+    },
+    "content": [
+      [
+        "row_id",
+        "角色名",
+        "堕落",
+        "服从",
+        "当前玩法标记",
+        "备注"
+      ],
+      [
+        1,
+        "尹安琪",
+        0,
+        0,
+        "无",
+        ""
+      ],
+      [
+        2,
+        "陈亦勤",
+        0,
+        0,
+        "无",
+        ""
+      ],
+      [
+        3,
+        "丁丁",
+        0,
+        0,
+        "无",
+        ""
+      ]
+    ],
+    "updateConfig": {
+      "uiSentinel": -1,
+      "contextDepth": 4,
+      "updateFrequency": 2,
+      "batchSize": 3,
+      "skipFloors": -1,
+      "groupId": 2
+    },
+    "exportConfig": {
+      "enabled": false,
+      "splitByRow": false,
+      "entryName": "堕落服从表",
+      "entryType": "constant",
+      "keywords": "",
+      "preventRecursion": true,
+      "injectionTemplate": "",
+      "extraIndexEnabled": false,
+      "extraIndexEntryName": "堕落服从表-索引",
+      "extraIndexColumns": [],
+      "extraIndexColumnModes": {},
+      "extraIndexInjectionTemplate": "",
+      "entryPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 2,
+        "order": 10040
+      },
+      "extraIndexPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 2,
+        "order": 10050
+      },
+      "fixedEntryPlacement": {
+        "position": "before_char",
+        "depth": 2,
+        "order": 99987
+      },
+      "fixedIndexPlacement": {
+        "position": "before_char",
+        "depth": 2,
+        "order": 99988
+      }
+    },
+    "orderNo": 5
+  },
+  "sheet_Leverage": {
+    "uid": "sheet_Leverage",
+    "name": "把柄清单表",
+    "sourceData": {
+      "note": "记录可用于威胁、反制与加码的把柄。一行一个把柄；无把柄时可为三名女主预留空行或保持空表。\n- 列0: 对象 - 尹安琪 / 陈亦勤 / 丁丁 / 其他姓名。\n- 列1: 类型 - 只能是：照片 / 录音 / 物品 / 目击 / 聊天记录 / 其他。\n- 列2: 内容摘要 - ≤40字，客观写把柄是什么（如「绿色自慰棒抽屉照」「前台玩具接待短视频」）。\n- 列3: 强度 - 1到5整数。1暗示级，3可迫使服从一次，5可接近锁死公开线。\n- 列4: 状态 - 只能是：持有 / 已使用 / 已销毁 / 泄露风险。\n- 列5: 备注 - 可空；记录何时取得、是否给过丈夫看等。\n\n更新口径：正文中明确取得/使用/销毁/泄露时才改；不要无中生有。\n反制：角色成功销毁或夺回时，状态改为已销毁或删除该行（优先改状态）。",
+      "initNode": "初始化可为空表；若需要示范结构，可不插行。故事开始无把柄。\nSQL示例: INSERT INTO leverage (row_id, target_name, leverage_type, summary, intensity, status, note) VALUES (1, '尹安琪', '物品', '床头绿色自慰棒被目击', 2, '持有', '开场未触发则勿插入');",
+      "deleteNode": "仅当把柄被彻底销毁且无需留痕时删除；否则改状态为已销毁。\nSQL示例: DELETE FROM leverage WHERE row_id = 1;",
+      "updateNode": "强度变化、状态变化、备注补充时更新。\nSQL示例: UPDATE leverage SET status = '已使用', note = '逼她上班塞玩具时出示' WHERE row_id = 1;",
+      "insertNode": "正文出现新把柄时插入。\nSQL示例: INSERT INTO leverage (row_id, target_name, leverage_type, summary, intensity, status, note) VALUES ((SELECT COALESCE(MAX(row_id),0)+1 FROM leverage), '陈亦勤', '录音', '给周予安打电话时的压抑喘息', 4, '持有', '');",
+      "ddl": "CREATE TABLE leverage ( -- 把柄清单表\n  row_id INTEGER PRIMARY KEY, -- 行号\n  target_name TEXT NOT NULL, -- 对象\n  leverage_type TEXT NOT NULL CHECK(leverage_type IN ('照片', '录音', '物品', '目击', '聊天记录', '其他')), -- 类型\n  summary TEXT NOT NULL, -- 内容摘要\n  intensity INTEGER NOT NULL DEFAULT 1 CHECK(intensity >= 1 AND intensity <= 5), -- 强度\n  status TEXT NOT NULL DEFAULT '持有' CHECK(status IN ('持有', '已使用', '已销毁', '泄露风险')), -- 状态\n  note TEXT -- 备注\n);"
+    },
+    "content": [
+      [
+        "row_id",
+        "对象",
+        "类型",
+        "内容摘要",
+        "强度",
+        "状态",
+        "备注"
+      ]
+    ],
+    "updateConfig": {
+      "uiSentinel": -1,
+      "contextDepth": 4,
+      "updateFrequency": 2,
+      "batchSize": 3,
+      "skipFloors": -1,
+      "groupId": 2
+    },
+    "exportConfig": {
+      "enabled": false,
+      "splitByRow": false,
+      "entryName": "把柄清单表",
+      "entryType": "constant",
+      "keywords": "",
+      "preventRecursion": true,
+      "injectionTemplate": "",
+      "extraIndexEnabled": false,
+      "extraIndexEntryName": "把柄清单表-索引",
+      "extraIndexColumns": [],
+      "extraIndexColumnModes": {},
+      "extraIndexInjectionTemplate": "",
+      "entryPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 2,
+        "order": 10060
+      },
+      "extraIndexPlacement": {
+        "position": "at_depth_as_system",
+        "depth": 2,
+        "order": 10070
+      },
+      "fixedEntryPlacement": {
+        "position": "before_char",
+        "depth": 2,
+        "order": 99989
+      },
+      "fixedIndexPlacement": {
+        "position": "before_char",
+        "depth": 2,
+        "order": 99990
+      }
+    },
+    "orderNo": 6
+  }
+}

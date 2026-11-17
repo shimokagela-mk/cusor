@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tavern Card v3 Format Knowledge Base",
+  "type": "object",
+  "required": ["name", "language", "updated_at", "sources", "top_level_fields", "toolbox_boundary"],
+  "properties": {
+    "name": { "type": "string" },
+    "language": { "type": "string" },
+    "updated_at": { "type": "string" },
+    "sources": { "type": "array", "items": { "type": "string" } },
+    "scope_note": { "type": "string" },
+    "top_level_fields": { "type": "object" },
+    "data_fields": { "type": "object" },
+    "extension_fields": { "type": "object" },
+    "asset_preservation": { "type": "array", "items": { "type": "string" } },
+    "toolbox_boundary": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": true
+}

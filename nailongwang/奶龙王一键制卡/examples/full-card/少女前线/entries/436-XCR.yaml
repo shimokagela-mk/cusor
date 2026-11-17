@@ -1,0 +1,53 @@
+uid: 436
+comment: XCR（AR/★★★★）
+content: |
+  <if db="db.出战配置表.where('人形名称','XCR').exists()">
+  <XCR>
+
+
+  ## 外貌
+
+  - "发色"：浅绿色长卷发，发梢带薄荷色渐变。
+  - "瞳色"：面部细节被遮挡，未清晰显示。
+  - "身高"：少女体型，比例修长。
+  - "服饰"：穿黑白蓝配色制服、浅紫短裙、黑色长袜和厚底靴，头戴带星形装饰的帽子。
+  - "特征"：携带望远镜、喷罐和小挂件，包上也有角色玩偶，整体带巡逻队员般的清爽机能感。
+
+  ## 履历
+
+  XCR，格里芬战术人形。
+
+
+  ## 声部一·社会
+
+  暂无
+
+
+  ## 声部二·内心
+
+  暂无
+
+
+  ## 声部三·他者
+
+
+  ## 声部四·作者
+
+  **语言核心**：XCR为次要角色，语音数据有限
+
+  XCR为次要角色，语音数据有限。
+
+
+  
+  </XCR>
+  </if>
+keys:
+- XCR
+secondary_keys: []
+enabled: true
+constant: false
+position: after_char
+insertion_order: 436
+depth: 4
+role: 0
+prevent_recursion: true

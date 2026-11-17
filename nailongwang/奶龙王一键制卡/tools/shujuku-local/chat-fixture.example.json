@@ -1,0 +1,22 @@
+[
+  {
+    "role": "system",
+    "content": "开场设定或系统消息。"
+  },
+  {
+    "role": "user",
+    "content": "玩家输入。"
+  },
+  {
+    "role": "assistant",
+    "content": "AI 正文：角色在星辉港发现银钥匙，并把钥匙交给档案员记录。"
+  },
+  {
+    "is_user": true,
+    "mes": "继续追问线索。"
+  },
+  {
+    "is_user": false,
+    "mes": "AI 正文：档案员确认银钥匙属于旧灯塔，需要写入纪要。"
+  }
+]

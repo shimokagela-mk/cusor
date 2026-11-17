@@ -1,0 +1,4 @@
+# STscript basic flow placeholder
+/setvar key=example_stage start
+/getvar example_stage | /echo 当前阶段={{pipe}}
+/if left={{pipe}} rule=eq right=start "/sys Stage placeholder."

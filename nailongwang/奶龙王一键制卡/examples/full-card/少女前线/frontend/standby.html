@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>少女前方 - 待机页面</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --y:#e8c840;--y-light:#f0d860;--y-dark:#b89820;
+  --k:#111;--k2:#1a1a1a;--k3:#222;
+  --wh:#f0f0f0;--gr:#999;--gr2:#666;--gr3:#444;
+  --warn:#e04040;--res-mp:#7cb8e0;--res-am:#e0a848;--res-ra:#68c080;--res-pt:#b888e0;--res-core:#78e0d0;
+}
+body{font-family:'Microsoft YaHei','PingFang SC','Noto Sans SC',sans-serif;background:#000;color:var(--wh);font-size:14px;line-height:1.4;-webkit-font-smoothing:antialiased}
+
+/* ====================
+   ROOT
+   ==================== */
+.gfl-home{position:relative;width:100%;height:100vh;height:100dvh;overflow:hidden;background:#0a0a0a}
+
+/* ===== Background ===== */
+.gfl-bg{position:absolute;inset:0;background:radial-gradient(circle at 28% 18%,rgba(232,200,64,.16),transparent 34%),linear-gradient(135deg,#151515 0%,#080808 54%,#180808 100%);background-position:center;background-size:cover;z-index:0}
+.gfl-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.2) 0%,transparent 25%,transparent 55%,rgba(0,0,0,.5) 100%),linear-gradient(90deg,transparent 40%,rgba(0,0,0,.3) 75%,rgba(0,0,0,.5) 100%);z-index:1}
+
+/* ===== Character ===== */
+.gfl-character{position:absolute;bottom:0;z-index:2;height:84%;width:auto;cursor:grab;touch-action:none;user-select:none}
+.gfl-character.l2d-mode{aspect-ratio:3/4;width:auto}
+.gfl-character.static-mode{width:min(58vw,620px);min-width:360px;background-repeat:no-repeat;background-position:center bottom;background-size:contain}
+.gfl-character.l2d-tap-feedback{filter:drop-shadow(0 0 18px rgba(120,224,208,.45));animation:gflL2DTap .28s ease-out}
+@keyframes gflL2DTap{0%{transform:translateX(-50%) scale(1)}45%{transform:translateX(-50%) scale(1.018)}100%{transform:translateX(-50%) scale(1)}}
+
+/* ===== Damage badge ===== */
+.gfl-damage{position:absolute;top:12px;left:12px;padding:3px 12px;background:rgba(224,64,64,.85);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;z-index:5;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);display:none}
+.gfl-damage.show{display:block}
+.gfl-damage-toggle{position:absolute;top:44px;left:12px;z-index:10;padding:5px 11px;border:1px solid rgba(224,64,64,.7);background:rgba(0,0,0,.52);color:#ff9a9a;font-size:10px;font-weight:800;letter-spacing:1px;cursor:pointer;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%)}
+.gfl-damage-toggle.active{background:rgba(224,64,64,.88);color:#fff}
+.gfl-damage-toggle:hover{border-color:#ffb0b0;color:#fff}
+.gfl-l2d-status{position:absolute;left:20px;bottom:96px;z-index:10;padding:5px 10px;background:rgba(0,0,0,.58);border-left:2px solid var(--res-core);color:var(--res-core);font-size:10px;letter-spacing:1px;display:none}.gfl-l2d-status.show{display:block}
+#gfl-pixi-live2d{z-index:3!important;pointer-events:none!important}#gfl-pixi-live2d-canvas{z-index:3!important}
+
+/* ===== Resource bar ===== */
+.gfl-resource-bar{position:absolute;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:center;gap:0;background:linear-gradient(180deg,rgba(0,0,0,.75) 0%,rgba(0,0,0,.35) 75%,transparent 100%);padding:8px 20px 14px}
+.gfl-res{display:flex;align-items:baseline;gap:6px;padding:4px 18px;border-right:1px solid rgba(255,255,255,.1)}
+.gfl-res:last-child{border-right:none}
+.gfl-res-label{font-size:10px;color:var(--gr);letter-spacing:1px}
+.gfl-res-val{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.5px}
+.gfl-res-val.mp{color:var(--res-mp)}.gfl-res-val.am{color:var(--res-am)}.gfl-res-val.ra{color:var(--res-ra)}.gfl-res-val.pt{color:var(--res-pt)}.gfl-res-val.core{color:var(--res-core)}
+.gfl-res-dot{width:6px;height:6px;margin-right:3px;display:inline-block;vertical-align:middle}
+.gfl-res-dot.mp{background:var(--res-mp)}.gfl-res-dot.am{background:var(--res-am)}.gfl-res-dot.ra{background:var(--res-ra)}.gfl-res-dot.pt{background:var(--res-pt)}.gfl-res-dot.core{background:var(--res-core)}
+
+/* ===== Left dialogue ===== */
+.gfl-dialogue{position:absolute;bottom:28px;left:20px;z-index:10;max-width:280px;padding:10px 16px;background:rgba(0,0,0,.6);border-left:3px solid var(--y);color:var(--wh);font-size:12px;line-height:1.7;letter-spacing:.5px}
+.gfl-dialogue::before{content:'';position:absolute;top:-1px;left:-3px;width:12px;height:12px;border-top:2px solid var(--y);border-left:2px solid var(--y)}
+
+/* ===== Action panel (right side, desktop) ===== */
+.gfl-action-panel{position:absolute;right:14%;top:56px;width:220px;z-index:10;display:flex;flex-direction:column;gap:8px;padding:0}
+
+/* ===== Info HUD (chapter + time, inside action panel) ===== */
+.gfl-info-hud{position:relative;padding:12px 14px 12px 18px;background:linear-gradient(180deg,rgba(30,28,36,.88),rgba(18,16,22,.88));clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);box-shadow:inset 3px 0 0 var(--y),0 2px 10px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:5px;margin-bottom:4px}
+.gfl-info-hud::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--y);opacity:.5}
+.gfl-chapter-label{font-size:9px;color:var(--gr2);letter-spacing:2px;text-transform:uppercase}
+.gfl-chapter-name{font-size:13px;color:var(--y);letter-spacing:1.5px;font-weight:700;text-shadow:0 0 8px rgba(232,200,64,.2)}
+.gfl-time-label{font-size:9px;color:var(--gr2);letter-spacing:2px;text-transform:uppercase;margin-top:2px}
+.gfl-time-val{font-size:13px;color:var(--y-light);letter-spacing:1px;font-variant-numeric:tabular-nums;font-family:'Courier New','SF Mono',monospace;text-shadow:0 0 8px rgba(232,200,64,.15)}
+
+/* --- button base --- */
+.gfl-btn-grid{display:contents}
+.gfl-action-btn{position:relative;cursor:pointer;font-weight:700;letter-spacing:2px;color:var(--wh);text-align:center;transition:transform .12s,box-shadow .2s,background .15s,filter .15s;border:none;outline:none;-webkit-tap-highlight-color:transparent}
+.gfl-action-btn:active{transform:scale(.96)}
+.gfl-action-btn.clicked,.gfl-chapter-card.clicked{animation:gflButtonClick .28s ease-out}
+.gfl-action-btn.busy{pointer-events:none;filter:saturate(.75) brightness(.78)}
+@keyframes gflButtonClick{0%{filter:brightness(1);box-shadow:0 0 0 rgba(232,200,64,0)}42%{filter:brightness(1.35);box-shadow:0 0 24px rgba(232,200,64,.45)}100%{filter:brightness(1);box-shadow:0 0 0 rgba(232,200,64,0)}}
+.gfl-ui-toast{position:fixed;left:50%;bottom:18px;z-index:120;max-width:min(520px,calc(100vw - 32px));padding:9px 14px;background:rgba(0,0,0,.82);border:1px solid rgba(232,200,64,.48);border-left:3px solid var(--y);color:var(--y-light);font-size:12px;font-weight:800;letter-spacing:1px;box-shadow:0 10px 30px rgba(0,0,0,.55);transform:translate(-50%,16px);opacity:0;pointer-events:none;transition:opacity .16s,transform .16s}
+.gfl-ui-toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* --- large button --- */
+.gfl-action-btn.lg{padding:22px 16px;font-size:20px;clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%);background:linear-gradient(180deg,rgba(200,170,30,.9),rgba(160,130,20,.9));color:var(--k);box-shadow:0 4px 18px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.15);text-shadow:0 1px 0 rgba(255,255,255,.2)}
+.gfl-action-btn.lg::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:repeating-linear-gradient(90deg,var(--k) 0px,var(--k) 5px,transparent 5px,transparent 10px);opacity:.35;clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%)}
+.gfl-action-btn.lg::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:repeating-linear-gradient(90deg,var(--k) 0px,var(--k) 5px,transparent 5px,transparent 10px);opacity:.25;clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%)}
+.gfl-action-btn.lg:hover{background:linear-gradient(180deg,rgba(230,200,40,.95),rgba(190,155,25,.95));box-shadow:0 6px 24px rgba(200,170,30,.3),inset 0 1px 0 rgba(255,255,255,.2)}
+.gfl-action-btn.lg.active{background:linear-gradient(180deg,var(--y-light),var(--y));color:var(--k);box-shadow:0 0 22px rgba(232,200,64,.35),inset 0 1px 0 rgba(255,255,255,.25)}
+.gfl-action-btn.lg.combat-live{background:linear-gradient(180deg,rgba(224,64,64,.96),rgba(150,28,28,.96));color:#fff;box-shadow:0 0 26px rgba(224,64,64,.42),inset 0 1px 0 rgba(255,255,255,.18);text-shadow:0 1px 0 rgba(0,0,0,.35)}
+.gfl-action-btn.lg.combat-live::before{background:repeating-linear-gradient(90deg,#fff 0px,#fff 5px,transparent 5px,transparent 10px);opacity:.2}
+.gfl-action-btn.lg.combat-live::after{background:repeating-linear-gradient(90deg,#fff 0px,#fff 5px,transparent 5px,transparent 10px);opacity:.16}
+.gfl-home.combat-mode .gfl-bg::after{background:linear-gradient(180deg,rgba(80,0,0,.28) 0%,transparent 24%,rgba(0,0,0,.26) 55%,rgba(0,0,0,.62) 100%),linear-gradient(90deg,transparent 32%,rgba(80,0,0,.3) 72%,rgba(0,0,0,.58) 100%)}
+
+/* --- separator --- */
+.gfl-action-sep{height:2px;margin:4px 12px;background:repeating-linear-gradient(90deg,var(--gr3) 0px,var(--gr3) 4px,transparent 4px,transparent 8px)}
+
+/* --- small button --- */
+.gfl-action-btn.sm{padding:14px 12px 14px 20px;font-size:15px;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);background:linear-gradient(180deg,rgba(40,40,40,.92),rgba(24,24,24,.92));box-shadow:inset 4px 0 0 var(--gr3),0 2px 8px rgba(0,0,0,.4)}
+.gfl-action-btn.sm:hover{background:linear-gradient(180deg,rgba(60,60,60,.92),rgba(36,36,36,.92));box-shadow:inset 4px 0 0 var(--y),0 2px 8px rgba(0,0,0,.4);color:var(--y-light)}
+.gfl-action-btn.sm.active{background:linear-gradient(180deg,rgba(70,70,70,.92),rgba(44,44,44,.92));box-shadow:inset 4px 0 0 var(--y),0 2px 8px rgba(0,0,0,.4);color:var(--y)}
+
+/* ========================================
+   MOBILE: < 768px
+   - 角色踩到底部，UI 叠在上方
+   - 资源栏紧凑化
+   - 对白框隐藏
+   ======================================== */
+@media (max-width:768px){
+  .gfl-home{min-height:100vh;min-height:100dvh}
+
+  /* background fills entire viewport */
+  .gfl-bg{position:fixed;inset:0}
+
+  /* character: bottom-aligned, draggable on mobile */
+  .gfl-character{position:absolute;bottom:0;left:50%!important;transform:translateX(-50%)!important;height:92dvh;width:auto;max-width:none;display:flex;align-items:flex-end;justify-content:center;cursor:grab;touch-action:none}
+  .gfl-character.l2d-mode{width:min(128vw, 78dvh);height:auto;max-height:92dvh;aspect-ratio:3/4}
+  .gfl-character.static-mode{width:min(86vw, 62dvh);min-width:0;height:92dvh}
+
+  /* damage badge reposition */
+  .gfl-damage{top:42px;left:8px;z-index:20;font-size:10px;padding:2px 10px}
+  .gfl-damage-toggle{top:68px;left:8px;z-index:20;font-size:9px;padding:4px 9px}
+
+  /* resource bar: compact horizontal strip */
+  .gfl-resource-bar{position:absolute;top:0;left:0;right:0;z-index:10;background:rgba(0,0,0,.7);padding:6px 8px;justify-content:space-around}
+  .gfl-res{padding:2px 6px;gap:4px}
+  .gfl-res-label{font-size:9px}
+  .gfl-res-val{font-size:13px}
+  .gfl-res-dot{width:5px;height:5px}
+
+  /* dialogue hidden on mobile */
+  .gfl-dialogue{display:none}
+
+  /* action panel: bottom sheet, horizontal layout */
+  .gfl-action-panel{position:absolute;bottom:0;left:0;right:0;top:auto;width:100%;z-index:10;flex-direction:column;gap:6px;padding:10px 12px 16px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.5) 5%,rgba(10,10,10,.88) 25%)}
+
+  /* info hud: horizontal on mobile */
+  .gfl-info-hud{flex-direction:row;align-items:center;gap:12px;padding:8px 12px 8px 16px;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);margin-bottom:2px}
+  .gfl-chapter-label,.gfl-time-label{display:none}
+  .gfl-chapter-name{font-size:12px}
+  .gfl-time-val{font-size:12px}
+
+  /* buttons: 2-column grid on mobile */
+  .gfl-btn-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+
+  /* large button slightly smaller */
+  .gfl-action-btn.lg{font-size:16px;padding:14px 10px;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%)}
+  .gfl-action-btn.lg::before{height:4px;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%)}
+  .gfl-action-btn.lg::after{height:3px;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%)}
+
+  /* small button */
+  .gfl-action-btn.sm{font-size:13px;padding:10px 8px 10px 14px;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%)}
+
+  /* separator hidden */
+  .gfl-action-sep{display:none}
+}
+
+/* ===== Very small screens (< 380px) ===== */
+@media (max-width:380px){
+  .gfl-res-label{display:none}
+  .gfl-res{padding:2px 4px}
+  .gfl-res-val{font-size:12px}
+  .gfl-action-btn.lg{font-size:14px;padding:12px 8px}
+  .gfl-action-btn.sm{font-size:11px;padding:8px 6px 8px 10px}
+  .gfl-chapter-name{font-size:11px}
+  .gfl-time-val{font-size:11px}
+}
+.gfl-subpage-mask{position:fixed;inset:0;z-index:80;display:none;background:rgba(0,0,0,.88);padding:18px}
+.gfl-subpage-mask.open{display:flex;align-items:stretch;justify-content:center}
+.gfl-subpage-shell{width:min(1180px,100%);height:100%;display:flex;flex-direction:column;background:#080808;border:1px solid rgba(232,200,64,.52);box-shadow:0 22px 70px rgba(0,0,0,.72);overflow:hidden;clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px)}
+.gfl-subpage-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;background:linear-gradient(90deg,rgba(232,200,64,.18),rgba(255,255,255,.03));border-bottom:1px solid rgba(232,200,64,.28)}
+.gfl-subpage-title{color:var(--y);font-size:14px;font-weight:900;letter-spacing:2px}
+.gfl-subpage-close{border:1px solid var(--gr3);background:rgba(0,0,0,.35);color:var(--gr);padding:7px 14px;font-size:12px;font-weight:800;letter-spacing:1px;cursor:pointer;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%)}
+.gfl-subpage-close:hover{border-color:var(--y);color:var(--y)}
+.gfl-subpage-frame{flex:1;width:100%;border:0;background:#000}
+.gfl-subpage-status{position:absolute;left:28px;bottom:26px;z-index:82;display:none;max-width:min(520px,calc(100% - 56px));padding:8px 12px;background:rgba(0,0,0,.72);border-left:3px solid var(--warn);color:#ffb0b0;font-size:12px;line-height:1.6;letter-spacing:.5px}
+.gfl-subpage-status.show{display:block}
+.gfl-chapter-mask{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.82);padding:16px}
+.gfl-chapter-mask.open{display:flex}
+.gfl-chapter-dialog{width:min(780px,100%);max-height:min(720px,92vh);display:flex;flex-direction:column;background:rgba(12,12,12,.98);border:1px solid rgba(232,200,64,.55);box-shadow:0 20px 64px rgba(0,0,0,.7);clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px)}
+.gfl-chapter-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid rgba(232,200,64,.28);background:linear-gradient(90deg,rgba(232,200,64,.18),rgba(255,255,255,.03))}
+.gfl-chapter-title{color:var(--y);font-size:14px;font-weight:900;letter-spacing:2px}
+.gfl-chapter-close{border:1px solid var(--gr3);background:rgba(0,0,0,.35);color:var(--gr);padding:7px 13px;font-size:11px;font-weight:800;letter-spacing:1px;cursor:pointer;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%)}
+.gfl-chapter-body{padding:12px;overflow:auto;display:grid;gap:8px}
+.gfl-chapter-card{border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.28);padding:10px 12px;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
+.gfl-chapter-card.selectable{border-color:rgba(232,200,64,.42);cursor:pointer}
+.gfl-chapter-card.selectable:hover{background:rgba(232,200,64,.08);border-color:var(--y)}
+.gfl-chapter-card.locked{opacity:.48}
+.gfl-chapter-name{color:var(--wh);font-size:13px;font-weight:900;letter-spacing:1px}
+.gfl-chapter-meta{margin-top:4px;color:var(--gr);font-size:10px;letter-spacing:.5px}
+.gfl-chapter-status{color:var(--y);font-size:11px;font-weight:900;white-space:nowrap}
+.gfl-chapter-complete{border:1px solid var(--y);background:linear-gradient(180deg,var(--y),var(--y-dark));color:#111;padding:7px 11px;font-size:11px;font-weight:900;letter-spacing:1px;cursor:pointer;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%)}
+.gfl-chapter-empty{color:var(--gr);font-size:12px;line-height:1.8;padding:12px}
+@media(max-width:768px){
+  .gfl-subpage-mask{padding:8px}
+  .gfl-subpage-head{padding:8px 10px}
+  .gfl-subpage-title{font-size:12px}
+}
+</style>
+</head>
+<body>
+<div class="gfl-home">
+
+  <!-- Background -->
+  <div class="gfl-bg"></div>
+
+  <!-- Character -->
+  <div class="gfl-character" id="gfl-character"></div>
+  <div class="gfl-damage" id="gfl-damage">DAMAGED</div>
+  <button type="button" class="gfl-damage-toggle" id="gfl-damage-toggle">切换大破</button>
+  <div class="gfl-l2d-status" id="gfl-l2d-status">LIVE2D MODEL</div>
+
+  <!-- Resource bar -->
+  <div class="gfl-resource-bar">
+    <div class="gfl-res">
+      <span class="gfl-res-dot mp"></span>
+      <span class="gfl-res-label">人力</span>
+      <span class="gfl-res-val mp" id="res-mp">12,480</span>
+    </div>
+    <div class="gfl-res">
+      <span class="gfl-res-dot am"></span>
+      <span class="gfl-res-label">弹药</span>
+      <span class="gfl-res-val am" id="res-am">8,320</span>
+    </div>
+    <div class="gfl-res">
+      <span class="gfl-res-dot ra"></span>
+      <span class="gfl-res-label">口粮</span>
+      <span class="gfl-res-val ra" id="res-ra">6,150</span>
+    </div>
+    <div class="gfl-res">
+      <span class="gfl-res-dot pt"></span>
+      <span class="gfl-res-label">零件</span>
+      <span class="gfl-res-val pt" id="res-pt">4,200</span>
+    </div>
+    <div class="gfl-res">
+      <span class="gfl-res-dot core"></span>
+      <span class="gfl-res-label">心智核心</span>
+      <span class="gfl-res-val core" id="res-core">60</span>
+    </div>
+  </div>
+
+  <!-- Dialogue (desktop only) -->
+  <div class="gfl-dialogue">基地已完成整备，随时可以开始行动。</div>
+
+  <!-- Action panel -->
+  <div class="gfl-action-panel">
+    <!-- Info HUD: chapter + time -->
+    <div class="gfl-info-hud">
+      <div>
+        <span class="gfl-chapter-label">CURRENT CHAPTER</span>
+        <span class="gfl-chapter-name" id="gfl-chapter">一苏醒·零种子</span>
+      </div>
+      <div>
+        <span class="gfl-time-label">TIME</span>
+        <span class="gfl-time-val" id="gfl-time">2062-07-18 14:35:09</span>
+      </div>
+    </div>
+
+    <!-- Mobile: wrap buttons in grid -->
+    <div class="gfl-btn-grid">
+      <button type="button" class="gfl-action-btn lg" data-action="combat" id="combat-btn">出击</button>
+      <button type="button" class="gfl-action-btn lg" data-action="formation">编队</button>
+      <div class="gfl-action-sep"></div>
+      <button type="button" class="gfl-action-btn sm" data-action="chapter">章节</button>
+      <button type="button" class="gfl-action-btn sm" data-action="map">地图</button>
+      <button type="button" class="gfl-action-btn sm" data-action="battle-terminal">战术终端</button>
+      <button type="button" class="gfl-action-btn sm" data-action="build">建造</button>
+      <button type="button" class="gfl-action-btn sm" data-action="depot">仓库</button>
+      <button type="button" class="gfl-action-btn sm" data-action="equipment">装备</button>
+      <button type="button" class="gfl-action-btn sm" data-action="mission">任务</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="gfl-subpage-mask" id="gfl-subpage-mask" aria-hidden="true">
+  <div class="gfl-subpage-shell">
+    <div class="gfl-subpage-head"><div class="gfl-subpage-title" id="gfl-subpage-title">子页面</div><button type="button" class="gfl-subpage-close" id="gfl-subpage-close">返回待机</button></div>
+    <iframe class="gfl-subpage-frame" id="gfl-subpage-frame" title="少女前线子页面"></iframe>
+  </div>
+</div>
+<div class="gfl-subpage-status" id="gfl-subpage-status"></div>
+<div class="gfl-chapter-mask" id="gfl-chapter-mask" aria-hidden="true"><div class="gfl-chapter-dialog"><div class="gfl-chapter-head"><div class="gfl-chapter-title" id="gfl-picker-title">选择出击地区</div><button type="button" class="gfl-chapter-close" id="gfl-chapter-close">取消</button></div><div class="gfl-chapter-body" id="gfl-chapter-list"></div></div></div>
+
+<script src="gfl-data-bridge.js"></script>
+<script src="gfl-map-sync.js"></script>
+<script src="l2d-indexeddb-loader.js"></script>
+<script src="l2d-pixi-runtime.js"></script>
+<script>
+(function(){
+  var isDamaged = false;
+  var charEl = document.getElementById('gfl-character');
+  var dmgEl = document.getElementById('gfl-damage');
+  var dmgToggleEl = document.getElementById('gfl-damage-toggle');
+  var l2dStatusEl = document.getElementById('gfl-l2d-status');
+  var dialogueEl = document.querySelector('.gfl-dialogue');
+  var live2dState = null;
+  var l2dLoading = false;
+  var lastLive2DError = null;
+  var currentLive2DKey = '';
+  var Bridge = window.GFLDataBridge;
+  var subpageMaskEl = document.getElementById('gfl-subpage-mask');
+  var subpageFrameEl = document.getElementById('gfl-subpage-frame');
+  var subpageTitleEl = document.getElementById('gfl-subpage-title');
+  var subpageStatusEl = document.getElementById('gfl-subpage-status');
+  var chapterMaskEl = document.getElementById('gfl-chapter-mask');
+  var chapterListEl = document.getElementById('gfl-chapter-list');
+  var pickerTitleEl = document.getElementById('gfl-picker-title');
+  var toastTimer = null;
+
+  function showToast(message){
+    var toast = document.getElementById('gfl-ui-toast');
+    if(!toast){
+      toast = document.createElement('div');
+      toast.id = 'gfl-ui-toast';
+      toast.className = 'gfl-ui-toast';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = message || '';
+    toast.classList.add('show');
+    if(toastTimer) window.clearTimeout(toastTimer);
+    toastTimer = window.setTimeout(function(){ toast.classList.remove('show'); }, 1800);
+  }
+
+  function flashButton(btn, message){
+    if(btn){
+      btn.classList.remove('clicked');
+      void btn.offsetWidth;
+      btn.classList.add('clicked');
+      window.setTimeout(function(){ btn.classList.remove('clicked'); }, 320);
+    }
+    if(message) showToast(message);
+  }
+
+  function setButtonBusy(btn, busy){
+    if(!btn) return;
+    btn.classList.toggle('busy', !!busy);
+    btn.disabled = !!busy;
+  }
+
+  function cssEscape(value){
+    if(window.CSS && typeof window.CSS.escape === 'function') return window.CSS.escape(String(value));
+    return String(value).replace(/[\\"#.;?+*~':!^$[\]()=>|/@]/g, '\\$&');
+  }
+
+  function esc(value){
+    return String(value == null ? '' : value).replace(/[&<>"]/g, function(ch){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch];
+    });
+  }
+
+  var DIALOGUE_LINES = [
+    '基地已完成整备，随时可以开始行动。',
+    '今日作战计划已同步，请确认编队状态。',
+    '后勤小队待命中，资源调度没有异常。',
+    '仓库清点完成，装备与人形状态均已记录。',
+    '指挥官，新的任务简报已经送达。',
+    '通讯频道保持畅通，等待下一步指示。'
+  ];
+  var dialogueIndex = 0;
+
+  /* --- Storage --- */
+  var isMobile = window.innerWidth <= 768;
+  function curIsMobile(){ return window.innerWidth <= 768; }
+  function leftKey(){ return curIsMobile() ? 'gfl-char-left-m' : 'gfl-char-left-d'; }
+  function btmKey(){  return curIsMobile() ? 'gfl-char-btm-m'  : 'gfl-char-btm-d'; }
+  var LEFT_KEY = leftKey();
+  var BTM_KEY  = btmKey();
+  var ADJUTANT_KEY = 'gfl-adjutant';
+  var BUBBLE_BG_GROUP = '少女前线待机背景';
+  var DEF_LEFT = curIsMobile() ? 45 : 38;
+  var DEF_BTM  = 0;
+
+  function getTopApi(name){
+    try{ if(window.top && window.top[name]) return window.top[name]; }catch(e){}
+    try{ if(window.parent && window.parent[name]) return window.parent[name]; }catch(e){}
+    try{ if(window[name]) return window[name]; }catch(e){}
+    return null;
+  }
+
+  function waitForTopApi(name, attempt){
+    attempt = attempt || 0;
+    var api = getTopApi(name);
+    if(api) return Promise.resolve(api);
+    if(attempt >= 20) return Promise.resolve(null);
+    return new Promise(function(resolve){
+      window.setTimeout(function(){ resolve(waitForTopApi(name, attempt + 1)); }, 250);
+    });
+  }
+
+  function currentCharId(){
+    try{
+      var st = window.top && window.top.SillyTavern ? window.top.SillyTavern : window.SillyTavern;
+      var ctx = st && typeof st.getContext === 'function' ? st.getContext() : null;
+      var id = ctx && (ctx.characterId != null ? ctx.characterId : ctx.this_chid != null ? ctx.this_chid : ctx.character_id);
+      return id != null ? String(id) : '';
+    }catch(e){ return ''; }
+  }
+
+  function normalizeL2DKey(value){
+    return String(value || '').replace(/[\s_\-·.]/g, '').replace(/[（）()【】\[\]★☆]/g, '').toLowerCase();
+  }
+
+  function resolveMappedLive2DDir(adjutant){
+    var map = window.GFL_LIVE2D_SKIN_MAP;
+    if(!map) throw new Error('缺少 GFL_LIVE2D_SKIN_MAP：控制台构建未注入全量 Live2D 皮肤映射');
+    var byTdollSkin = map.byTdollSkin || {};
+    var bySkin = map.bySkin || {};
+    var name = adjutant && (adjutant.name || adjutant.tdollName || adjutant['人形名称']);
+    var skin = adjutant && (adjutant.skin || adjutant.currentSkin || adjutant['当前皮肤'] || adjutant.portraitSkin || adjutant.damagedPortraitSkin);
+    if(!skin && Bridge && typeof Bridge.warehouseTdolls === 'function' && name){
+      try{
+        var dolls = Bridge.warehouseTdolls();
+        for(var i=0;i<dolls.length;i++){
+          if(normalizeL2DKey(dolls[i].name) === normalizeL2DKey(name)){
+            skin = dolls[i].currentSkin;
+            break;
+          }
+        }
+      }catch(e){}
+    }
+    if(!skin) return '';
+    var cleanSkin = Bridge && typeof Bridge.normalizeSkinName === 'function' ? Bridge.normalizeSkinName(skin) : String(skin).replace(/（l2d）|\(l2d\)/ig, '').trim();
+    var tdollKey = normalizeL2DKey(name);
+    var skinKey = normalizeL2DKey(cleanSkin);
+    var l2dSkinKey = normalizeL2DKey(cleanSkin + '（l2d）');
+    var mapped = (tdollKey && (byTdollSkin[tdollKey + '|' + skinKey] || byTdollSkin[tdollKey + '|' + l2dSkinKey])) || bySkin[skinKey] || bySkin[l2dSkinKey] || '';
+    if(!mapped) throw new Error('Live2D 皮肤映射缺失：' + name + '|' + cleanSkin);
+    return mapped;
+  }
+
+  function resolveBubbleLive2D(adjutant){
+    return waitForTopApi('BubbleLive2D').then(function(api){
+      if(!api) throw new Error('BubbleLive2D 接口未就绪');
+      if(!window.GFLIndexedDBLive2D || typeof window.GFLIndexedDBLive2D.resolveLive2DPackage !== 'function'){
+        throw new Error('GFLIndexedDBLive2D.resolveLive2DPackage 接口缺失');
+      }
+      var dir = resolveMappedLive2DDir(adjutant) || (adjutant && adjutant.live2d && adjutant.live2d.dir);
+      if(dir && typeof api.getModelPackage === 'function'){
+        return api.getModelPackage(dir);
+      }
+      if(typeof api.getCurrentPackage === 'function'){
+        return api.getCurrentPackage(currentCharId());
+      }
+      throw new Error('BubbleLive2D 缺少 getModelPackage/getCurrentPackage');
+    }).then(function(modelPackage){
+      if(!modelPackage) throw new Error('BubbleLive2D 未返回 Live2D package');
+      return window.GFLIndexedDBLive2D.resolveLive2DPackage(modelPackage);
+    });
+  }
+
+  function applyBubbleBackground(){
+    var bg = document.querySelector('.gfl-bg');
+    if(!bg) return;
+    waitForTopApi('BubbleCG').then(function(api){
+      if(!api || typeof api.getImage !== 'function') return '';
+      return api.getImage(BUBBLE_BG_GROUP, 1);
+    }).then(function(url){
+      if(!url || !bg) return;
+      bg.style.backgroundImage = 'url("' + String(url).replace(/"/g, '%22') + '")';
+      bg.style.backgroundPosition = 'center';
+      bg.style.backgroundSize = 'cover';
+      bg.style.backgroundRepeat = 'no-repeat';
+    }).catch(function(error){
+      console.warn('待机背景气泡图片加载失败:', error);
+    });
+  }
+
+  function applyPos(left, btm){
+    if(!charEl) return;
+    if(curIsMobile()){
+      charEl.style.setProperty('left', left + '%', 'important');
+      charEl.style.setProperty('transform', 'translateX(-50%)', 'important');
+    } else {
+      charEl.style.left = left + '%';
+      charEl.style.transform = 'translateX(-50%)';
+    }
+    charEl.style.bottom = btm + '%';
+    syncLive2DPosition();
+  }
+  function loadVal(key, def){ try{ var s=localStorage.getItem(key); if(s!==null) return parseFloat(s); }catch(e){} return def; }
+  function saveVal(key, v){ try{ localStorage.setItem(key, v.toFixed(2)); }catch(e){} }
+  function loadJSON(key, def){ try{ var s=localStorage.getItem(key); if(s) return JSON.parse(s); }catch(e){} return def; }
+  function saveJSON(key, val){ try{ localStorage.setItem(key, JSON.stringify(val)); }catch(e){} }
+  function loadNumber(key, def){ try{ var s=localStorage.getItem(key); if(s!==null){ var n=parseInt(s,10); if(!isNaN(n)) return n; } }catch(e){} return def; }
+  function formatNum(n){ return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+  function getApi(){ try{ if(window.AutoCardUpdaterAPI) return window.AutoCardUpdaterAPI; }catch(e){} try{ if(window.parent&&window.parent.AutoCardUpdaterAPI) return window.parent.AutoCardUpdaterAPI; }catch(e){} try{ if(window.top&&window.top.AutoCardUpdaterAPI) return window.top.AutoCardUpdaterAPI; }catch(e){} return null; }
+  function nativeExecuteSqlBatch(sql,targetSheetKeys){ if(Bridge&&typeof Bridge.executeSqlBatch==='function') return Bridge.executeSqlBatch({sql:sql,targetSheetKeys:targetSheetKeys}); var api=getApi(); if(!api||typeof api.executeSqlBatch!=='function') throw new Error('AutoCardUpdaterAPI.executeSqlBatch 不可用'); return api.executeSqlBatch({sql:sql,targetSheetKeys:targetSheetKeys}); }
+  function sqlValue(value){ return value==null?'NULL':"'"+String(value).replace(/'/g,"''")+"'"; }
+  function field(row, names){ for(var i=0;i<names.length;i++){ var v=row[names[i]]; if(v!==undefined&&v!==null&&String(v)!=='') return v; } return ''; }
+  function isChapterCompleted(){ var row=Bridge&&Bridge.currentChapter?Bridge.currentChapter():{}; return field(row,['当前阶段','currentStage','current_stage'])==='已完成'; }
+  function sortieActive(){ return !!(Bridge&&Bridge.sortieActive&&Bridge.sortieActive()); }
+  function setSortieActive(active){ return Bridge.setSortieActive(active); }
+  function clearCombatState(reason){ return setSortieActive(false); }
+  function chapterRowsNative(){ return Bridge && Bridge.chapterRows ? Bridge.chapterRows() : []; }
+  function setChapterStatusNative(chapterName,status){ var found=chapterRowsNative().filter(function(ch){ return ch.chapterName===chapterName; })[0]; if(!found||!found.rowIndex) return Promise.reject(new Error('未找到章节：'+chapterName)); return Bridge.updateCell('totalChapters',found.rowIndex,'状态',status); }
+  function selectChapterNative(chapterName){ var current=Bridge&&Bridge.currentChapter?Bridge.currentChapter():{}; var found=Bridge&&Bridge.selectableChapters?Bridge.selectableChapters().filter(function(ch){ return ch.chapterName===chapterName; })[0]:null; if(!found) return Promise.reject(new Error('未找到章节：'+chapterName)); if(chapterName===current.chapterName) return Promise.reject(new Error('当前所在章节不可重复选择')); if(current.currentStage!=='已完成') return Promise.reject(new Error('当前章节尚未完成，不能进入下一章')); if(!found.selectable) return Promise.reject(new Error(found.lockReason||'章节尚未解锁')); return nativeExecuteSqlBatch('UPDATE total_chapters SET chapter_status = '+sqlValue('进行中')+' WHERE row_id = '+sqlValue(found.rowIndex)+';\nUPDATE current_chapter SET chapter_name = '+sqlValue(chapterName)+', current_stage = '+sqlValue('进行中')+' WHERE row_id = 1;', ['sheet_total_chapters','sheet_current_chapter']); }
+  function beginAreaSortieNative(areaName){ return nativeExecuteSqlBatch('UPDATE current_chapter SET sortie_area = '+sqlValue(areaName)+', sortie_state = '+sqlValue('出击中')+' WHERE row_id = 1;', ['sheet_current_chapter']); }
+  function settleBossVictoryNative(){ return Promise.resolve({victory:false}); }
+  var localChapterState = Bridge && Bridge.currentChapter ? Bridge.currentChapter() : {};
+  var localStatusState = Bridge && Bridge.currentStatus ? Bridge.currentStatus() : {};
+  var CHAPTER_INTRO_WINDOWS = {
+    '逆转录':'AR小队全员归队后，克鲁格召集指挥官在秘密据点开会；铁血通过AR-15泄露的情报精准定位格里芬据点',
+    '钳制反应':'AR小队全员归队后，克鲁格召集指挥官在秘密据点开会；铁血缺乏内应，通过梦想家空中侦察/破坏者渗透逐步定位格里芬据点',
+    '低灌注':'AR小组因S08区事件被强制关押在S05区"玛莉欧公主"看守所接受观察；指挥官主动申请调往S05区',
+    '过补偿':'AR小组未被关押（或限制较轻），M4A1正常参与作战；军方卡特将军向克鲁格施压要求"莱柯AI数据"成果；铁血主脑因前次失败更加急迫，主动发动对格里芬的突袭',
+    '排异反应':'AR小组战力完整（M16A1存活）；M4A1苏醒/清醒；军方邀请格里芬参与联合行动',
+    '级联失效':'M4A1苏醒（昏迷分支）或M4A1带着失去M16的痛苦归来（未昏迷分支）；AR小组搜索M16A1下落；克鲁格与卡特将军敲定联合行动',
+    '相变跃迁':'格里芬实力完整/受损不严重；与军方公开对立；铁血主脑仍在追捕M4A1；军方阴谋已暴露',
+    '低氧适应':'格里芬全面溃败；克鲁格被捕；指挥官成为军方通缉犯；M4A1被忤逆小队救走/被军方捕获',
+    '临界质量':'格里芬战力完整；与安洁莉娅深度联合；掌握涅托弱点；帕尔迪斯基情报充分；AR小组全员参与',
+    '逆向坍塌':'格里芬重建完成/部分完成；与安洁莉娅建立联系；军方叛军（叶戈尔）已到达帕尔迪斯基；铁血主脑/M16A1已在基地深处'
+  };
+
+  function openPicker(title){
+    if(pickerTitleEl) pickerTitleEl.textContent = title;
+    if(chapterMaskEl){
+      chapterMaskEl.classList.add('open');
+      chapterMaskEl.setAttribute('aria-hidden', 'false');
+    }
+    showToast(title + '已打开');
+  }
+
+  function openAreaPicker(){
+    if(!Bridge || typeof Bridge.sortieAreas !== 'function'){
+      if(dialogueEl) dialogueEl.textContent = '地区系统未就绪，无法选择出击地区。';
+      return;
+    }
+    var areas = [];
+    try{ areas = Bridge.sortieAreas(); }catch(e){ console.warn('地区读取失败:', e); }
+    if(chapterListEl){
+      chapterListEl.innerHTML = areas.length ? areas.map(function(area){
+        var cls = area.selectable ? 'selectable' : 'locked';
+        var meta = area.selected ? '当前地区 · 再次点击将从该地区出击' : '可选出击地区';
+        return '<div class="gfl-chapter-card '+cls+'" data-name="'+esc(area.areaName)+'"><div><div class="gfl-chapter-name">'+esc(area.areaName)+'</div><div class="gfl-chapter-meta">'+esc(meta)+'</div></div><div class="gfl-chapter-status">'+esc(area.selected?'当前':'出击')+'</div></div>';
+      }).join('') : '<div class="gfl-chapter-empty">没有可用出击地区。</div>';
+      chapterListEl.querySelectorAll('.gfl-chapter-card.selectable').forEach(function(card){
+        card.addEventListener('click', function(){ beginSelectedArea(this.getAttribute('data-name')); });
+      });
+    }
+    openPicker('选择出击地区');
+  }
+
+  function openChapterPicker(){
+    if(!Bridge || typeof Bridge.selectableChapters !== 'function'){
+      if(dialogueEl) dialogueEl.textContent = '章节系统未就绪，无法选择章节。';
+      return;
+    }
+    var chapters = [];
+    try{ chapters = Bridge.selectableChapters(); }catch(e){ console.warn('章节读取失败:', e); }
+    if(chapterListEl){
+      chapterListEl.innerHTML = chapters.length ? chapters.map(function(ch){
+        var cls = ch.selectable ? 'selectable' : 'locked';
+        var meta = [ch.chapterType, ch.chapterStatus, ch.current ? '当前章节' : ch.routeNext ? '剧情标记判定的下一章' : '', ch.selectable ? ch.lockReason : '锁定：'+ch.lockReason].filter(Boolean).join(' · ');
+        var action = ch.current && localChapterState && localChapterState.currentStage !== '已完成' ? '<button type="button" class="gfl-chapter-complete" data-complete-chapter="'+esc(ch.chapterName)+'">完成章节</button>' : '<div class="gfl-chapter-status">'+esc(ch.current?'当前':ch.selectable?'选择':'锁定')+'</div>';
+        return '<div class="gfl-chapter-card '+cls+(ch.current?' current':'')+'" data-name="'+esc(ch.chapterName)+'"><div><div class="gfl-chapter-name">'+esc(ch.chapterName)+'</div><div class="gfl-chapter-meta">'+esc(meta)+'</div></div>'+action+'</div>';
+      }).join('') : '<div class="gfl-chapter-empty">总章节表为空，无法选择章节。</div>';
+      chapterListEl.querySelectorAll('.gfl-chapter-card.selectable').forEach(function(card){
+        card.addEventListener('click', function(){ selectChapterOnly(this.getAttribute('data-name')); });
+      });
+      chapterListEl.querySelectorAll('[data-complete-chapter]').forEach(function(btn){
+        btn.addEventListener('click', function(e){ e.stopPropagation(); completeCurrentChapter(this.getAttribute('data-complete-chapter')); });
+      });
+    }
+    openPicker('选择章节');
+  }
+
+  function closeChapterPicker(){
+    if(chapterMaskEl){
+      chapterMaskEl.classList.remove('open');
+      chapterMaskEl.setAttribute('aria-hidden', 'true');
+    }
+  }
+
+  function beginSelectedArea(areaName){
+    if(!Bridge || !areaName) return;
+    var card = chapterListEl ? chapterListEl.querySelector('.gfl-chapter-card[data-name="'+cssEscape(areaName)+'"]') : null;
+    flashButton(card, '正在从「'+areaName+'」出击...');
+    var current = localChapterState || {};
+    var chapterName = current.chapterName || '当前章节';
+    beginAreaSortieNative(areaName).then(function(){
+      localChapterState.sortieArea = areaName;
+      localChapterState.sortieState = '出击中';
+      closeChapterPicker();
+      applyCombatState();
+      applyGlobalStatus();
+      var prompt = Bridge.buildSortiePrompt ? Bridge.buildSortiePrompt(chapterName, areaName) : '';
+      var sent = prompt && Bridge.sendToTavern ? Bridge.sendToTavern(prompt) : {success:false};
+      var message = sent.success ? '已选择地区「'+areaName+'」，出击指令已填入酒馆输入框，请确认或修改后手动发送。' : '已选择地区「'+areaName+'」，但无法自动填入出击提示词。';
+      showToast(message);
+      if(dialogueEl) dialogueEl.textContent = message;
+    }).catch(function(error){
+      console.warn('地区出击失败:', error);
+      var message = '地区出击失败：' + (error && error.message ? error.message : error);
+      showToast(message);
+      if(dialogueEl) dialogueEl.textContent = message;
+    });
+  }
+
+  function buildChapterIntroPrompt(chapterName){
+    var intro = CHAPTER_INTRO_WINDOWS[chapterName] || '';
+    return [
+      '当前选择章节：' + chapterName,
+      '当前操作：导入新章节。',
+      '章节开始窗口：' + (intro || '请读取当前章节战役世界书的「开始窗口」与阶段框架。'),
+      '战场世界书要求：必须读取当前章节战役世界书中 <if> 条件已满足的 <战役>...</战役> 标签内容，并把它作为新章节开场、敌我态势和关键冲突的硬依据。',
+      '请把「章节开始窗口」扩写成一段自然剧情导入，完成从上一章节状态到本章节开端的过渡。',
+      '导入要明确指挥官当前处境、格里芬/铁血/军方或相关势力的局势变化、下一阶段任务压力。',
+      '不要直接跳到出击战斗，不要宣告章节胜利，不要跳过战役世界书规定的关键阶段。'
+    ].join('\n');
+  }
+
+  function completeCurrentChapter(chapterName){
+    if(!chapterName) return;
+    var btn = chapterListEl ? chapterListEl.querySelector('[data-complete-chapter="'+cssEscape(chapterName)+'"]') : null;
+    flashButton(btn, '正在标记「'+chapterName+'」完成...');
+    var found = chapterRowsNative().filter(function(ch){ return ch.chapterName===chapterName; })[0];
+    var batch = found && found.rowIndex ? nativeExecuteSqlBatch('UPDATE total_chapters SET chapter_status = '+sqlValue('已完成')+' WHERE row_id = '+sqlValue(found.rowIndex)+';\nUPDATE current_chapter SET current_stage = '+sqlValue('已完成')+' WHERE row_id = 1;', ['sheet_total_chapters','sheet_current_chapter']) : null;
+    batch.then(function(){
+      localChapterState.currentStage = '已完成';
+      closeChapterPicker();
+      applyCombatState();
+      applyGlobalStatus();
+      var message = '章节「'+chapterName+'」已完成，可以选择剧情标记判定出的下一章。';
+      showToast(message);
+      if(dialogueEl) dialogueEl.textContent = message;
+    }).catch(function(error){
+      console.warn('章节完成失败:', error);
+      var message = '章节完成失败：' + (error && error.message ? error.message : error);
+      showToast(message);
+      if(dialogueEl) dialogueEl.textContent = message;
+    });
+  }
+
+  function selectChapterOnly(chapterName){
+    if(!Bridge || !chapterName) return;
+    var card = chapterListEl ? chapterListEl.querySelector('.gfl-chapter-card[data-name="'+cssEscape(chapterName)+'"]') : null;
+    flashButton(card, '正在切换章节「'+chapterName+'」...');
+    selectChapterNative(chapterName).then(function(){
+      localChapterState.chapterName = chapterName;
+      localChapterState.currentStage = '进行中';
+      closeChapterPicker();
+      applyCombatState();
+      applyGlobalStatus();
+      var prompt = buildChapterIntroPrompt(chapterName);
+      var sent = prompt && Bridge && Bridge.sendToTavern ? Bridge.sendToTavern(prompt) : {success:false};
+      var message = sent.success ? '当前章节已切换为「'+chapterName+'」，章节导入提示词已填入酒馆输入框，请确认或修改后手动发送。' : '当前章节已切换为「'+chapterName+'」，但无法自动填入章节导入提示词。';
+      showToast(message);
+      if(dialogueEl) dialogueEl.textContent = message;
+    }).catch(function(error){
+      console.warn('章节切换失败:', error);
+      var message = '章节切换失败：' + (error && error.message ? error.message : error);
+      showToast(message);
+      if(dialogueEl) dialogueEl.textContent = message;
+    });
+  }
+
+  function applyResourceState(){
+    var state = Bridge ? Bridge.resourceState() : null;
+    var values = state || {manpower:12480, ammo:8320, ration:6150, parts:4200, memoryCore:0};
+    var map = {
+      'res-mp': values.manpower,
+      'res-am': values.ammo,
+      'res-ra': values.ration,
+      'res-pt': values.parts,
+      'res-core': values.memoryCore
+    };
+    Object.keys(map).forEach(function(id){
+      var el = document.getElementById(id);
+      if(el) el.textContent = formatNum(map[id] || 0);
+    });
+  }
+
+  function applyGlobalStatus(){
+    var current = localChapterState || null;
+    var status = localStatusState || null;
+    var chapterEl = document.getElementById('gfl-chapter');
+    var timeEl = document.getElementById('gfl-time');
+    if(current && current.chapterName && chapterEl) chapterEl.textContent = current.chapterName;
+    if(status && status.currentTime && timeEl) timeEl.textContent = status.currentTime;
+  }
+
+  function renderDialogue(){
+    if(!dialogueEl || !DIALOGUE_LINES.length) return;
+    dialogueEl.textContent = DIALOGUE_LINES[dialogueIndex % DIALOGUE_LINES.length];
+  }
+
+  function startDialogueRotation(){
+    renderDialogue();
+    if(!dialogueEl || DIALOGUE_LINES.length < 2) return;
+    window.setInterval(function(){
+      dialogueIndex = (dialogueIndex + 1) % DIALOGUE_LINES.length;
+      renderDialogue();
+    }, 6500);
+  }
+
+  function applyAdjutantState(){
+    var adjutant = loadJSON(ADJUTANT_KEY, null) || {
+      name: 'DSR-50',
+      live2d: {
+        dir: 'dsr50_1801',
+        jsonPath: 'indexeddb://dsr50_1801/normal/model.json'
+      }
+    };
+    adjutant = refreshAdjutantFromTables(adjutant);
+    console.info('[GFL待机] 应用看板:', adjutant);
+    if(!adjutant.live2d || !adjutant.live2d.jsonPath){
+      applyStaticAdjutant(adjutant);
+      return;
+    }
+    if(adjutant && adjutant.live2d && adjutant.live2d.jsonPath){
+      var targetLive2DKey = String(adjutant.live2d.jsonPath || '');
+      if(targetLive2DKey && currentLive2DKey === targetLive2DKey && hasL2DCanvas()){
+        setL2DStatus('LIVE2D · '+(adjutant.name || '看板娘'), true);
+        syncLive2DPosition();
+        return;
+      }
+      if(charEl) charEl.style.backgroundImage = '';
+      setL2DStatus('Live2D IndexedDB 资源解析中', true);
+      Promise.resolve().then(function(){
+        if(window.GFLIndexedDBLive2D && window.GFLIndexedDBLive2D.revokeObjectUrls) window.GFLIndexedDBLive2D.revokeObjectUrls();
+        return resolveBubbleLive2D(adjutant);
+      }).then(function(resolvedState){
+        console.info('[GFL待机] Live2D 资源解析完成:', resolvedState);
+        live2dState = resolvedState;
+        loadLive2D(live2dState.jsonPath, adjutant.name || '看板娘');
+      }).catch(function(error){
+        live2dState = null;
+        lastLive2DError = error;
+        if(charEl){ charEl.classList.remove('l2d-active'); charEl.classList.remove('l2d-mode'); }
+        if(charEl) charEl.classList.remove('static-mode');
+        setL2DStatus('Live2D IndexedDB 资源不可用', true);
+        console.error('Live2D IndexedDB 资源准备失败:', error);
+      });
+    }
+  }
+
+  function refreshAdjutantFromTables(adjutant){
+    if(!adjutant || !adjutant.name || !Bridge || typeof Bridge.warehouseTdolls !== 'function') return adjutant;
+    try{
+      var dolls = Bridge.warehouseTdolls();
+      for(var i=0;i<dolls.length;i++){
+        if(dolls[i].name !== adjutant.name) continue;
+        var currentSkin = dolls[i].currentSkin || adjutant.skin || '默认立绘';
+        var refreshed = {};
+        Object.keys(adjutant).forEach(function(key){ refreshed[key] = adjutant[key]; });
+        refreshed.skin = currentSkin;
+        refreshed.portraitSkin = Bridge.skinImageGroup(adjutant.name, currentSkin);
+        refreshed.damagedPortraitSkin = refreshed.portraitSkin;
+        if(adjutant.live2d && adjutant.live2d.jsonPath){
+          var dir = resolveMappedLive2DDir(refreshed) || (adjutant.live2d && adjutant.live2d.dir);
+          refreshed.live2d = dir ? {dir:dir, jsonPath:'indexeddb://' + dir + '/normal/model.json'} : null;
+        }
+        return refreshed;
+      }
+    }catch(error){
+      console.warn('[GFL待机] 从人形仓库表刷新看板失败:', error);
+    }
+    return adjutant;
+  }
+
+  function applyStaticAdjutant(adjutant){
+    if(!charEl) return;
+    removeLive2DRuntime(false);
+    live2dState = null;
+    currentLive2DKey = '';
+    charEl.classList.remove('l2d-active');
+    charEl.classList.remove('l2d-mode');
+    charEl.classList.add('static-mode');
+    var skin = (adjutant && (adjutant.portraitSkin || adjutant.damagedPortraitSkin)) || '';
+    if(!skin){
+      skin = (adjutant && adjutant.skin) || '默认立绘';
+      if(Bridge && typeof Bridge.skinImageGroup === 'function' && adjutant && adjutant.name){
+        skin = Bridge.skinImageGroup(adjutant.name, skin);
+      }
+    }
+    if(!Bridge || typeof Bridge.getSkinImage !== 'function'){
+      setL2DStatus('静态看板接口缺失', true);
+      return;
+    }
+    setL2DStatus('静态看板载入中', true);
+    Bridge.getSkinImage(skin, isDamaged).then(function(url){
+      if(url){
+        charEl.style.backgroundImage = 'url("'+url.replace(/"/g, '%22')+'")';
+        setL2DStatus('STATIC · '+((adjutant && adjutant.name) || '看板娘'), true);
+      } else {
+        setL2DStatus('静态看板图片不可用', true);
+      }
+    }).catch(function(error){
+      setL2DStatus('静态看板加载失败', true);
+      console.error('静态看板加载失败:', error);
+    });
+  }
+
+  function setL2DStatus(text, active){
+    if(l2dStatusEl){
+      l2dStatusEl.textContent = text;
+      l2dStatusEl.classList.toggle('show', !!active);
+    }
+  }
+
+  function removeLive2DRuntime(keepL2DActiveClass){
+    if(window.GFLPixiLive2D && window.GFLPixiLive2D.destroy){
+      window.GFLPixiLive2D.destroy();
+    }
+    ['live2d-widget','live2dcanvas','waifu','waifu-tool','gfl-pixi-live2d'].forEach(function(id){
+      var el = document.getElementById(id);
+      if(el && el.parentNode) el.parentNode.removeChild(el);
+    });
+    if(!keepL2DActiveClass && charEl){
+      charEl.classList.remove('l2d-active');
+      charEl.classList.remove('l2d-mode');
+      charEl.classList.remove('static-mode');
+    }
+  }
+
+  function hasL2DCanvas(){
+    var canvas = document.getElementById('gfl-pixi-live2d-canvas');
+    if(canvas) return true;
+    var mount = document.getElementById('gfl-pixi-live2d');
+    return !!(mount && mount.querySelector && mount.querySelector('canvas'));
+  }
+
+  function getL2DDisplaySize(){
+    if(!charEl) return {width:isMobile?210:300,height:isMobile?420:560};
+    var rect = charEl.getBoundingClientRect();
+    var fallback = {width:isMobile?210:300,height:isMobile?420:560};
+    return {
+      width: Math.max(180, Math.round(rect.width || fallback.width)),
+      height: Math.max(320, Math.round(rect.height || fallback.height))
+    };
+  }
+
+  function syncLive2DPosition(){
+    if(!charEl) return;
+    if(window.GFLPixiLive2D && window.GFLPixiLive2D.resize){
+      var displaySize = getL2DDisplaySize();
+      window.GFLPixiLive2D.resize(displaySize.width, displaySize.height);
+    }
+  }
+
+  function waitForPixiLive2DCanvas(name, attempt){
+    attempt = attempt || 0;
+    if(hasL2DCanvas()){
+      syncLive2DPosition();
+      if(charEl) charEl.classList.add('l2d-active');
+      setL2DStatus('LIVE2D · '+name, true);
+      return;
+    }
+    if(attempt >= 30){
+      if(charEl){
+        charEl.classList.remove('l2d-active');
+        charEl.classList.remove('l2d-mode');
+        charEl.classList.remove('static-mode');
+      }
+      setL2DStatus('LIVE2D 未检测到画布', true);
+      return;
+    }
+    window.setTimeout(function(){ waitForPixiLive2DCanvas(name, attempt + 1); }, 200);
+  }
+
+  function initPixiLive2D(jsonPath, name){
+    if(!window.GFLPixiLive2D || !jsonPath || !charEl) return Promise.reject(new Error('Pixi Live2D 运行时未就绪'));
+    if(currentLive2DKey === String(jsonPath) && hasL2DCanvas()){
+      syncLive2DPosition();
+      if(charEl) charEl.classList.add('l2d-active');
+      setL2DStatus('LIVE2D · '+name, true);
+      return Promise.resolve();
+    }
+    var isSwitch = hasL2DCanvas();
+    removeLive2DRuntime(isSwitch);
+    if(charEl) charEl.classList.add('l2d-mode');
+    var displaySize = getL2DDisplaySize();
+    setL2DStatus('LIVE2D 初始化中', true);
+    return window.GFLPixiLive2D.mount({
+      container: charEl,
+      jsonPath: jsonPath,
+      width: displaySize.width,
+      height: displaySize.height
+    }).then(function(){
+      currentLive2DKey = String(jsonPath);
+      window.setTimeout(syncLive2DPosition, 0);
+      waitForPixiLive2DCanvas(name, 0);
+    });
+  }
+
+  function loadLive2D(jsonPath, name){
+    if(l2dLoading) return;
+    l2dLoading = true;
+    lastLive2DError = null;
+    setL2DStatus('LIVE2D 载入中', true);
+    initPixiLive2D(jsonPath, name).then(function(){
+      l2dLoading = false;
+    }).catch(function(error){
+      l2dLoading=false;
+      live2dState=null;
+      currentLive2DKey='';
+      if(charEl){ charEl.classList.remove('l2d-active'); charEl.classList.remove('l2d-mode'); }
+      if(charEl) charEl.classList.remove('static-mode');
+      setL2DStatus('LIVE2D 加载失败', true);
+      lastLive2DError = error;
+      console.error('Pixi Live2D 加载失败:', error);
+    });
+  }
+
+  function live2DDiagnosticReason(adjutant){
+    if(l2dLoading) return 'Live2D 仍在载入中，请等状态从“载入中/初始化中”变为 LIVE2D 后再切换姿态';
+    if(lastLive2DError) return 'Live2D 上次加载失败：' + (lastLive2DError && (lastLive2DError.message || String(lastLive2DError)));
+    if(!window.GFLPixiLive2D) return '缺少 GFLPixiLive2D 运行时，l2d-pixi-runtime.js 未加载或 vendor 初始化失败';
+    if(!adjutant) return '没有看板配置 gfl-adjutant，请先在仓库选择 L2D 皮肤并设为看板';
+    if(!adjutant.live2d || !adjutant.live2d.jsonPath) return '当前看板不是 Live2D：gfl-adjutant.live2d.jsonPath 缺失';
+    if(!live2dState) return 'Live2D 资源状态 live2dState 尚未建立，IndexedDB 资源解析或 mount 未完成';
+    if(!hasL2DCanvas()) return 'Live2D 画布不存在，mount 可能失败或被销毁';
+    return '未知 Live2D 状态异常';
+  }
+
+  function applyCombatState(){
+    var activeCombat = sortieActive();
+    var combatBtn = document.getElementById('combat-btn');
+    var home = document.querySelector('.gfl-home');
+    if(combatBtn){
+      combatBtn.textContent = activeCombat ? '战斗中' : '出击';
+      combatBtn.classList.toggle('combat-live', activeCombat);
+    }
+    if(home) home.classList.toggle('combat-mode', activeCombat);
+  }
+
+  function setSubpageStatus(text){
+    if(!subpageStatusEl) return;
+    subpageStatusEl.textContent = text || '';
+    subpageStatusEl.classList.toggle('show', !!text);
+  }
+
+  var currentSubpageAction = '';
+
+  function closeSubpage(){
+    if(subpageMaskEl){
+      subpageMaskEl.classList.remove('open');
+      subpageMaskEl.setAttribute('aria-hidden', 'true');
+    }
+    setSubpageStatus('');
+    applyResourceState();
+    applyGlobalStatus();
+    applyAdjutantState();
+    applyCombatState();
+  }
+
+  function openSubpage(action){
+    var pages = window.GFL_STANDBY_SUBPAGES || {};
+    var page = pages[action];
+    if(!page || !page.html){
+      var label = action === 'formation' ? '编队' : action === 'map' ? '地图' : action === 'build' ? '建造' : action === 'depot' ? '仓库' : action === 'equipment' ? '装备' : action;
+      var message = '子页面未被打包进当前 HTML：' + label + '。请重新生成待机界面正则脚本。';
+      showToast(message);
+      setSubpageStatus(message);
+      return;
+    }
+    reloadTableDrivenHud();
+    if(subpageTitleEl) subpageTitleEl.textContent = page.title || '子页面';
+    if(subpageFrameEl && (currentSubpageAction !== action || subpageFrameEl.getAttribute('srcdoc') !== page.html)){
+      subpageFrameEl.srcdoc = page.html;
+      currentSubpageAction = action;
+    }
+    if(subpageMaskEl){
+      subpageMaskEl.classList.add('open');
+      subpageMaskEl.setAttribute('aria-hidden', 'false');
+    }
+    showToast((page.title || '子页面') + '已打开');
+    setSubpageStatus('');
+  }
+
+  function battleConsoleApi(){
+    try{ if(window.top && window.top.GFLBattleConsole) return window.top.GFLBattleConsole; }catch(e){}
+    try{ if(window.parent && window.parent.GFLBattleConsole) return window.parent.GFLBattleConsole; }catch(e){}
+    try{ if(window.GFLBattleConsole) return window.GFLBattleConsole; }catch(e){}
+    return null;
+  }
+
+  function openBattleTerminal(){
+    var api = battleConsoleApi();
+    if(api && typeof api.openLatest === 'function'){
+      var panel = api.openLatest();
+      var message = panel ? '战术终端已打开。' : '未找到最近的战斗遭遇数据，无法打开战术终端。';
+      showToast(message);
+      if(dialogueEl) dialogueEl.textContent = message;
+      return;
+    }
+    try{
+      var root = window.top || window.parent || window;
+      root.dispatchEvent(new CustomEvent('gfl-battle-open'));
+      showToast('已发送战术终端打开指令。');
+      if(dialogueEl) dialogueEl.textContent = '已发送战术终端打开指令；如果没有弹窗，请确认“少女前线战斗UI”酒馆助手脚本已启用。';
+    }catch(error){
+      var fail = '战术终端打开失败：' + (error && error.message ? error.message : error);
+      showToast(fail);
+      if(dialogueEl) dialogueEl.textContent = fail;
+    }
+  }
+
+  if(document.getElementById('gfl-subpage-close')){
+    document.getElementById('gfl-subpage-close').addEventListener('click', closeSubpage);
+  }
+  if(document.getElementById('gfl-chapter-close')){
+    document.getElementById('gfl-chapter-close').addEventListener('click', closeChapterPicker);
+  }
+  if(chapterMaskEl){
+    chapterMaskEl.addEventListener('click', function(e){ if(e.target === chapterMaskEl) closeChapterPicker(); });
+  }
+  window.addEventListener('message', function(ev){
+    if(ev && ev.data && ev.data.type === 'gfl-close-subpage') closeSubpage();
+    if(ev && ev.data && ev.data.type === 'gfl-adjutant-updated'){
+      if(!ev.data.adjutant || typeof ev.data.adjutant !== 'object'){
+        console.error('[GFL待机] 收到无效看板更新消息:', ev.data);
+        return;
+      }
+      console.info('[GFL待机] 收到看板更新:', ev.data.adjutant);
+      saveJSON(ADJUTANT_KEY, ev.data.adjutant);
+      applyAdjutantState();
+    }
+  });
+
+  applyBubbleBackground();
+  applyResourceState();
+  applyGlobalStatus();
+  applyAdjutantState();
+  applyCombatState();
+  startDialogueRotation();
+  applyPos(loadVal(leftKey(), curIsMobile() ? 45 : 38), loadVal(btmKey(), DEF_BTM));
+
+  function reloadTableDrivenHud(){
+    localChapterState = Bridge && Bridge.currentChapter ? Bridge.currentChapter() : {};
+    localStatusState = Bridge && Bridge.currentStatus ? Bridge.currentStatus() : {};
+    applyResourceState();
+    applyGlobalStatus();
+    applyCombatState();
+  }
+
+  window.addEventListener('message', function(ev){
+    if(ev && ev.data && ev.data.type === 'gfl-console-opened'){
+      reloadTableDrivenHud();
+      applyAdjutantState();
+    }
+  });
+
+  /* ======== Drag + Click ======== */
+  /* 核心设计：
+     - onPointerDown 必须 preventDefault，阻止浏览器原生图片拖拽劫持事件流
+     - 不使用 click 事件（被 preventDefault 阻断了）
+     - onPointerUp 里判断：拖动过 = 保存位置，没拖动 = 触发 Live2D 点击反馈
+  */
+  var active = false;       // 当前是否在交互中
+  var moved  = false;       // 本次交互是否拖动过（>4px）
+  var startX = 0, startY = 0;
+  var startL = 0, startB = 0;
+  var homeEl = charEl ? charEl.parentElement : null;
+
+  function ptr(e){ var t = (e.touches && e.touches.length) ? e.touches[0] : (e.changedTouches && e.changedTouches.length) ? e.changedTouches[0] : e; return { x: t.clientX, y: t.clientY }; }
+
+  function updateDamageUI(){
+    if(dmgEl) dmgEl.classList.toggle('show', isDamaged);
+    if(dmgToggleEl){
+      dmgToggleEl.classList.toggle('active', isDamaged);
+      dmgToggleEl.textContent = isDamaged ? '恢复通常' : '切换大破';
+    }
+  }
+
+  function setDamageState(nextDamaged){
+    isDamaged = !!nextDamaged;
+    updateDamageUI();
+    if(live2dState && window.GFLPixiLive2D){
+      var l2dTarget = isDamaged ? (live2dState.damagedJsonPath || live2dState.jsonPath) : live2dState.jsonPath;
+      initPixiLive2D(l2dTarget, isDamaged ? '大破姿态' : '通常姿态').catch(function(error){ console.error('Live2D 姿态切换失败:', error); });
+      return;
+    }
+    var adjutant = loadJSON(ADJUTANT_KEY, null);
+    if(adjutant && (!adjutant.live2d || !adjutant.live2d.jsonPath)){
+      applyStaticAdjutant(adjutant);
+      return;
+    }
+    var reason = live2DDiagnosticReason(adjutant);
+    setL2DStatus('LIVE2D 未就绪：' + reason, true);
+    console.error('Live2D 姿态切换被拒绝:', {
+      reason: reason,
+      l2dLoading: l2dLoading,
+      hasRuntime: !!window.GFLPixiLive2D,
+      hasCanvas: hasL2DCanvas(),
+      hasState: !!live2dState,
+      live2dState: live2dState,
+      adjutant: adjutant,
+      lastLive2DError: lastLive2DError
+    });
+  }
+
+  function playL2DTapFeedback(){
+    if(!charEl) return;
+    charEl.classList.remove('l2d-tap-feedback');
+    void charEl.offsetWidth;
+    charEl.classList.add('l2d-tap-feedback');
+    window.setTimeout(function(){ if(charEl) charEl.classList.remove('l2d-tap-feedback'); }, 320);
+  }
+  function forwardTapToL2DRuntime(clientX, clientY){
+    if(window.GFLPixiLive2D && window.GFLPixiLive2D.tap) window.GFLPixiLive2D.tap(clientX, clientY);
+  }
+
+
+  function onDown(e){
+    e.preventDefault();  // ← 关键：阻止浏览器原生图片拖拽
+    active = true;
+    moved  = false;
+    var p = ptr(e);
+    startX = p.x; startY = p.y;
+    startL = loadVal(leftKey(), curIsMobile() ? 45 : 38);
+    startB = loadVal(btmKey(), DEF_BTM);
+    if(charEl) charEl.style.cursor = 'grabbing';
+  }
+
+  function onMove(e){
+    if(!active || !homeEl) return;
+    var p = ptr(e);
+    var dx = p.x - startX, dy = p.y - startY;
+    if(!moved && (Math.abs(dx)>4 || Math.abs(dy)>4)) moved = true;
+    if(!moved) return;
+    e.preventDefault();
+    var cw = homeEl.offsetWidth, ch = homeEl.offsetHeight;
+    if(cw<=0 || ch<=0) return;
+    applyPos(
+      Math.max(0, Math.min(100, startL + (dx/cw)*100)),
+      Math.max(0, Math.min(100, startB - (dy/ch)*100))
+    );
+    syncLive2DPosition();
+  }
+
+  function onUp(e){
+    if(!active) return;
+    active = false;
+    if(charEl) charEl.style.cursor = 'grab';
+
+    if(moved){
+      /* 拖动结束：保存位置到 localStorage */
+      var r = charEl.getBoundingClientRect();
+      var cw = homeEl.offsetWidth, ch = homeEl.offsetHeight;
+      if(cw>0) saveVal(leftKey(), Math.max(0, Math.min(100, ((r.left+r.width/2)/cw)*100)));
+      if(ch>0) saveVal(btmKey(),  Math.max(0, Math.min(100, ((ch-r.bottom)/ch)*100)));
+      syncLive2DPosition();
+    } else {
+      /* 没拖动 = 点击反馈；大破切换由独立按钮负责 */
+      playL2DTapFeedback();
+      var p = ptr(e); forwardTapToL2DRuntime(p.x, p.y);
+    }
+    moved = false;
+  }
+
+  if(dmgToggleEl){
+    dmgToggleEl.addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); setDamageState(!isDamaged); });
+    updateDamageUI();
+  }
+
+  if(charEl){
+    charEl.addEventListener('mousedown', onDown);
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+    charEl.addEventListener('touchstart', onDown, {passive:false});
+    document.addEventListener('touchmove', onMove, {passive:false});
+    document.addEventListener('touchend', onUp);
+  }
+  window.addEventListener('resize',function(){
+    applyPos(loadVal(leftKey(), curIsMobile() ? 45 : 38), loadVal(btmKey(), DEF_BTM));
+    syncLive2DPosition();
+  });
+
+  /* --- Button active state --- */
+  var btns = document.querySelectorAll('.gfl-action-btn');
+  btns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      btns.forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      var action = btn.dataset.action;
+      var label = btn.textContent || action;
+      flashButton(btn, '已点击「' + label + '」');
+      if(action === 'combat'){
+        openAreaPicker();
+      } else if(action === 'chapter'){
+        openChapterPicker();
+      } else if(action === 'formation'){
+        openSubpage('formation');
+      } else if(action === 'build'){
+        openSubpage('build');
+      } else if(action === 'depot'){
+        openSubpage('depot');
+      } else if(action === 'equipment'){
+        openSubpage('equipment');
+      } else if(action === 'map'){
+        openSubpage('map');
+      } else if(action === 'battle-terminal'){
+        openBattleTerminal();
+      } else if(action === 'mission'){
+        openSubpage('mission');
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

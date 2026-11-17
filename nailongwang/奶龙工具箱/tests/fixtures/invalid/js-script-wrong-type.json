@@ -1,0 +1,10 @@
+{
+  "type": "world_book",
+  "enabled": true,
+  "name": "type 不为 script",
+  "id": "00000000-0000-4000-8000-000000000092",
+  "content": "(function(){})();",
+  "info": "用于校验失败用例：type 必须是 'script'",
+  "button": { "enabled": false, "buttons": [] },
+  "data": {}
+}

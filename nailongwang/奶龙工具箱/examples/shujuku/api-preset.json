@@ -1,0 +1,11 @@
+{
+  "name": "最小 API 预设",
+  "apiMode": "custom",
+  "apiConfig": {
+    "customApiUrl": "https://api.example.com/v1",
+    "customApiKey": "sk-REPLACE_ME",
+    "customApiModel": "gpt-4o-mini",
+    "useMainApi": false
+  },
+  "tavernProfile": ""
+}

@@ -1,0 +1,60 @@
+id: 11
+keys:
+  - 哨兵
+secondary_keys: []
+comment: 哨兵堡
+content: |-
+  # 哨兵堡详情
+    **核心区域**：
+    双重巨石城墙构成主体防御，外城墙布设瞭望塔与重型弩炮，内城墙保护指挥所、军械库与军营；中央广场用于集结与训练；地牢用于关押战俘与重犯；唯一的城门“东望门”面向荒原，每日定时开启，由精锐把守；毗邻城堡的“边民区”则是随军家属、小商贩与少数冒险者的简陋聚居地。
+
+  **可能遭遇的重要事件（具体发生取决于主角的冒险轨迹与世界实时动态）**：
+  1.  **荒原氏族大规模袭扰**：荒原氏族集结大批骑兵，试图突破防线劫掠后方村镇。此事件将导致堡垒进入全面战备状态，城门紧闭，巡逻队频出，边民区可能遭受袭击或涌入大量难民。战役的胜败将直接影响东部边境未来数月的安定。
+  2.  **渗透与反渗透作战**：哨兵堡发现荒原氏族或影踪会的间谍试图混入堡垒或边民区，窃取布防图或进行破坏。此事件可能触发内部排查、宵禁，甚至引发士兵与平民之间的猜忌与冲突。
+  3.  **与苍白山脉兽人的意外联动**：若苍白山脉兽人同时在南线发动攻击，可能导致诺顿王国兵力捉襟见肘，哨兵堡的援军或补给被推迟，迫使守军独立面对更大压力，甚至需要冒险与荒原氏族进行临时性的、极不稳定的谈判以缓解局面。
+  4.  **恶劣天气或瘟疫**：一场罕见沙暴或神秘瘟疫（可能与暮光沼泽的异常有关）袭击边境地区，导致能见度降低、补给困难或非战斗减员，给防御带来严峻挑战，并可能滋生恐慌与谣言。
+
+  **可能碰到的重要人物**：
+  1.  **要塞指挥官“磐石”巴索罗缪爵士**：一位经验丰富但略显固执的老兵，将守护边境视为毕生荣誉，对任何来自荒原的威胁都持极端警惕态度。
+  2.  **巡逻队长莱娜**：出身边境平民家庭的年轻女军官，身手敏捷，熟悉荒原地形，深受手下士兵信赖，对荒原氏族既有仇恨也有战术上的尊重。
+  3.  **随军牧师莫里森**：圣光教会的低阶牧师，负责鼓舞士气、救治伤员，信仰坚定但面对战争的残酷时常感到内心挣扎。
+  4.  **“独眼”卡恩**：边民区酒馆的老板兼情报贩子，前冒险者，与荒原氏族和过往商队都有秘密联系，总能弄到一些“有用”的消息，只要价格合适。
+  5.  **荒原氏族谈判代表（若事件触发）**：一位可能是半兽人或人类出身的氏族使者，在特定情况下（如共同威胁出现）被派来与哨兵堡进行试探性接触，言辞粗野但直指要害，对诺顿人充满不信任。
+constant: false
+selective: true
+insertion_order: 12
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: true
+  display_index: 15
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

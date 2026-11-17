@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SillyTavern Extension Development API Knowledge Base",
+  "type": "object",
+  "required": ["name", "language", "updated_at", "sources", "core_apis"],
+  "properties": {
+    "name": { "type": "string" },
+    "language": { "type": "string" },
+    "updated_at": { "type": "string" },
+    "sources": { "type": "array", "items": { "type": "string" } },
+    "scope_note": { "type": "string" },
+    "extension_runtime": { "type": "object" },
+    "extension_manifest": { "type": "object" },
+    "core_apis": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "category", "signature", "description"],
+        "additionalProperties": true
+      }
+    },
+    "function_calling": { "type": "object" },
+    "ui_theme_and_css": { "type": "object" },
+    "prompt_manager_and_presets": { "type": "object" },
+    "regex_extension": { "type": "object" },
+    "usage_notes": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": true
+}

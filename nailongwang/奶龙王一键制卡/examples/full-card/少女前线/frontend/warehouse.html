@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>少女前方 - 仓库</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --y:#e8c840;--y-light:#f0d860;--y-dark:#b89820;
+  --k:#111;--k2:#1a1a1a;--k3:#222;
+  --wh:#f0f0f0;--gr:#999;--gr2:#666;--gr3:#444;
+  --warn:#e04040;--ok:#68c080;--res-core:#78e0d0;
+  --star2:#b8d8e8;--star3:#68c080;--star4:#a0a8d0;--star5:#e8c840;--star6:#e89040;
+  --type-hg:#e8c840;--type-smg:#68c080;--type-rf:#7cb8e0;--type-ar:#e0a040;--type-mg:#c070d0;--type-sg:#e07070;
+}
+body{font-family:'Microsoft YaHei','PingFang SC','Noto Sans SC',sans-serif;background:#000;color:var(--wh);font-size:14px;line-height:1.4;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.gfl-page{position:relative;width:100%;min-height:100vh;min-height:100dvh;background:#0a0a0a;overflow:hidden}
+.gfl-page-bg{position:fixed;inset:0;background:radial-gradient(circle at 28% 18%,rgba(232,200,64,.16),transparent 34%),linear-gradient(135deg,#151515 0%,#080808 54%,#180808 100%);background-position:center;background-size:cover;background-repeat:no-repeat;z-index:0;opacity:.18}
+.gfl-page-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.36),rgba(0,0,0,.18) 36%,rgba(0,0,0,.78))}
+.gfl-page-content{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:20px 16px 40px}
+.gfl-header{display:flex;align-items:center;gap:12px;margin-bottom:18px;padding-bottom:12px;border-bottom:2px solid var(--y)}
+.gfl-header h1{font-size:20px;letter-spacing:3px;color:var(--y);text-shadow:0 0 12px rgba(232,200,64,.2)}
+.gfl-header-back{background:none;border:2px solid var(--gr3);color:var(--gr);padding:6px 14px;font-size:12px;letter-spacing:1px;cursor:pointer;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);transition:all .15s}
+.gfl-header-back:hover{border-color:var(--y);color:var(--y)}
+.gfl-warehouse-shell{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:14px;align-items:start}
+.gfl-panel{background:rgba(18,18,18,.84);border:1px solid rgba(255,255,255,.08);box-shadow:0 12px 32px rgba(0,0,0,.32);overflow:hidden}
+.gfl-panel-title{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 14px;background:linear-gradient(90deg,rgba(232,200,64,.18),rgba(255,255,255,.03));border-bottom:1px solid rgba(232,200,64,.22);font-size:13px;font-weight:700;letter-spacing:2px;color:var(--y)}
+.gfl-panel-title .tag{font-size:9px;color:var(--gr2);letter-spacing:1px;text-transform:uppercase}.gfl-panel-body{padding:14px}
+.gfl-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.gfl-filter-btn{padding:5px 12px;font-size:11px;font-weight:700;letter-spacing:1px;border:1px solid var(--gr3);color:var(--gr);background:none;cursor:pointer;clip-path:polygon(4px 0,100% 0,calc(100% - 4px) 100%,0 100%);transition:all .15s;white-space:nowrap}.gfl-filter-btn:hover{border-color:var(--y);color:var(--y)}.gfl-filter-btn.active{border-color:var(--y);color:var(--k);background:var(--y)}.gfl-search{width:100%;border:1px solid rgba(232,200,64,.28);background:rgba(0,0,0,.3);color:var(--wh);padding:8px 10px;font-size:12px;letter-spacing:1px;margin-bottom:10px}.gfl-search:focus{outline:none;border-color:var(--y);box-shadow:0 0 0 2px rgba(232,200,64,.12)}
+.gfl-summary{font-size:11px;color:var(--gr);letter-spacing:1px;margin-bottom:10px}.gfl-summary strong{color:var(--y)}.gfl-core-status{display:flex;justify-content:space-between;gap:10px;margin-bottom:12px;padding:8px 10px;background:rgba(0,0,0,.28);border-left:3px solid var(--res-core);font-size:11px;color:var(--gr);letter-spacing:1px}.gfl-core-status strong{color:var(--res-core)}.gfl-core-status.low strong{color:var(--warn)}
+.gfl-card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;align-content:start}.gfl-card{position:relative;height:232px;background:linear-gradient(180deg,rgba(40,40,40,.9),rgba(20,20,20,.92));border:1px solid rgba(255,255,255,.08);border-radius:4px;cursor:pointer;overflow:hidden;transition:all .15s}.gfl-card:hover{border-color:var(--y);transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.5)}.gfl-card.active{border-color:var(--y);box-shadow:0 0 0 2px rgba(232,200,64,.88),0 4px 16px rgba(232,200,64,.2)}
+.gfl-card-img-wrap{position:relative;width:100%;height:148px;overflow:hidden;background:rgba(30,30,30,.6)}.gfl-card-img{width:100%;height:100%;object-fit:contain;opacity:.76;transition:opacity .2s,transform .2s}.gfl-card:hover .gfl-card-img{opacity:.92;transform:scale(1.03)}.gfl-card-noimg{height:100%;display:flex;align-items:center;justify-content:center;color:var(--gr3);font-size:11px;letter-spacing:1px}.gfl-card-body{position:relative;padding:8px 10px;display:flex;flex-direction:column;gap:3px}.gfl-card-type{position:absolute;top:-20px;left:8px;padding:2px 8px;font-size:8px;font-weight:700;letter-spacing:1px;clip-path:polygon(3px 0,100% 0,calc(100% - 3px) 100%,0 100%)}.gfl-card-name{font-size:12px;font-weight:700;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.gfl-card-stars{font-size:9px;letter-spacing:1px}.gfl-card-stats{font-size:8px;color:var(--gr2);letter-spacing:.5px;margin-top:2px}.gfl-mod-badge{position:absolute;top:6px;right:6px;z-index:2;padding:2px 7px;background:linear-gradient(180deg,var(--y-light),var(--y-dark));color:#111;font-size:9px;font-weight:900;letter-spacing:1px;clip-path:polygon(4px 0,100% 0,calc(100% - 4px) 100%,0 100%)}
+.gfl-damage-badge{position:absolute;left:6px;bottom:6px;z-index:3;padding:2px 8px;background:rgba(224,64,64,.9);color:#fff;font-size:9px;font-weight:900;letter-spacing:1px;clip-path:polygon(4px 0,100% 0,calc(100% - 4px) 100%,0 100%)}
+.gfl-l2d-preview{height:100%;display:flex;align-items:center;justify-content:center;color:var(--res-core);font-size:12px;font-weight:900;letter-spacing:2px;background:radial-gradient(circle at 50% 44%,rgba(120,224,208,.18),rgba(0,0,0,.18) 58%,rgba(0,0,0,.34));text-shadow:0 0 12px rgba(120,224,208,.35)}.gfl-l2d-badge{position:absolute;left:8px;top:8px;z-index:3;padding:2px 7px;background:rgba(120,224,208,.86);color:#061818;font-size:8px;font-weight:900;letter-spacing:1px;clip-path:polygon(4px 0,100% 0,calc(100% - 4px) 100%,0 100%)}
+.s2{color:var(--star2)}.s3{color:var(--star3)}.s4{color:var(--star4)}.s5{color:var(--star5)}.s6{color:var(--star6)}.hg{background:var(--type-hg);color:#111}.smg{background:var(--type-smg);color:#111}.rf{background:var(--type-rf);color:#111}.ar{background:var(--type-ar);color:#111}.mg{background:var(--type-mg);color:#fff}.sg{background:var(--type-sg);color:#fff}
+.gfl-detail{position:sticky;top:16px}.gfl-detail-close{display:none;border:1px solid var(--gr3);background:rgba(0,0,0,.22);color:var(--gr);padding:4px 10px;font-size:11px;letter-spacing:1px;cursor:pointer}.gfl-detail-close:hover{border-color:var(--y);color:var(--y)}.gfl-detail-empty{padding:28px 12px;text-align:center;color:var(--gr2);border:1px dashed rgba(255,255,255,.12)}.gfl-detail-hero{position:relative;height:360px;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(0,0,0,.32));overflow:hidden;border-bottom:1px solid rgba(255,255,255,.08)}.gfl-detail-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(0,0,0,.82));pointer-events:none}.gfl-detail-img{position:absolute;left:50%;bottom:0;transform:translateX(-50%);height:360px;max-width:112%;object-fit:contain;filter:drop-shadow(0 18px 22px rgba(0,0,0,.7))}.gfl-detail-info{padding:12px 14px}.gfl-detail-name-row{display:flex;align-items:center;gap:8px;justify-content:space-between}.gfl-detail-name{font-size:22px;font-weight:900;letter-spacing:2px}.gfl-detail-meta{display:flex;gap:8px;align-items:center;margin-top:6px;font-size:12px;color:var(--gr)}.gfl-detail-modmark{padding:2px 8px;background:var(--y);color:#111;font-size:10px;font-weight:900;letter-spacing:1px;clip-path:polygon(4px 0,100% 0,calc(100% - 4px) 100%,0 100%)}
+.gfl-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.gfl-stat{background:rgba(0,0,0,.28);border-left:3px solid rgba(232,200,64,.55);padding:7px 9px}.gfl-stat-label{font-size:9px;color:var(--gr2);letter-spacing:1px}.gfl-stat-val{font-size:15px;font-weight:800;margin-top:1px}.gfl-stat-up{font-size:10px;color:var(--ok);margin-left:4px}.gfl-actions{display:grid;grid-template-columns:1fr;gap:8px;margin-top:12px}.gfl-action-btn{border:1px solid var(--gr3);background:rgba(255,255,255,.035);color:var(--gr);padding:10px 12px;font-size:12px;font-weight:800;letter-spacing:1px;cursor:pointer;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);transition:all .15s}.gfl-action-btn:hover{border-color:var(--y);color:var(--y);background:rgba(232,200,64,.06)}.gfl-action-btn.primary{border-color:var(--y);background:linear-gradient(180deg,var(--y),var(--y-dark));color:#111}.gfl-action-btn:disabled{opacity:.42;cursor:not-allowed;filter:grayscale(.6)}
+.gfl-equip-box{margin-top:12px;background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.08);padding:10px}.gfl-equip-title{font-size:11px;color:var(--y);font-weight:900;letter-spacing:1px;margin-bottom:8px}.gfl-equip-slot{display:grid;grid-template-columns:42px 1fr auto;gap:7px;align-items:center;margin-top:6px;font-size:11px;color:var(--gr)}.gfl-equip-slot strong{color:#ddd}.gfl-equip-slot button{border:1px solid var(--gr3);background:rgba(255,255,255,.035);color:var(--gr);padding:4px 7px;font-size:10px;cursor:pointer}.gfl-equip-slot button:hover{border-color:var(--y);color:var(--y)}.gfl-equip-slot .primary{color:var(--y);border-color:rgba(232,200,64,.55)}.gfl-equip-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px;max-height:360px;overflow:auto}.gfl-equip-choice{width:100%;border:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg,rgba(38,38,38,.92),rgba(10,10,10,.94));color:var(--gr);padding:9px 10px;text-align:left;cursor:pointer}.gfl-equip-choice:hover,.gfl-equip-choice.active{border-color:var(--y);color:var(--y);box-shadow:0 0 16px rgba(232,200,64,.12)}.gfl-equip-choice[disabled]{opacity:.42;cursor:not-allowed}.gfl-equip-choice strong{display:block;color:#eee;font-size:12px}.gfl-equip-choice span{display:block;margin-top:3px;font-size:10px;color:var(--gr2);line-height:1.45}.gfl-equip-preview{font-size:12px;color:var(--gr);line-height:1.7}.gfl-equip-preview strong{color:var(--y)}
+.gfl-detail-status,.gfl-mod-status{min-height:18px;margin-top:8px;color:var(--gr);font-size:11px;letter-spacing:1px}.gfl-detail-status.ok,.gfl-mod-status.ok{color:var(--ok)}.gfl-detail-status.err,.gfl-mod-status.err{color:#ff9b9b}
+.gfl-skin-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.gfl-skin-btn{border:1px solid var(--gr3);background:rgba(0,0,0,.28);color:var(--gr);padding:6px 9px;font-size:10px;letter-spacing:1px;cursor:pointer}.gfl-skin-btn.active,.gfl-skin-btn:hover{border-color:var(--y);color:var(--y)}
+.gfl-overlay{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.86);padding:16px}.gfl-overlay.open{display:flex}.gfl-modal{position:relative;width:min(760px,100%);background:rgba(14,14,14,.96);border:1px solid rgba(232,200,64,.55);box-shadow:0 24px 70px rgba(0,0,0,.72);overflow:hidden}.gfl-modal-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:linear-gradient(90deg,rgba(232,200,64,.18),rgba(255,255,255,.03));border-bottom:1px solid rgba(232,200,64,.28)}.gfl-modal-title{font-size:15px;color:var(--y);font-weight:900;letter-spacing:2px}.gfl-modal-close{background:none;border:1px solid var(--gr3);color:var(--gr);padding:5px 12px;cursor:pointer}.gfl-modal-body{display:grid;grid-template-columns:260px 1fr;gap:16px;padding:16px}.gfl-modal-img{height:360px;width:100%;object-fit:contain;background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.06)}.gfl-mod-copy{font-size:12px;color:var(--gr);line-height:1.7}.gfl-mod-copy strong{color:var(--y)}.gfl-compare{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.gfl-compare-col{background:rgba(0,0,0,.25);padding:10px;border-left:3px solid var(--gr3)}.gfl-compare-col.after{border-left-color:var(--y)}.gfl-compare-title{font-size:11px;font-weight:900;color:var(--y);letter-spacing:1px;margin-bottom:6px}.gfl-confirm-row{display:flex;justify-content:flex-end;gap:8px;padding:0 16px 16px}
+@media(max-width:860px){.gfl-warehouse-shell{grid-template-columns:1fr}.gfl-detail{display:none;position:fixed;left:8px;right:8px;bottom:8px;top:auto;z-index:150;height:min(86vh,720px);overflow-y:auto;border-color:rgba(232,200,64,.62);border-radius:14px 14px 8px 8px;box-shadow:0 0 0 999px rgba(0,0,0,.72),0 24px 70px rgba(0,0,0,.84)}.gfl-detail.open{display:block}.gfl-detail-close{display:inline-block}.gfl-detail-hero{height:330px}.gfl-detail-img{height:330px}.gfl-detail-meta{flex-wrap:wrap}.gfl-detail-name{font-size:20px}}
+@media(max-width:600px){.gfl-page-content{padding:12px 8px 24px}.gfl-header h1{font-size:16px}.gfl-card-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}.gfl-card{height:198px}.gfl-card-img-wrap{height:124px}.gfl-card-stats{display:none}.gfl-modal-body{grid-template-columns:1fr}.gfl-modal-img{height:300px}}
+</style>
+</head>
+<body>
+<div class="gfl-page">
+  <div class="gfl-page-bg"></div>
+  <div class="gfl-page-content">
+    <div class="gfl-header"><h1>仓库</h1></div>
+    <div class="gfl-warehouse-shell">
+      <section class="gfl-panel">
+        <div class="gfl-panel-title"><span><span class="tag">ARMORY</span> 人形仓库</span><span id="warehouse-count"></span></div>
+        <div class="gfl-panel-body">
+          <input class="gfl-search" id="tdoll-search" type="search" placeholder="搜索人形名 / 枪种 / 星级，例如 FAL、AR、5">
+          <div class="gfl-toolbar" id="type-filters"></div>
+          <div class="gfl-summary">正式数据模式：仅展示 <strong>人形仓库表</strong> 中“是否已获取=是”的人形；皮肤图由 BubbleCG 按皮肤名读取。</div>
+          <div class="gfl-core-status" id="mental-core-status"></div>
+          <div class="gfl-card-grid" id="tdoll-grid"></div>
+        </div>
+      </section>
+      <aside class="gfl-panel gfl-detail" id="detail-shell">
+        <div class="gfl-panel-title"><span><span class="tag">DETAIL</span> 人形详情</span><button class="gfl-detail-close" id="detail-close" type="button">关闭</button></div>
+        <div id="detail-panel"><div class="gfl-detail-empty">选择一名人形查看详情</div></div>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<div class="gfl-overlay" id="mod-overlay">
+  <div class="gfl-modal">
+    <div class="gfl-modal-head"><div class="gfl-modal-title" id="mod-title">心智升级</div><button class="gfl-modal-close" id="mod-close">关闭</button></div>
+    <div class="gfl-modal-body">
+      <img class="gfl-modal-img" id="mod-img" alt="">
+      <div>
+          <div class="gfl-mod-copy" id="mod-copy"></div>
+          <div class="gfl-compare" id="mod-compare"></div>
+          <div class="gfl-mod-status" id="mod-status"></div>
+        </div>
+    </div>
+    <div class="gfl-confirm-row"><button class="gfl-action-btn" id="mod-cancel">取消</button><button class="gfl-action-btn primary" id="mod-confirm">执行心智升级</button></div>
+  </div>
+</div>
+
+<div class="gfl-overlay" id="equip-overlay">
+  <div class="gfl-modal">
+    <div class="gfl-modal-head"><div class="gfl-modal-title" id="equip-title">选择装备</div><button class="gfl-modal-close" id="equip-close">关闭</button></div>
+    <div class="gfl-modal-body">
+      <div class="gfl-equip-list" id="equip-list"></div>
+      <div>
+        <div class="gfl-equip-preview" id="equip-preview">先选择一件装备。</div>
+        <div class="gfl-mod-status" id="equip-status"></div>
+      </div>
+    </div>
+    <div class="gfl-confirm-row"><button class="gfl-action-btn" id="equip-cancel">取消</button><button class="gfl-action-btn primary" id="equip-confirm">确认装备</button></div>
+  </div>
+</div>
+
+<script src="gfl-data-bridge.js"></script>
+<script>
+(function(){
+  'use strict';
+
+  var Bridge = window.GFLDataBridge;
+  var TYPES = ['ALL','HG','SMG','RF','AR','MG','SG'];
+  var ADJUTANT_KEY = 'gfl-adjutant';
+  var MOD_COST = 30;
+  var selectedName = '';
+  var currentType = 'ALL';
+  var searchText = '';
+  var pendingModName = null;
+  var TDOLLS = [];
+  var coreCount = 0;
+  var pageDisposed = false;
+  var detailStatus = '';
+  var detailStatusKind = '';
+  var skinWriteInProgress = false;
+  var adjutantInProgress = false;
+  var modInProgress = false;
+  var repairInProgress = false;
+  var pendingEquipSlot = '';
+  var pendingEquipId = '';
+  var equipInProgress = false;
+  var BUBBLE_BG_GROUP = '少女前线待机背景';
+
+  function getNativeUpdaterApi(){
+    try{ if(window.AutoCardUpdaterAPI) return window.AutoCardUpdaterAPI; }catch(e){}
+    try{ if(window.parent && window.parent.AutoCardUpdaterAPI) return window.parent.AutoCardUpdaterAPI; }catch(e){}
+    try{ if(window.top && window.top.AutoCardUpdaterAPI) return window.top.AutoCardUpdaterAPI; }catch(e){}
+    return null;
+  }
+  function nativeUpdateCell(tableName, rowIndex, colIdentifier, value){
+    if(!Bridge || typeof Bridge.updateCell !== 'function') return Promise.reject(new Error('GFLDataBridge.updateCell 不可用'));
+    var map = {'人形仓库表':'tdollWarehouse','资源表':'resourceStatus'};
+    return Bridge.updateCell(map[tableName] || tableName, rowIndex, colIdentifier, value);
+  }
+  function nativeExecuteSqlBatch(sql, targetSheetKeys){
+    if(Bridge && typeof Bridge.executeSqlBatch === 'function') return Bridge.executeSqlBatch({sql:sql, targetSheetKeys:targetSheetKeys});
+    var api = getNativeUpdaterApi();
+    if(!api || typeof api.executeSqlBatch !== 'function') throw new Error('AutoCardUpdaterAPI.executeSqlBatch 不可用');
+    return api.executeSqlBatch({sql:sql, targetSheetKeys:targetSheetKeys});
+  }
+  function sqlValue(value){ return value == null ? 'NULL' : "'" + String(value).replace(/'/g, "''") + "'"; }
+  function sqlNumber(value){ value=parseInt(value,10); return isNaN(value) ? '0' : String(value); }
+  function resourceRowIndex(resourceName){
+    var rows = Bridge.rows('resourceStatus');
+    for(var i=0;i<rows.length;i++){
+      if(String(Bridge.field(rows[i], ['资源项','resource_name','name'])).trim() === resourceName) return rows[i].__rowIndex__;
+    }
+    return 0;
+  }
+  function updateResourceAmount(resourceName, value){
+    var rowIndex = resourceRowIndex(resourceName);
+    if(!rowIndex) return Promise.reject(new Error('资源表缺少资源项：' + resourceName));
+    return nativeUpdateCell('资源表', rowIndex, '数量', value);
+  }
+
+  function getBubbleApi(name){
+    try{ if(window.top && window.top[name]) return window.top[name]; }catch(e){}
+    try{ if(window.parent && window.parent[name]) return window.parent[name]; }catch(e){}
+    try{ if(window[name]) return window[name]; }catch(e){}
+    return null;
+  }
+
+  function waitForBubbleApi(name, attempt){
+    attempt = attempt || 0;
+    var api = getBubbleApi(name);
+    if(api) return Promise.resolve(api);
+    if(attempt >= 20) return Promise.resolve(null);
+    return new Promise(function(resolve){
+      window.setTimeout(function(){ resolve(waitForBubbleApi(name, attempt + 1)); }, 250);
+    });
+  }
+
+  function applyBubbleBackground(selector){
+    var nodes = document.querySelectorAll(selector);
+    if(!nodes.length) return;
+    waitForBubbleApi('BubbleCG').then(function(api){
+      if(!api || typeof api.getImage !== 'function') return '';
+      return api.getImage(BUBBLE_BG_GROUP, 1);
+    }).then(function(url){
+      if(!url) return;
+      nodes.forEach(function(bg){
+        bg.style.backgroundImage = 'url("' + String(url).replace(/"/g, '%22') + '")';
+        bg.style.backgroundPosition = 'center';
+        bg.style.backgroundSize = 'cover';
+        bg.style.backgroundRepeat = 'no-repeat';
+      });
+    }).catch(function(error){
+      console.warn('仓库背景气泡图片加载失败:', error);
+    });
+  }
+
+  // Full L2D skin mapping must be injected by the Tavern Helper console into
+  // the parent standby page as window.GFL_LIVE2D_SKIN_MAP. Missing mapping is a
+  // build/runtime error and must not silently degrade to static art.
+
+  if(!Bridge){
+    document.getElementById('tdoll-grid').innerHTML = '<div class="gfl-detail-empty">数据桥接层缺失：gfl-data-bridge.js 未加载</div>';
+    return;
+  }
+
+  function esc(s){ return Bridge.esc(s); }
+  function loadJSON(key, def){ try{ var s = localStorage.getItem(key); if(s) return JSON.parse(s); }catch(e){} return def; }
+  function saveJSON(key, val){ try{ localStorage.setItem(key, JSON.stringify(val)); }catch(e){} }
+  function stars(n){ var s=''; for(var i=0;i<n;i++) s+='★'; return s; }
+  function starsClass(n){ return 's' + (n || 0); }
+  function getTdoll(name){ for(var i=0;i<TDOLLS.length;i++){ if(TDOLLS[i].name === name) return TDOLLS[i]; } return TDOLLS[0] || null; }
+  function activeSkin(t){
+    if(!t) return null;
+    var label = Bridge.normalizeSkinName(t.currentSkin || '默认立绘') || '默认立绘';
+    for(var i=0;i<t.skins.length;i++){ if(t.skins[i].label === label) return t.skins[i]; }
+    for(var j=0;j<t.skins.length;j++){ if(t.skins[j].label === '默认立绘') return t.skins[j]; }
+    return t.skins[0] || {label:'默认立绘', rawLabel:'默认立绘', live2d:false, imageGroup:Bridge.skinImageGroup(t.name, '默认立绘')};
+  }
+  function updateTdollCurrentSkin(t, skinLabel){
+    if(!t || !t.rowIndex) return Promise.reject(new Error('当前人形缺少人形仓库表行号，无法写入皮肤：' + (t && t.name ? t.name : '未知人形')));
+    return nativeUpdateCell('人形仓库表', t.rowIndex, '当前皮肤', skinLabel);
+  }
+  function updateTdollDamageState(t, state){
+    if(!t || !t.rowIndex) return Promise.reject(new Error('当前人形缺少人形仓库表行号，无法写入损伤状态：' + (t && t.name ? t.name : '未知人形')));
+    return nativeUpdateCell('人形仓库表', t.rowIndex, '损伤状态', state || '正常');
+  }
+  function runWarehouseBatch(statements, sheets){
+    if(!statements.length) return Promise.resolve(true);
+    var batch = nativeExecuteSqlBatch(statements.join(';\n') + ';', sheets);
+    return batch;
+  }
+  function setDetailStatus(text, kind){ detailStatus = text || ''; detailStatusKind = kind || ''; var el = document.getElementById('detail-status'); if(el){ el.textContent = detailStatus; el.className = 'gfl-detail-status ' + detailStatusKind; } }
+  function setModStatus(text, kind){ var el = document.getElementById('mod-status'); if(el){ el.textContent = text || ''; el.className = 'gfl-mod-status ' + (kind || ''); } }
+  function skinGroupFor(t, skin){ return (skin && skin.imageGroup) || Bridge.skinImageGroup(t ? t.name : '', skin ? skin.label : '默认立绘'); }
+  function statsOf(t){ return (t && t.modded && t.modStats) ? t.modStats : (t ? t.baseStats : {}); }
+  function equipmentOf(t){ return t && Bridge.equipmentForTdoll ? Bridge.equipmentForTdoll(t.name) : []; }
+  function unequippedStatsOf(t){ return Bridge.applyEquipmentStats ? Bridge.applyEquipmentStats(statsOf(t), []) : statsOf(t); }
+  function battleStatsOf(t){ return Bridge.applyEquipmentStats ? Bridge.applyEquipmentStats(statsOf(t), equipmentOf(t)) : statsOf(t); }
+  function statValue(stats, key){ return stats && stats[key] != null ? stats[key] : 0; }
+  function normalizeL2DKey(value){ return String(value || '').replace(/[\s_\-·.]/g, '').replace(/[（）()【】\[\]★☆]/g, '').toLowerCase(); }
+  function getLive2DSkinMap(){
+    try{ if(window.GFL_LIVE2D_SKIN_MAP) return window.GFL_LIVE2D_SKIN_MAP; }catch(e){}
+    try{ if(window.parent && window.parent.GFL_LIVE2D_SKIN_MAP) return window.parent.GFL_LIVE2D_SKIN_MAP; }catch(e){}
+    try{ if(window.top && window.top.GFL_LIVE2D_SKIN_MAP) return window.top.GFL_LIVE2D_SKIN_MAP; }catch(e){}
+    return null;
+  }
+  function l2dDirFor(t, skin){
+    var name = t ? t.name : '';
+    var label = skin ? skin.label : '';
+    var map = getLive2DSkinMap();
+    if(!map) throw new Error('缺少 GFL_LIVE2D_SKIN_MAP：控制台构建未注入全量 Live2D 皮肤映射');
+    var byTdollSkin = map.byTdollSkin || {};
+    var bySkin = map.bySkin || {};
+    var tdollKey = normalizeL2DKey(name);
+    var skinKey = normalizeL2DKey(label);
+    var l2dSkinKey = normalizeL2DKey(label + '（l2d）');
+    var mapped = (tdollKey && (byTdollSkin[tdollKey + '|' + skinKey] || byTdollSkin[tdollKey + '|' + l2dSkinKey])) || bySkin[skinKey] || bySkin[l2dSkinKey];
+    if(!mapped) throw new Error('Live2D 皮肤映射缺失：' + name + '|' + label);
+    return mapped;
+  }
+  function l2dJsonPathFor(dir){ return dir ? 'indexeddb://' + dir + '/normal/model.json' : ''; }
+
+  function refreshData(){
+    TDOLLS = Bridge.ownedTdolls();
+    coreCount = Bridge.resourceState().memoryCore;
+    if(!selectedName || !getTdoll(selectedName)) selectedName = TDOLLS[0] ? TDOLLS[0].name : '';
+  }
+
+  function renderFilters(){
+    document.getElementById('type-filters').innerHTML = TYPES.map(function(t){
+      return '<button class="gfl-filter-btn '+(currentType===t?'active':'')+'" data-type="'+esc(t)+'">'+(t==='ALL'?'全部':esc(t))+'</button>';
+    }).join('');
+  }
+
+  function renderCoreStatus(){
+    var el = document.getElementById('mental-core-status');
+    if(!el) return;
+    el.className = 'gfl-core-status ' + (coreCount < MOD_COST ? 'low' : '');
+    el.innerHTML = '<span>心智核心：<strong>'+esc(coreCount)+'</strong></span><span>心智升级消耗：<strong>'+MOD_COST+'</strong></span>';
+  }
+
+  function renderGrid(){
+    var q = searchText.toLowerCase();
+    var list = TDOLLS.filter(function(t){
+      if(currentType !== 'ALL' && t.type !== currentType) return false;
+      if(!q) return true;
+      return String(t.name || '').toLowerCase().indexOf(q) >= 0 || String(t.type || '').toLowerCase().indexOf(q) >= 0 || String(t.stars || '').indexOf(q) >= 0;
+    });
+    document.getElementById('warehouse-count').textContent = list.length + '/' + TDOLLS.length;
+    if(!list.length){
+      document.getElementById('tdoll-grid').innerHTML = '<div class="gfl-detail-empty">仓库中暂无已获取人形</div>';
+      return;
+    }
+    document.getElementById('tdoll-grid').innerHTML = list.map(function(t){
+      var st = battleStatsOf(t), sk = activeSkin(t);
+      return '<div class="gfl-card '+(selectedName===t.name?'active':'')+'" data-name="'+esc(t.name)+'">'
+        +(t.modded ? '<div class="gfl-mod-badge">MOD</div>' : '')
+        +'<div class="gfl-card-img-wrap">'
+        +(sk && sk.live2d ? '<div class="gfl-l2d-badge">L2D</div>' : '')
+        +(t.damaged ? '<div class="gfl-damage-badge">'+esc(t.damageState)+'</div>' : '')
+        +'<img class="gfl-card-img" loading="lazy" data-skin-image="'+esc(skinGroupFor(t, sk))+'" alt="'+esc(t.name)+'">'
+        +'</div><div class="gfl-card-body"><span class="gfl-card-type '+esc(String(t.type||'').toLowerCase())+'">'+esc(t.type)+'</span>'
+        +'<div class="gfl-card-name">'+esc(t.name)+'</div><div class="gfl-card-stars '+starsClass(t.stars)+'">'+stars(t.stars)+'</div>'
+        +'<div class="gfl-card-stats">HP:'+esc(statValue(st,'hp'))+' 伤害:'+esc(statValue(st,'damage'))+' 命中:'+esc(statValue(st,'accuracy'))+' 回避:'+esc(statValue(st,'evasion'))+'</div></div></div>';
+    }).join('');
+    hydrateSkinImages(document.getElementById('tdoll-grid'), function(name){ var t = getTdoll(name); return !!(t && t.damaged); });
+  }
+
+  function updateGridSelection(){
+    document.querySelectorAll('#tdoll-grid .gfl-card[data-name]').forEach(function(card){
+      card.classList.toggle('active', card.getAttribute('data-name') === selectedName);
+    });
+  }
+
+  function updateGridCardImage(t){
+    if(!t) return;
+    var card = document.querySelector('#tdoll-grid .gfl-card[data-name="' + String(t.name).replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '"]');
+    if(!card) return;
+    var sk = activeSkin(t);
+    var img = card.querySelector('img[data-skin-image]');
+    if(img){
+      var nextGroup = skinGroupFor(t, sk);
+      if(img.getAttribute('data-skin-image') !== nextGroup){
+        img.setAttribute('data-skin-image', nextGroup);
+        img.style.display = '';
+        Bridge.applyImageFromSkin(img, nextGroup, !!t.damaged).then(function(url){ if(!url) img.style.display = 'none'; });
+      }
+    }
+    var l2d = card.querySelector('.gfl-l2d-badge');
+    if(sk && sk.live2d && !l2d){
+      var wrap = card.querySelector('.gfl-card-img-wrap');
+      if(wrap) wrap.insertAdjacentHTML('afterbegin', '<div class="gfl-l2d-badge">L2D</div>');
+    } else if((!sk || !sk.live2d) && l2d){
+      l2d.remove();
+    }
+  }
+
+  function statLine(label, key, t){
+    var base = statValue(unequippedStatsOf(t), key);
+    var cur = statValue(battleStatsOf(t), key);
+    var up = cur - base;
+    var bonus = up ? '<span class="gfl-stat-up">（'+esc(base)+'）'+(up>0?'+':'')+esc(up)+'</span>' : '';
+    return '<div class="gfl-stat"><div class="gfl-stat-label">'+esc(label)+'</div><div class="gfl-stat-val">'+esc(cur)+bonus+'</div></div>';
+  }
+  function combatStatKeys(){
+    return [
+      ['生命','hp',true],['伤害','damage',true],['命中','accuracy',true],['回避','evasion',true],['射速','rof',true],['护甲','armor',true],['移速','movement',true],
+      ['穿甲','armorPiercing'],['暴击','critRate'],['弹链','ammoChain'],['暴伤','critDamage'],['夜战抵消','nightAccuracyOffset'],['换弹','reloadSpeed'],['前置冷却','initialCooldown'],['全队命中','teamAccuracy']
+    ];
+  }
+  function visibleCombatStatKeys(base, current){
+    return combatStatKeys().filter(function(k){
+      var before=statValue(base,k[1]), after=statValue(current,k[1]);
+      return k[2] || before || after || before !== after;
+    });
+  }
+  function statGridHtml(t){
+    return visibleCombatStatKeys(unequippedStatsOf(t), battleStatsOf(t)).map(function(k){ return statLine(k[0], k[1], t); }).join('');
+  }
+  function equipmentBox(t){
+    var slots=['配件','弹匣','人形','特殊'];
+    var eq=equipmentOf(t), bySlot={};
+    eq.forEach(function(e){ bySlot[e.slotType]=e; });
+    var total=Bridge.applyEquipmentStats ? Bridge.applyEquipmentStats({}, eq).equipmentSummary : '';
+    return '<div class="gfl-equip-box"><div class="gfl-equip-title">装备栏 · 属性实时参与战斗计算</div>'+
+      slots.map(function(slot){var e=bySlot[slot];return '<div class="gfl-equip-slot"><span>'+esc(slot)+'</span><strong>'+esc(e?e.name+' Lv.'+e.level:'未装备')+'</strong><button class="primary" data-open-equip-slot="'+esc(slot)+'">'+(e?'更换':'装备')+'</button></div>'+(e?'<div class="gfl-equip-slot"><span></span><span>'+esc(e.statsText||'无属性')+'</span><button data-unequip-slot="'+esc(slot)+'">卸下</button></div>':'');}).join('')+
+      '<div class="gfl-card-stats">'+esc(total||'暂无装备属性')+'</div></div>';
+  }
+
+  function availableEquipmentChoices(t, slot){
+    if(!t || !Bridge.equipmentWarehouseRows || !Bridge.tdollCanEquip) return [];
+    return Bridge.equipmentWarehouseRows().filter(function(e){
+      return e && e.acquired && e.slotType === slot && Bridge.tdollCanEquip(t, e).ok;
+    }).sort(function(a,b){
+      if(a.equippedBy === t.name && b.equippedBy !== t.name) return -1;
+      if(a.equippedBy !== t.name && b.equippedBy === t.name) return 1;
+      return (b.stars || 0) - (a.stars || 0) || (b.level || 0) - (a.level || 0);
+    });
+  }
+
+  function statDeltaHtml(t, nextEquip){
+    var current = unequippedStatsOf(t);
+    var list = equipmentOf(t).filter(function(e){ return e.slotType !== pendingEquipSlot; });
+    if(nextEquip) list.push(nextEquip);
+    var next = Bridge.applyEquipmentStats ? Bridge.applyEquipmentStats(statsOf(t), list) : current;
+    return visibleCombatStatKeys(current, next).map(function(k){
+      var before=statValue(current,k[1]), after=statValue(next,k[1]), delta=after-before;
+      return '<div>'+esc(k[0])+'：<strong>'+esc(after)+'</strong>'+(delta?'<span class="gfl-stat-up">（'+esc(before)+'）'+(delta>0?'+':'')+esc(delta)+'</span>':'')+'</div>';
+    }).join('');
+  }
+
+  function renderEquipOverlay(){
+    var t=getTdoll(selectedName), listEl=document.getElementById('equip-list'), preview=document.getElementById('equip-preview'), confirm=document.getElementById('equip-confirm');
+    if(!t || !pendingEquipSlot) return;
+    var choices=availableEquipmentChoices(t, pendingEquipSlot), picked=null, current=equipmentOf(t).filter(function(e){return e.slotType===pendingEquipSlot;})[0] || null;
+    choices.forEach(function(e){ if(String(e.rowId)===String(pendingEquipId)) picked=e; });
+    document.getElementById('equip-title').textContent='选择装备 · '+t.name+' · '+pendingEquipSlot;
+    listEl.innerHTML = choices.length ? choices.map(function(e){ return '<button class="gfl-equip-choice '+(String(e.rowId)===String(pendingEquipId)?'active':'')+'" data-pick-equip="'+esc(e.rowId)+'"><strong>'+esc(e.name)+' · '+esc(e.rarity)+' · Lv.'+esc(e.level)+'</strong><span>'+esc(e.statsText||'无属性')+'</span><span>'+(e.equippedBy ? '当前装备给 '+esc(e.equippedBy) : '未装备')+'</span></button>'; }).join('') : '<button class="gfl-equip-choice" disabled><strong>没有可用装备</strong><span>当前没有适配 '+esc(t.type)+' / '+esc(t.name)+' / '+esc(pendingEquipSlot)+' 的装备。</span></button>';
+    preview.innerHTML = picked ? '<strong>'+esc(picked.name)+'</strong><br>'+(current?('将替换当前 '+esc(current.name)+'。<br>'):'')+(picked.equippedBy && picked.equippedBy!==t.name ? '将从 '+esc(picked.equippedBy)+' 身上卸下并装备给 '+esc(t.name)+'。<br>' : '')+statDeltaHtml(t, picked) : '先选择一件装备。';
+    confirm.disabled = equipInProgress || !picked;
+    confirm.textContent = equipInProgress ? '写入中...' : '确认装备';
+  }
+
+  function openEquipOverlay(slot){
+    pendingEquipSlot=slot; pendingEquipId='';
+    setEquipStatus('', '');
+    document.getElementById('equip-overlay').classList.add('open');
+    renderEquipOverlay();
+  }
+
+  function closeEquipOverlay(){ if(equipInProgress) return; pendingEquipSlot=''; pendingEquipId=''; document.getElementById('equip-overlay').classList.remove('open'); }
+  function setEquipStatus(text, kind){ var el=document.getElementById('equip-status'); if(el){ el.textContent=text||''; el.className='gfl-mod-status '+(kind||''); } }
+
+  function renderDetail(){
+    var t = getTdoll(selectedName);
+    if(!t){
+      document.getElementById('detail-panel').innerHTML = '<div class="gfl-detail-empty">仓库表没有已获取人形</div>';
+      return;
+    }
+    var sk = activeSkin(t);
+    document.getElementById('detail-panel').innerHTML = '<div class="gfl-detail-hero">'
+      +(sk && sk.live2d ? '<div class="gfl-l2d-badge">LIVE2D</div>' : '')
+      +'<img class="gfl-detail-img" data-skin-image="'+esc(skinGroupFor(t, sk))+'" alt="'+esc(t.name)+'">'
+      +'</div><div class="gfl-detail-info">'
+      +'<div class="gfl-detail-name-row"><div class="gfl-detail-name">'+esc(t.name)+'</div>'+(t.modded?'<div class="gfl-detail-modmark">MOD</div>':'')+'</div>'
+      +'<div class="gfl-detail-meta"><span class="gfl-card-type '+esc(String(t.type||'').toLowerCase())+'">'+esc(t.type)+'</span><span class="'+starsClass(t.stars)+'">'+stars(t.stars)+'</span><span>'+(t.canMod?'可心智升级':'暂未开放心智升级')+'</span><span>'+(t.damageState || '正常')+'</span></div>'
+      +'<div class="gfl-skin-row">'+t.skins.map(function(s){ return '<button class="gfl-skin-btn '+(s.label===(sk&&sk.label)?'active':'')+'" data-skin="'+esc(s.label)+'">'+esc(s.label)+(s.live2d?' · L2D':'')+'</button>'; }).join('')+'</div>'
+      +'<div class="gfl-stat-grid">'+statGridHtml(t)+'</div>'
+      +equipmentBox(t)
+      +'<div class="gfl-actions"><button class="gfl-action-btn" id="set-adjutant" '+(adjutantInProgress?'disabled':'')+'>'+(adjutantInProgress?'写入中...':'设为看板')+'</button><button class="gfl-action-btn primary" id="open-mod" '+(!t.canMod||t.modded||coreCount<MOD_COST||modInProgress?'disabled':'')+'>'+(t.modded?'已完成心智升级':(t.canMod?(coreCount<MOD_COST?'核心不足':'心智升级'):'不可心智升级'))+'</button><button class="gfl-action-btn" id="repair-tdoll" '+(!t.damaged||repairInProgress?'disabled':'')+'>'+(repairInProgress?'修理中...':(t.damaged?'修理 · 四项资源各'+t.repairCost:'无需修理'))+'</button></div>'
+      +'<div class="gfl-detail-status '+esc(detailStatusKind)+'" id="detail-status">'+esc(detailStatus)+'</div>'
+      +'</div>';
+    hydrateSkinImages(document.getElementById('detail-panel'), function(){ return !!(t && t.damaged); });
+  }
+
+  function isMobileDetail(){
+    try{ return window.matchMedia && window.matchMedia('(max-width:860px)').matches; }catch(e){}
+    return window.innerWidth <= 860;
+  }
+  function openDetailPanel(){
+    var shell = document.getElementById('detail-shell');
+    if(shell && isMobileDetail()) shell.classList.add('open');
+  }
+  function closeDetailPanel(){
+    var shell = document.getElementById('detail-shell');
+    if(shell) shell.classList.remove('open');
+  }
+  function renderAll(){ renderFilters(); renderCoreStatus(); renderGrid(); renderDetail(); }
+
+  function hydrateSkinImages(root, damaged){
+    if(!root) return;
+    var imgs = root.querySelectorAll('img[data-skin-image]');
+    imgs.forEach(function(img){
+      var skinName = img.getAttribute('data-skin-image') || '默认立绘';
+      var owner = img.closest('[data-name]');
+      var useDamaged = typeof damaged === 'function' ? damaged(owner ? owner.getAttribute('data-name') : selectedName) : !!damaged;
+      Bridge.applyImageFromSkin(img, skinName, useDamaged).then(function(url){
+        if(!url) img.style.display = 'none';
+      });
+    });
+  }
+
+  function repairSelectedTdoll(){
+    var t = getTdoll(selectedName);
+    if(!t || !t.damaged || repairInProgress) return;
+    var cost = t.repairCost || 0;
+    var resources = Bridge.resourceState();
+    var checks = [['人力', resources.manpower], ['弹药', resources.ammo], ['口粮', resources.ration], ['零件', resources.parts]];
+    for(var i=0;i<checks.length;i++){
+      if(checks[i][1] < cost){ setDetailStatus('修理失败：' + checks[i][0] + '不足，需要 ' + cost + '。', 'err'); return; }
+    }
+    repairInProgress = true;
+    setDetailStatus('正在扣除资源并修复 ' + t.name + '。');
+    renderDetail();
+    (runWarehouseBatch([
+      'UPDATE resource_status SET amount = ' + sqlNumber(resources.manpower - cost) + ' WHERE resource_name = ' + sqlValue('人力'),
+      'UPDATE resource_status SET amount = ' + sqlNumber(resources.ammo - cost) + ' WHERE resource_name = ' + sqlValue('弹药'),
+      'UPDATE resource_status SET amount = ' + sqlNumber(resources.ration - cost) + ' WHERE resource_name = ' + sqlValue('口粮'),
+      'UPDATE resource_status SET amount = ' + sqlNumber(resources.parts - cost) + ' WHERE resource_name = ' + sqlValue('零件'),
+      'UPDATE tdoll_warehouse SET damage_state = ' + sqlValue('正常') + ' WHERE row_id = ' + sqlValue(t.rowIndex)
+    ], ['sheet_resource_status','sheet_tdoll_warehouse']))
+    .then(function(){
+      repairInProgress = false;
+      t.damageState = '正常';
+      t.damaged = false;
+      t.repairCost = 0;
+      setDetailStatus('修理完成，损伤状态已恢复正常。','ok');
+      refreshData();
+      renderAll();
+    }).catch(function(error){
+      console.error('修理写回失败:', error);
+      repairInProgress = false;
+      setDetailStatus('修理失败：'+(error&&error.message?error.message:error),'err');
+      renderDetail();
+    });
+  }
+
+  function compareHtml(t){
+    var keys = [['生命','hp'],['伤害','damage'],['命中','accuracy'],['回避','evasion'],['射速','rof'],['护甲','armor'],['移速','movement'],['穿甲','armorPiercing'],['暴击','critRate'],['弹链','ammoChain'],['暴伤','critDamage']];
+    keys = keys.filter(function(k){ return statValue(t.baseStats,k[1]) || statValue(t.modStats,k[1]) || ['hp','damage','accuracy','evasion','rof','armor','movement'].indexOf(k[1]) >= 0; });
+    return '<div class="gfl-compare-col"><div class="gfl-compare-title">当前</div>'+keys.map(function(k){return '<div>'+esc(k[0])+'：'+esc(statValue(t.baseStats,k[1]))+'</div>';}).join('')+'</div>'
+      +'<div class="gfl-compare-col after"><div class="gfl-compare-title">MOD 后</div>'+keys.map(function(k){var before=statValue(t.baseStats,k[1]), after=statValue(t.modStats,k[1]);return '<div>'+esc(k[0])+'：'+esc(after)+' <span class="gfl-stat-up">+'+esc(after-before)+'</span></div>';}).join('')+'</div>';
+  }
+
+  function setAdjutant(){
+    var t = getTdoll(selectedName), sk = activeSkin(t);
+    if(!t || !sk) return;
+    var dir = '';
+    try{
+      dir = sk.live2d ? l2dDirFor(t, sk) : '';
+    }catch(error){
+      console.error('Live2D 看板映射失败:', error);
+      var failBtn = document.getElementById('set-adjutant');
+      if(failBtn){ failBtn.textContent = 'L2D映射缺失'; setTimeout(function(){ failBtn.textContent='设为看板'; }, 1500); }
+      return;
+    }
+    if(sk.live2d && !dir) throw new Error('L2D 皮肤未解析出目录：' + t.name + '|' + sk.label);
+    var adjutant = {
+      name: t.name,
+      skin: sk.label,
+      portraitSkin: skinGroupFor(t, sk),
+      damagedPortraitSkin: skinGroupFor(t, sk),
+      live2d: dir ? {dir:dir, jsonPath:l2dJsonPathFor(dir)} : null
+    };
+    console.info('[GFL仓库] 设为看板:', adjutant);
+    saveJSON(ADJUTANT_KEY, adjutant);
+    try{
+      if(window.parent && window.parent !== window){
+        window.parent.postMessage({type:'gfl-adjutant-updated', adjutant:adjutant}, '*');
+      }
+    }catch(error){
+      console.error('[GFL仓库] 通知父级待机页失败:', error);
+    }
+    adjutantInProgress = true;
+    setDetailStatus('正在写回看板皮肤，请等待。');
+    renderDetail();
+    updateTdollCurrentSkin(t, sk.label).then(function(){
+      adjutantInProgress = false;
+      setDetailStatus('已设为看板。','ok');
+      renderDetail();
+    }).catch(function(error){
+      console.warn('当前皮肤写回失败:', error);
+      adjutantInProgress = false;
+      setDetailStatus('看板已本地保存，但当前皮肤写回失败：'+(error&&error.message?error.message:error),'err');
+      renderDetail();
+    });
+  }
+
+  function openMod(){
+    var t = getTdoll(selectedName);
+    if(!t || !t.canMod || t.modded || coreCount < MOD_COST || !t.modStats) return;
+    pendingModName = t.name;
+    var modSkin = null;
+    for(var i=0;i<t.skins.length;i++){ if(t.skins[i].label === '心智升级'){ modSkin = t.skins[i]; break; } }
+    modSkin = modSkin || activeSkin(t);
+    document.getElementById('mod-title').textContent = '心智升级 · ' + t.name;
+    document.getElementById('mod-img').removeAttribute('src');
+    document.getElementById('mod-img').setAttribute('data-skin-image', skinGroupFor(t, modSkin));
+    document.getElementById('mod-img').alt = t.name;
+    Bridge.applyImageFromSkin(document.getElementById('mod-img'), skinGroupFor(t, modSkin), false);
+    document.getElementById('mod-copy').innerHTML = '<strong>MOD 标记将写回人形仓库表。</strong><br>当前心智核心：<strong>'+esc(coreCount)+'</strong>；本次消耗：<strong>'+MOD_COST+'</strong>。';
+    document.getElementById('mod-compare').innerHTML = compareHtml(t);
+    setModStatus('', '');
+    document.getElementById('mod-overlay').classList.add('open');
+  }
+
+  function setModBusy(busy){
+    modInProgress = !!busy;
+    var confirm = document.getElementById('mod-confirm'), cancel = document.getElementById('mod-cancel'), close = document.getElementById('mod-close');
+    if(confirm){ confirm.disabled = modInProgress; confirm.textContent = modInProgress ? '升级写入中...' : '执行心智升级'; }
+    if(cancel) cancel.disabled = modInProgress;
+    if(close) close.disabled = modInProgress;
+  }
+  function closeMod(){ if(modInProgress) return; pendingModName = null; document.getElementById('mod-overlay').classList.remove('open'); }
+
+  function confirmMod(){
+    var t = getTdoll(pendingModName);
+    if(modInProgress || !t || coreCount < MOD_COST) return;
+    var nextCore = coreCount - MOD_COST;
+    setModBusy(true);
+    setModStatus('正在扣除心智核心并写回 MOD 标记，请等待。');
+    (runWarehouseBatch([
+      'UPDATE resource_status SET amount = ' + sqlNumber(nextCore) + ' WHERE resource_name = ' + sqlValue('心智核心'),
+      'UPDATE tdoll_warehouse SET neural_upgraded = ' + sqlValue('是') + ' WHERE row_id = ' + sqlValue(t.rowIndex)
+    ], ['sheet_resource_status','sheet_tdoll_warehouse']))
+    .then(function(){
+      coreCount = nextCore;
+      t.modded = true;
+      setModBusy(false);
+      closeMod();
+      renderAll();
+    }).catch(function(error){
+      console.error('心智升级写回失败:', error);
+      setModBusy(false);
+      setModStatus('心智升级写回失败：'+(error&&error.message?error.message:error),'err');
+    });
+  }
+
+  function confirmEquipToSelected(){
+    var t=getTdoll(selectedName);
+    var equipmentRowId=String(pendingEquipId||'').trim();
+    if(!t||!equipmentRowId){ setDetailStatus('请选择要装备的装备卡片。','err'); return; }
+    var all=Bridge.equipmentWarehouseRows(), e=null;
+    for(var i=0;i<all.length;i++){ if(String(all[i].rowId)===String(equipmentRowId)){ e=all[i]; break; } }
+    if(!e){ setDetailStatus('未找到装备实例：#'+equipmentRowId,'err'); return; }
+    var check=Bridge.validateEquipmentForTdoll ? Bridge.validateEquipmentForTdoll(t.name,equipmentRowId) : Bridge.tdollCanEquip(t,e);
+    if(!check.ok){ setDetailStatus(check.reason||check.code||'装备校验失败','err'); return; }
+    equipInProgress = true;
+    setEquipStatus('正在写入装备关系，请等待。');
+    renderEquipOverlay();
+    Bridge.equipToTdoll(t.name,equipmentRowId).then(function(result){
+      if(result&&result.ok===false) setDetailStatus('装备失败：'+(result.reason||result.code||'未知错误'),'err');
+      else setDetailStatus('已装备：'+e.name,'ok');
+      equipInProgress = false;
+      closeEquipOverlay();
+      renderDetail();
+    }).catch(function(error){ equipInProgress = false; setEquipStatus('装备失败：'+(error&&error.message?error.message:error),'err'); renderEquipOverlay(); });
+  }
+  function unequipSlot(slot){
+    var t=getTdoll(selectedName); if(!t||!slot)return;
+    setDetailStatus('正在卸下 '+slot+' 槽装备。');
+    Bridge.unequipFromTdoll(t.name,slot).then(function(result){
+      if(result&&result.ok===false) setDetailStatus('卸下失败：'+(result.reason||result.code||'未知错误'),'err');
+      else setDetailStatus('已卸下 '+slot+' 槽装备。','ok');
+      renderDetail();
+    }).catch(function(error){ setDetailStatus('卸下失败：'+(error&&error.message?error.message:error),'err'); renderDetail(); });
+  }
+
+  document.addEventListener('click', function(e){
+    var filter = e.target.closest('.gfl-filter-btn');
+    if(filter){ currentType = filter.dataset.type; renderAll(); return; }
+    var card = e.target.closest('.gfl-card');
+    if(card){
+      var nextName = card.dataset.name;
+      if(selectedName !== nextName){
+        selectedName = nextName;
+        updateGridSelection();
+        renderDetail();
+      }
+      openDetailPanel();
+      return;
+    }
+    var skinBtn = e.target.closest('.gfl-skin-btn');
+    if(skinBtn){
+      var t = getTdoll(selectedName);
+      if(!t || skinWriteInProgress) return;
+      t.currentSkin = skinBtn.dataset.skin;
+      var sk = activeSkin(t);
+      skinWriteInProgress = true;
+      setDetailStatus('正在切换皮肤并写回仓库，请等待。');
+      renderDetail();
+      updateGridCardImage(t);
+      updateTdollCurrentSkin(t, t.currentSkin).then(function(){
+        skinWriteInProgress = false;
+        setDetailStatus('皮肤已切换并写回仓库。','ok');
+        renderDetail();
+      }).catch(function(error){
+        console.warn('当前皮肤写回失败:', error);
+        skinWriteInProgress = false;
+        setDetailStatus('皮肤已本地预览，但写回失败：'+(error&&error.message?error.message:error),'err');
+        renderDetail();
+      });
+      if(sk && sk.live2d){
+        try{ console.info('[GFL仓库] 已选择 L2D 皮肤:', {name:t.name, skin:sk.label, dir:l2dDirFor(t, sk)}); }
+        catch(error){ console.error('[GFL仓库] L2D 皮肤映射失败:', error); }
+      } else {
+        console.info('[GFL仓库] 已选择静态皮肤:', {name:t.name, skin:t.currentSkin});
+      }
+      return;
+    }
+    if(e.target.id === 'set-adjutant'){ setAdjutant(); return; }
+    var openEquip = e.target.closest('[data-open-equip-slot]');
+    if(openEquip){ openEquipOverlay(openEquip.getAttribute('data-open-equip-slot')); return; }
+    var equipChoice = e.target.closest('[data-pick-equip]');
+    if(equipChoice){ pendingEquipId=equipChoice.getAttribute('data-pick-equip'); renderEquipOverlay(); return; }
+    var unequipBtn = e.target.closest('[data-unequip-slot]');
+    if(unequipBtn){ unequipSlot(unequipBtn.getAttribute('data-unequip-slot')); return; }
+    if(e.target.id === 'equip-close' || e.target.id === 'equip-cancel' || e.target.id === 'equip-overlay'){ closeEquipOverlay(); return; }
+    if(e.target.id === 'equip-confirm'){ confirmEquipToSelected(); return; }
+    if(e.target.id === 'repair-tdoll'){ repairSelectedTdoll(); return; }
+    if(e.target.id === 'open-mod'){ openMod(); return; }
+    if(e.target.id === 'detail-close'){ closeDetailPanel(); return; }
+    if(e.target.id === 'mod-close' || e.target.id === 'mod-cancel' || e.target.id === 'mod-overlay'){ closeMod(); return; }
+    if(e.target.id === 'mod-confirm'){ confirmMod(); return; }
+  });
+  document.getElementById('tdoll-search').addEventListener('input', function(e){ searchText = String(e.target.value || '').trim(); renderGrid(); });
+  window.addEventListener('resize', function(){ if(!isMobileDetail()) closeDetailPanel(); });
+  window.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeDetailPanel(); });
+
+  function reloadAndRender(){ if(pageDisposed || !document.getElementById('tdoll-grid')) return; refreshData(); renderAll(); }
+  function cleanupPage(){ pageDisposed = true; }
+  window.addEventListener('pagehide', cleanupPage, {once:true});
+  window.addEventListener('beforeunload', cleanupPage, {once:true});
+  window.addEventListener('unload', cleanupPage, {once:true});
+
+  applyBubbleBackground('.gfl-page-bg');
+  reloadAndRender();
+})();
+</script>
+</body>
+</html>

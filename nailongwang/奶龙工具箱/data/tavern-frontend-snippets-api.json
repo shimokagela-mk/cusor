@@ -1,0 +1,59 @@
+{
+  "$schema": "./tavern-frontend-snippets-api.schema.json",
+  "name": "Tavern Frontend Snippets Knowledge Base",
+  "language": "zh-CN",
+  "updated_at": "2026-06-08",
+  "sources": [
+    "https://docs.sillytavern.app/usage/user-settings/uicustomization/",
+    "https://docs.sillytavern.app/extensions/regex/"
+  ],
+  "source_audit": {
+    "checked_at": "2026-06-08",
+    "upstream_refs": [
+      "SillyTavern/SillyTavern-Docs:Usage/User_Settings/uicustomization.md",
+      "SillyTavern/SillyTavern-Docs:extensions/Regex.md"
+    ]
+  },
+  "scope_note": "本知识库记录可嵌入 SillyTavern 消息、开场白、状态栏、Regex replaceString 或扩展模板中的短 HTML/CSS 片段格式。examples 只允许骨架，不收录第三方长 CSS 或真实正文。",
+  "snippet_types": [
+    { "name": "message_html", "use_case": "消息内 HTML 卡片、提示框、状态块。" },
+    { "name": "status_bar", "use_case": "角色状态、变量摘要、进度条。" },
+    { "name": "greeting_html", "use_case": "开场白中的排版骨架。" },
+    { "name": "regex_replace_html", "use_case": "Regex replaceString 生成的 HTML 包装。" },
+    { "name": "scoped_css", "use_case": "局部 CSS，必须挂在唯一 class 或 data 属性下。" }
+  ],
+  "html_patterns": [
+    {
+      "name": "折叠面板",
+      "code": "<details class=\"nl-snippet nl-panel\"><summary>Panel</summary><div>Placeholder.</div></details>",
+      "notes": ["原生 details 移动端兼容较好。", "summary 文案应简短。"]
+    },
+    {
+      "name": "按钮组",
+      "code": "<div class=\"nl-snippet nl-actions\"><button type=\"button\">Action</button></div>",
+      "notes": ["消息内按钮通常不应假设可执行脚本。", "若在扩展中绑定事件，需限制选择器作用域。"]
+    },
+    {
+      "name": "剧情推进面板",
+      "code": "<section class=\"nl-snippet nl-progress\"><h3>Scene</h3><ol><li>Step placeholder</li></ol></section>",
+      "notes": ["只放结构，不放剧情正文。"]
+    }
+  ],
+  "css_rules": [
+    "所有 CSS 选择器必须以唯一根类开头，例如 .nl-snippet。",
+    "移动端优先使用 max-width: 100%、flex-wrap、gap、相对单位。",
+    "避免 position: fixed、全局 body/html 选择器和覆盖 ST 核心 class 的宽泛规则。",
+    "Regex replaceString 中的 HTML 应保持短小，复杂交互应放到扩展或酒馆助手脚本中。"
+  ],
+  "security_notes": [
+    "任何用户、模型或网络来源 HTML 插入真实 DOM 前都应使用 DOMPurify.sanitize。",
+    "不要使用 inline onClick/onerror/onload 等事件属性。",
+    "不要在片段里写 script 标签、iframe、外链追踪像素或真实 token。",
+    "replaceString HTML 只负责展示；如果需要执行逻辑，应显式转为扩展或 JS-Slash-Runner 脚本任务。"
+  ],
+  "related_examples": [
+    "examples/frontend-snippets/status-panel.json",
+    "examples/frontend-snippets/regex-replace-html.json"
+  ],
+  "related_schemas": ["schemas/frontend-snippet.schema.json"]
+}

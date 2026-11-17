@@ -1,0 +1,94 @@
+[
+  {
+    "name": "Plot Preset Name",
+    "prompts": [
+      {
+        "id": "mainPrompt",
+        "name": "Main Prompt",
+        "role": "system",
+        "content": "Main prompt placeholder.",
+        "deletable": false
+      },
+      {
+        "id": "systemPrompt",
+        "name": "System Prompt",
+        "role": "user",
+        "content": "System prompt placeholder.",
+        "deletable": false
+      },
+      {
+        "id": "finalSystemDirective",
+        "name": "Final System Directive",
+        "role": "system",
+        "content": "Final directive placeholder with variables like $8 if needed.",
+        "deletable": false
+      }
+    ],
+    "rateMain": 1,
+    "ratePersonal": 1,
+    "rateErotic": 0,
+    "rateCuckold": 1,
+    "recallCount": 20,
+    "extractTags": "tag_a,tag_b",
+    "contextExtractRules": [],
+    "contextExcludeRules": [
+      {
+        "start": "<tag>",
+        "end": "</tag>"
+      }
+    ],
+    "minLength": 300,
+    "contextTurnCount": 3,
+    "worldbookEnabled": true,
+    "worldbookSource": "character",
+    "selectedWorldbooks": [],
+    "disabledWorldbookEntries": "__ALL_SELECTED__",
+    "plotWorldbookConfig": {
+      "source": "character",
+      "manualSelection": []
+    },
+    "loopSettings": {
+      "quickReplyContent": [],
+      "currentPromptIndex": 0,
+      "loopTags": "",
+      "loopDelay": 5,
+      "retryDelay": 3,
+      "loopTotalDuration": 0,
+      "maxRetries": 49
+    },
+    "plotTasks": [
+      {
+        "id": "defaultPlotTask",
+        "name": "Default Task",
+        "enabled": true,
+        "promptGroup": [
+          {
+            "role": "SYSTEM",
+            "content": "Task system prompt placeholder.",
+            "deletable": true
+          },
+          {
+            "role": "USER",
+            "content": "Task user prompt placeholder.",
+            "deletable": true,
+            "mainSlot": "B",
+            "isMain2": true
+          },
+          {
+            "role": "assistant",
+            "content": "Assistant prefill placeholder.",
+            "deletable": true
+          }
+        ],
+        "worldbookEnabled": true,
+        "selectedWorldbooks": [],
+        "disabledWorldbookEntries": "__ALL_SELECTED__",
+        "worldbookSource": "character",
+        "plotWorldbookConfig": {
+          "source": "character",
+          "manualSelection": []
+        }
+      }
+    ]
+  }
+]
