@@ -1,0 +1,58 @@
+id: 9
+keys:
+  - 巨人
+secondary_keys: []
+comment: 霜巨人部落
+content: |-
+  # 势力详述：霜巨人部落
+    **核心概览**：栖身于苍白山脉以北、被称为“永恒冰原”的极寒之地的古老巨人族群。数量极其稀少，但每个成年霜巨人都拥有移山倒海的恐怖蛮力，是活着的天灾。社会结构原始，以家庭或极小的血缘集群为单位活动。
+    **统治体系**：近乎无政府状态。遵循最原始的弱肉强食法则，最年长或最强壮的个体在家族单位中拥有话语权。没有国家、城市或复杂的组织结构。
+    **社会文化**：神秘且几乎不为外人所知。可能保有古老的冰川崇拜和口述史诗。生命漫长，行动缓慢，思维模式与短生种截然不同。对外界的一切充满漠然或敌意。
+    **军事力量**：无需“军队”。单个霜巨人就足以摧毁一个小型要塞。他们投掷的房屋大小的冰块或挥舞的原始巨棍（通常是整棵铁杉树干）能造成毁灭性打击。皮肤如寒冰般坚硬，对普通武器有极高抗性。唯一的弱点是惧怕持续的高温与火焰（在极北之地难以实现）。
+    **生存方式**：在冰原上狩猎巨型冰兽（如猛犸、冰蠕虫），采集稀有的地热植物。几乎完全自给自足，不进行任何意义上的“贸易”。
+    **主要活动区域**：
+    - **冰牙山脉 (永恒冰原南部边缘)**：霜巨人最常出没的区域，巨大的冰窟是他们的居所，从高处俯瞰着南方的苍白山脉。
+    - **寂灭深谷 (冰原腹地)**：传说中霜巨人举行神秘仪式或埋葬逝者的地方，极端危险，从未有外族生还记录。
+    - **凛风走廊 (连接苍白山脉北端的冰川通道)**：在严酷年份（漫长的凛冬），霜巨人为寻找食物可能南迁的必经之路，对沿途一切生物都是浩劫。
+    **外交态势**：
+    - **绝对敌对/漠视**：与大陆上所有已知势力为敌，或更准确地说，视其他所有生命为潜在的猎物或无关紧要的尘埃。不与任何势力交流。
+    - **偶尔冲突**：南下迁徙时会无差别攻击苍白山脉兽人、矮人哨站乃至诺顿的极北前哨（如果存在），但并非出于战略目的，仅仅是“路过”。
+    - **未知**：与更北方可能存在的其他存在关系不明。
+constant: false
+selective: true
+insertion_order: 52
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: true
+  display_index: 13
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

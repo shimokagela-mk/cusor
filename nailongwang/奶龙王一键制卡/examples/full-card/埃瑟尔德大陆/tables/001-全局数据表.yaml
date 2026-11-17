@@ -1,0 +1,74 @@
+uid: sheet_dCudvUnH
+name: 全局数据表
+sourceData:
+  note: |-
+    记录当前主角所在地点、时间推进和故事模式。此表有且仅有一行，所有更新必须使用 WHERE row_id = 1。
+    - 列0: 主角当前所在地点 - 主角当前所在的具体场景名称，从大区域到小场景描述，例如：王城·集市。
+    - 列1: 当前时间 - 游戏世界当前时间，推荐格式 YYYY-MM-DD HH:MM；剧情没有精确时间时也必须给出一个可连续推进的明确时间。
+    - 列2: 上轮场景时间 - 上一轮交互结束时的当前时间；更新时通常写 last_scene_time = current_time。
+    - 列3: 经过的时间 - 本轮相对上轮经过的时间文本，例如：几分钟、约1小时、半天。
+    - 列4: 本轮故事模式 - 推荐填写战斗模式、正常模式、NSFW模式之一；不确定时填写正常模式。
+    - 列5: 预计下轮故事模式 - 根据正文结尾判断下轮可能模式，推荐填写战斗模式、正常模式、NSFW模式之一。
+
+    更新规则：每轮必须更新时间、上轮场景时间、经过的时间、本轮故事模式和预计下轮故事模式；地点变化时必须同步更新主角当前所在地点。
+  initNode: 插入一条关于当前世界状态的唯一记录。
+  deleteNode: 禁止删除。
+  updateNode: |-
+    每轮必须更新当前时间、上轮场景时间、经过的时间、本轮故事模式和预计下轮故事模式；主角所在地点变化时同步更新地点。
+    SQL示例: UPDATE global_state SET current_location = '王城·集市', last_scene_time = current_time, current_time = '2024-03-15 16:00', elapsed_time = '约1小时', current_story_mode = '正常模式', next_story_mode = '战斗模式' WHERE row_id = 1;
+    SQL示例(地点未变): UPDATE global_state SET last_scene_time = current_time, current_time = '2024-03-15 16:10', elapsed_time = '约10分钟', current_story_mode = '正常模式', next_story_mode = '正常模式' WHERE row_id = 1;
+  insertNode: 禁止操作。
+  ddl: |-
+    CREATE TABLE global_state ( -- 全局数据表
+      row_id INTEGER PRIMARY KEY, -- 行号
+      current_location TEXT NOT NULL, -- 主角当前所在地点
+      current_time TEXT NOT NULL, -- 当前时间
+      last_scene_time TEXT, -- 上轮场景时间
+      elapsed_time TEXT, -- 经过的时间
+      current_story_mode TEXT NOT NULL DEFAULT '正常模式', -- 本轮故事模式
+      next_story_mode TEXT NOT NULL DEFAULT '正常模式' -- 预计下轮故事模式
+    );
+content:
+  - - row_id
+    - 主角当前所在地点
+    - 当前时间
+    - 上轮场景时间
+    - 经过的时间
+    - 本轮故事模式
+    - 预计下轮故事模式
+updateConfig:
+  uiSentinel: -1
+  contextDepth: -1
+  updateFrequency: -1
+  batchSize: -1
+  skipFloors: -1
+exportConfig:
+  enabled: false
+  splitByRow: false
+  entryName: 全局数据表
+  entryType: constant
+  keywords: ""
+  preventRecursion: true
+  injectionTemplate: ""
+  extraIndexEnabled: false
+  extraIndexEntryName: 全局数据表-索引
+  extraIndexColumns: []
+  extraIndexColumnModes: {}
+  extraIndexInjectionTemplate: ""
+  entryPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 10000
+  extraIndexPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 10010
+  fixedEntryPlacement:
+    position: before_character_definition
+    depth: 2
+    order: 99981
+  fixedIndexPlacement:
+    position: before_character_definition
+    depth: 2
+    order: 99982
+orderNo: 0

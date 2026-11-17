@@ -1,0 +1,195 @@
+{
+  "$schema": "./zod-api.schema.json",
+  "name": "Zod API Knowledge Base",
+  "language": "zh-CN",
+  "updated_at": "2026-06-08",
+  "sources": [
+    "https://github.com/colinhacks/zod",
+    "https://zod.dev/api"
+  ],
+  "source_audit": {
+    "checked_at": "2026-06-08",
+    "upstream_refs": [
+      "colinhacks/zod@main",
+      "packages/docs/content/api.mdx",
+      "https://zod.dev/api"
+    ]
+  },
+  "scope_note": "本文件聚焦 zod 在 JS-Slash-Runner / MVU 项目里实际会用到的语法和结构：定义 schema、解析、推断类型、组合、错误处理。zod 已经在 JS-Slash-Runner 内置（全局变量 z），通常不需要再安装。",
+  "runtime": {
+    "global": "z",
+    "import_in_node_project": "import { z } from 'zod';",
+    "version_note": "Zod 4 已稳定；本知识库保留 v3/v4 常用交集，并标注酒馆脚本中可谨慎采用的 Zod 4 API。",
+    "concepts": {
+      "schema": "z.* 返回的对象。所有 schema 都有 parse / safeParse / parseAsync 等方法。",
+      "type_inference": "type T = z.infer<typeof MySchema>;",
+      "input_output": "z.input / z.output 区分 transform/preprocess 前后的类型。"
+    }
+  },
+  "primitives": [
+    { "name": "z.string", "signature": "z.string()", "modifiers": ["min", "max", "length", "regex", "email", "url", "uuid", "trim", "toLowerCase", "toUpperCase"] },
+    { "name": "z.number", "signature": "z.number()", "modifiers": ["int", "min", "max", "positive", "negative", "nonpositive", "nonnegative", "multipleOf", "finite", "safe"] },
+    { "name": "z.bigint", "signature": "z.bigint()" },
+    { "name": "z.boolean", "signature": "z.boolean()" },
+    { "name": "z.symbol", "signature": "z.symbol()" },
+    { "name": "z.date", "signature": "z.date()" },
+    { "name": "z.null", "signature": "z.null()" },
+    { "name": "z.undefined", "signature": "z.undefined()" },
+    { "name": "z.unknown", "signature": "z.unknown()" },
+    { "name": "z.any", "signature": "z.any()" },
+    { "name": "z.never", "signature": "z.never()" },
+    { "name": "z.void", "signature": "z.void()" },
+    { "name": "z.nan", "signature": "z.nan()" },
+    { "name": "z.file", "signature": "z.file().min(bytes).max(bytes).mime(typeOrTypes)", "note": "Zod 4：校验浏览器 File 实例，适合前端扩展或上传 UI，不适合 Node-only 样例。" },
+    { "name": "z.stringbool", "signature": "z.stringbool({ truthy?, falsy?, case? })", "note": "Zod 4：把 true/false、1/0、yes/no、on/off 等字符串解析为 boolean。" }
+  ],
+  "literals_and_enums": [
+    { "name": "z.literal", "signature": "z.literal(value)", "example": "z.literal('male')" },
+    { "name": "z.enum", "signature": "z.enum([...])", "example": "z.enum(['system', 'user', 'assistant'])" },
+    { "name": "z.nativeEnum", "signature": "z.nativeEnum(EnumLike)" },
+    { "name": "z.templateLiteral", "signature": "z.templateLiteral([literalOrSchema, ...])", "example": "z.templateLiteral([z.number(), z.enum(['px','rem'])])" }
+  ],
+  "containers": [
+    {
+      "name": "z.object",
+      "signature": "z.object({ key: z.* })",
+      "example": "z.object({ name: z.string(), age: z.number().int().min(0) })",
+      "modifiers": ["partial", "deepPartial", "required", "pick", "omit", "extend", "merge", "passthrough", "strict", "strip", "catchall", "shape", "keyof"]
+    },
+    {
+      "name": "z.strictObject",
+      "signature": "z.strictObject({ key: z.* })",
+      "example": "z.strictObject({ name: z.string() })",
+      "note": "Zod 4：对象出现未知键时报错。维护 SillyTavern 原始资产时通常不推荐默认使用。"
+    },
+    {
+      "name": "z.looseObject",
+      "signature": "z.looseObject({ key: z.* })",
+      "example": "z.looseObject({ name: z.string() })",
+      "note": "Zod 4：允许未知键透传，适合审查带未来字段的 ST 资产。"
+    },
+    {
+      "name": "z.array",
+      "signature": "z.array(item)",
+      "example": "z.array(z.string()).min(1).max(10)"
+    },
+    {
+      "name": "z.tuple",
+      "signature": "z.tuple([z.string(), z.number()])",
+      "example": "z.tuple([z.literal('_.set'), z.string(), z.any(), z.any()])"
+    },
+    {
+      "name": "z.record",
+      "signature": "z.record(keySchema?, valueSchema)",
+      "example": "z.record(z.string(), z.unknown())"
+    },
+    {
+      "name": "z.partialRecord",
+      "signature": "z.partialRecord(keySchema, valueSchema)",
+      "example": "z.partialRecord(z.enum(['id','name','email']), z.string())",
+      "note": "Zod 4：用于 enum/literal 键的部分记录，避免 z.record 的穷尽键检查。"
+    },
+    {
+      "name": "z.looseRecord",
+      "signature": "z.looseRecord(keySchema, valueSchema)",
+      "example": "z.looseRecord(z.string().regex(/_phone$/), z.string())",
+      "note": "Zod 4：非匹配键透传，适合 pattern-like 字段。"
+    },
+    {
+      "name": "z.map",
+      "signature": "z.map(keySchema, valueSchema)"
+    },
+    {
+      "name": "z.set",
+      "signature": "z.set(itemSchema)"
+    }
+  ],
+  "compositions": [
+    { "name": "z.union", "signature": "z.union([a, b])" },
+    { "name": "z.discriminatedUnion", "signature": "z.discriminatedUnion('type', [a, b])" },
+    { "name": "z.intersection", "signature": "z.intersection(a, b)" },
+    { "name": "z.lazy", "signature": "z.lazy(() => Schema)" },
+    { "name": "z.optional", "signature": "schema.optional()" },
+    { "name": "z.nullable", "signature": "schema.nullable()" },
+    { "name": "z.nullish", "signature": "schema.nullish()" },
+    { "name": "z.default", "signature": "schema.default(value)" },
+    { "name": "z.catch", "signature": "schema.catch(value)" }
+  ],
+  "transforms_and_refinements": [
+    { "name": "refine", "signature": "schema.refine(check, msg|opts)" },
+    { "name": "superRefine", "signature": "schema.superRefine((val, ctx) => { ctx.addIssue({...}); })" },
+    { "name": "check", "signature": "schema.check(z.property(...) | lowLevelCheck)", "note": "Zod 4：更底层的检查 API；一般脚本优先 superRefine，性能敏感路径才考虑 check。" },
+    { "name": "z.property", "signature": "z.property(propertyName, schema)", "note": "Zod 4：常与 z.instanceof(...).check(...) 配合校验实例属性。" },
+    { "name": "z.codec", "signature": "z.codec(inputSchema, outputSchema, { decode, encode })", "note": "Zod 4：双向转换 schema；parse 执行 decode，适合日期/URL 等可逆转换。" },
+    { "name": "transform", "signature": "schema.transform((val, ctx) => newVal)" },
+    { "name": "pipe", "signature": "schema.pipe(otherSchema)" },
+    { "name": "preprocess", "signature": "z.preprocess(fn, schema)" },
+    { "name": "prefault", "signature": "schema.prefault(inputValue)", "note": "Zod 4：输入 undefined 时先用 prefault 值继续解析，不像 default 那样短路。" },
+    { "name": "brand", "signature": "schema.brand<'TypeName'>()" }
+  ],
+  "parsing": [
+    {
+      "name": "parse",
+      "signature": "schema.parse(data): T",
+      "behavior": "失败抛出 ZodError。"
+    },
+    {
+      "name": "safeParse",
+      "signature": "schema.safeParse(data): { success: true; data: T } | { success: false; error: ZodError }",
+      "behavior": "失败不抛错；推荐用于运行时校验。"
+    },
+    {
+      "name": "parseAsync",
+      "signature": "schema.parseAsync(data): Promise<T>",
+      "behavior": "适用于带异步 refine/transform 的 schema。"
+    },
+    {
+      "name": "safeParseAsync",
+      "signature": "schema.safeParseAsync(data): Promise<{ success, data?, error? }>"
+    }
+  ],
+  "type_inference": {
+    "infer": "type T = z.infer<typeof Schema>;",
+    "input": "type In = z.input<typeof Schema>;",
+    "output": "type Out = z.output<typeof Schema>;"
+  },
+  "errors": {
+    "ZodError": "由 parse 抛出的错误对象，含 issues: ZodIssue[] 与 .format()/.flatten()/.toString()。",
+    "common_methods": ["error.issues", "error.format()", "error.flatten()"],
+    "ZodIssue_shape": "{ code, path, message, ...specific fields }"
+  },
+  "zod4_api_notes": {
+    "string_formats": ["z.email", "z.uuid", "z.url", "z.httpUrl", "z.hostname", "z.e164", "z.jwt", "z.ipv4", "z.ipv6", "z.iso.date", "z.iso.time", "z.iso.datetime", "z.iso.duration"],
+    "object_strictness": "Zod 4 推荐用 z.strictObject / z.looseObject 显式表达未知键策略；维护 ST 原始 JSON 时优先 looseObject 或 object().passthrough()。",
+    "record_exhaustiveness": "Zod 4 对 enum/literal 键的 z.record 会做穷尽检查；只允许部分键时使用 z.partialRecord。"
+  },
+  "patterns_for_tavern_helper_and_mvu": [
+    {
+      "name": "校验 LLM 返回的工具调用参数",
+      "code": "const ToolArgs = z.object({ city: z.string(), unit: z.enum(['c','f']).default('c') }); const result = ToolArgs.safeParse(JSON.parse(text));"
+    },
+    {
+      "name": "校验 MVU stat_data 形状",
+      "code": "const Leaf = z.tuple([z.unknown(), z.string()]); const Stat = z.object({ 角色: z.object({ 好感度: Leaf }) });"
+    },
+    {
+      "name": "校验 generate JSON schema 输出",
+      "code": "const Schema = z.object({ chapter: z.string(), summary: z.string(), tags: z.array(z.string()) }); const data = Schema.parse(JSON.parse(aiText));"
+    },
+    {
+      "name": "宽松解析（容错+默认值）",
+      "code": "const Q = z.object({ qty: z.coerce.number().int().min(1).default(1) }); Q.parse({ qty: '3' });"
+    },
+    {
+      "name": "联合枚举 + 透传未知字段",
+      "code": "const Msg = z.object({ role: z.enum(['system','user','assistant']), content: z.string() }).passthrough();"
+    }
+  ],
+  "integration_notes": [
+    "JS-Slash-Runner 内置 z；可以直接 z.object({...})，不需要 import。",
+    "Zod 4 新 API 需要确认目标脚本环境内置 zod 版本；跨版本脚本默认使用 object/string/array/union/safeParse 等稳定子集。",
+    "运行时校验失败时优先用 safeParse 而非 parse，避免脚本崩溃。",
+    "对 MVU 的回调里如果要校验 stat_data 子树，先 _.get(...) 再 schema.safeParse(...)。",
+    "禁止使用 zod 反序列化用户密钥、口令等敏感字段；只用于结构校验。"
+  ]
+}

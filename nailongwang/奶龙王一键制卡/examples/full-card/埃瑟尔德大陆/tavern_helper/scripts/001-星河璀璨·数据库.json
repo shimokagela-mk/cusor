@@ -1,0 +1,13 @@
+{
+  "type": "script",
+  "enabled": false,
+  "name": "星河璀璨·数据库",
+  "id": "380e2497-c392-4511-88ee-6e18f0ed6f46",
+  "content": "import 'https://gcore.jsdelivr.net/gh/AlbusKen/shujuku@xingv2.6/index.js'",
+  "info": "发公告出新版本时把v1.1改成对应的版本号就行了",
+  "button": {
+    "enabled": true,
+    "buttons": []
+  },
+  "data": {}
+}

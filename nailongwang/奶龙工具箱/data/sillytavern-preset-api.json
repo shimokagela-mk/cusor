@@ -1,0 +1,59 @@
+{
+  "$schema": "./sillytavern-preset-api.schema.json",
+  "name": "SillyTavern Completion Preset Knowledge Base",
+  "language": "zh-CN",
+  "updated_at": "2026-06-08",
+  "sources": [
+    "https://docs.sillytavern.app/usage/prompts/prompt-manager/",
+    "https://docs.sillytavern.app/usage/api-connections/"
+  ],
+  "source_audit": {
+    "checked_at": "2026-06-08",
+    "upstream_refs": [
+      "SillyTavern/SillyTavern-Docs:Usage/Prompts/prompt-manager.md",
+      "https://docs.sillytavern.app/usage/api_connections/index.md"
+    ]
+  },
+  "scope_note": "本知识库记录 SillyTavern 预设/破限文件的 prompts、prompt_order、角色、深度插入和后端兼容风险。样例只放占位符，不收录长 prompt 正文。",
+  "fields": {
+    "prompts": "提示词块数组。每个块至少应有 identifier/name；content 可为空或由 marker 代表内置占位。",
+    "prompt_order": "每个 character_id 下的提示词顺序与启用状态。",
+    "identifier": "提示词块稳定 ID，被 prompt_order 引用。",
+    "name": "UI 显示名称，不直接发送给模型。",
+    "role": "system/user/assistant 等角色；后端可能对 role 支持不同。",
+    "content": "提示词正文；工具箱样例只允许 placeholder。",
+    "marker": "内置占位块，例如聊天历史、世界书、角色描述等。",
+    "system_prompt": "是否属于系统提示类。",
+    "position/depth/order": "Prompt Manager 中的插入位置、深度和排序字段。",
+    "continue_nudge_prompt": "继续生成时的辅助提示。",
+    "impersonation_prompt": "代替用户发言时的辅助提示。",
+    "quiet_prompt": "静默/后台生成可能使用的提示；不同版本字段名可能不同。"
+  },
+  "prompt_types": [
+    { "identifier": "main", "name": "Main Prompt", "role": "system", "note": "主系统提示。" },
+    { "identifier": "nsfw", "name": "Auxiliary/NSFW Prompt", "role": "system", "note": "辅助提示或 NSFW 相关提示；不要在样例中写正文。" },
+    { "identifier": "jailbreak", "name": "Post-History Instructions", "role": "system", "note": "常被用作破限/后置指令。" },
+    { "identifier": "chatHistory", "name": "Chat History", "marker": true, "note": "聊天历史占位。" },
+    { "identifier": "worldInfoBefore/worldInfoAfter", "name": "World Info", "marker": true, "note": "世界书插入位置占位。" },
+    { "identifier": "dialogueExamples", "name": "Chat Examples", "marker": true, "note": "示例对话占位。" }
+  ],
+  "backend_notes": [
+    { "backend": "OpenAI-compatible", "notes": ["通常支持 system/user/assistant role。", "部分供应商透传字段不同，需检查 max tokens、stream、stop strings。"] },
+    { "backend": "Claude", "notes": ["系统提示与消息 role 会被适配层转换。", "过多 system 分段可能被合并或重排。"] },
+    { "backend": "Gemini", "notes": ["role 与 safety/工具能力兼容性依赖 ST 当前适配。", "长上下文配置应以实际模型上限为准。"] },
+    { "backend": "Text Completion/Kobold", "notes": ["不使用 Chat Completion Prompt Manager 的完整 role 语义。", "更依赖 Advanced Formatting 和拼接模板。"] }
+  ],
+  "boundaries": [
+    "外部 preset 控制模型请求格式；角色卡内置 prompt/creator_notes/character_book 属于角色卡数据。",
+    "当角色卡内置 prompt 与外部 preset 同时存在时，应审查重复指令和冲突指令。",
+    "奶龙工具箱可审查/生成 preset 骨架，不自动写入角色卡或发布破限。"
+  ],
+  "risks": [
+    "jailbreak/破限和 NSFW prompt 可能改变安全边界；样例不得收录真实长正文。",
+    "prompt_order 引用不存在的 identifier 会导致提示缺失。",
+    "role/depth/position 在不同 ST 版本和后端下可能表现不同。",
+    "预设名若与角色卡同名，可能自动切换，需避免误触发。"
+  ],
+  "related_examples": ["examples/sillytavern-assets/completion-preset-format.json"],
+  "related_schemas": ["schemas/sillytavern-completion-preset.schema.json"]
+}

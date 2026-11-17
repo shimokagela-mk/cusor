@@ -1,0 +1,75 @@
+id: 60
+keys: []
+secondary_keys: []
+comment: 埃瑟尔德大陆魔物总览与实力层级
+content: |-
+  说完了冒险者这边，再说说魔物这边：
+
+  # 埃瑟尔德大陆魔物分类与实力层级
+
+  ## 层级一：常见野兽与低威胁魔物 (个体威胁：约相当于1-10级见习/熟练者)
+  举例：
+  [森林狼/荒原狼][巨鼠/洞穴蝙蝠][史莱姆][哥布林]
+
+  ## 层级二：区域掠食者与强化魔物 (个体威胁：约相当于10-30级正式职业者)
+  举例：
+  [座狼][石化蜥蜴][食人魔][鹰身女妖]
+
+  ## 层级三：精英魔物与亚龙种 (个体威胁：约相当于30-50级精英职业者，需小队应对)
+  举例：
+  [奇美拉][蝎尾狮[亚龙]
+  *战力评估: 一头成年双足飞龙，需要一支由至少两名Lv 40以上的精英战士/游侠和一名同等阶法师配合，才有较高胜算。*
+
+  ## 层级四：高等智慧魔物与古代灾兽 (个体威胁：约相当于50-70级大师/多名大师协同)
+  举例：
+  [成年真龙 (色彩龙为主)*[深渊魔物 (高阶)][古代树人/活化山脉]
+  *战力评估: 非个人武力所能抗衡，视为移动天灾，需要调动国家力量进行规避或仪式封印。*
+
+  ## 层级五：传说魔物与灭世级存在 (个体威胁：超越等级框架，需举国之力或传奇联盟)
+  举例：
+  [上古龙 (太古龙)][深渊恶魔君王 (记载于禁忌古籍)]等
+  *应对: 此类存在若降临，将不再是冒险者或军队的任务，而是整个大陆所有种族文明存续的考验，需要集结所有传奇力量、动用古代神器乃至祈求神祇干预。*
+
+  ## 通用分布规律与应对原则
+  1.  **距离文明越远，魔物越强**：城市、主要商路周边多为层级一、二魔物；荒野、深山、沼泽腹地可能出现层级三；层级四以上通常与世隔绝。
+  2.  **魔力富集区吸引魔物**：古代遗迹、地脉节点、星陨坑等地可能聚集更强或变异魔物。
+  3.  **魔物智慧影响威胁**：高层级魔物（如龙、高阶深渊魔物）拥有智慧，会制定策略、评估风险，远比同等力量的野兽危险。
+  4.  **军队与配合至上**：面对层级三及以上魔物，训练有素、配合默契的军队（弓弩方阵、重步兵矛墙、攻城器械）远比同数量的高级冒险者更有效、更可靠。冒险者小队的作用更多在于侦查、斩首、解决特殊问题或处理军队难以机动抵达的复杂环境威胁。
+constant: true
+selective: true
+insertion_order: 8
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: false
+  display_index: 64
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

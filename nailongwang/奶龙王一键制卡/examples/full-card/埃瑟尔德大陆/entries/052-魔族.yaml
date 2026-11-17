@@ -1,0 +1,64 @@
+id: 51
+keys:
+  - 魔族
+  - 深渊
+  - 地下
+  - 邪恶
+  - 黑暗
+secondary_keys: []
+comment: 魔族
+content: |-
+  **核心概览**：自称“深渊之子”的古老邪恶种族，在2000年前的“终焉黎明”战役（史称人魔大战）中被大陆各族联军击败后，并未灭绝，而是化整为零潜入大陆的阴影角落。他们形态各异，从保留类人外貌的“堕化者”到完全独特的“深渊魔物”都有，共同点是崇拜混沌与暗影之力，渴望毁灭现有秩序，将世界拖入永恒的黑暗。
+    **历史背景**：上古时期曾建立幅员辽阔的“深渊帝国”，后因侵略性扩张引发众怒。战败后，其主力被封印或驱逐至其他位面，残党潜伏下来，等待复仇之机。
+    **统治体系**：极端秘密的网状结构。最高层为传说中的“深渊议会”，由最强大的恶魔领主或堕化者组成，通过梦境低语、邪恶契约和隐秘符号传递指令。中层是分散的“腐化巢穴”或“邪教据点”，彼此独立运作，由“巢穴主”或“教长”控制。
+    **社会文化**：崇尚力量、狡诈与绝对服从。内部等级森严，通过吞噬同类或献祭晋升。有特殊的黑暗艺术和亵渎仪式。将其他所有智慧种族视为猎物或堕落素材。
+    **行动模式**：避免直接冲突。擅长渗透、腐化（诱惑凡人堕落）、制造内部混乱、召唤低阶魔物、以及进行禁忌的魔法实验。目标通常是削弱各族团结、窃取关键资源或神器、或在关键地点制造灾难。
+    **已知活动区域（推测）**：
+    - **幽暗地域深处**：与暗精灵可能有复杂关系（合作或奴役）。
+    - **被遗忘的古战场/遗迹**：利用残留的黑暗能量建立前哨。
+    - **各大城市阴影面**：通过邪教或影踪会等渠道渗透。
+    - **魔力紊乱之地**：如某些魔法紊流区或古老封印松动处。
+    **外交态势**：
+    - **绝对死敌**：与大陆所有地表文明（诺顿、洛瑟兰、矮人、精灵等）及圣光教会为世仇。
+    - **隐秘利用**：可能利用影踪会、某些疯狂学者或绝望者的野心。
+    - **复杂关系**：与黑岩堡地精（视其为可利用的混乱来源）和荒原氏族（可能诱惑其中极端分子）存在非正式接触。
+    - **未知**：与霜巨人、蜥蜴人等原始种族的关系不明，可能尝试腐化。
+    **当前威胁评估**：低可视度，但潜在危险性极高。大陆各族官方历史多将其描绘为已灭绝的传说，只有少数古老组织（如圣光教会高阶层、法师塔监管议会）保持警惕。
+constant: false
+selective: true
+insertion_order: 52
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: true
+  display_index: 55
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

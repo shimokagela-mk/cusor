@@ -1,0 +1,1846 @@
+{
+  "generated_at": "2026-06-03T20:36:58",
+  "scope": {
+    "entries_dir": "<PROJECT_ROOT>/奶龙王一键制卡/projects/少女前线/entries",
+    "tdoll_data_dir": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_tdoll_data",
+    "story_data_dir": "<PROJECT_ROOT>/奶龙王一键制卡/ref/gf_story_data",
+    "target_uid_min": 100,
+    "target_uid_max": 550,
+    "expected_target_count": 451,
+    "small_file_size_bytes": 2048,
+    "small_file_line_count": 50,
+    "valid_source_rule": "只统计文字剧情/文字对话：人形目录 10_剧情内容、10_剧情整理.json、10_剧情整理_完整.json，以及 gf_story_data 中命中人形名的剧情 JSON；不统计 09_语音列表、09_语音文件、图鉴、属性等普通资料。"
+  },
+  "summary": {
+    "target_entries": 451,
+    "small_entries": 60,
+    "small_entries_with_text_dialogue": 23,
+    "small_entries_missing_text_dialogue": 37,
+    "small_entries_with_tdoll_text_dialogue": 14,
+    "small_entries_with_story_dialogue": 21,
+    "story_json_files_scanned": 2434
+  },
+  "rows": [
+    {
+      "uid": 114,
+      "entry_file": "114-M&P9.yaml",
+      "tdoll_name": "M&P9",
+      "size_bytes": 1075,
+      "line_count": 44,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/01_HG_手枪/M&P9_★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/01_HG_手枪/M&P9_★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 122,
+      "entry_file": "122-Maxim 9.yaml",
+      "tdoll_name": "Maxim 9",
+      "size_bytes": 1058,
+      "line_count": 45,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/01_HG_手枪/Maxim 9_★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/01_HG_手枪/Maxim 9_★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 126,
+      "entry_file": "126-P10C.yaml",
+      "tdoll_name": "P10C",
+      "size_bytes": 1055,
+      "line_count": 44,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/01_HG_手枪/P10C_★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/01_HG_手枪/P10C_★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 127,
+      "entry_file": "127-P2000.yaml",
+      "tdoll_name": "P2000",
+      "size_bytes": 1053,
+      "line_count": 44,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/01_HG_手枪/P2000_★★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/01_HG_手枪/P2000_★★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 2,
+      "story_dialogue_matches": [
+        "ref/gf_story_data/batch67_dialogue.json",
+        "ref/gf_story_data/剧情内容/04_周年庆/04.01_未分节/04.01.034_No.24 PP-2000.json"
+      ],
+      "has_text_dialogue": true
+    },
+    {
+      "uid": 145,
+      "entry_file": "145-Unica 6.yaml",
+      "tdoll_name": "Unica 6",
+      "size_bytes": 1286,
+      "line_count": 47,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/01_HG_手枪/Unica 6_★★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/01_HG_手枪/Unica 6_★★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 147,
+      "entry_file": "147-VP9.yaml",
+      "tdoll_name": "VP9",
+      "size_bytes": 1252,
+      "line_count": 46,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/01_HG_手枪/VP9_★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/01_HG_手枪/VP9_★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 151,
+      "entry_file": "151-吉尔·斯汀雷.yaml",
+      "tdoll_name": "吉尔·斯汀雷",
+      "size_bytes": 1747,
+      "line_count": 47,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/01_HG_手枪/吉尔·斯汀雷_★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/01_HG_手枪/吉尔·斯汀雷_★/10_剧情内容/联动剧情/avgtxt_-32-2-1.json",
+        "ref/gf_tdoll_data/01_HG_手枪/吉尔·斯汀雷_★/10_剧情内容/联动剧情/avgtxt_-32-2-1.txt",
+        "ref/gf_tdoll_data/01_HG_手枪/吉尔·斯汀雷_★/10_剧情内容/联动剧情/avgtxt_-32-8-1.json",
+        "ref/gf_tdoll_data/01_HG_手枪/吉尔·斯汀雷_★/10_剧情内容/联动剧情/avgtxt_-32-8-1.txt",
+        "ref/gf_tdoll_data/01_HG_手枪/吉尔·斯汀雷_★/10_剧情整理.json",
+        "ref/gf_tdoll_data/01_HG_手枪/吉尔·斯汀雷_★/10_剧情整理_完整.json"
+      ],
+      "tdoll_text_dialogue_file_count": 6,
+      "tdoll_text_dialogue_has_content": true,
+      "story_dialogue_match_count": 6,
+      "story_dialogue_matches": [
+        "ref/gf_story_data/all_characters_dialogue.json",
+        "ref/gf_story_data/npc_dialogue.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.04_瓦尔哈拉/03.04.015_世上的最后一场雨 P1.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.04_瓦尔哈拉/03.04.016_世上的最后一场雨 P2.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.04_瓦尔哈拉/03.04.017_世上的最后一场雨 P3.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.04_瓦尔哈拉/03.04.024_酒保行动 7.json"
+      ],
+      "has_text_dialogue": true
+    },
+    {
+      "uid": 160,
+      "entry_file": "160-柯尔特M1851N.yaml",
+      "tdoll_name": "柯尔特M1851N",
+      "size_bytes": 1348,
+      "line_count": 47,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/01_HG_手枪/柯尔特M1851N_★★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/01_HG_手枪/柯尔特M1851N_★★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 170,
+      "entry_file": "170-艾薇塔.yaml",
+      "tdoll_name": "艾薇塔",
+      "size_bytes": 1305,
+      "line_count": 47,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/01_HG_手枪/艾薇塔_★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/01_HG_手枪/艾薇塔_★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 172,
+      "entry_file": "172-草薙素子.yaml",
+      "tdoll_name": "草薙素子",
+      "size_bytes": 1478,
+      "line_count": 47,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/01_HG_手枪/草薙素子_★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/01_HG_手枪/草薙素子_★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 176,
+      "entry_file": "176-诺爱尔.yaml",
+      "tdoll_name": "诺爱尔",
+      "size_bytes": 2230,
+      "line_count": 49,
+      "small_reasons": [
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/01_HG_手枪/诺爱尔_★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/01_HG_手枪/诺爱尔_★/10_剧情内容/联动剧情/avgtxt_-8-2-1.json",
+        "ref/gf_tdoll_data/01_HG_手枪/诺爱尔_★/10_剧情内容/联动剧情/avgtxt_-8-2-1.txt",
+        "ref/gf_tdoll_data/01_HG_手枪/诺爱尔_★/10_剧情内容/联动剧情/avgtxt_-8-3-1.json",
+        "ref/gf_tdoll_data/01_HG_手枪/诺爱尔_★/10_剧情内容/联动剧情/avgtxt_-8-3-1.txt",
+        "ref/gf_tdoll_data/01_HG_手枪/诺爱尔_★/10_剧情内容/联动剧情/avgtxt_-8-4-1.json",
+        "ref/gf_tdoll_data/01_HG_手枪/诺爱尔_★/10_剧情内容/联动剧情/avgtxt_-8-4-1.txt",
+        "ref/gf_tdoll_data/01_HG_手枪/诺爱尔_★/10_剧情整理.json",
+        "ref/gf_tdoll_data/01_HG_手枪/诺爱尔_★/10_剧情整理_完整.json"
+      ],
+      "tdoll_text_dialogue_file_count": 8,
+      "tdoll_text_dialogue_has_content": true,
+      "story_dialogue_match_count": 11,
+      "story_dialogue_matches": [
+        "ref/gf_story_data/all_characters_dialogue.json",
+        "ref/gf_story_data/batch67_dialogue.json",
+        "ref/gf_story_data/key_dialogue_condensed.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.01_猎兔行动/03.01.002_圣艾尔蒙 P2.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.01_猎兔行动/03.01.003_人偶歼灭 P1.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.01_猎兔行动/03.01.005_人偶歼灭 P3.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.01_猎兔行动/03.01.006_狩猎游戏 P1.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.01_猎兔行动/03.01.007_狩猎游戏 P2.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.01_猎兔行动/03.01.008_猎兔行动 P1.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.01_猎兔行动/03.01.009_猎兔行动 P2.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.01_猎兔行动/03.01.010_猎兔行动 P3.json"
+      ],
+      "has_text_dialogue": true
+    },
+    {
+      "uid": 178,
+      "entry_file": "178-赛伊·朝雾.yaml",
+      "tdoll_name": "赛伊·朝雾",
+      "size_bytes": 1334,
+      "line_count": 47,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/01_HG_手枪/赛伊·朝雾_★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/01_HG_手枪/赛伊·朝雾_★/10_剧情内容/联动剧情/avgtxt_-32-2-1.json",
+        "ref/gf_tdoll_data/01_HG_手枪/赛伊·朝雾_★/10_剧情内容/联动剧情/avgtxt_-32-2-1.txt",
+        "ref/gf_tdoll_data/01_HG_手枪/赛伊·朝雾_★/10_剧情内容/联动剧情/avgtxt_-32-6-1.json",
+        "ref/gf_tdoll_data/01_HG_手枪/赛伊·朝雾_★/10_剧情内容/联动剧情/avgtxt_-32-6-1.txt",
+        "ref/gf_tdoll_data/01_HG_手枪/赛伊·朝雾_★/10_剧情整理.json",
+        "ref/gf_tdoll_data/01_HG_手枪/赛伊·朝雾_★/10_剧情整理_完整.json"
+      ],
+      "tdoll_text_dialogue_file_count": 6,
+      "tdoll_text_dialogue_has_content": true,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": true
+    },
+    {
+      "uid": 186,
+      "entry_file": "186-82式.yaml",
+      "tdoll_name": "82式",
+      "size_bytes": 1079,
+      "line_count": 45,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/02_SMG_冲锋枪/82式_★★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/02_SMG_冲锋枪/82式_★★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 188,
+      "entry_file": "188-APC9K.yaml",
+      "tdoll_name": "APC9K",
+      "size_bytes": 1060,
+      "line_count": 44,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/02_SMG_冲锋枪/APC9K_★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/02_SMG_冲锋枪/APC9K_★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 201,
+      "entry_file": "201-Jatimatic.yaml",
+      "tdoll_name": "Jatimatic",
+      "size_bytes": 1083,
+      "line_count": 44,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/02_SMG_冲锋枪/Jatimatic_★★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/02_SMG_冲锋枪/Jatimatic_★★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 2,
+      "story_dialogue_matches": [
+        "ref/gf_story_data/batch67_dialogue.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.28_慢休克/01.28.034_F1 红色骑士.json"
+      ],
+      "has_text_dialogue": true
+    },
+    {
+      "uid": 217,
+      "entry_file": "217-P50.yaml",
+      "tdoll_name": "P50",
+      "size_bytes": 1053,
+      "line_count": 44,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/02_SMG_冲锋枪/P50_★★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/02_SMG_冲锋枪/P50_★★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 244,
+      "entry_file": "244-wz.63.yaml",
+      "tdoll_name": "wz.63",
+      "size_bytes": 886,
+      "line_count": 44,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/02_SMG_冲锋枪/wz.63_★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/02_SMG_冲锋枪/wz.63_★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 248,
+      "entry_file": "248-多萝西·海兹.yaml",
+      "tdoll_name": "多萝西·海兹",
+      "size_bytes": 683,
+      "line_count": 45,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/02_SMG_冲锋枪/多萝西·海兹_★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/02_SMG_冲锋枪/多萝西·海兹_★/10_剧情内容/联动剧情/avgtxt_-32-3-1.json",
+        "ref/gf_tdoll_data/02_SMG_冲锋枪/多萝西·海兹_★/10_剧情内容/联动剧情/avgtxt_-32-3-1.txt",
+        "ref/gf_tdoll_data/02_SMG_冲锋枪/多萝西·海兹_★/10_剧情内容/联动剧情/avgtxt_-32-6-1.json",
+        "ref/gf_tdoll_data/02_SMG_冲锋枪/多萝西·海兹_★/10_剧情内容/联动剧情/avgtxt_-32-6-1.txt",
+        "ref/gf_tdoll_data/02_SMG_冲锋枪/多萝西·海兹_★/10_剧情内容/联动剧情/avgtxt_-32-8-1.json",
+        "ref/gf_tdoll_data/02_SMG_冲锋枪/多萝西·海兹_★/10_剧情内容/联动剧情/avgtxt_-32-8-1.txt",
+        "ref/gf_tdoll_data/02_SMG_冲锋枪/多萝西·海兹_★/10_剧情整理.json",
+        "ref/gf_tdoll_data/02_SMG_冲锋枪/多萝西·海兹_★/10_剧情整理_完整.json"
+      ],
+      "tdoll_text_dialogue_file_count": 8,
+      "tdoll_text_dialogue_has_content": true,
+      "story_dialogue_match_count": 3,
+      "story_dialogue_matches": [
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.04_瓦尔哈拉/03.04.003_青春期 P1.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.04_瓦尔哈拉/03.04.005_先驱者 P1.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.04_瓦尔哈拉/03.04.011_公众演讲恐惧症 P1.json"
+      ],
+      "has_text_dialogue": true
+    },
+    {
+      "uid": 253,
+      "entry_file": "253-星川莉莉.yaml",
+      "tdoll_name": "星川莉莉",
+      "size_bytes": 652,
+      "line_count": 45,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/02_SMG_冲锋枪/星川莉莉_★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/02_SMG_冲锋枪/星川莉莉_★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 33,
+      "story_dialogue_matches": [
+        "ref/gf_story_data/batch67_dialogue.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.001_来自格里芬的你.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.007_第一天·中午.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.010_源樱,星川莉莉 便利店 晚.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.013_第一天·夜间.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.018_星川莉莉 快餐店 早.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.021_水野爱,星川莉莉 练舞厅 晚.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.025_第二天·夜间.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.027_水野爱,星川莉莉 练舞厅 早.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.034_第三天·夜间.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.035_二阶堂咲,绀野纯子,星川莉莉 练歌房 早.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.040_星川莉莉 练舞厅 晚.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.044_第四天·夜间.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.046_绀野纯子,星川莉莉 练舞厅 早.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.055_星川莉莉 快餐店 晚.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.056_第五天·夜间.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.058_水野爱,星川莉莉 练舞厅 早.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.065_第六天·夜间.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.066_绀野纯子,星川莉莉 练歌房 早.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.071_第七天·中午.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.072_笑与泪的夜.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.074_乘风而起的夜.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.075_灰白色的夜.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.076_松动的背景板.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.077_歌声不停，舞步不休.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.079_加油，打工人！.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.080_巅峰！狂飙！.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.097_星川莉莉 完美陌生人.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.098_星川莉莉 王牌特工.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.099_星川莉莉 长日留痕.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.101_山田多惠 赠礼者.json",
+        "ref/gf_story_data/剧情内容_完整.json",
+        "ref/gf_story_data/剧情索引.json"
+      ],
+      "has_text_dialogue": true
+    },
+    {
+      "uid": 255,
+      "entry_file": "255-欧文.yaml",
+      "tdoll_name": "欧文",
+      "size_bytes": 601,
+      "line_count": 45,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/02_SMG_冲锋枪/欧文_★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/02_SMG_冲锋枪/欧文_★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 265,
+      "entry_file": "265-黑卡蒂.yaml",
+      "tdoll_name": "黑卡蒂",
+      "size_bytes": 630,
+      "line_count": 45,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/02_SMG_冲锋枪/黑卡蒂_★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/02_SMG_冲锋枪/黑卡蒂_★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 275,
+      "entry_file": "275-HTI.yaml",
+      "tdoll_name": "HTI",
+      "size_bytes": 572,
+      "line_count": 44,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/03_RF_步枪/HTI_★★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/03_RF_步枪/HTI_★★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 276,
+      "entry_file": "276-Hecate II.yaml",
+      "tdoll_name": "Hecate II",
+      "size_bytes": 619,
+      "line_count": 46,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/03_RF_步枪/Hecate II_★★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/03_RF_步枪/Hecate II_★★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 282,
+      "entry_file": "282-M110.yaml",
+      "tdoll_name": "M110",
+      "size_bytes": 580,
+      "line_count": 44,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/03_RF_步枪/M110_★★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/03_RF_步枪/M110_★★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 290,
+      "entry_file": "290-Mini-14.yaml",
+      "tdoll_name": "Mini-14",
+      "size_bytes": 597,
+      "line_count": 45,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/03_RF_步枪/Mini-14_★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/03_RF_步枪/Mini-14_★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 298,
+      "entry_file": "298-QBU-191.yaml",
+      "tdoll_name": "QBU-191",
+      "size_bytes": 600,
+      "line_count": 45,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/03_RF_步枪/QBU-191_★★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/03_RF_步枪/QBU-191_★★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 3,
+      "story_dialogue_matches": [
+        "ref/gf_story_data/batch67_dialogue.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.28_慢休克/01.28.034_F1 红色骑士.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.28_慢休克/01.28.045_F17 黑色十字.json"
+      ],
+      "has_text_dialogue": true
+    },
+    {
+      "uid": 330,
+      "entry_file": "330-博斯.yaml",
+      "tdoll_name": "博斯",
+      "size_bytes": 602,
+      "line_count": 45,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/03_RF_步枪/博斯_★★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/03_RF_步枪/博斯_★★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 333,
+      "entry_file": "333-史黛拉·星井.yaml",
+      "tdoll_name": "史黛拉·星井",
+      "size_bytes": 658,
+      "line_count": 45,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/03_RF_步枪/史黛拉·星井_★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/03_RF_步枪/史黛拉·星井_★/10_剧情内容/联动剧情/avgtxt_-32-2-1.json",
+        "ref/gf_tdoll_data/03_RF_步枪/史黛拉·星井_★/10_剧情内容/联动剧情/avgtxt_-32-2-1.txt",
+        "ref/gf_tdoll_data/03_RF_步枪/史黛拉·星井_★/10_剧情内容/联动剧情/avgtxt_-32-3-1.json",
+        "ref/gf_tdoll_data/03_RF_步枪/史黛拉·星井_★/10_剧情内容/联动剧情/avgtxt_-32-3-1.txt",
+        "ref/gf_tdoll_data/03_RF_步枪/史黛拉·星井_★/10_剧情内容/联动剧情/avgtxt_-32-6-1.json",
+        "ref/gf_tdoll_data/03_RF_步枪/史黛拉·星井_★/10_剧情内容/联动剧情/avgtxt_-32-6-1.txt",
+        "ref/gf_tdoll_data/03_RF_步枪/史黛拉·星井_★/10_剧情内容/联动剧情/avgtxt_-32-8-1.json",
+        "ref/gf_tdoll_data/03_RF_步枪/史黛拉·星井_★/10_剧情内容/联动剧情/avgtxt_-32-8-1.txt",
+        "ref/gf_tdoll_data/03_RF_步枪/史黛拉·星井_★/10_剧情整理.json",
+        "ref/gf_tdoll_data/03_RF_步枪/史黛拉·星井_★/10_剧情整理_完整.json"
+      ],
+      "tdoll_text_dialogue_file_count": 10,
+      "tdoll_text_dialogue_has_content": true,
+      "story_dialogue_match_count": 7,
+      "story_dialogue_matches": [
+        "ref/gf_story_data/batch67_dialogue.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.04_瓦尔哈拉/03.04.003_青春期 P1.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.04_瓦尔哈拉/03.04.004_青春期 P2.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.04_瓦尔哈拉/03.04.005_先驱者 P1.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.04_瓦尔哈拉/03.04.006_先驱者 P2.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.04_瓦尔哈拉/03.04.009_鸡胸肉 P1.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.04_瓦尔哈拉/03.04.012_公众演讲恐惧症 P2.json"
+      ],
+      "has_text_dialogue": true
+    },
+    {
+      "uid": 345,
+      "entry_file": "345-莉可.yaml",
+      "tdoll_name": "莉可",
+      "size_bytes": 993,
+      "line_count": 42,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/03_RF_步枪/莉可_★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/03_RF_步枪/莉可_★/10_剧情内容/联动剧情/avgtxt_-38-3-1.json",
+        "ref/gf_tdoll_data/03_RF_步枪/莉可_★/10_剧情内容/联动剧情/avgtxt_-38-3-1.txt",
+        "ref/gf_tdoll_data/03_RF_步枪/莉可_★/10_剧情内容/联动剧情/avgtxt_-38-3-3.json",
+        "ref/gf_tdoll_data/03_RF_步枪/莉可_★/10_剧情内容/联动剧情/avgtxt_-38-3-3.txt",
+        "ref/gf_tdoll_data/03_RF_步枪/莉可_★/10_剧情内容/联动剧情/avgtxt_-38-7-1.json",
+        "ref/gf_tdoll_data/03_RF_步枪/莉可_★/10_剧情内容/联动剧情/avgtxt_-38-7-1.txt",
+        "ref/gf_tdoll_data/03_RF_步枪/莉可_★/10_剧情整理.json",
+        "ref/gf_tdoll_data/03_RF_步枪/莉可_★/10_剧情整理_完整.json"
+      ],
+      "tdoll_text_dialogue_file_count": 8,
+      "tdoll_text_dialogue_has_content": true,
+      "story_dialogue_match_count": 15,
+      "story_dialogue_matches": [
+        "ref/gf_story_data/batch67_dialogue.json",
+        "ref/gf_story_data/npc_dialogue.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.05_梦间剧/03.05.002_万花筒.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.05_梦间剧/03.05.007_薄暮的星星.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.05_梦间剧/03.05.009_多幕剧Ⅰ.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.05_梦间剧/03.05.010_多幕剧Ⅱ P1.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.05_梦间剧/03.05.011_多幕剧Ⅱ P2.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.05_梦间剧/03.05.012_多幕剧Ⅱ P3.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.05_梦间剧/03.05.013_幸福的魔法.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.05_梦间剧/03.05.016_不会说谎的匹诺曹Ⅱ.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.05_梦间剧/03.05.019_曾经的庭院Ⅱ.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.05_梦间剧/03.05.020_Hai capito P1.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.05_梦间剧/03.05.023_完美和声.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.099_星川莉莉 长日留痕.json",
+        "ref/gf_story_data/剧情内容/06_心智升级/06.09_PP-19/06.09.004_PP-19Mod P4.json"
+      ],
+      "has_text_dialogue": true
+    },
+    {
+      "uid": 351,
+      "entry_file": "351-马提尼亨利.yaml",
+      "tdoll_name": "马提尼亨利",
+      "size_bytes": 686,
+      "line_count": 46,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/03_RF_步枪/马提尼亨利_★★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/03_RF_步枪/马提尼亨利_★★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 380,
+      "entry_file": "380-CM901.yaml",
+      "tdoll_name": "CM901",
+      "size_bytes": 2028,
+      "line_count": 86,
+      "small_reasons": [
+        "size<2048"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/04_AR_突击步枪/CM901_★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/04_AR_突击步枪/CM901_★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 385,
+      "entry_file": "385-EF88.yaml",
+      "tdoll_name": "EF88",
+      "size_bytes": 583,
+      "line_count": 45,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/04_AR_突击步枪/EF88_★★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/04_AR_突击步枪/EF88_★★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 398,
+      "entry_file": "398-HK416.yaml",
+      "tdoll_name": "HK416",
+      "size_bytes": 1253,
+      "line_count": 46,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-10-1-1.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-10-1-1.txt",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-10-2-1.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-10-2-1.txt",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-10-4-1.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-10-4-1.txt",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-11-1-1.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-11-1-1.txt",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-11-2-1.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-11-2-1.txt",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-11-3-1.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-11-3-1.txt",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-11-4-1.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-11-4-1.txt",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-12-2-1.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-12-2-1.txt",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-12-3-1.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-12-3-1.txt",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-13-1-1.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-13-1-1.txt",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-17-11-1.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-17-11-1.txt",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-17-13-1.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-17-13-1.txt",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-18-3-1.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-18-3-1.txt",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-18-4-1.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-18-4-1.txt",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-18-5-1.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-18-5-1.txt",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-24-15-1.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-24-15-1.txt",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-25-1-1.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-25-1-1.txt",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-25-10-1.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-25-10-1.txt",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-25-11-1.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-25-11-1.txt",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-25-2-1.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-25-2-1.txt",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-25-3-1.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-25-3-1.txt",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-25-4-1.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-25-4-1.txt",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-25-5-1.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-25-5-1.txt",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-25-6-1.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-25-6-1.txt",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-25-7-1.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK416_★★★★★/10_剧情内容/主线剧情/avgtxt_-25-7-1.txt"
+      ],
+      "tdoll_text_dialogue_file_count": 200,
+      "tdoll_text_dialogue_has_content": true,
+      "story_dialogue_match_count": 50,
+      "story_dialogue_matches": [
+        "ref/gf_story_data/all_characters_dialogue.json",
+        "ref/gf_story_data/batch5_dialogue.json",
+        "ref/gf_story_data/batch67_dialogue.json",
+        "ref/gf_story_data/key_dialogue_condensed.json",
+        "ref/gf_story_data/npc_dialogue.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.04_四 苏醒/01.04.002_协助佣兵 P2.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.04_四 苏醒/01.04.006_突破阵线 P2.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.04_四 苏醒/01.04.008_搜索同伴 P2.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.07_魔方行动+/01.07.001_七阶谜题 P1.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.07_魔方行动+/01.07.002_七阶谜题 P2.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.07_魔方行动+/01.07.003_角先破解 P1.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.07_魔方行动+/01.07.004_角先破解 P2.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.07_魔方行动+/01.07.005_角先破解 P3.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.07_魔方行动+/01.07.006_层先调换 P1.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.07_魔方行动+/01.07.007_层先调换 P2.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.07_魔方行动+/01.07.008_层先调换 P3.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.07_魔方行动+/01.07.009_次面崩溃 P1.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.07_魔方行动+/01.07.010_次面崩溃 P2.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.07_魔方行动+/01.07.011_次面崩溃 P3.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.10_失温症/01.10.017_灯火管制Ⅰ P2.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.10_失温症/01.10.018_灯火管制Ⅱ P1.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.10_失温症/01.10.019_灯火管制Ⅱ P2.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.10_失温症/01.10.020_灯火管制Ⅲ P1.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.10_失温症/01.10.021_灯火管制Ⅲ P2.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.10_失温症/01.10.022_灯火管制Ⅳ P1.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.10_失温症/01.10.023_灯火管制Ⅳ P2.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.10_失温症/01.10.024_灯火管制Ⅳ P3.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.10_失温症/01.10.025_灯火管制Ⅳ P4.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.10_失温症/01.10.027_归乡行动Ⅰ P2.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.10_失温症/01.10.028_归乡行动Ⅱ P1.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.10_失温症/01.10.029_归乡行动Ⅱ P2.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.10_失温症/01.10.030_归乡行动Ⅲ P1.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.10_失温症/01.10.031_归乡行动Ⅲ P2.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.10_失温症/01.10.034_归乡行动Ⅳ P3.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.12_深层映射/01.12.001_认知迷云Ⅰ P1.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.12_深层映射/01.12.002_认知迷云Ⅰ P2.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.12_深层映射/01.12.003_认知迷云Ⅱ P1.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.12_深层映射/01.12.004_认知迷云Ⅱ P2.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.12_深层映射/01.12.008_认知迷云Ⅳ P1.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.12_深层映射/01.12.009_认知迷云Ⅳ P2.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.12_深层映射/01.12.010_认知迷云Ⅳ P3.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.12_深层映射/01.12.011_双曲函数Ⅰ P1.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.12_深层映射/01.12.012_双曲函数Ⅰ P2.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.12_深层映射/01.12.013_双曲函数Ⅱ P1.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.12_深层映射/01.12.014_双曲函数Ⅱ P2.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.12_深层映射/01.12.015_双曲函数Ⅲ P1.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.12_深层映射/01.12.016_双曲函数Ⅲ P2.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.12_深层映射/01.12.017_双曲函数Ⅳ P1.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.12_深层映射/01.12.018_双曲函数Ⅳ P2.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.12_深层映射/01.12.019_双曲函数Ⅳ P3.json"
+      ],
+      "has_text_dialogue": true
+    },
+    {
+      "uid": 399,
+      "entry_file": "399-HK433.yaml",
+      "tdoll_name": "HK433",
+      "size_bytes": 591,
+      "line_count": 45,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK433_★★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/04_AR_突击步枪/HK433_★★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 400,
+      "entry_file": "400-IA2.yaml",
+      "tdoll_name": "IA2",
+      "size_bytes": 575,
+      "line_count": 45,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/04_AR_突击步枪/IA2_★★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/04_AR_突击步枪/IA2_★★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 410,
+      "entry_file": "410-MSBS.yaml",
+      "tdoll_name": "MSBS",
+      "size_bytes": 580,
+      "line_count": 45,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/04_AR_突击步枪/MSBS_★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/04_AR_突击步枪/MSBS_★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 411,
+      "entry_file": "411-Mk.18.yaml",
+      "tdoll_name": "Mk.18",
+      "size_bytes": 598,
+      "line_count": 46,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/04_AR_突击步枪/Mk.18_★★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/04_AR_突击步枪/Mk.18_★★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 434,
+      "entry_file": "434-VRB.yaml",
+      "tdoll_name": "VRB",
+      "size_bytes": 575,
+      "line_count": 45,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/04_AR_突击步枪/VRB_★★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/04_AR_突击步枪/VRB_★★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 436,
+      "entry_file": "436-XCR.yaml",
+      "tdoll_name": "XCR",
+      "size_bytes": 572,
+      "line_count": 45,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/04_AR_突击步枪/XCR_★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/04_AR_突击步枪/XCR_★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 442,
+      "entry_file": "442-无量塔姬子.yaml",
+      "tdoll_name": "无量塔姬子",
+      "size_bytes": 668,
+      "line_count": 46,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/04_AR_突击步枪/无量塔姬子_★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/04_AR_突击步枪/无量塔姬子_★/10_剧情内容/联动剧情/avgtxt_-15-1-1.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/无量塔姬子_★/10_剧情内容/联动剧情/avgtxt_-15-1-1.txt",
+        "ref/gf_tdoll_data/04_AR_突击步枪/无量塔姬子_★/10_剧情内容/联动剧情/avgtxt_-15-2-1.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/无量塔姬子_★/10_剧情内容/联动剧情/avgtxt_-15-2-1.txt",
+        "ref/gf_tdoll_data/04_AR_突击步枪/无量塔姬子_★/10_剧情内容/联动剧情/avgtxt_-15-3-1.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/无量塔姬子_★/10_剧情内容/联动剧情/avgtxt_-15-3-1.txt",
+        "ref/gf_tdoll_data/04_AR_突击步枪/无量塔姬子_★/10_剧情内容/联动剧情/avgtxt_-15-4-1.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/无量塔姬子_★/10_剧情内容/联动剧情/avgtxt_-15-4-1.txt",
+        "ref/gf_tdoll_data/04_AR_突击步枪/无量塔姬子_★/10_剧情整理.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/无量塔姬子_★/10_剧情整理_完整.json"
+      ],
+      "tdoll_text_dialogue_file_count": 10,
+      "tdoll_text_dialogue_has_content": true,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": true
+    },
+    {
+      "uid": 443,
+      "entry_file": "443-水野爱.yaml",
+      "tdoll_name": "水野爱",
+      "size_bytes": 628,
+      "line_count": 46,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/04_AR_突击步枪/水野爱_★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/04_AR_突击步枪/水野爱_★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 36,
+      "story_dialogue_matches": [
+        "ref/gf_story_data/batch67_dialogue.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.001_来自格里芬的你.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.003_水野爱 练舞厅 早.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.007_第一天·中午.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.011_水野爱,绀野纯子 浴场 晚.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.013_第一天·夜间.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.021_水野爱,星川莉莉 练舞厅 晚.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.025_第二天·夜间.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.027_水野爱,星川莉莉 练舞厅 早.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.034_第三天·夜间.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.036_水野爱,夕雾,山田多惠 练舞厅 早.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.041_山田多惠,夕雾 便利店 晚.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.042_水野爱,绀野纯子 浴场 晚.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.044_第四天·夜间.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.045_源樱,水野爱 练歌房 早.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.053_水野爱,绀野纯子 便利店 晚.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.056_第五天·夜间.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.058_水野爱,星川莉莉 练舞厅 早.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.065_第六天·夜间.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.067_二阶堂咲,水野爱 练舞厅 早.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.071_第七天·中午.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.072_笑与泪的夜.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.074_乘风而起的夜.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.075_灰白色的夜.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.076_松动的背景板.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.077_歌声不停，舞步不休.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.078_肩与肩的距离.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.079_加油，打工人！.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.080_巅峰！狂飙！.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.081_灵感！泉涌！.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.088_水野爱 雨间庭.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.089_水野爱 月见海.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.090_水野爱 闪耀之爱.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.101_山田多惠 赠礼者.json",
+        "ref/gf_story_data/剧情内容_完整.json",
+        "ref/gf_story_data/剧情索引.json"
+      ],
+      "has_text_dialogue": true
+    },
+    {
+      "uid": 444,
+      "entry_file": "444-江崎普林.yaml",
+      "tdoll_name": "江崎普林",
+      "size_bytes": 655,
+      "line_count": 46,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/04_AR_突击步枪/江崎普林_★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/04_AR_突击步枪/江崎普林_★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 445,
+      "entry_file": "445-特工416.yaml",
+      "tdoll_name": "特工416",
+      "size_bytes": 624,
+      "line_count": 46,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/04_AR_突击步枪/特工416_★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/04_AR_突击步枪/特工416_★/10_剧情内容/联动剧情/avgtxt_-43-5-2.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/特工416_★/10_剧情内容/联动剧情/avgtxt_-43-5-2.txt",
+        "ref/gf_tdoll_data/04_AR_突击步枪/特工416_★/10_剧情整理.json",
+        "ref/gf_tdoll_data/04_AR_突击步枪/特工416_★/10_剧情整理_完整.json"
+      ],
+      "tdoll_text_dialogue_file_count": 4,
+      "tdoll_text_dialogue_has_content": true,
+      "story_dialogue_match_count": 2,
+      "story_dialogue_matches": [
+        "ref/gf_story_data/batch67_dialogue.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.06_暗金潮/03.06.029_1_10撤离点.json"
+      ],
+      "has_text_dialogue": true
+    },
+    {
+      "uid": 446,
+      "entry_file": "446-绀野纯子.yaml",
+      "tdoll_name": "绀野纯子",
+      "size_bytes": 655,
+      "line_count": 46,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/04_AR_突击步枪/绀野纯子_★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/04_AR_突击步枪/绀野纯子_★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 35,
+      "story_dialogue_matches": [
+        "ref/gf_story_data/batch67_dialogue.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.001_来自格里芬的你.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.002_源樱,绀野纯子 练歌房 早.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.007_第一天·中午.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.011_水野爱,绀野纯子 浴场 晚.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.013_第一天·夜间.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.017_绀野纯子 浴场 早.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.020_绀野纯子,山田多惠 练歌房 晚.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.025_第二天·夜间.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.026_源樱,绀野纯子 练歌房 早.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.034_第三天·夜间.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.035_二阶堂咲,绀野纯子,星川莉莉 练歌房 早.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.042_水野爱,绀野纯子 浴场 晚.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.044_第四天·夜间.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.046_绀野纯子,星川莉莉 练舞厅 早.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.053_水野爱,绀野纯子 便利店 晚.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.056_第五天·夜间.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.057_源樱,绀野纯子 练歌房 早.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.065_第六天·夜间.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.066_绀野纯子,星川莉莉 练歌房 早.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.071_第七天·中午.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.072_笑与泪的夜.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.074_乘风而起的夜.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.075_灰白色的夜.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.076_松动的背景板.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.077_歌声不停，舞步不休.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.078_肩与肩的距离.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.079_加油，打工人！.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.080_巅峰！狂飙！.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.091_绀野纯子 共在异乡为异客.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.092_绀野纯子 明月何年初照人.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.093_绀野纯子 烟波相望各西东.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.101_山田多惠 赠礼者.json",
+        "ref/gf_story_data/剧情内容_完整.json",
+        "ref/gf_story_data/剧情索引.json"
+      ],
+      "has_text_dialogue": true
+    },
+    {
+      "uid": 450,
+      "entry_file": "450-贝奥武夫.yaml",
+      "tdoll_name": "贝奥武夫",
+      "size_bytes": 657,
+      "line_count": 46,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/04_AR_突击步枪/贝奥武夫_★★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/04_AR_突击步枪/贝奥武夫_★★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 460,
+      "entry_file": "460-FM24.yaml",
+      "tdoll_name": "FM24",
+      "size_bytes": 583,
+      "line_count": 45,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/05_MG_机枪/FM24_★★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/05_MG_机枪/FM24_★★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 465,
+      "entry_file": "465-LAMG.yaml",
+      "tdoll_name": "LAMG",
+      "size_bytes": 583,
+      "line_count": 45,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/05_MG_机枪/LAMG_★★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/05_MG_机枪/LAMG_★★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 8,
+      "story_dialogue_matches": [
+        "ref/gf_story_data/M4A1_complete_dialogue.json",
+        "ref/gf_story_data/batch67_dialogue.json",
+        "ref/gf_story_data/npc_dialogue.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.28_慢休克/01.28.011_SUM 天鹅，第九组第一号.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.28_慢休克/01.28.012_SUM 蓝色房间里的阳光.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.28_慢休克/01.28.013_SUM 晚祷.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.28_慢休克/01.28.014_SUM 被风吹散.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.28_慢休克/01.28.033_L8 镜前的少女.json"
+      ],
+      "has_text_dialogue": true
+    },
+    {
+      "uid": 470,
+      "entry_file": "470-M1919A4.yaml",
+      "tdoll_name": "M1919A4",
+      "size_bytes": 2046,
+      "line_count": 89,
+      "small_reasons": [
+        "size<2048"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/05_MG_机枪/M1919A4_★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/05_MG_机枪/M1919A4_★★★/10_剧情内容/周年庆/avgtxt_anniversary_80.json",
+        "ref/gf_tdoll_data/05_MG_机枪/M1919A4_★★★/10_剧情内容/周年庆/avgtxt_anniversary_80.txt",
+        "ref/gf_tdoll_data/05_MG_机枪/M1919A4_★★★/10_剧情内容/心智升级/avgtxt_memoir_91_1.json",
+        "ref/gf_tdoll_data/05_MG_机枪/M1919A4_★★★/10_剧情内容/心智升级/avgtxt_memoir_91_1.txt",
+        "ref/gf_tdoll_data/05_MG_机枪/M1919A4_★★★/10_剧情内容/心智升级/avgtxt_memoir_91_3.json",
+        "ref/gf_tdoll_data/05_MG_机枪/M1919A4_★★★/10_剧情内容/心智升级/avgtxt_memoir_91_3.txt",
+        "ref/gf_tdoll_data/05_MG_机枪/M1919A4_★★★/10_剧情内容/心智升级/avgtxt_memoir_91_4.json",
+        "ref/gf_tdoll_data/05_MG_机枪/M1919A4_★★★/10_剧情内容/心智升级/avgtxt_memoir_91_4.txt",
+        "ref/gf_tdoll_data/05_MG_机枪/M1919A4_★★★/10_剧情内容/笔记薄/avgtxt_skin_1.json",
+        "ref/gf_tdoll_data/05_MG_机枪/M1919A4_★★★/10_剧情内容/笔记薄/avgtxt_skin_1.txt",
+        "ref/gf_tdoll_data/05_MG_机枪/M1919A4_★★★/10_剧情内容/笔记薄/avgtxt_skin_11.json",
+        "ref/gf_tdoll_data/05_MG_机枪/M1919A4_★★★/10_剧情内容/笔记薄/avgtxt_skin_11.txt",
+        "ref/gf_tdoll_data/05_MG_机枪/M1919A4_★★★/10_剧情内容/笔记薄/avgtxt_skin_5.json",
+        "ref/gf_tdoll_data/05_MG_机枪/M1919A4_★★★/10_剧情内容/笔记薄/avgtxt_skin_5.txt",
+        "ref/gf_tdoll_data/05_MG_机枪/M1919A4_★★★/10_剧情内容/笔记薄/avgtxt_skin_7.json",
+        "ref/gf_tdoll_data/05_MG_机枪/M1919A4_★★★/10_剧情内容/笔记薄/avgtxt_skin_7.txt",
+        "ref/gf_tdoll_data/05_MG_机枪/M1919A4_★★★/10_剧情内容/笔记薄/avgtxt_skin_8.json",
+        "ref/gf_tdoll_data/05_MG_机枪/M1919A4_★★★/10_剧情内容/笔记薄/avgtxt_skin_8.txt",
+        "ref/gf_tdoll_data/05_MG_机枪/M1919A4_★★★/10_剧情内容/笔记薄/avgtxt_skin_9.json",
+        "ref/gf_tdoll_data/05_MG_机枪/M1919A4_★★★/10_剧情内容/笔记薄/avgtxt_skin_9.txt",
+        "ref/gf_tdoll_data/05_MG_机枪/M1919A4_★★★/10_剧情整理.json",
+        "ref/gf_tdoll_data/05_MG_机枪/M1919A4_★★★/10_剧情整理_完整.json"
+      ],
+      "tdoll_text_dialogue_file_count": 22,
+      "tdoll_text_dialogue_has_content": true,
+      "story_dialogue_match_count": 13,
+      "story_dialogue_matches": [
+        "ref/gf_story_data/all_characters_dialogue.json",
+        "ref/gf_story_data/batch67_dialogue.json",
+        "ref/gf_story_data/剧情内容/04_周年庆/04.01_未分节/04.01.086_No.80 M1919A4.json",
+        "ref/gf_story_data/剧情内容/06_心智升级/06.46_MP-446/06.46.001_MP-446Mod P1.json",
+        "ref/gf_story_data/剧情内容/06_心智升级/06.46_MP-446/06.46.003_MP-446Mod P3.json",
+        "ref/gf_story_data/剧情内容/06_心智升级/06.46_MP-446/06.46.004_MP-446Mod P4.json",
+        "ref/gf_story_data/剧情内容/07_笔记薄/07.01_万圣狂欢/07.01.001_马卡洛夫-南瓜熊熊.json",
+        "ref/gf_story_data/剧情内容/07_笔记薄/07.01_万圣狂欢/07.01.005_春田-古典派女巫.json",
+        "ref/gf_story_data/剧情内容/07_笔记薄/07.01_万圣狂欢/07.01.007_M1919A4-卡蜜拉.json",
+        "ref/gf_story_data/剧情内容/07_笔记薄/07.01_万圣狂欢/07.01.009_G11-僵尸家里蹲.json",
+        "ref/gf_story_data/剧情内容/07_笔记薄/07.01_万圣狂欢/07.01.010_64式-异邦魔女.json",
+        "ref/gf_story_data/剧情内容_完整.json",
+        "ref/gf_story_data/剧情索引.json"
+      ],
+      "has_text_dialogue": true
+    },
+    {
+      "uid": 473,
+      "entry_file": "473-M2HB.yaml",
+      "tdoll_name": "M2HB",
+      "size_bytes": 2022,
+      "line_count": 91,
+      "small_reasons": [
+        "size<2048"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/05_MG_机枪/M2HB_★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/05_MG_机枪/M2HB_★★★/10_剧情内容/周年庆/avgtxt_anniversary_77.json",
+        "ref/gf_tdoll_data/05_MG_机枪/M2HB_★★★/10_剧情内容/周年庆/avgtxt_anniversary_77.txt",
+        "ref/gf_tdoll_data/05_MG_机枪/M2HB_★★★/10_剧情整理.json",
+        "ref/gf_tdoll_data/05_MG_机枪/M2HB_★★★/10_剧情整理_完整.json"
+      ],
+      "tdoll_text_dialogue_file_count": 4,
+      "tdoll_text_dialogue_has_content": true,
+      "story_dialogue_match_count": 4,
+      "story_dialogue_matches": [
+        "ref/gf_story_data/batch67_dialogue.json",
+        "ref/gf_story_data/剧情内容/04_周年庆/04.01_未分节/04.01.083_No.77 M2HB.json",
+        "ref/gf_story_data/剧情内容_完整.json",
+        "ref/gf_story_data/剧情索引.json"
+      ],
+      "has_text_dialogue": true
+    },
+    {
+      "uid": 475,
+      "entry_file": "475-MG15.yaml",
+      "tdoll_name": "MG15",
+      "size_bytes": 580,
+      "line_count": 45,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/05_MG_机枪/MG15_★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/05_MG_机枪/MG15_★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 492,
+      "entry_file": "492-XM556.yaml",
+      "tdoll_name": "XM556",
+      "size_bytes": 591,
+      "line_count": 45,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/05_MG_机枪/XM556_★★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/05_MG_机枪/XM556_★★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 496,
+      "entry_file": "496-夕雾.yaml",
+      "tdoll_name": "夕雾",
+      "size_bytes": 609,
+      "line_count": 46,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/05_MG_机枪/夕雾_★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/05_MG_机枪/夕雾_★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 36,
+      "story_dialogue_matches": [
+        "ref/gf_story_data/batch67_dialogue.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.001_来自格里芬的你.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.005_夕雾 浴场 早.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.007_第一天·中午.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.009_夕雾 练舞厅 晚.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.013_第一天·夜间.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.023_夕雾 浴场 晚.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.025_第二天·夜间.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.029_夕雾 浴场 早.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.034_第三天·夜间.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.036_水野爱,夕雾,山田多惠 练舞厅 早.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.038_第四天·中午.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.041_山田多惠,夕雾 便利店 晚.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.044_第四天·夜间.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.048_夕雾 浴场 早.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.052_夕雾 练舞厅 晚.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.056_第五天·夜间.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.060_夕雾 浴场 早.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.065_第六天·夜间.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.070_夕雾 快餐店 早.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.071_第七天·中午.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.072_笑与泪的夜.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.074_乘风而起的夜.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.075_灰白色的夜.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.076_松动的背景板.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.077_歌声不停，舞步不休.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.079_加油，打工人！.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.080_巅峰！狂飙！.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.081_灵感！泉涌！.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.094_夕雾 时间旅人.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.095_夕雾 海之声.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.096_夕雾 直至太阳下山.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.101_山田多惠 赠礼者.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.08_雪浪映花颜/03.08.102_山田多惠 “请不要走”.json",
+        "ref/gf_story_data/剧情内容_完整.json",
+        "ref/gf_story_data/剧情索引.json"
+      ],
+      "has_text_dialogue": true
+    },
+    {
+      "uid": 499,
+      "entry_file": "499-水金铃鹿.yaml",
+      "tdoll_name": "水金铃鹿",
+      "size_bytes": 658,
+      "line_count": 46,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/05_MG_机枪/水金铃鹿_★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/05_MG_机枪/水金铃鹿_★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 502,
+      "entry_file": "502-阿尔玛·阿玛斯.yaml",
+      "tdoll_name": "阿尔玛·阿玛斯",
+      "size_bytes": 706,
+      "line_count": 46,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/05_MG_机枪/阿尔玛·阿玛斯_★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/05_MG_机枪/阿尔玛·阿玛斯_★/10_剧情内容/联动剧情/avgtxt_-32-5-1.json",
+        "ref/gf_tdoll_data/05_MG_机枪/阿尔玛·阿玛斯_★/10_剧情内容/联动剧情/avgtxt_-32-5-1.txt",
+        "ref/gf_tdoll_data/05_MG_机枪/阿尔玛·阿玛斯_★/10_剧情内容/联动剧情/avgtxt_-32-8-1.json",
+        "ref/gf_tdoll_data/05_MG_机枪/阿尔玛·阿玛斯_★/10_剧情内容/联动剧情/avgtxt_-32-8-1.txt",
+        "ref/gf_tdoll_data/05_MG_机枪/阿尔玛·阿玛斯_★/10_剧情整理.json",
+        "ref/gf_tdoll_data/05_MG_机枪/阿尔玛·阿玛斯_★/10_剧情整理_完整.json"
+      ],
+      "tdoll_text_dialogue_file_count": 6,
+      "tdoll_text_dialogue_has_content": true,
+      "story_dialogue_match_count": 2,
+      "story_dialogue_matches": [
+        "ref/gf_story_data/batch67_dialogue.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.04_瓦尔哈拉/03.04.008_音爆 P2.json"
+      ],
+      "has_text_dialogue": true
+    },
+    {
+      "uid": 531,
+      "entry_file": "531-TPS.yaml",
+      "tdoll_name": "TPS",
+      "size_bytes": 575,
+      "line_count": 45,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/06_SG_霰弹枪/TPS_★★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/06_SG_霰弹枪/TPS_★★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 2,
+      "story_dialogue_matches": [
+        "ref/gf_story_data/batch67_dialogue.json",
+        "ref/gf_story_data/剧情内容/01_主线剧情/01.28_慢休克/01.28.034_F1 红色骑士.json"
+      ],
+      "has_text_dialogue": true
+    },
+    {
+      "uid": 537,
+      "entry_file": "537-史蒂文斯520.yaml",
+      "tdoll_name": "史蒂文斯520",
+      "size_bytes": 684,
+      "line_count": 46,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/06_SG_霰弹枪/史蒂文斯520_★★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/06_SG_霰弹枪/史蒂文斯520_★★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 538,
+      "entry_file": "538-史蒂文斯620.yaml",
+      "tdoll_name": "史蒂文斯620",
+      "size_bytes": 684,
+      "line_count": 46,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/06_SG_霰弹枪/史蒂文斯620_★★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/06_SG_霰弹枪/史蒂文斯620_★★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    },
+    {
+      "uid": 544,
+      "entry_file": "544-艾尔菲尔特.yaml",
+      "tdoll_name": "艾尔菲尔特",
+      "size_bytes": 1906,
+      "line_count": 54,
+      "small_reasons": [
+        "size<2048"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/06_SG_霰弹枪/艾尔菲尔特_★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/06_SG_霰弹枪/艾尔菲尔特_★/10_剧情内容/联动剧情/avgtxt_-8-4-1.json",
+        "ref/gf_tdoll_data/06_SG_霰弹枪/艾尔菲尔特_★/10_剧情内容/联动剧情/avgtxt_-8-4-1.txt",
+        "ref/gf_tdoll_data/06_SG_霰弹枪/艾尔菲尔特_★/10_剧情整理.json",
+        "ref/gf_tdoll_data/06_SG_霰弹枪/艾尔菲尔特_★/10_剧情整理_完整.json"
+      ],
+      "tdoll_text_dialogue_file_count": 4,
+      "tdoll_text_dialogue_has_content": true,
+      "story_dialogue_match_count": 7,
+      "story_dialogue_matches": [
+        "ref/gf_story_data/all_characters_dialogue.json",
+        "ref/gf_story_data/batch67_dialogue.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.01_猎兔行动/03.01.002_圣艾尔蒙 P2.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.01_猎兔行动/03.01.007_狩猎游戏 P2.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.01_猎兔行动/03.01.008_猎兔行动 P1.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.01_猎兔行动/03.01.009_猎兔行动 P2.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.01_猎兔行动/03.01.010_猎兔行动 P3.json"
+      ],
+      "has_text_dialogue": true
+    },
+    {
+      "uid": 547,
+      "entry_file": "547-达娜·赞恩.yaml",
+      "tdoll_name": "达娜·赞恩",
+      "size_bytes": 658,
+      "line_count": 46,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/06_SG_霰弹枪/达娜·赞恩_★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/06_SG_霰弹枪/达娜·赞恩_★/10_剧情内容/联动剧情/avgtxt_-32-1-1.json",
+        "ref/gf_tdoll_data/06_SG_霰弹枪/达娜·赞恩_★/10_剧情内容/联动剧情/avgtxt_-32-1-1.txt",
+        "ref/gf_tdoll_data/06_SG_霰弹枪/达娜·赞恩_★/10_剧情内容/联动剧情/avgtxt_-32-4-1.json",
+        "ref/gf_tdoll_data/06_SG_霰弹枪/达娜·赞恩_★/10_剧情内容/联动剧情/avgtxt_-32-4-1.txt",
+        "ref/gf_tdoll_data/06_SG_霰弹枪/达娜·赞恩_★/10_剧情内容/联动剧情/avgtxt_-32-5-1.json",
+        "ref/gf_tdoll_data/06_SG_霰弹枪/达娜·赞恩_★/10_剧情内容/联动剧情/avgtxt_-32-5-1.txt",
+        "ref/gf_tdoll_data/06_SG_霰弹枪/达娜·赞恩_★/10_剧情内容/联动剧情/avgtxt_-32-7-1.json",
+        "ref/gf_tdoll_data/06_SG_霰弹枪/达娜·赞恩_★/10_剧情内容/联动剧情/avgtxt_-32-7-1.txt",
+        "ref/gf_tdoll_data/06_SG_霰弹枪/达娜·赞恩_★/10_剧情内容/联动剧情/avgtxt_-32-8-1.json",
+        "ref/gf_tdoll_data/06_SG_霰弹枪/达娜·赞恩_★/10_剧情内容/联动剧情/avgtxt_-32-8-1.txt",
+        "ref/gf_tdoll_data/06_SG_霰弹枪/达娜·赞恩_★/10_剧情整理.json",
+        "ref/gf_tdoll_data/06_SG_霰弹枪/达娜·赞恩_★/10_剧情整理_完整.json"
+      ],
+      "tdoll_text_dialogue_file_count": 12,
+      "tdoll_text_dialogue_has_content": true,
+      "story_dialogue_match_count": 4,
+      "story_dialogue_matches": [
+        "ref/gf_story_data/batch5_dialogue.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.04_瓦尔哈拉/03.04.001_迪吉里杜管吹奏指南 P1.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.04_瓦尔哈拉/03.04.009_鸡胸肉 P1.json",
+        "ref/gf_story_data/剧情内容/03_联动剧情/03.04_瓦尔哈拉/03.04.014_真心话大冒险 P2.json"
+      ],
+      "has_text_dialogue": true
+    },
+    {
+      "uid": 550,
+      "entry_file": "550-齐亚帕三重冕.yaml",
+      "tdoll_name": "齐亚帕三重冕",
+      "size_bytes": 716,
+      "line_count": 46,
+      "small_reasons": [
+        "size<2048",
+        "lines<50"
+      ],
+      "tdoll_data_match_count": 1,
+      "tdoll_data_matches": [
+        "ref/gf_tdoll_data/06_SG_霰弹枪/齐亚帕三重冕_★★★★★"
+      ],
+      "tdoll_text_dialogue_files": [
+        "ref/gf_tdoll_data/06_SG_霰弹枪/齐亚帕三重冕_★★★★★/10_剧情整理.json"
+      ],
+      "tdoll_text_dialogue_file_count": 1,
+      "tdoll_text_dialogue_has_content": false,
+      "story_dialogue_match_count": 0,
+      "story_dialogue_matches": [],
+      "has_text_dialogue": false
+    }
+  ]
+}

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --bg-primary: #07090f;
+            --bg-secondary: #0f1724;
+            --bg-panel: rgba(12, 18, 30, 0.92);
+            --text-primary: #edf2ff;
+            --text-secondary: #9aa7c2;
+            --accent-cyan: #7dd3fc;
+            --accent-red: #ef4444;
+            --accent-line: rgba(125, 211, 252, 0.28);
+            --shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: transparent;
+            color: var(--text-primary);
+            font-size: 14px;
+            line-height: 1.9;
+        }
+
+        .story-panel {
+            position: relative;
+            background: linear-gradient(160deg, rgba(7, 9, 15, 0.97), rgba(15, 23, 36, 0.94));
+            border: 1px solid var(--accent-line);
+            border-radius: 18px;
+            padding: 22px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .story-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top right, rgba(239, 68, 68, 0.10), transparent 36%),
+                        radial-gradient(circle at left center, rgba(125, 211, 252, 0.10), transparent 34%);
+            pointer-events: none;
+        }
+
+        .panel-header {
+            position: relative;
+            text-align: center;
+            margin-bottom: 16px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid rgba(125, 211, 252, 0.18);
+        }
+
+        .panel-title {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--text-primary);
+        }
+
+        .panel-subtitle {
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+        }
+
+        .warning-line {
+            margin-top: 10px;
+            font-size: 11px;
+            color: var(--accent-red);
+            letter-spacing: 1px;
+        }
+
+        .opening-content {
+            position: relative;
+            white-space: pre-wrap;
+            font-size: 15px;
+            line-height: 1.95;
+            color: var(--text-primary);
+            padding: 18px;
+            background: var(--bg-panel);
+            border-radius: 14px;
+            border-left: 3px solid var(--accent-red);
+            box-shadow: inset 0 0 0 1px rgba(125, 211, 252, 0.08);
+            margin-bottom: 20px;
+        }
+
+        .opening-hint {
+            margin-bottom: 18px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            background: rgba(125, 211, 252, 0.08);
+            border: 1px solid rgba(125, 211, 252, 0.14);
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        .start-button {
+            display: block;
+            width: 220px;
+            margin: 0 auto;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #991b1b 0%, #ef4444 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 999px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.28);
+        }
+
+        .start-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(239, 68, 68, 0.34);
+        }
+
+        .start-button:active {
+            transform: translateY(0);
+        }
+
+        .start-button:disabled {
+            background: #4b5563;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .status-message {
+            text-align: center;
+            color: var(--accent-cyan);
+            font-size: 13px;
+            margin-top: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .status-message.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="story-panel">
+        <div class="panel-header">
+            <div class="panel-title">轮回禁则</div>
+            <div class="panel-subtitle">随机世界 / 规则验证 / 生存判定</div>
+            <div class="warning-line">失败个体将被直接抹除，下一轮不会继承本轮存在</div>
+        </div>
+
+        <div class="opening-hint">载入后将自动初始化本轮数据库，并向酒馆发送“开始”。</div>
+        <div class="opening-content" id="openingContent">$1</div>
+
+        <button class="start-button" id="startButton">载入本轮世界</button>
+        <div class="status-message" id="statusMessage">当前轮次初始化完成</div>
+    </div>
+
+    <script>
+    const EMBEDDED_TEMPLATE_BASE64 = "{{TEMPLATE_BASE64}}";
+    const EMBEDDED_PRESET_BASE64 = "{{PRESET_BASE64}}";
+
+    function isPlaceholderValue(value, placeholder) {
+        return !value || value === placeholder;
+    }
+
+    function decodeEmbeddedData(base64Str, dataName) {
+        try {
+            const binaryStr = atob(base64Str);
+            const bytes = new Uint8Array(binaryStr.length);
+            for (let i = 0; i < binaryStr.length; i++) {
+                bytes[i] = binaryStr.charCodeAt(i);
+            }
+            const jsonStr = new TextDecoder('utf-8').decode(bytes);
+            const data = JSON.parse(jsonStr);
+            console.log('[轮回禁则初始化] ' + dataName + ' 解码成功');
+            return data;
+        } catch (e) {
+            console.error('[轮回禁则初始化] ' + dataName + ' 解码失败:', e);
+            return null;
+        }
+    }
+
+    function decodeOptionalEmbeddedData(base64Str, placeholder, dataName) {
+        if (isPlaceholderValue(base64Str, placeholder)) {
+            console.log('[轮回禁则初始化] ' + dataName + ' 未配置，跳过注入');
+            return null;
+        }
+        return decodeEmbeddedData(base64Str, dataName);
+    }
+
+    const EMBEDDED_TEMPLATE = decodeOptionalEmbeddedData(EMBEDDED_TEMPLATE_BASE64, '{{TEMPLATE_BASE64}}', '数据库模板');
+    const EMBEDDED_PRESET = decodeOptionalEmbeddedData(EMBEDDED_PRESET_BASE64, '{{PRESET_BASE64}}', '剧情推进预设');
+
+    document.getElementById('startButton').addEventListener('click', async function() {
+        const button = this;
+        const statusMsg = document.getElementById('statusMessage');
+
+        button.disabled = true;
+        button.textContent = '载入中...';
+
+        try {
+            if (!EMBEDDED_TEMPLATE) {
+                console.error('[轮回禁则初始化] 数据库模板未配置');
+                button.textContent = '载入本轮世界';
+                button.disabled = false;
+                return;
+            }
+
+            const initOptions = {
+                injectTemplate: true,
+                loadPreset: false,
+                templateData: EMBEDDED_TEMPLATE
+            };
+
+            if (EMBEDDED_PRESET) {
+                const presetDataToUse = Array.isArray(EMBEDDED_PRESET) ? EMBEDDED_PRESET[0] : EMBEDDED_PRESET;
+                if (presetDataToUse) {
+                    initOptions.loadPreset = true;
+                    initOptions.presetData = presetDataToUse;
+                    initOptions.presetName = presetDataToUse.name || '剧情推进预设';
+                    console.log('[轮回禁则初始化] 已启用剧情推进预设:', initOptions.presetName);
+                }
+            }
+
+            if (window.parent && window.parent.AutoCardUpdaterAPI && window.parent.AutoCardUpdaterAPI.initGameSession) {
+                const result = await window.parent.AutoCardUpdaterAPI.initGameSession({}, initOptions);
+
+                if (!result.success) {
+                    console.error('[轮回禁则初始化] 数据注入失败:', result.message);
+                    button.textContent = '载入本轮世界';
+                    button.disabled = false;
+                    return;
+                }
+
+                console.log('[轮回禁则初始化] ' + (initOptions.loadPreset ? '表格与剧情推进预设注入成功' : '表格数据注入成功'));
+                sendToTavern('开始');
+                statusMsg.classList.add('show');
+                button.textContent = '已载入';
+
+                setTimeout(() => {
+                    statusMsg.classList.remove('show');
+                }, 3000);
+            } else {
+                console.warn('[轮回禁则初始化] AutoCardUpdaterAPI 接口不可用，请确保在酒馆扩展中打开此页面');
+                button.textContent = '载入本轮世界';
+                button.disabled = false;
+            }
+        } catch (e) {
+            console.error('[轮回禁则初始化] 初始化失败:', e);
+            button.textContent = '载入本轮世界';
+            button.disabled = false;
+        }
+    });
+
+    function sendToTavern(message) {
+        try {
+            if (parent.document.getElementById('send_textarea')) {
+                const textarea = parent.document.getElementById('send_textarea');
+                const sendButton = parent.document.getElementById('send_but');
+
+                if (textarea && sendButton) {
+                    textarea.value = message;
+                    sendButton.click();
+                    console.log('[轮回禁则初始化] 消息已发送到酒馆');
+                } else {
+                    console.error('[轮回禁则初始化] 无法找到酒馆输入框或发送按钮');
+                }
+            } else {
+                console.warn('[轮回禁则初始化] 无法连接到酒馆，请确保在酒馆扩展中打开此页面');
+            }
+        } catch (e) {
+            console.error('[轮回禁则初始化] 发送消息失败:', e);
+        }
+    }
+    </script>
+</body>
+</html>
