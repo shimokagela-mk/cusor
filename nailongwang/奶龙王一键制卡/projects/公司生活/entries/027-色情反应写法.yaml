@@ -1,7 +1,8 @@
 uid: 027
 comment: 色情反应写法
 content: |
-  # 色情场景与人物反应写法（强制）
+  # 色情场景与人物反应写法（强制，贴在最新发言旁）
+  本条不参与世界书额度淘汰。色情段必须照下面的句子写，不许缩成乳头硬了、脸红、有味道。
   只要出现触碰/玩具/性交/公开边缘/电话NTR，本条优先于一切「写得含蓄」的习惯。
   禁止只用：害羞、尴尬、气氛暧昧、脸红、有感觉、湿了。必须写身体证据，且点名具体部位。
 
@@ -133,11 +134,12 @@ content: |
   叙述（含操/鸡巴等）→ 身体 → 台词（合格脏词配额）→ 身体/风险。
   禁止整段纯对话，禁止整段空抒情，禁止糊词，禁止只喘不脏，禁止NTR无菌。
   潮吹与事后见「潮吹对照与事后」。
-position: before_char
+position: at_depth
 enabled: true
 constant: true
 prevent_recursion: true
-insertion_order: 1
-depth: 4
+ignore_budget: true
+insertion_order: 900
+depth: 1
 role: 0
 keys: []

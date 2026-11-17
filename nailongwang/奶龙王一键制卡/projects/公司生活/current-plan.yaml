@@ -114,7 +114,7 @@ post_history_instructions: |
   模式/日历/男主动/行程：模式是否落地；本日大事件是否点明；该触发男主动时是否只用电话敷衍；点了排行程是否真改了她的日程。
   点明位置、在场者；玩具/电话/把柄现状。已婚不默认拆婚。
 creator: nailongwang
-character_version: "0.6.30"
+character_version: "0.6.31"
 extensions:
   talkativeness: "0.5"
   fav: false

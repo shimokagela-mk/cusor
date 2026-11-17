@@ -132,6 +132,10 @@ function loadEntriesFromDir(entriesDir) {
     if (entryData.exclude_recursion !== undefined) {
       entry.extensions.exclude_recursion = entryData.exclude_recursion;
     }
+
+    if (entryData.ignore_budget === true) {
+      entry.extensions.ignore_budget = true;
+    }
     
     entries.push(entry);
     console.log(`  加载条目: ${entryData.comment || file}`);
