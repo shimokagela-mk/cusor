@@ -1021,7 +1021,20 @@ function main() {
     }
     
     const outputPath = path.join(outputDir, `${cardName}.json`);
-    fs.writeFileSync(outputPath, JSON.stringify(card, null, 2), 'utf-8');
+    const cardBody = JSON.stringify(card, null, 2);
+    fs.writeFileSync(outputPath, cardBody, 'utf-8');
+
+    if (cardName === '公司生活') {
+      const repoRoot = path.resolve(planDir, '..', '..', '..', '..');
+      for (const asciiPath of [
+        path.join(repoRoot, 'release', 'card.json'),
+        path.join(repoRoot, 'download', 'card.json'),
+      ]) {
+        fs.mkdirSync(path.dirname(asciiPath), { recursive: true });
+        fs.writeFileSync(asciiPath, cardBody, 'utf-8');
+        console.log(`  ASCII 下载副本: ${asciiPath}`);
+      }
+    }
 
     const sourceCardPath = resolveSourceCardPath(planDir, buildConfig);
     if (sourceCardPath) {
