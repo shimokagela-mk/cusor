@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "shujuku Plot Preset",
+  "oneOf": [
+    { "$ref": "#/$defs/preset" },
+    { "type": "array", "items": { "$ref": "#/$defs/preset" } }
+  ],
+  "$defs": {
+    "preset": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string" },
+        "promptGroup": { "type": "array" },
+        "prompts": { "type": "array" },
+        "plotTasks": { "type": "array" },
+        "rateMain": { "type": "number" },
+        "ratePersonal": { "type": "number" },
+        "rateErotic": { "type": "number" },
+        "rateCuckold": { "type": "number" },
+        "extractTags": { "type": "string" },
+        "loopSettings": { "type": "object" }
+      },
+      "additionalProperties": true
+    }
+  }
+}

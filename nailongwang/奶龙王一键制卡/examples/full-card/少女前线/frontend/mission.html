@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>少女前方 - 任务</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --y:#e8c840;--y-light:#f0d860;--y-dark:#b89820;
+  --k:#111;--wh:#f0f0f0;--gr:#999;--gr2:#666;--gr3:#444;
+  --warn:#e04040;--ok:#68c080;--info:#7cb8e0;--core:#78e0d0;
+  --type-hg:#e8c840;--type-smg:#68c080;--type-rf:#7cb8e0;--type-ar:#e0a040;--type-mg:#c070d0;--type-sg:#e07070;
+}
+body{font-family:'Microsoft YaHei','PingFang SC','Noto Sans SC',sans-serif;background:#000;color:var(--wh);font-size:14px;line-height:1.4;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.gfl-page{position:relative;width:100%;min-height:100vh;min-height:100dvh;background:#0a0a0a;overflow:hidden}
+.gfl-page-bg{position:fixed;inset:0;background:radial-gradient(circle at 28% 18%,rgba(232,200,64,.16),transparent 34%),linear-gradient(135deg,#151515 0%,#080808 54%,#180808 100%);background-position:center;background-size:cover;background-repeat:no-repeat;z-index:0;opacity:.18}
+.gfl-page-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.36),rgba(0,0,0,.16) 38%,rgba(0,0,0,.78))}
+.gfl-page-content{position:relative;z-index:1;max-width:1160px;margin:0 auto;padding:20px 16px 40px}
+.gfl-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;padding-bottom:12px;border-bottom:2px solid var(--y)}
+.gfl-header-main{display:flex;align-items:center;gap:12px}.gfl-header h1{font-size:20px;letter-spacing:3px;color:var(--y);text-shadow:0 0 12px rgba(232,200,64,.2)}
+.gfl-header-back,.gfl-refresh-btn{background:none;border:2px solid var(--gr3);color:var(--gr);padding:6px 14px;font-size:12px;letter-spacing:1px;cursor:pointer;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);transition:all .15s}
+.gfl-header-back:hover,.gfl-refresh-btn:hover{border-color:var(--y);color:var(--y)}
+.gfl-status-strip{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
+.gfl-status-card{background:rgba(18,18,18,.84);border:1px solid rgba(255,255,255,.08);border-left:3px solid var(--y);padding:10px 12px;min-width:0}.gfl-status-card.info{border-left-color:var(--info)}.gfl-status-card.ok{border-left-color:var(--ok)}.gfl-status-card.core{border-left-color:var(--core)}
+.gfl-status-label{font-size:10px;color:var(--gr2);letter-spacing:1px}.gfl-status-value{margin-top:3px;font-size:15px;font-weight:800;letter-spacing:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.gfl-status-value.warn{color:var(--warn)}
+.gfl-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.gfl-panel{background:rgba(18,18,18,.84);border:1px solid rgba(255,255,255,.08);box-shadow:0 12px 32px rgba(0,0,0,.32);overflow:hidden}
+.gfl-panel-title{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 14px;background:linear-gradient(90deg,rgba(232,200,64,.18),rgba(255,255,255,.03));border-bottom:1px solid rgba(232,200,64,.22);font-size:13px;font-weight:700;letter-spacing:2px;color:var(--y)}
+.gfl-panel-title .tag{font-size:9px;color:var(--gr2);letter-spacing:1px;text-transform:uppercase}.gfl-panel-body{padding:14px}
+.gfl-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.gfl-tab{border:1px solid var(--gr3);background:rgba(255,255,255,.035);color:var(--gr);padding:6px 12px;font-size:11px;font-weight:800;letter-spacing:1px;cursor:pointer;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%)}.gfl-tab:hover,.gfl-tab.active{border-color:var(--y);color:var(--k);background:var(--y)}
+.gfl-current-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}.gfl-current-card{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);padding:12px;border-left:3px solid var(--info)}.gfl-current-card.high{border-left-color:var(--warn)}.gfl-current-card.mid{border-left-color:var(--y)}.gfl-current-card.done{opacity:.72;border-left-color:var(--ok)}.gfl-current-card.failed{opacity:.72;border-left-color:var(--warn)}.gfl-current-card.pending{border-left-color:var(--gr3)}
+.gfl-task-head{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;margin-bottom:7px}.gfl-task-name{font-size:14px;font-weight:900;color:var(--wh);letter-spacing:1px}.gfl-badge{display:inline-flex;align-items:center;justify-content:center;padding:2px 7px;font-size:9px;font-weight:900;letter-spacing:1px;white-space:nowrap;background:rgba(255,255,255,.08);color:var(--gr);clip-path:polygon(3px 0,100% 0,calc(100% - 3px) 100%,0 100%)}.gfl-badge.high{background:rgba(224,64,64,.22);color:#ffb0b0}.gfl-badge.mid{background:rgba(232,200,64,.18);color:var(--y)}.gfl-badge.ok{background:rgba(104,192,128,.18);color:var(--ok)}.gfl-badge.core{background:rgba(120,224,208,.18);color:var(--core)}
+.gfl-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}.gfl-desc{font-size:12px;color:#ddd;line-height:1.65}.gfl-mini{margin-top:8px;font-size:11px;color:var(--gr);line-height:1.55}.gfl-mini strong{color:var(--y)}.gfl-current-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:11px;padding-top:10px;border-top:1px solid rgba(255,255,255,.08)}
+.gfl-logistics-list{display:flex;flex-direction:column;gap:10px}.gfl-logistics-card{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);border-left:3px solid var(--y);padding:12px}.gfl-logistics-card.running{border-left-color:var(--info)}.gfl-logistics-card.ready{border-left-color:var(--ok);box-shadow:inset 0 0 0 1px rgba(104,192,128,.1)}
+.gfl-logistics-top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:start}.gfl-require-row,.gfl-reward-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}.gfl-chip{font-size:10px;font-weight:800;color:#111;padding:2px 7px;letter-spacing:.5px;clip-path:polygon(3px 0,100% 0,calc(100% - 3px) 100%,0 100%)}.hg{background:var(--type-hg)}.smg{background:var(--type-smg)}.rf{background:var(--type-rf)}.ar{background:var(--type-ar)}.mg{background:var(--type-mg);color:#fff}.sg{background:var(--type-sg);color:#fff}.res{background:rgba(255,255,255,.1);color:var(--wh);border:1px solid rgba(255,255,255,.08)}.res.core{color:var(--core)}
+.gfl-action-row{display:grid;grid-template-columns:minmax(160px,260px) auto;gap:8px;align-items:center;margin-top:12px}.gfl-select{width:100%;background:#090909;border:1px solid var(--gr3);color:var(--wh);padding:8px 9px;font-size:12px;outline:none}.gfl-select:focus{border-color:var(--y)}
+.gfl-btn{border:1px solid var(--gr3);background:rgba(255,255,255,.035);color:var(--gr);padding:8px 13px;font-size:11px;font-weight:900;letter-spacing:1px;cursor:pointer;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%);transition:all .15s}.gfl-btn:hover{border-color:var(--y);color:var(--y);background:rgba(232,200,64,.06)}.gfl-btn.primary{border-color:var(--y);background:linear-gradient(180deg,var(--y),var(--y-dark));color:#111}.gfl-btn.complete{border-color:var(--ok);color:var(--ok)}.gfl-btn.complete:hover{background:rgba(104,192,128,.08)}.gfl-btn.danger{border-color:rgba(224,64,64,.72);color:#ff9a9a}.gfl-btn.danger:hover{background:rgba(224,64,64,.12);color:#ffc0c0}.gfl-btn.danger.confirming{background:rgba(224,64,64,.22);color:#fff;border-color:var(--warn)}.gfl-btn:disabled{opacity:.42;cursor:not-allowed;filter:grayscale(.6)}
+.gfl-logistics-card.settling{position:relative;overflow:hidden;border-left-color:var(--core);box-shadow:inset 0 0 0 1px rgba(120,224,208,.24),0 0 24px rgba(120,224,208,.12);animation:gfl-settle-pulse .9s ease-in-out infinite alternate}.gfl-logistics-card.completed{border-left-color:var(--ok);animation:gfl-complete-fade .72s ease-in forwards}.gfl-logistics-card.completed::after{content:'MISSION COMPLETE';position:absolute;right:12px;top:10px;color:rgba(104,192,128,.28);font-size:24px;font-weight:900;letter-spacing:3px;pointer-events:none}.gfl-settlement-panel{margin-top:12px;padding:11px 12px;background:linear-gradient(90deg,rgba(104,192,128,.16),rgba(120,224,208,.08));border:1px solid rgba(104,192,128,.36);border-left:3px solid var(--ok);box-shadow:0 8px 22px rgba(0,0,0,.24);animation:gfl-settlement-in .22s ease-out}.gfl-settlement-title{display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--ok);font-size:12px;font-weight:900;letter-spacing:2px;margin-bottom:8px}.gfl-settlement-title span:last-child{font-size:10px;color:var(--gr);letter-spacing:1px}.gfl-settlement-rewards{display:flex;gap:6px;flex-wrap:wrap}.gfl-settlement-note{margin-top:7px;color:#cfeedd;font-size:11px;line-height:1.55}.gfl-btn.busy{border-color:var(--core);color:var(--core);background:rgba(120,224,208,.08)}@keyframes gfl-settlement-in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}@keyframes gfl-settle-pulse{from{filter:brightness(1)}to{filter:brightness(1.14)}}@keyframes gfl-complete-fade{0%{opacity:1;transform:translateY(0)}70%{opacity:.9;transform:translateY(0)}100%{opacity:.12;transform:translateY(-8px)}}
+.gfl-empty{padding:24px 12px;text-align:center;color:var(--gr2);border:1px dashed rgba(255,255,255,.12);line-height:1.8}.gfl-toast{position:fixed;left:50%;bottom:18px;z-index:200;max-width:min(560px,calc(100vw - 32px));padding:9px 14px;background:rgba(0,0,0,.84);border:1px solid rgba(232,200,64,.48);border-left:3px solid var(--y);color:var(--y-light);font-size:12px;font-weight:800;letter-spacing:1px;box-shadow:0 10px 30px rgba(0,0,0,.55);transform:translate(-50%,16px);opacity:0;pointer-events:none;transition:opacity .16s,transform .16s}.gfl-toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:780px){.gfl-page-content{padding:12px 8px 24px}.gfl-header h1{font-size:16px}.gfl-status-strip{grid-template-columns:repeat(2,1fr)}.gfl-logistics-top{grid-template-columns:1fr}.gfl-action-row{grid-template-columns:1fr}.gfl-current-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="gfl-page">
+  <div class="gfl-page-bg"></div>
+  <div class="gfl-page-content">
+    <div class="gfl-header">
+      <div class="gfl-header-main"><h1>任务</h1></div>
+      <button class="gfl-refresh-btn" id="refresh-btn" type="button">刷新</button>
+    </div>
+    <div class="gfl-status-strip" id="status-strip"></div>
+    <div class="gfl-layout">
+      <section class="gfl-panel">
+        <div class="gfl-panel-title"><span><span class="tag">CURRENT</span> 当前任务</span><span id="current-count"></span></div>
+        <div class="gfl-panel-body">
+          <div class="gfl-tabs" id="current-tabs"></div>
+          <div class="gfl-current-grid" id="current-grid"></div>
+        </div>
+      </section>
+      <section class="gfl-panel">
+        <div class="gfl-panel-title"><span><span class="tag">LOGISTICS</span> 后勤任务</span><span id="logistics-count"></span></div>
+        <div class="gfl-panel-body"><div class="gfl-logistics-list" id="logistics-list"></div></div>
+      </section>
+    </div>
+  </div>
+</div>
+<div class="gfl-toast" id="toast"></div>
+<script src="gfl-data-bridge.js"></script>
+<script>
+(function(){
+  'use strict';
+
+  var Bridge = window.GFLDataBridge;
+  var currentFilter = '全部';
+  var currentTasks = [];
+  var logisticsTasks = [];
+  var logisticsSquads = [];
+  var currentStatus = null;
+  var resourceStatus = null;
+  var toastTimer = null;
+  var completingRows = {};
+  var completedRows = {};
+  var pendingDeleteRows = {};
+  var archivingRows = {};
+  var pendingArchiveRows = {};
+  var assigningRows = {};
+  var deletingRows = {};
+  var pageDisposed = false;
+  var BUBBLE_BG_GROUP = '少女前线待机背景';
+  var STATUS_TABS = ['全部','进行中','待触发','搁置','已完成','失败'];
+  var TYPES = ['HG','SMG','RF','AR','MG','SG'];
+
+  function getNativeUpdaterApi(){
+    try{ if(window.AutoCardUpdaterAPI) return window.AutoCardUpdaterAPI; }catch(e){}
+    try{ if(window.parent && window.parent.AutoCardUpdaterAPI) return window.parent.AutoCardUpdaterAPI; }catch(e){}
+    try{ if(window.top && window.top.AutoCardUpdaterAPI) return window.top.AutoCardUpdaterAPI; }catch(e){}
+    return null;
+  }
+  function nativeExecuteSqlBatch(sql, targetSheetKeys){
+    if(Bridge && typeof Bridge.executeSqlBatch === 'function') return Bridge.executeSqlBatch({sql:sql, targetSheetKeys:targetSheetKeys});
+    var api = getNativeUpdaterApi();
+    if(!api || typeof api.executeSqlBatch !== 'function') throw new Error('AutoCardUpdaterAPI.executeSqlBatch 不可用');
+    return api.executeSqlBatch({sql:sql, targetSheetKeys:targetSheetKeys});
+  }
+  function sqlValue(value){ return value == null ? 'NULL' : "'" + String(value).replace(/'/g, "''") + "'"; }
+  function sqlNumber(value){ value=parseInt(value,10); return isNaN(value) ? '0' : String(value); }
+  function deleteBySql(tableName, sqlTable, sheetKey, rowIndex){
+    var batch = nativeExecuteSqlBatch('DELETE FROM ' + sqlTable + ' WHERE row_id = ' + sqlValue(rowIndex) + ';', [sheetKey]);
+    return batch;
+  }
+  function updateResourceAmounts(delta){
+    var current = resourceStatus || Bridge.resourceState();
+    var next = {
+      manpower: Math.max(0, (current.manpower || 0) + (delta.manpower || 0)),
+      ammo: Math.max(0, (current.ammo || 0) + (delta.ammo || 0)),
+      ration: Math.max(0, (current.ration || 0) + (delta.ration || 0)),
+      parts: Math.max(0, (current.parts || 0) + (delta.parts || 0)),
+      memoryCore: Math.max(0, (current.memoryCore || 0) + (delta.memoryCore || 0))
+    };
+    var pairs = [
+      ['人力', delta.manpower || 0, next.manpower],
+      ['弹药', delta.ammo || 0, next.ammo],
+      ['口粮', delta.ration || 0, next.ration],
+      ['零件', delta.parts || 0, next.parts],
+      ['心智核心', delta.memoryCore || 0, next.memoryCore]
+    ];
+    var statements = pairs.filter(function(pair){ return !!pair[1]; }).map(function(pair){ return 'UPDATE resource_status SET amount = ' + sqlNumber(pair[2]) + ' WHERE resource_name = ' + sqlValue(pair[0]); });
+    var batch = statements.length ? nativeExecuteSqlBatch(statements.join(';\n') + ';', ['sheet_resource_status']) : Promise.resolve(true);
+    return batch.then(function(){ resourceStatus = next; return next; });
+  }
+  function assignLogisticsTaskNative(rowIndex, squadName){
+    var task = logisticsTasks.filter(function(row){ return String(row.rowIndex) === String(rowIndex); })[0];
+    if(!task) return Promise.reject(new Error('未找到后勤任务行：' + rowIndex));
+    if(task.assignedSquad || task.startTime) return Promise.reject(new Error('该后勤任务已经被派遣'));
+    var squad = logisticsSquads.filter(function(row){ return row.squadName === squadName; })[0];
+    if(!squad) return Promise.reject(new Error('未找到后勤小队：' + squadName));
+    if(!Bridge.logisticsSquadAvailable(squadName)) return Promise.reject(new Error('后勤小队正在执行其他任务：' + squadName));
+    if(!Bridge.squadMeetsLogisticsRequirement(squad, task)) return Promise.reject(new Error('后勤小队不满足该任务的枪种数量要求'));
+    var startTime = currentStatus && currentStatus.currentTime;
+    if(!parseTime(startTime)) return Promise.reject(new Error('全局数据表.当前时间无效，无法按剧情时间开始后勤任务'));
+    var batch = nativeExecuteSqlBatch('UPDATE logistics_tasks SET assigned_squad = ' + sqlValue(squadName) + ', start_time = ' + sqlValue(startTime) + ' WHERE row_id = ' + sqlValue(task.rowIndex) + ';', ['sheet_logistics_tasks']);
+    return batch;
+  }
+  function completeLogisticsTaskNative(rowIndex){
+    var task = logisticsTasks.filter(function(row){ return String(row.rowIndex) === String(rowIndex); })[0];
+    if(!task) return Promise.reject(new Error('未找到后勤任务行：' + rowIndex));
+    if(!task.assignedSquad || !task.startTime) return Promise.reject(new Error('该后勤任务尚未领取'));
+    if(!isReady(task)) return Promise.reject(new Error('剧情时间尚未达到完成时间：' + (task.endTime || '未知')));
+    return updateResourceAmounts(task.reward || {}).then(function(){
+      return deleteBySql('后勤任务表', 'logistics_tasks', 'sheet_logistics_tasks', task.rowIndex);
+    }).then(function(){ return {completed:true, task:task}; });
+  }
+
+  function getBubbleApi(name){
+    try{ if(window.top && window.top[name]) return window.top[name]; }catch(e){}
+    try{ if(window.parent && window.parent[name]) return window.parent[name]; }catch(e){}
+    try{ if(window[name]) return window[name]; }catch(e){}
+    return null;
+  }
+
+  function waitForBubbleApi(name, attempt){
+    attempt = attempt || 0;
+    var api = getBubbleApi(name);
+    if(api) return Promise.resolve(api);
+    if(attempt >= 20) return Promise.resolve(null);
+    return new Promise(function(resolve){ window.setTimeout(function(){ resolve(waitForBubbleApi(name, attempt + 1)); }, 250); });
+  }
+
+  function applyBubbleBackground(selector){
+    var nodes = document.querySelectorAll(selector);
+    if(!nodes.length) return;
+    waitForBubbleApi('BubbleCG').then(function(api){
+      if(!api || typeof api.getImage !== 'function') return '';
+      return api.getImage(BUBBLE_BG_GROUP, 1);
+    }).then(function(url){
+      if(!url) return;
+      nodes.forEach(function(bg){
+        bg.style.backgroundImage = 'url("' + String(url).replace(/"/g, '%22') + '")';
+        bg.style.backgroundPosition = 'center';
+        bg.style.backgroundSize = 'cover';
+        bg.style.backgroundRepeat = 'no-repeat';
+      });
+    }).catch(function(error){ console.warn('任务页背景气泡图片加载失败:', error); });
+  }
+
+  if(!Bridge){
+    document.getElementById('current-grid').innerHTML = '<div class="gfl-empty">数据桥接层缺失：gfl-data-bridge.js 未加载</div>';
+    return;
+  }
+
+  function esc(s){ return Bridge.esc(s); }
+  function showToast(message){
+    var toast = document.getElementById('toast');
+    toast.textContent = message || '';
+    toast.classList.add('show');
+    if(toastTimer) window.clearTimeout(toastTimer);
+    toastTimer = window.setTimeout(function(){ toast.classList.remove('show'); }, 2100);
+  }
+  function formatNum(n){ return String(n || 0).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+  function parseTime(text){ return Bridge.parseGlobalDateTime ? Bridge.parseGlobalDateTime(text) : null; }
+  function compareTime(a, b){
+    var da = parseTime(a), db = parseTime(b);
+    if(!da || !db) return null;
+    return da.getTime() - db.getTime();
+  }
+  function statusClass(task){
+    if(task.status === '已完成') return 'done';
+    if(task.status === '失败') return 'failed';
+    if(task.status === '待触发') return 'pending';
+    if(task.priority === '高') return 'high';
+    if(task.priority === '中') return 'mid';
+    return '';
+  }
+  function priorityBadge(priority){
+    var cls = priority === '高' ? 'high' : priority === '中' ? 'mid' : '';
+    return '<span class="gfl-badge '+cls+'">'+esc(priority || '低')+'</span>';
+  }
+  function statusBadge(status){
+    var cls = status === '已完成' ? 'ok' : status === '失败' ? 'high' : status === '进行中' ? 'core' : '';
+    return '<span class="gfl-badge '+cls+'">'+esc(status || '未知')+'</span>';
+  }
+  function isMainlineTask(task){
+    var type = String(task && task.taskType || '').trim();
+    var source = String(task && task.taskSource || '').trim();
+    return type === '主线' || source === '主线' || /主线|战役|章节|急性期|逆转录|钳制反应|低灌注|过补偿|排异反应|级联失效|相变跃迁|低氧适应|临界质量|逆向坍塌/.test(type + ' ' + source);
+  }
+  function currentTaskActions(task){
+    if(!task || task.status !== '已完成' || !isMainlineTask(task)) return '';
+    var rowKey = String(task.rowIndex);
+    var isArchiving = !!archivingRows[rowKey];
+    var pendingArchive = !!pendingArchiveRows[rowKey];
+    var archiveLabel = isArchiving ? '归档中' : pendingArchive ? '确认归档' : '归档';
+    var archiveClass = pendingArchive ? ' confirming' : '';
+    var disabled = isArchiving ? 'disabled' : '';
+    return '<div class="gfl-current-actions"><button class="gfl-btn danger'+archiveClass+(isArchiving?' busy':'')+'" data-action="archive-current" data-row="'+esc(task.rowIndex)+'" '+disabled+'>'+esc(archiveLabel)+'</button></div>';
+  }
+  function difficultyBadge(diff){
+    var cls = diff === '紧急' || diff === '高' ? 'high' : diff === '中' ? 'mid' : '';
+    return '<span class="gfl-badge '+cls+'">'+esc(diff || '低')+'</span>';
+  }
+  function assignedSquads(){
+    var map = {};
+    logisticsTasks.forEach(function(task){ if(task.assignedSquad && task.startTime) map[task.assignedSquad] = true; });
+    return map;
+  }
+  function requirementHtml(task){
+    return TYPES.map(function(type){
+      var count = task.required[type] || 0;
+      if(count <= 0) return '';
+      return '<span class="gfl-chip '+type.toLowerCase()+'">'+type+' × '+count+'</span>';
+    }).join('') || '<span class="gfl-chip res">无特定枪种要求</span>';
+  }
+  function rewardHtml(task){
+    var r = task.reward || {};
+    return '<span class="gfl-chip res">人力 +'+esc(r.manpower || 0)+'</span>'
+      + '<span class="gfl-chip res">弹药 +'+esc(r.ammo || 0)+'</span>'
+      + '<span class="gfl-chip res">口粮 +'+esc(r.ration || 0)+'</span>'
+      + '<span class="gfl-chip res">零件 +'+esc(r.parts || 0)+'</span>'
+      + '<span class="gfl-chip res core">核心 +'+esc(r.memoryCore || 0)+'</span>';
+  }
+  function settlementHtml(task, state){
+    if(!task) return '';
+    var title = state === 'completed' ? '奖励已到账' : '正在结算奖励';
+    var note = state === 'completed' ? '任务记录即将归档并从候选列表移除。' : '正在写入资源表，请不要重复点击。';
+    return '<div class="gfl-settlement-panel"><div class="gfl-settlement-title"><strong>'+esc(title)+'</strong><span>'+esc(task.taskName || '')+'</span></div><div class="gfl-settlement-rewards">'+rewardHtml(task)+'</div><div class="gfl-settlement-note">'+esc(note)+'</div></div>';
+  }
+  function squadOptionDisabled(squad, task, busyMap){
+    if(busyMap[squad.squadName]) return 'disabled';
+    return Bridge.squadMeetsLogisticsRequirement(squad, task) ? '' : 'disabled';
+  }
+  function squadOptionLabel(squad, task, busyMap){
+    if(busyMap[squad.squadName]) return squad.squadName + ' · 执行中';
+    if(!Bridge.squadMeetsLogisticsRequirement(squad, task)) return squad.squadName + ' · 枪种不足';
+    return squad.squadName + ' · 可派遣';
+  }
+  function isReady(task){ return !!(Bridge.logisticsTaskReady && Bridge.logisticsTaskReady(task)); }
+  function logisticsState(task){
+    if(task.assignedSquad && task.startTime) return isReady(task) ? 'ready' : 'running';
+    return '';
+  }
+  function logisticsStateText(task){
+    if(!task.assignedSquad || !task.startTime) return '待领取';
+    if(isReady(task)) return '可完成';
+    var diff = compareTime(task.endTime, currentStatus && currentStatus.currentTime);
+    if(diff == null) return '执行中';
+    var minutes = Math.max(0, Math.ceil(diff / 60000));
+    return '执行中 · 剩余剧情时间约 ' + minutes + ' 分钟';
+  }
+  function renderStatusStrip(){
+    var status = currentStatus || {};
+    var invalidTime = !parseTime(status.currentTime);
+    document.getElementById('status-strip').innerHTML = [
+      '<div class="gfl-status-card"><div class="gfl-status-label">剧情时间</div><div class="gfl-status-value '+(invalidTime?'warn':'')+'">'+esc(status.currentTime || '未设置')+'</div></div>',
+      '<div class="gfl-status-card info"><div class="gfl-status-label">当前位置</div><div class="gfl-status-value">'+esc(status.location || '未知')+'</div></div>'
+    ].join('');
+  }
+  function renderCurrentTabs(){
+    document.getElementById('current-tabs').innerHTML = STATUS_TABS.map(function(tab){
+      var count = tab === '全部' ? currentTasks.length : currentTasks.filter(function(t){ return t.status === tab; }).length;
+      return '<button class="gfl-tab '+(currentFilter===tab?'active':'')+'" data-status="'+esc(tab)+'">'+esc(tab)+' · '+count+'</button>';
+    }).join('');
+  }
+  function renderCurrentTasks(){
+    var list = currentFilter === '全部' ? currentTasks : currentTasks.filter(function(task){ return task.status === currentFilter; });
+    document.getElementById('current-count').textContent = list.length + '/' + currentTasks.length;
+    if(!list.length){
+      document.getElementById('current-grid').innerHTML = '<div class="gfl-empty">没有符合筛选条件的当前任务。</div>';
+      return;
+    }
+    document.getElementById('current-grid').innerHTML = list.map(function(task){
+      return '<article class="gfl-current-card '+statusClass(task)+'">'
+        + '<div class="gfl-task-head"><div class="gfl-task-name">'+esc(task.taskName)+'</div><div>'+statusBadge(task.status)+'</div></div>'
+        + '<div class="gfl-meta">'+priorityBadge(task.priority)+'<span class="gfl-badge">'+esc(task.taskType || '任务')+'</span><span class="gfl-badge">'+esc(task.taskSource || '未知来源')+'</span></div>'
+        + '<div class="gfl-desc">'+esc(task.description || '')+'</div>'
+        + '<div class="gfl-mini"><strong>完成：</strong>'+esc(task.completionCondition || '未定义')+'</div>'
+        + '<div class="gfl-mini"><strong>失败：</strong>'+esc(task.failureCondition || '未定义')+'</div>'
+        + '<div class="gfl-mini"><strong>依据：</strong>'+esc(task.triggerBasis || '未记录')+'</div>'
+        + currentTaskActions(task)
+        + '</article>';
+    }).join('');
+  }
+  function renderLogisticsTasks(){
+    document.getElementById('logistics-count').textContent = logisticsTasks.length + '项';
+    var el = document.getElementById('logistics-list');
+    if(!logisticsTasks.length){
+      el.innerHTML = '<div class="gfl-empty">后勤任务池为空。完成任务删除行后，填表 AI 会在后续补足候选任务。</div>';
+      return;
+    }
+    var busyMap = assignedSquads();
+    el.innerHTML = logisticsTasks.map(function(task){
+      var rowKey = String(task.rowIndex);
+      var isSettling = !!completingRows[rowKey];
+      var isCompleted = !!completedRows[rowKey];
+      var isAssigning = !!assigningRows[rowKey];
+      var isDeleting = !!deletingRows[rowKey];
+      var state = logisticsState(task) + (isSettling || isAssigning || isDeleting ? ' settling' : '') + (isCompleted ? ' completed' : '');
+      var squadSelect = '';
+      if(!task.assignedSquad && !task.startTime){
+        var pendingDelete = !!pendingDeleteRows[rowKey];
+        var deleteLabel = isDeleting ? '删除中' : pendingDelete ? '确认删除' : '删除';
+        var deleteClass = pendingDelete ? ' confirming' : '';
+        var assignLabel = isAssigning ? '派遣中' : '领取';
+        var actionDisabled = (isAssigning || isDeleting) ? 'disabled' : '';
+        squadSelect = '<div class="gfl-action-row"><select class="gfl-select" data-squad-select="'+esc(task.rowIndex)+'">'
+          + '<option value="">选择后勤小队</option>'
+          + logisticsSquads.map(function(squad){ return '<option value="'+esc(squad.squadName)+'" '+squadOptionDisabled(squad, task, busyMap)+'>'+esc(squadOptionLabel(squad, task, busyMap))+'</option>'; }).join('')
+          + '</select><div><button class="gfl-btn primary'+(isAssigning?' busy':'')+'" data-action="assign" data-row="'+esc(task.rowIndex)+'" '+actionDisabled+'>'+esc(assignLabel)+'</button> <button class="gfl-btn danger'+deleteClass+(isDeleting?' busy':'')+'" data-action="delete" data-row="'+esc(task.rowIndex)+'" '+actionDisabled+'>'+esc(deleteLabel)+'</button></div></div>';
+      } else {
+        var pendingGiveUp = !!pendingDeleteRows[rowKey];
+        var giveUpLabel = isDeleting ? '放弃中' : pendingGiveUp ? '确认放弃' : '删除';
+        var giveUpClass = pendingGiveUp ? ' confirming' : '';
+        var completeLabel = isCompleted ? '已完成' : isSettling ? '结算中' : '完成并结算';
+        var completeDisabled = (!isReady(task) || isSettling || isCompleted) ? 'disabled' : '';
+        var busyClass = isSettling ? ' busy' : '';
+        var deleteDisabled = (isSettling || isCompleted || isDeleting) ? 'disabled' : '';
+        squadSelect = '<div class="gfl-action-row"><div class="gfl-mini"><strong>执行小队：</strong>'+esc(task.assignedSquad)+'<br><strong>开始：</strong>'+esc(task.startTime)+'<br><strong>完成时间：</strong>'+esc(task.endTime || '未知')+'</div><div><button class="gfl-btn complete'+busyClass+'" data-action="complete" data-row="'+esc(task.rowIndex)+'" '+completeDisabled+'>'+esc(completeLabel)+'</button> <button class="gfl-btn danger'+giveUpClass+'" data-action="delete" data-row="'+esc(task.rowIndex)+'" '+deleteDisabled+'>'+esc(giveUpLabel)+'</button></div></div>';
+      }
+      return '<article class="gfl-logistics-card '+state+'" data-logistics-card="'+esc(task.rowIndex)+'">'
+        + '<div class="gfl-logistics-top"><div><div class="gfl-task-head"><div class="gfl-task-name">'+esc(task.taskName)+'</div><div>'+difficultyBadge(task.taskDifficulty)+'</div></div><div class="gfl-meta"><span class="gfl-badge core">'+esc(isCompleted ? '任务完成 · 奖励到账' : isSettling ? '奖励结算中' : logisticsStateText(task))+'</span><span class="gfl-badge">时长 '+esc(task.duration)+' 分钟</span></div></div></div>'
+        + '<div class="gfl-mini"><strong>枪种要求：</strong></div><div class="gfl-require-row">'+requirementHtml(task)+'</div>'
+        + '<div class="gfl-mini"><strong>完成奖励：</strong></div><div class="gfl-reward-row">'+rewardHtml(task)+'</div>'
+        + squadSelect
+        + (isSettling || isCompleted ? settlementHtml(task, isCompleted ? 'completed' : 'settling') : '')
+        + '</article>';
+    }).join('');
+  }
+  function refreshData(){
+    currentStatus = Bridge.currentStatus();
+    resourceStatus = Bridge.resourceState();
+    currentTasks = Bridge.currentTaskRows();
+    logisticsTasks = Bridge.logisticsTaskRows();
+    logisticsSquads = Bridge.logisticsSquadRows();
+  }
+  function renderAll(){
+    renderStatusStrip();
+    renderCurrentTabs();
+    renderCurrentTasks();
+    renderLogisticsTasks();
+  }
+  function reloadAndRender(){ refreshData(); renderAll(); }
+  function restoreCompletedRowsForAnimation(){
+    Object.keys(completingRows).forEach(function(rowKey){
+      var exists = logisticsTasks.some(function(task){ return String(task.rowIndex) === rowKey; });
+      if(!exists) logisticsTasks.push(completingRows[rowKey]);
+    });
+    Object.keys(completedRows).forEach(function(rowKey){
+      var exists = logisticsTasks.some(function(task){ return String(task.rowIndex) === rowKey; });
+      if(!exists) logisticsTasks.push(completedRows[rowKey]);
+    });
+  }
+  function reloadAndRenderWithAnimationRows(){
+    restoreCompletedRowsForAnimation();
+    renderAll();
+  }
+  function selectedSquadFor(rowIndex){
+    var select = document.querySelector('[data-squad-select="'+String(rowIndex).replace(/"/g, '\\"')+'"]');
+    return select ? select.value : '';
+  }
+  function assignTask(rowIndex){
+    var rowKey = String(rowIndex);
+    var task = logisticsTasks.filter(function(item){ return String(item.rowIndex) === rowKey; })[0];
+    if(!task){ showToast('领取失败：任务卡片不存在。'); return; }
+    if(assigningRows[rowKey] || deletingRows[rowKey]) return;
+    var squadName = selectedSquadFor(rowIndex);
+    if(!squadName){ showToast('必须先选择后勤小队。'); return; }
+    assigningRows[rowKey] = true;
+    renderLogisticsTasks();
+    showToast('正在派遣后勤小队：' + squadName);
+    assignLogisticsTaskNative(rowIndex, squadName).then(function(){
+      delete assigningRows[rowKey];
+      task.assignedSquad = squadName;
+      task.startTime = currentStatus.currentTime;
+      task.endTime = Bridge.addMinutesToGlobalTime ? Bridge.addMinutesToGlobalTime(task.startTime, task.duration) : task.endTime;
+      showToast('后勤任务已按当前剧情时间开始。');
+      renderAll();
+    }).catch(function(error){
+      delete assigningRows[rowKey];
+      console.error('后勤领取失败:', error);
+      showToast('领取失败：' + (error && error.message ? error.message : error));
+      renderAll();
+    });
+  }
+  function completeTask(rowIndex){
+    var rowKey = String(rowIndex);
+    var task = logisticsTasks.filter(function(item){ return String(item.rowIndex) === rowKey; })[0];
+    if(!task){ showToast('完成失败：任务卡片不存在。'); return; }
+    if(completingRows[rowKey] || completedRows[rowKey]) return;
+    completingRows[rowKey] = task;
+    renderLogisticsTasks();
+    showToast('正在结算后勤奖励：' + task.taskName);
+    completeLogisticsTaskNative(rowIndex).then(function(result){
+      var completedTask = (result && result.task) || completingRows[rowKey] || task;
+      delete completingRows[rowKey];
+      completedRows[rowKey] = completedTask;
+      logisticsTasks = logisticsTasks.filter(function(item){ return String(item.rowIndex) !== rowKey; });
+      reloadAndRenderWithAnimationRows();
+      showToast('后勤任务完成，奖励已到账：' + completedTask.taskName);
+      window.setTimeout(function(){
+        delete completedRows[rowKey];
+        renderAll();
+      }, 1700);
+    }).catch(function(error){
+      delete completingRows[rowKey];
+      console.error('后勤完成失败:', error);
+      showToast('完成失败：' + (error && error.message ? error.message : error));
+      renderAll();
+    });
+  }
+  function archiveCurrentTask(rowIndex){
+    var rowKey = String(rowIndex);
+    var task = currentTasks.filter(function(item){ return String(item.rowIndex) === rowKey; })[0];
+    if(!task){ showToast('归档失败：任务卡片不存在。'); return; }
+    if(task.status !== '已完成' || !isMainlineTask(task)){ showToast('只有已完成的主线任务可以归档。'); return; }
+    if(archivingRows[rowKey]){ showToast('该任务正在归档，不能重复操作。'); return; }
+    if(!pendingArchiveRows[rowKey]){
+      pendingArchiveRows = {};
+      pendingArchiveRows[rowKey] = true;
+      renderCurrentTasks();
+      showToast('再次点击“确认归档”将从当前任务表删除主线任务：' + task.taskName);
+      return;
+    }
+    archivingRows[rowKey] = true;
+    renderCurrentTasks();
+    showToast('正在归档主线任务：' + task.taskName);
+    deleteBySql('当前任务表', 'current_tasks', 'sheet_current_tasks', task.rowIndex).then(function(){
+      currentTasks = currentTasks.filter(function(item){ return String(item.rowIndex) !== rowKey; });
+      delete pendingArchiveRows[rowKey];
+      delete archivingRows[rowKey];
+      renderCurrentTabs();
+      renderCurrentTasks();
+      showToast('主线任务已归档：' + task.taskName);
+    }).catch(function(error){
+      delete archivingRows[rowKey];
+      console.error('当前任务归档失败:', error);
+      showToast('归档失败：' + (error && error.message ? error.message : error));
+      renderAll();
+    });
+  }
+  function deleteTask(rowIndex){
+    var rowKey = String(rowIndex);
+    var task = logisticsTasks.filter(function(item){ return String(item.rowIndex) === rowKey; })[0];
+    if(!task){ showToast('删除失败：任务卡片不存在。'); return; }
+    if(completingRows[rowKey] || completedRows[rowKey] || assigningRows[rowKey] || deletingRows[rowKey]){ showToast('该任务正在处理，不能重复操作。'); return; }
+    if(!pendingDeleteRows[rowKey]){
+      pendingDeleteRows = {};
+      pendingDeleteRows[rowKey] = true;
+      renderLogisticsTasks();
+      showToast((task.assignedSquad || task.startTime ? '再次点击“确认放弃”将放弃任务且不发放奖励：' : '再次点击“确认删除”将删除后勤候选任务：') + task.taskName);
+      return;
+    }
+    deletingRows[rowKey] = true;
+    renderLogisticsTasks();
+    showToast((task.assignedSquad || task.startTime ? '正在放弃后勤任务：' : '正在删除后勤候选任务：') + task.taskName);
+    deleteBySql('后勤任务表', 'logistics_tasks', 'sheet_logistics_tasks', task.rowIndex).then(function(){
+      logisticsTasks = logisticsTasks.filter(function(item){ return String(item.rowIndex) !== rowKey; });
+      delete completingRows[rowKey];
+      delete completedRows[rowKey];
+      delete pendingDeleteRows[rowKey];
+      delete deletingRows[rowKey];
+      renderLogisticsTasks();
+      showToast('后勤任务已删除：' + task.taskName);
+    }).catch(function(error){
+      delete deletingRows[rowKey];
+      console.error('后勤删除失败:', error);
+      showToast('删除失败：' + (error && error.message ? error.message : error));
+      renderAll();
+    });
+  }
+
+  document.addEventListener('click', function(e){
+    var tab = e.target.closest('.gfl-tab');
+    if(tab){ currentFilter = tab.dataset.status || '全部'; renderCurrentTabs(); renderCurrentTasks(); return; }
+    if(e.target.id === 'refresh-btn'){ reloadAndRenderWithAnimationRows(); showToast('任务数据已刷新。'); return; }
+    var actionBtn = e.target.closest('[data-action]');
+    if(actionBtn){
+      var rowIndex = actionBtn.dataset.row;
+      if(actionBtn.dataset.action !== 'delete') pendingDeleteRows = {};
+      if(actionBtn.dataset.action !== 'archive-current') pendingArchiveRows = {};
+      if(actionBtn.dataset.action === 'assign'){ assignTask(rowIndex); return; }
+      if(actionBtn.dataset.action === 'complete'){ completeTask(rowIndex); return; }
+      if(actionBtn.dataset.action === 'archive-current'){ archiveCurrentTask(rowIndex); return; }
+      if(actionBtn.dataset.action === 'delete'){ deleteTask(rowIndex); return; }
+    }
+  });
+  function safeReloadAndRenderWithAnimationRows(){ if(pageDisposed || !document.getElementById('logistics-list')) return; reloadAndRenderWithAnimationRows(); }
+  function cleanupPage(){
+    pageDisposed = true;
+    if(toastTimer){ window.clearTimeout(toastTimer); toastTimer = null; }
+  }
+  window.addEventListener('pagehide', cleanupPage, {once:true});
+  window.addEventListener('beforeunload', cleanupPage, {once:true});
+  window.addEventListener('unload', cleanupPage, {once:true});
+
+  applyBubbleBackground('.gfl-page-bg');
+  reloadAndRender();
+})();
+</script>
+</body>
+</html>

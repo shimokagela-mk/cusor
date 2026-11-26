@@ -1,0 +1,62 @@
+id: 47
+keys:
+  - 法师
+  - 奥术
+  - 法术
+secondary_keys: []
+comment: 法师塔
+content: |-
+  # 势力详述：法师塔
+    **核心概览**：坐落于王城诺顿的奥术研究圣地，是埃瑟尔德大陆公认的最高魔法权威机构。垄断着高阶魔法知识与危险古代遗物的研究与保管权，其存在本身即是低魔世界魔法力量稀缺且必须严格控制的象征。并非单纯的教育机构，更是王国稳定的支柱与潜在威胁的监管者。
+    **统治体系**：由“首席大法师”（当前为奥利维亚·星辰之眼）领导的略有犹豫式学术寡头。其下设有“高阶导师团”（负责不同学派研究与教学）、“监管议会”（负责伦理审查、危险魔法物品封印、以及对塔外魔法使用的监视与干预）及大量学徒。晋升严格基于魔法造诣、理论贡献与对塔的忠诚。
+    **内部文化**：氛围严肃、等级森严、充满学究气与隐秘竞争。强调理性、逻辑与绝对控制，对未经许可的魔法实验（尤其是涉及死灵、恶魔召唤或大规模现实不凡）持零容忍态度。学徒生活清苦，社交略有犹豫，人际关系常伴随着学术攀比与派系斗争。
+    **武装与防卫力量**：非传统军事组织。核心防御依赖于塔本身的强大结界（传说由历代大法师共同维持）、受过战斗训练的“法卫”（精锐战士与低阶法师的混合小队）以及塔内预设的各类防御性与反制性法术陷阱。在正面战场作用有限，但擅长定点防御、情报获取（占卜、探查）与“斩首”式法术打击。
+    **资源与经济**：收入主要来自诺顿王室的巨额资助、为贵族与富商提供有限且昂贵的魔法服务（如物品附魔、疑难病症诊断）、以及对发现的魔晶石矿脉的优先开采权。资源大量消耗于实验材料、古籍维护与结界运转。经济上高度依赖王国，但在魔法知识领域占据绝对主导地位。
+    **主要设施/据点**：
+    - **主塔（诺顿）**：高耸的灰白色石塔，内部空间经魔法拓展远超外观，has(中央图书馆【藏有禁断区域】、元素共鸣实验室、星象观测台、学徒宿舍区、冥想静室、地下封印库)，是法师塔的绝对核心。
+    - **北境观测站**：位于苍白山脉边缘的小型前哨，has(恶劣气候实验室、地脉监测仪、简陋居住区)，负责监控北方异常魔法波动及稀有材料采集。
+    - **沉静庄园**：王城郊外的隐秘庄园，has(会客厅、屏蔽结界、传送法阵)，用于与外部重要人物进行秘密会晤或处理不宜在塔内进行的事务。
+    **外交态势**：
+    - **紧密依附**：与诺顿王国政权深度绑定，是其国策的重要顾问与超自然威胁的应对者，享有特权但亦受制于王权。
+    - **技术保守与中立**：对洛瑟兰共和国及其他势力持技术封锁态度，仅进行有限的学术交流（多为基础理论）。
+    - **警惕与监管**：对所有非塔体系的施法者（尤其是荒野术士、某些教派的牧师）保持警惕，认为其不可控且危险。
+    - **隐秘对抗**：与影踪会存在潜在的对抗关系，双方都试图获取对方的秘密或干扰对方的计划。
+    - **复杂关系**：与圣光教会既有合作（应对亡灵等共同威胁），也有理念冲突（对世界本质的理解不同）。
+constant: false
+selective: true
+insertion_order: 49
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: true
+  display_index: 51
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

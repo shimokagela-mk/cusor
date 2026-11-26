@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Frontend Asset",
+  "type": "object",
+  "properties": {
+    "path": { "type": "string" },
+    "type": { "type": "string" }
+  },
+  "required": ["path"]
+}

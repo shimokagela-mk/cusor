@@ -1,0 +1,62 @@
+id: 4
+keys:
+  - 诺顿
+secondary_keys: []
+comment: 诺顿王国
+content: |-
+  # 势力详述：诺顿王国
+    **核心概览**：埃瑟尔德大陆中部最强大的人类封建王国，以尚武精神、严明纪律和深厚传统著称。政权与圣光教会紧密结合，实行世袭君主制，现任国王为奥德里克三世。
+    **统治体系**：国王掌握最高军政权力，下设公爵、伯爵等封建贵族管理各地。王城诺顿是绝对的政治、军事与宗教中心。
+    **社会文化**：阶层分明，注重荣誉、忠诚与责任。农民提供粮食与兵源，骑士与贵族构成军事骨干。圣光信仰渗透日常生活，教会在教育、医疗与道德规范上作用巨大。
+    **军事力量**：以重装步兵方阵“诺顿之墙”和具装骑兵“王立骑士团”闻名。军队训练有素，纪律严明，但机动性相对不足。在各边境设有要塞网络。
+    **经济基础**：肥沃平原支撑大规模农业，盛产粮食。与铁炉堡的矿产贸易是关键经济支柱。国内锻造业发达，能生产优质武器盔甲。
+    **主要城镇/据点**：
+    - **王城诺顿 (中心)**：王国首都，巨石王宫与圣光大教堂所在地，政治、军事与信仰核心。
+    - **哨兵堡 (东部边境)**：防御荒原氏族的前线军事要塞，双重城墙，驻有精锐边防军。
+    - **铁砧镇 (西北部)**：位于通往苍白山脉的隘口，是与铁炉堡矮人贸易的主要陆路枢纽和武器工坊聚集地。
+    - **白河城 (南部)**：坐落于白河与贸易之路交汇处，是内陆水运与通往自由城市同盟贸易的重要商业城市。
+    - **圣裔港 (西南沿海)**：王国唯一的深水良港，海军基地，负责与洛瑟兰共和国及翡翠海群岛的有限海上贸易，受王室严密控制。
+    **外交态势**：
+    - **紧密盟友**：铁炉堡矮人氏族（稳固的矿产贸易与军事互助协议）、圣光教会（国教，政教一体）。
+    - **主要竞争对手**：洛瑟兰共和国（战略与经济竞争，争夺对自由城市同盟的影响力）。
+    - **长期敌对**：荒原氏族（边境持续冲突）、苍白山脉兽人部落（周期性劫掠）。
+    - **谨慎接触**：自由城市同盟（试图拉拢以确保边境安全与贸易利益）、翡翠海群岛联邦（有限的贸易与警惕）。
+    - **排斥/敌对**：黑岩堡地精、影踪会等所有地下势力及非人类文明（如蜥蜴人、幽暗密林精灵）。
+constant: false
+selective: true
+insertion_order: 10
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: true
+  display_index: 10
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

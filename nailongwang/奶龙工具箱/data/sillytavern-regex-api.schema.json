@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SillyTavern Regex API Knowledge Base",
+  "type": "object",
+  "required": ["name", "language", "updated_at", "sources", "fields", "scope_boundaries", "risks"],
+  "properties": {
+    "name": { "type": "string" },
+    "language": { "type": "string" },
+    "updated_at": { "type": "string" },
+    "sources": { "type": "array", "items": { "type": "string" } },
+    "scope_note": { "type": "string" },
+    "fields": { "type": "object" },
+    "placement_notes": { "type": "array", "items": { "type": "string" } },
+    "scope_boundaries": { "type": "array", "items": { "type": "string" } },
+    "risks": { "type": "array", "items": { "type": "string" } },
+    "safe_patterns": { "type": "array", "items": { "type": "object" } }
+  },
+  "additionalProperties": true
+}

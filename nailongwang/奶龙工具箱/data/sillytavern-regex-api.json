@@ -1,0 +1,122 @@
+{
+  "$schema": "./sillytavern-regex-api.schema.json",
+  "name": "SillyTavern Regex Format Knowledge Base",
+  "language": "zh-CN",
+  "updated_at": "2026-06-08",
+  "sources": [
+    "https://docs.sillytavern.app/extensions/regex/",
+    "SillyTavern/SillyTavern:public/scripts/extensions/regex/editor.html",
+    "SillyTavern/SillyTavern:public/scripts/extensions/regex/engine.js"
+  ],
+  "source_audit": {
+    "checked_at": "2026-06-08",
+    "upstream_refs": [
+      "SillyTavern/SillyTavern-Docs:extensions/Regex.md",
+      "SillyTavern/SillyTavern:public/scripts/extensions/regex/editor.html",
+      "SillyTavern/SillyTavern:public/scripts/extensions/regex/engine.js"
+    ]
+  },
+  "scope_note": "本知识库聚焦 SillyTavern Regex 资产格式、编辑器字段职责、作用路径、深度规则和正则安全风险。它不等同于普通 JS 正则工具函数，也不负责自动回包角色卡。",
+  "fields": {
+    "id": "Regex 脚本唯一标识；导入导出时应保留。",
+    "scriptName": "脚本显示名，也是 slash command/STscript 按名称触发时常用的目标名称。",
+    "findRegex": "查找表达式，常见格式 /pattern/flags；是否替换宏由 substituteRegex 决定。",
+    "replaceString": "替换文本；支持 {{match}}、$1、$2、$<name>、普通文本，也可能包含短 HTML。",
+    "trimStrings": "替换前从每个匹配结果中全局裁剪的固定字符串数组，不是正则表达式列表。",
+    "placement": "作用来源/位置枚举数组；导出值应保留，不凭经验扩大范围。",
+    "disabled": "是否禁用脚本。",
+    "markdownOnly": "只影响聊天 UI 显示，不写入聊天文件，不影响 outgoing prompt。",
+    "promptOnly": "只影响发给模型的 outgoing prompt，不写入聊天文件，不影响聊天 UI 显示。",
+    "runOnEdit": "编辑已有消息后是否重新运行。",
+    "substituteRegex": "findRegex 中宏替换策略：0 不替换，1 原样替换，2 转义后替换。",
+    "minDepth": "最小聊天历史深度；0 为最后一条消息，1 为倒数第二条；null/空白表示不限制。",
+    "maxDepth": "最大聊天历史深度；0 为最后一条消息，1 为倒数第二条；null/空白表示不限制。"
+  },
+  "editor_ui_fields": [
+    { "control": "测试模式", "json_field": null, "purpose": "临时输入文本并查看替换结果。", "recommended_default": "不写入资产。" },
+    { "control": "脚本名称", "json_field": "scriptName", "purpose": "Regex 显示名和常用触发目标名。", "recommended_default": "使用可读短名，避免重名。" },
+    { "control": "查找正则表达式", "json_field": "findRegex", "purpose": "定义要匹配的内容。", "recommended_default": "使用明确边界，跨行匹配优先写 [\\s\\S] 或更窄范围。" },
+    { "control": "替换为", "json_field": "replaceString", "purpose": "定义替换文本或删除匹配内容。", "recommended_default": "可用 {{match}}、$1、$2、$<name>；空字符串表示删除。" },
+    { "control": "修剪掉", "json_field": "trimStrings", "purpose": "替换前从匹配结果中裁剪固定文本。", "recommended_default": "数组；每项一个固定裁剪片段。" },
+    { "control": "作用范围", "json_field": "placement", "purpose": "决定处理用户输入、模型输出、slash、世界书或 reasoning。", "recommended_default": "只勾目标来源。" },
+    { "control": "已禁用", "json_field": "disabled", "purpose": "临时关闭脚本。", "recommended_default": false },
+    { "control": "在编辑时运行", "json_field": "runOnEdit", "purpose": "编辑已有消息后重新应用 Regex。", "recommended_default": false },
+    { "control": "正则表达式查找时的宏", "json_field": "substituteRegex", "purpose": "控制 findRegex 内宏是否替换以及是否转义。", "recommended_default": 0 },
+    { "control": "仅影响显示", "json_field": "markdownOnly", "purpose": "只处理聊天 UI 显示。", "recommended_default": false },
+    { "control": "仅影响后端提示词", "json_field": "promptOnly", "purpose": "只处理 outgoing prompt。", "recommended_default": false },
+    { "control": "最小深度", "json_field": "minDepth", "purpose": "只影响至少 N 层深的聊天消息。", "recommended_default": null },
+    { "control": "最大深度", "json_field": "maxDepth", "purpose": "只影响不深于 N 层的聊天消息。", "recommended_default": null }
+  ],
+  "placement_values": [
+    { "value": 0, "name": "MD Display", "meaning": "早期显示路径来源。", "status": "legacy_identifier", "not_for_new_generation": true },
+    { "value": 1, "name": "User Input", "meaning": "用户发送的消息。", "risk": "可能改写原始用户输入。" },
+    { "value": 2, "name": "AI Output", "meaning": "生成 API 返回的模型消息。", "risk": "可能改写模型输出正文。" },
+    { "value": 3, "name": "Slash Commands", "meaning": "STscript / slash command 发送的文本。", "risk": "Quick Reply 联动时可能改变命令结果。" },
+    { "value": 5, "name": "World Info", "meaning": "世界书条目内容。", "risk": "通常需要配合 promptOnly，避免只改显示路径。" },
+    { "value": 6, "name": "Reasoning", "meaning": "reasoning block 内容。", "risk": "只在目标后端/模型实际产生 reasoning 内容时有意义。" }
+  ],
+  "substitute_regex_modes": [
+    { "value": 0, "name": "Don't substitute", "meaning": "不替换 findRegex 中的宏。", "recommended_default": true },
+    { "value": 1, "name": "Substitute (raw)", "meaning": "先把宏原样替换进正则。", "risk": "宏内容会被当作正则语法。" },
+    { "value": 2, "name": "Substitute (escaped)", "meaning": "先替换宏，再把宏内容按正则字面量转义。", "risk": "适合宏内容来自用户名、角色名等不应当作正则语法的文本。" }
+  ],
+  "depth_rules": {
+    "meaning": "minDepth/maxDepth 是聊天历史倒序过滤，不是插入深度。",
+    "zero": "0 表示最后一条消息。",
+    "one": "1 表示倒数第二条消息。",
+    "unlimited": "null、空白表示不限制；minDepth 为 -1 时也可覆盖 Continue 操作中的续写消息。",
+    "engine_checks": [
+      "depth < minDepth 时跳过脚本。",
+      "depth > maxDepth 时跳过脚本。",
+      "maxDepth 必须大于 minDepth 才能按预期生效。"
+    ],
+    "not_affected": ["system prompt", "utility prompts"],
+    "guardrails": [
+      "999/9999 不是无限默认值。",
+      "只有用户明确要求极大上限时才使用 999 或 9999。",
+      "默认无限必须写 null 或留空。"
+    ]
+  },
+  "ephemerality_rules": {
+    "default": "默认会直接改变聊天文件中的文本，通常不可逆。",
+    "markdownOnly": "只处理聊天 UI 显示，不写入聊天文件，不处理 outgoing prompt。",
+    "promptOnly": "只处理发给模型的 outgoing prompt，不写入聊天文件，不处理聊天 UI 显示。",
+    "both": "两者都为 true 时，显示和模型上下文都会临时处理，但聊天文件仍不改。",
+    "debug_note": "调试时必须标注用户看到的文本、模型收到的文本、聊天文件里的文本是否一致。"
+  },
+  "authoring_guardrails": [
+    { "risk": "灾难性回溯", "rule": "避免 (.*)+、(.+)+、嵌套贪婪分组等会在长消息上指数级回溯的写法。" },
+    { "risk": "误触发", "rule": "不要把 placement 扩大到无关来源；先确认目标是用户输入、模型输出、slash、世界书还是 reasoning。" },
+    { "risk": "不可逆修改", "rule": "非表层替换会写入聊天文件；导入前应确认作用路径。" },
+    { "risk": "HTML 注入", "rule": "replaceString 插入 HTML 时必须考虑 DOMPurify、XSS、Show tags 设置与移动端布局。" },
+    { "risk": "深度误写", "rule": "无限默认使用 null/空白；不要把 999/9999 当作无限。" }
+  ],
+  "risks": [
+    "灾难性回溯：嵌套贪婪分组会在长消息上指数级回溯。",
+    "误触发：placement 扩大到无关来源会同时改写用户输入、模型输出、slash、世界书或 reasoning。",
+    "不可逆修改：非表层替换会写入聊天文件。",
+    "HTML 注入：replaceString 插入 HTML 时需要考虑 DOMPurify、XSS、Show tags 设置与移动端布局。",
+    "深度误写：无限默认值是 null/空白，不是 999/9999。"
+  ],
+  "safe_patterns": [
+    {
+      "name": "限定标签清理",
+      "findRegex": "/<note>[\\s\\S]*?<\\/note>/gi",
+      "replaceString": "",
+      "reason": "使用明确标签边界，避免跨全文贪婪匹配。"
+    },
+    {
+      "name": "捕获组替换",
+      "findRegex": "/\\[status:([^\\]]+)\\]/gi",
+      "replaceString": "<span class=\"nl-status\">$1</span>",
+      "reason": "限定到 ] 前，避免跨段落捕获。"
+    }
+  ],
+  "scope_boundaries": [
+    "Global Regex 通常保存在用户设置中，影响多个角色。",
+    "Scoped Regex 可保存到角色卡数据，影响当前角色。",
+    "奶龙工具箱可审查单个 Regex JSON 或 replaceString HTML，但不自动执行角色卡解包/回包。"
+  ],
+  "related_examples": ["examples/sillytavern-assets/regex-format.json"],
+  "related_schemas": ["schemas/sillytavern-regex.schema.json"]
+}

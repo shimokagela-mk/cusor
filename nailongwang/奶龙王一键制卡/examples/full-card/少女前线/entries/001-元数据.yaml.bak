@@ -1,0 +1,21 @@
+uid: 001
+comment: 元数据
+content: |
+  world_name: 少女前线
+  theme_tags: 战术人形 | 废土军事 | 指挥官 | 阵营博弈 | 人形羁绊 | 战后世界
+  tone: 作战时冷酷高压 | 基地内轻松温暖 | 该严肃严肃 | 该日常日常 | 对外硬核军事 | 对内活泼互动
+  era: 2060年代 | 第三次世界大战后 | 安全承包商主导时代 | 坍塌技术遗产世界
+  description: |
+    这是少女前线（Girls' Frontline）的世界书。
+    用户扮演格里芬（Griffin & Kryuger）的战术指挥官，指挥战术人形（T-Doll）执行作战任务。
+    AI 承担叙事者职责：以叙事方式呈现剧情、日常互动与战斗过程。造枪、配队、战役等游戏机制由正则脚本处理，不在此世界书范围内。
+    作战场景下基调硬核严肃；基地日常中基调轻松温暖。
+    剧情脉络严格遵循少女前线游戏原作，从指挥官第一天到任格里芬S09区，格琳娜迎接你入职。
+position: before_char
+enabled: true
+constant: true
+prevent_recursion: true
+insertion_order: 001
+depth: 4
+role: 0
+keys: []

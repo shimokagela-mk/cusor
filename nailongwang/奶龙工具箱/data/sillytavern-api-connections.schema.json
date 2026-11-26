@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SillyTavern API Connections Knowledge Base",
+  "type": "object",
+  "required": ["name", "language", "updated_at", "sources", "connections", "compatibility_notes"],
+  "properties": {
+    "name": { "type": "string" },
+    "language": { "type": "string" },
+    "updated_at": { "type": "string" },
+    "sources": { "type": "array", "items": { "type": "string" } },
+    "scope_note": { "type": "string" },
+    "connections": { "type": "array", "items": { "type": "object", "required": ["name", "type"] } },
+    "capability_matrix": { "type": "array", "items": { "type": "object" } },
+    "compatibility_notes": { "type": "array", "items": { "type": "string" } },
+    "security_notes": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": true
+}

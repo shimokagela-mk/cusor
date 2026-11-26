@@ -1,0 +1,62 @@
+id: 44
+keys:
+  - 荒原
+  - 兽人
+secondary_keys: []
+comment: 荒原氏族
+content: |-
+  # 势力详述：荒原氏族
+    **核心概览**：活跃于南部及东南部广阔、贫瘠荒原上的游牧民族集群。并非单一民族，而是由众多文化相近的人类部落以及一些与人类混居、通婚的半兽人部落，以古老的血液誓言和生存盟约松散联合而成。生活方式高度适应严酷环境，珍视自由、勇武与氏族荣誉，对定居文明的“围墙”与“软弱”既蔑视又偶尔羡慕。
+    **统治体系**：松散的部落联盟。每个部落由最强悍的战酋或最受尊敬的萨满领导。重大事务（如大规模迁徙、联合劫掠或对外和战）由各部战酋和萨满参加的“荒原大会”决定，遵循古老的传统和实力原则。无中央集权，联盟凝聚力随水草丰沛程度和外部压力而变化。
+    **社会文化**：以家族和氏族为基本单位，逐水草而居。崇拜自然力量（风、雷、兽灵）和英勇祖先。半兽人血统者通常因更强的体魄和耐力受到尊重，而非歧视。成年需单独猎杀一头荒原猛兽（如巨狼或披甲战猪）并带回战利品。拥有丰富的口头史诗传统，记录部落迁徙、战争与英雄事迹。
+    **军事力量**：全民皆兵，尤其精于骑射与马上游击。战士自备武器（弯刀、短矛、复合弓）和坐骑（耐力出众的荒原马，部分部落驯养巨狼）。缺乏重甲和复杂阵型，但机动性极高，擅长利用地形进行骚扰、伏击和闪电突袭。劫掠时凶悍无情，保卫家园时则坚韧不屈。
+    **经济基础**：游牧畜牧经济为主，驯养耐旱的牲畜（长角牛、厚毛羊、战马）。毛皮加工、骨制品和奶制品是重要手工业。通过劫掠定居点、收取商队“过路费”或与边境城镇进行危险贸易（用牲畜、毛皮换取金属、粮食、布匹和酒）获取所需物资。与苍白山脉兽人部落有隐秘的走私往来，交换武器和稀有矿物。
+    **主要城镇/据点**：
+    - **[流浪者集市(季节性贸易点): 荒原腹地绿洲, 无固定归属, has(庞大帐篷群, 牲口栏, 简易擂台, 情报帐篷, 黑市角落), 律法薄弱实力至上, 各方势力交汇处]**
+    - **[血蹄营地(强大半兽人部落核心): 环绕古老石阵, 防御严密, has(战酋大帐, 兽灵祭坛, 狼厩, 锻造坑), 军事化程度高, 粗犷血腥装饰]**
+    - **[风语者山谷(萨满集会所): 隐蔽峡谷, 风声呼啸如语, has(萨满岩画洞, 草药园, 预言石阵), 举行神秘仪式与决策之地, 灵氛浓郁]**
+    **外交态势**：
+    - **长期敌对**：与诺顿王国因领土、水源和劫掠问题冲突不断，是边境主要威胁。
+    - **紧张共存**：与洛瑟兰共和国保持谨慎的贸易关系，但也劫掠其商队，关系脆弱。
+    - **非正式盟友**：与苍白山脉兽人部落有基于共同敌人（诺顿）和走私利益的非正式联系。
+    - **竞争对手**：与暮光沼泽蜥蜴人在边缘地带存在资源竞争。
+    - **蔑视与利用**：视地精为卑劣的虫子，但可能利用其进行一些肮脏的地下交易。
+    - **抗拒教化**：对圣光教会的传教活动极度反感，视其为文化入侵。
+constant: false
+selective: true
+insertion_order: 46
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: true
+  display_index: 48
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

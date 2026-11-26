@@ -1,0 +1,61 @@
+id: 45
+keys:
+  - 黑岩
+  - 地精
+secondary_keys: []
+comment: 黑岩堡地精王国
+content: |-
+  # 势力详述：黑岩堡地精王国
+    **核心概览**：一个以大陆各地下洞穴、废弃矿坑、天然溶洞为据点，通过错综复杂的隧道和秘密通道连接起来的网状“王国”。由数量庞大但组织松散的地精部落、氏族构成，名义上尊奉占据最大、最险要地下要塞“黑岩堡”的最强地精军阀为“国王”。核心生存逻辑是掠夺、 scavenging 和在其阴暗的巢穴中不断繁衍扩张，是所有地面种族的祸害。
+    **统治体系**：极端混乱的强权制。“国王”的权威仅限于其直接控制的区域和愿意臣服（或害怕）的部落。大多数地精部落各自为政，由最狡猾或最强壮的地精头目领导。维系“王国”的并非法律，而是对“国王”武力的恐惧、共同掠夺的利益以及面对外部清剿时本能的抱团。背叛、暗杀和篡位是家常便饭。
+    **社会文化**：社会结构简单粗暴，基于赤裸裸的暴力和欺诈。崇拜力量、诡计和堆积如山的闪亮财宝（无论有用与否）。语言粗鄙且充满威胁和吹嘘。没有文字，重要信息通过口耳相传或粗糙的洞穴壁画记录。以偷窃、破坏和折磨俘虏为乐。繁殖能力极强，但幼崽成活率低，内部竞争残酷。
+    **军事力量**：数量是最大优势，但纪律涣散。个体弱小，依赖人海战术、恶劣环境（狭窄洞穴、陷阱）和卑鄙手段（毒药、偷袭、驱赶驯化的洞穴生物如巨鼠或穴居蝙蝠）。武器简陋混杂，多为捡拾或偷来的残次品。擅长设置粗糙但恶毒的陷阱（落石、钉坑、毒箭）。面对有组织的清剿或坚固防御时往往一哄而散，但会像瘟疫一样卷土重来。
+    **经济基础**：纯粹的掠夺与 scavenging 经济。不事生产，一切所需（食物、工具、武器、财宝）皆从地面种族、商队、矿坑乃至其他地精部落处偷窃或抢夺。会在巢穴深处堆积无用的战利品。偶尔通过影踪会等渠道销赃，换取更多武器或稀有毒药。与铁炉堡矮人是世仇，不断袭击其矿道，掠夺矿石和锻造品。
+    **主要城镇/据点**：
+    - **[黑岩堡(名义上的首都): 深处险峻山脉的庞大洞穴体系, 易守难攻, has(地精王座厅, 囤积洞窟, 奴隶围栏, 陷阱工坊, 臭气熏天的聚居区), 混乱嘈杂, 污水横流]**
+    - **[锈水隧道网(重要交通枢纽): 连接多地下的古老矿道, 错综复杂, has(伏击点, 走私者小道, 地下黑市, 变异真菌农场), 危险迷宫, 各方势力渗透]**
+    - **[尖叫矿坑(大型掠夺前哨): 靠近铁炉堡的废弃矮人矿坑, 持续冲突, has(袭击营地, 简陋锻造炉, 战利品分拣处), 针对矮人的劫掠大本营]**
+    **外交态势**：
+    - **绝对死敌**：与铁炉堡矮人不共戴天，是彼此清剿名单首位。
+    - **被所有地面势力敌视**：诺顿王国、洛瑟兰共和国、自由城市同盟等定期组织清剿任务。
+    - **掠夺对象**：荒原氏族、蜥蜴人等地表部落同样受其骚扰。
+    - **隐秘交易**：与影踪会有有限的、互相提防的交易（销赃、购买违禁品）。
+    - **无视与冲突**：与圣光教会无交集，但会攻击落单的教士，因其“亮闪闪”的圣物。
+constant: false
+selective: true
+insertion_order: 47
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: true
+  display_index: 49
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

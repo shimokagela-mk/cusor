@@ -1,0 +1,64 @@
+id: 48
+keys:
+  - 商盟
+  - 联合
+  - 商会
+  - 商人
+secondary_keys: []
+comment: 商盟联合会
+content: |-
+  # 势力详述：商盟联合会
+    **核心概览**：以洛瑟兰共和国为心脏和盾牌，根系蔓延至整个大陆的庞然大物。与其说是一个组织，不如说是一个由最富有、最有权势的商业家族与行会组成的利益共同体与影子政府。掌控着大陆过半的远洋贸易、主要商路、银行业与信息流通，其财富与影响力足以动摇王国根基，是低武世界中“金钱即力量”的终极体现。
+    **统治体系**：表面由“联合议会”决策，议会席位根据各成员资产、贸易份额与贡献分配。实际权力掌握在数个历史悠久的“豪商家族”与“大行会首脑”组成的核心圈层手中。决策效率高，一切以利润与风险计算为优先。在洛瑟兰共和国境内，商盟高层与共和国议会议员高度重合。
+    **内部文化**：极度务实、精明、崇尚契约精神（至少表面如此）与信息差。社交场合奢华而虚伪，背后则是冷酷的算计与无休止的兼并竞争。“信誉”是最珍贵的资产，而背叛的代价是彻底的商业与社会性死亡。家族纽带与行会忠诚至关重要。
+    **武装力量**：拥有大陆最强大的私人武装——联合护航舰队（活跃于翡翠海与主要航道）以及重金雇用的“合同护卫队”（用于陆路商队与重要设施防卫）。他们装备精良，训练有素，但核心使命是保护财产与贸易路线，而非领土征服。同时，巨额资金也用于收买情报、影响政局乃至资助雇佣兵进行非常规行动。
+    **经济基础**：垄断或主导香料、丝绸、奢侈品、奴隶（在部分地区合法）、魔晶石（通过复杂走私网络）等暴利贸易。掌控银帆城等主要港口的关税与仓储。发展出雏形的银行业，发行可在主要城市承兑的“银帆汇票”，并从事借贷与投资，其金融触角无孔不入。
+    **主要据点/枢纽**：
+    - **银帆城总部**：位于银帆城中心的宏伟建筑群，has(联合议会大厅、会计总部、中央金库、情报分析室、会议中心)，终日人声鼎沸，决定着一笔笔足以影响国家命运的生意。
+    - **翡翠海贸易站网络**：分布在翡翠海各关键岛屿上的 fortified 贸易站，has(码头、货仓、防御工事、谈判室)，是海上贸易与情报收集的节点。
+    - **自由城邦办事处**：在橡木城、琥珀港等自由城市设有豪华办事处，has(接待厅、密室、通讯室)，负责与内陆势力的贸易洽谈与政治游说。
+    **外交态势**：
+    - **共生与主导**：与洛瑟兰共和国互为表里，是共和国实际上的统治基石与最高利益代表。
+    - **合作与竞争**：与诺顿王国既有大宗矿产、粮食贸易往来，又持续进行着经济控制权与关税的拉锯战。
+    - **紧密伙伴**：与翡翠海群岛联邦关系密切，是后者最大的贸易伙伴与债主。
+    - **利用与渗透**：在自由城市同盟大力投资并施加影响，寻求将其变为经济附庸。
+    - **黑白通吃**：与影踪会有大量灰色合作（走私、洗钱、处理棘手对手），但也时刻提防被反噬。
+    - **谨慎对待**：对法师塔保持尊重（因其能提供独特价值）与距离（因其难以用金钱完全控制）。
+constant: false
+selective: true
+insertion_order: 50
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: true
+  display_index: 52
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

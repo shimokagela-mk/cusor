@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "JS-Slash-Runner Script JSON",
+  "type": "object",
+  "required": ["type", "enabled", "name", "id", "content", "info", "button", "data"],
+  "properties": {
+    "type": { "const": "script" },
+    "enabled": { "type": "boolean" },
+    "name": { "type": "string" },
+    "id": { "type": "string", "minLength": 1 },
+    "content": { "type": "string" },
+    "info": { "type": "string" },
+    "button": {
+      "type": "object",
+      "required": ["enabled", "buttons"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "buttons": { "type": "array", "items": { "type": "object" } }
+      },
+      "additionalProperties": true
+    },
+    "data": { "type": "object" }
+  },
+  "additionalProperties": true
+}

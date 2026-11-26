@@ -1,0 +1,63 @@
+id: 46
+keys:
+  - 圣光
+  - 教会
+  - 信仰
+secondary_keys: []
+comment: 圣光教会
+content: |-
+  # 势力详述：圣光教会
+    **核心概览**：总部位于王城诺顿的跨国性宗教组织，信奉唯一至高神祇“圣光之神”。是人类国度中影响力最广泛、组织最严密的信仰体系，与诺顿王国的政权紧密结合，互为支柱。教义强调光明、秩序、怜悯、奉献与对抗黑暗邪恶，旨在将圣光的信仰与庇护传播至大陆每个角落。
+    **统治体系**：严格的教阶制度。至高领袖为常驻王城诺顿“圣光大教堂”的教皇。其下设有枢机主教团，分管不同教区（通常与国家或大型区域对应）。再往下是各城市的主教、乡村的牧师以及负责军事与护卫的圣武士团。组织严密，等级森严，下级对上级需绝对服从，但内部也存在基于神学解读和实务路线的派系分歧。
+    **社会文化**：教会不仅是宗教机构，也承担了教育、医疗（通过有限的神术）、慈善和部分司法职能（宗教法庭）。修士、修女在修道院中从事抄写、祈祷、研究和服务。信仰深深融入信徒日常生活，礼拜、忏悔、慈善捐献是常见活动。教会艺术（壁画、圣乐、建筑）发达，旨在彰显神性光辉与感化人心。
+    **军事力量**：直接军事力量主要是“圣光卫士”圣武士团以及各地教堂的守卫。圣武士经过严酷的信仰与战斗训练，装备精良，信念坚定，擅长对抗亡灵、恶魔及“黑暗”生物，但数量不多。更多时候，教会通过其巨大的道德影响力，动员信徒或与世俗政权（如诺顿王国）的军队合作进行“圣战”或清除异端。
+    **经济基础**：财力雄厚。收入主要来源包括：广大信徒的虔诚捐赠（十一税）、教会拥有的广阔土地的地租、举办宗教活动与售卖圣物（经过祝福的徽章、圣水等）的收入、以及王国和贵族的资助。经济运作由专门的教会财务院管理，部分资金用于维持教会运转、建设教堂、慈善事业，部分也可能用于政治投资或内部消耗。
+    **主要城镇/据点**：
+    - **[圣光大教堂(教会中枢): 王城诺顿内城, 宏伟华丽, has(教皇厅, 枢机会议厅, 大图书馆, 圣遗物展厅, 高级神学院), 信仰与权力中心, 终日唱诗祷告声不绝]**
+    - **[圣泉修道院(重要修习地): 偏远山区, 环境清幽, has(修道院, 神圣泉眼, 抄经室, 草药园), 苦修与学术研究之地, 戒备森严]**
+    - **[边境礼拜堂(前沿据点): 靠近危险区域的小型 fortified 教堂, has(祈祷室, 伤员救治处, 瞭望塔, 地窖), 传教与抵御黑暗的前哨, 气氛坚韧而肃穆]**
+    **外交态势**：
+    - **政权共生**：与诺顿王国深度绑定，国教地位，相互支持。
+    - **合作与警惕**：在洛瑟兰共和国等地方，教会活动受到一定法律限制，但依然通过慈善和文化渗透保持影响力，与当地商会势力存在博弈。
+    - **传教目标**：积极向荒原氏族、自由城市同盟乃至其他非人种族传教，视其原始信仰为“蒙昧”，但收效甚微且常引发冲突。
+    - **敌对与净化**：将黑岩堡地精、亡灵生物、某些恶魔崇拜邪教明确标定为“黑暗爪牙”，是圣战与净化对象。
+    - **谨慎共存**：与法师塔关系微妙，尊重其知识但警惕魔法可能带来的“秩序失衡”与“背离信仰”，双方有合作也有神学争论。
+    - **打击对象**：坚决反对影踪会等地下势力，视其为腐败与混乱的温床。
+constant: false
+selective: true
+insertion_order: 48
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: true
+  display_index: 50
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false
