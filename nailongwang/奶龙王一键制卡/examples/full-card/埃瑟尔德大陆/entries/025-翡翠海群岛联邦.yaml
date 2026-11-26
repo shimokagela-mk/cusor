@@ -1,0 +1,63 @@
+id: 24
+keys:
+  - 翡翠
+  - 群岛
+  - 联邦
+secondary_keys: []
+comment: 翡翠海群岛联邦
+content: |-
+  # 势力详述：翡翠海群岛联邦
+    **核心概览**：散布于大陆以东广袤翡翠海上的数十个大大小小岛屿城邦与海盗家族的松散联盟。以航海技术、贸易网络和对“海上自由”的极端珍视闻名。没有统一中央政权，依靠古老的《海宪章》和家族间联姻、誓约维持联系。
+    **统治体系**：联邦议事会。由各主要岛屿的“岛主”（世袭或选举产生）与实力最强的海盗家族首领组成，在中央岛“浪涛城”定期召开。议事会决议对成员无强制执行力，更多依赖共识、利益交换与集体威慑（如联合舰队）。
+    **社会文化**：海洋是家园与信仰。社会以船长、商贾和工匠为核心。崇尚冒险精神、航海技能与家族忠诚。海盗传统与合法贸易界限模糊，“私掠许可”在战时是常见手段。文化混杂，吸收大陆、东方未知地域乃至海洋种族的元素。
+    **军事力量**：海军力量分散但精锐。各岛与家族拥有自己的舰队，船只通常快速、灵活，擅长接舷战与游击。在面临外部重大威胁时，可临时组成规模可观的联合舰队。缺乏大规模陆军，岛屿防御依赖民兵、复杂水文和堡垒化的港口。
+    **经济基础**：控制着翡翠海东西向的贸易航线。转口贸易利润丰厚，特产包括珍珠、珊瑚、稀有海生药材、香料（传闻来自更东方）。捕鲸、采珠业发达。同时也是大陆重要的“影子银行”和销赃地之一。
+    **主要城镇/据点**：
+    - **浪涛城 (联邦名义核心，中央群岛最大岛屿)**：联邦议事会所在地与最大贸易枢纽，天然良港被岩石拱卫，has(议事大厅，海王神庙，大型奴隶市场（争议），各国商会办事处，船厂)。
+    - **自由港 (东部边缘群岛)**：以法律豁免和隐匿性闻名，是海盗、逃亡者、走私商和情报贩子的天堂，has(黑市，伪钞工坊，佣兵酒馆，无数秘密锚地)。
+    - **珍珠岛 (南部群岛)**：联邦最主要的珍珠与珊瑚产地，由几个大家族严格控制，has(采珠人村落，加工工坊，家族庄园，严密守卫)。
+    - **飓风堡 (北部边缘礁石岛)**：扼守通往大陆北部海岸航路的天然要塞，易守难攻，has(灯塔，炮台，补给站，观星台)。
+    **外交态势**：
+    - **主要贸易伙伴**：洛瑟兰共和国（最大客户与技术支持提供者）。
+    - **警惕中立**：诺顿王国（对其“海盗行径”深恶痛绝，但忌惮其海上力量与贸易价值）。
+    - **有限合作**：自由城市同盟（个别城邦有密切贸易往来）。
+    - **竞争与冲突**：幽暗密林精灵（对精灵控制的沿岸森林资源有觊觎，时有摩擦）。
+    - **内部关系**：各岛与家族间关系复杂，时而联合，时而敌对，劫掠彼此商船亦不罕见。
+constant: false
+selective: true
+insertion_order: 30
+enabled: true
+position: before_char
+use_regex: true
+extensions:
+  position: 0
+  exclude_recursion: true
+  display_index: 28
+  probability: 100
+  useProbability: true
+  depth: 4
+  selectiveLogic: 0
+  outlet_name: ''
+  group: ''
+  group_override: false
+  group_weight: 100
+  prevent_recursion: true
+  delay_until_recursion: false
+  scan_depth: null
+  match_whole_words: null
+  use_group_scoring: false
+  case_sensitive: null
+  automation_id: ''
+  role: 0
+  vectorized: false
+  sticky: 0
+  cooldown: 0
+  delay: 0
+  match_persona_description: false
+  match_character_description: false
+  match_character_personality: false
+  match_character_depth_prompt: false
+  match_scenario: false
+  match_creator_notes: false
+  triggers: []
+  ignore_budget: false

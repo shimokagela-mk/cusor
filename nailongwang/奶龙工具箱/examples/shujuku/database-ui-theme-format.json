@@ -1,0 +1,72 @@
+{
+  "formatVersion": 1,
+  "exportedAt": "1970-01-01T00:00:00.000Z",
+  "templateMeta": {
+    "kind": "editable-theme-template",
+    "sourceThemeId": "theme-id-placeholder",
+    "sourceThemeName": "Theme Name",
+    "description": "Editable database UI theme template placeholder."
+  },
+  "editableModules": [
+    {
+      "id": "core-variables",
+      "label": "Core Variables",
+      "description": "Core color, text, border, radius and shadow variables.",
+      "paths": [
+        "theme.variables"
+      ],
+      "status": "configured"
+    },
+    {
+      "id": "custom-css",
+      "label": "Custom CSS",
+      "description": "Component-level override CSS.",
+      "paths": [
+        "theme.customCSS"
+      ],
+      "status": "configured"
+    }
+  ],
+  "guide": {
+    "summary": "Guide placeholder.",
+    "recommendedOrder": [
+      "Edit theme.variables first.",
+      "Then edit optional component variable groups.",
+      "Use theme.customCSS for component-level details."
+    ],
+    "tips": [
+      "Only root-level theme is used at runtime.",
+      "templateMeta/editableModules/guide are editing aids."
+    ]
+  },
+  "theme": {
+    "id": "theme-id-placeholder",
+    "name": "Theme Name",
+    "description": "Theme description placeholder.",
+    "author": "Author",
+    "version": "1.0.0",
+    "colorScheme": "dark",
+    "variables": {
+      "--acu-bg-0": "rgba(25, 25, 25, 0.95)",
+      "--acu-bg-1": "rgba(30, 30, 30, 0.95)",
+      "--acu-border": "#555555",
+      "--acu-text-1": "#eeeeee",
+      "--acu-text-2": "#aaaaaa",
+      "--acu-accent": "#6a5acd",
+      "--acu-success": "#7c9dff",
+      "--acu-warning": "#f6c177",
+      "--acu-danger": "#fb7185",
+      "--acu-radius-lg": "16px",
+      "--acu-shadow": "0 8px 40px rgba(0, 0, 0, 0.6)"
+    },
+    "windowChromeVariables": {},
+    "toastVariables": {},
+    "visualizerVariables": {},
+    "previewColors": [
+      "#191919",
+      "#6a5acd",
+      "#eeeeee"
+    ],
+    "customCSS": "/* Database UI custom CSS placeholder. */"
+  }
+}

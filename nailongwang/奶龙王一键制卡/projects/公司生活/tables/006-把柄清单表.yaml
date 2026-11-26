@@ -1,0 +1,81 @@
+uid: sheet_Leverage
+name: 把柄清单表
+sourceData:
+  note: |-
+    记录可用于威胁、反制与加码的把柄。一行一个把柄；无把柄时可为三名女主预留空行或保持空表。
+    - 列0: 对象 - 尹安琪 / 陈亦勤 / 丁丁 / 其他姓名。
+    - 列1: 类型 - 只能是：照片 / 录音 / 物品 / 目击 / 聊天记录 / 其他。
+    - 列2: 内容摘要 - ≤40字，客观写把柄是什么（如「绿色自慰棒抽屉照」「前台玩具接待短视频」）。
+    - 列3: 强度 - 1到5整数。1暗示级，3可迫使服从一次，5可接近锁死公开线。
+    - 列4: 状态 - 只能是：持有 / 已使用 / 已销毁 / 泄露风险。
+    - 列5: 备注 - 可空；记录何时取得、是否给过丈夫看等。
+
+    更新口径：正文中明确取得/使用/销毁/泄露时才改；不要无中生有。
+    反制：角色成功销毁或夺回时，状态改为已销毁或删除该行（优先改状态）。
+  initNode: |-
+    初始化可为空表；若需要示范结构，可不插行。故事开始无把柄。
+    SQL示例: INSERT INTO leverage (row_id, target_name, leverage_type, summary, intensity, status, note) VALUES (1, '尹安琪', '物品', '床头绿色自慰棒被目击', 2, '持有', '开场未触发则勿插入');
+  deleteNode: |-
+    仅当把柄被彻底销毁且无需留痕时删除；否则改状态为已销毁。
+    SQL示例: DELETE FROM leverage WHERE row_id = 1;
+  updateNode: |-
+    强度变化、状态变化、备注补充时更新。
+    SQL示例: UPDATE leverage SET status = '已使用', note = '逼她上班塞玩具时出示' WHERE row_id = 1;
+  insertNode: |-
+    正文出现新把柄时插入。
+    SQL示例: INSERT INTO leverage (row_id, target_name, leverage_type, summary, intensity, status, note) VALUES ((SELECT COALESCE(MAX(row_id),0)+1 FROM leverage), '陈亦勤', '录音', '给周予安打电话时的压抑喘息', 4, '持有', '');
+  ddl: |-
+    CREATE TABLE leverage ( -- 把柄清单表
+      row_id INTEGER PRIMARY KEY, -- 行号
+      target_name TEXT NOT NULL, -- 对象
+      leverage_type TEXT NOT NULL CHECK(leverage_type IN ('照片', '录音', '物品', '目击', '聊天记录', '其他')), -- 类型
+      summary TEXT NOT NULL, -- 内容摘要
+      intensity INTEGER NOT NULL DEFAULT 1 CHECK(intensity >= 1 AND intensity <= 5), -- 强度
+      status TEXT NOT NULL DEFAULT '持有' CHECK(status IN ('持有', '已使用', '已销毁', '泄露风险')), -- 状态
+      note TEXT -- 备注
+    );
+content:
+  - - row_id
+    - 对象
+    - 类型
+    - 内容摘要
+    - 强度
+    - 状态
+    - 备注
+updateConfig:
+  uiSentinel: -1
+  contextDepth: 4
+  updateFrequency: 2
+  batchSize: 3
+  skipFloors: -1
+  groupId: 2
+exportConfig:
+  enabled: false
+  splitByRow: false
+  entryName: 把柄清单表
+  entryType: constant
+  keywords: ""
+  preventRecursion: true
+  injectionTemplate: ""
+  extraIndexEnabled: false
+  extraIndexEntryName: 把柄清单表-索引
+  extraIndexColumns: []
+  extraIndexColumnModes: {}
+  extraIndexInjectionTemplate: ""
+  entryPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 10060
+  extraIndexPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 10070
+  fixedEntryPlacement:
+    position: before_char
+    depth: 2
+    order: 99989
+  fixedIndexPlacement:
+    position: before_char
+    depth: 2
+    order: 99990
+orderNo: 6

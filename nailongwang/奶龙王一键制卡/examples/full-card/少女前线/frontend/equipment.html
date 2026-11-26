@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>少女前线 - 装备仓库</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--y:#e8c840;--k:#111;--wh:#f0f0f0;--gr:#999;--gr2:#666;--gr3:#444;--ok:#68c080;--warn:#e04040}
+body{font-family:'Microsoft YaHei','PingFang SC','Noto Sans SC',sans-serif;background:#000;color:var(--wh);font-size:14px;line-height:1.45}
+button{font-family:inherit}
+.gfl-page{min-height:100vh;background:radial-gradient(circle at 20% 12%,rgba(232,200,64,.14),transparent 34%),linear-gradient(135deg,#101010,#050505 60%,#160808);padding:18px}
+.gfl-wrap{max-width:1180px;margin:0 auto}
+.gfl-head{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:2px solid var(--y);padding-bottom:12px;margin-bottom:14px}
+.gfl-head h1{font-size:20px;color:var(--y);letter-spacing:3px}
+.gfl-layout{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:14px}
+.gfl-panel{background:rgba(18,18,18,.86);border:1px solid rgba(255,255,255,.08);box-shadow:0 12px 32px rgba(0,0,0,.36)}
+.gfl-title{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:linear-gradient(90deg,rgba(232,200,64,.18),rgba(255,255,255,.03));border-bottom:1px solid rgba(232,200,64,.24);color:var(--y);font-weight:900;letter-spacing:2px}
+.gfl-body{padding:14px}
+.gfl-res{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.gfl-res span{background:rgba(0,0,0,.32);border-left:3px solid var(--y);padding:6px 10px;color:var(--gr);font-size:12px}
+.gfl-res strong{color:var(--y)}
+.gfl-tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.gfl-search{width:100%;border:1px solid rgba(232,200,64,.28);background:rgba(0,0,0,.3);color:var(--wh);padding:8px 10px;font-size:12px;letter-spacing:1px;margin-bottom:10px}.gfl-search:focus{outline:none;border-color:var(--y);box-shadow:0 0 0 2px rgba(232,200,64,.12)}
+.gfl-tools button,.gfl-btn{border:1px solid var(--gr3);background:rgba(255,255,255,.035);color:var(--gr);padding:7px 12px;font-size:11px;font-weight:800;letter-spacing:1px;cursor:pointer}
+.gfl-tools button.active,.gfl-tools button:hover,.gfl-btn:hover{border-color:var(--y);color:var(--y)}
+.gfl-btn.primary{border-color:rgba(232,200,64,.72);color:var(--y);background:rgba(232,200,64,.1)}
+.gfl-btn.danger{border-color:rgba(224,64,64,.72);color:#ff9a9a;background:rgba(224,64,64,.08)}
+.gfl-btn:disabled{opacity:.42;cursor:not-allowed}
+.gfl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
+.gfl-card{border:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg,rgba(35,35,35,.88),rgba(12,12,12,.92));padding:11px;cursor:pointer;min-height:126px}
+.gfl-card:hover,.gfl-card.active{border-color:var(--y);box-shadow:0 0 18px rgba(232,200,64,.12)}
+.gfl-card h3{font-size:14px;color:var(--wh);margin-bottom:7px}
+.gfl-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.gfl-tag{font-size:10px;color:#111;background:var(--y);font-weight:900;padding:2px 6px}
+.gfl-tag.dim{background:#333;color:#bbb}
+.gfl-card p{font-size:12px;color:#bbb;line-height:1.55}
+.gfl-detail h2{font-size:18px;color:var(--y);margin-bottom:10px}
+.gfl-info{font-size:12px;color:#bbb;line-height:1.7;background:rgba(0,0,0,.22);padding:10px;border-left:3px solid rgba(232,200,64,.45);margin-bottom:10px}
+.gfl-info strong{color:var(--y)}
+.gfl-target-controls{padding:12px 16px 0}.gfl-target-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}.gfl-targets{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;max-height:460px;overflow:auto}.gfl-target-card{position:relative;height:252px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg,rgba(40,40,40,.9),rgba(20,20,20,.92));color:var(--gr);padding:0;text-align:left;cursor:pointer;overflow:hidden}.gfl-target-card:hover,.gfl-target-card.active{border-color:var(--y);box-shadow:0 0 0 2px rgba(232,200,64,.78),0 8px 24px rgba(0,0,0,.42)}.gfl-target-img-wrap{position:relative;height:132px;background:rgba(30,30,30,.6);overflow:hidden}.gfl-target-img{width:100%;height:100%;object-fit:contain;opacity:.78;transition:opacity .2s,transform .2s}.gfl-target-card:hover .gfl-target-img{opacity:.94;transform:scale(1.03)}.gfl-target-noimg{height:100%;display:flex;align-items:center;justify-content:center;color:var(--gr3);font-size:11px;letter-spacing:1px}.gfl-target-body{padding:8px 9px}.gfl-target-type{position:absolute;top:112px;left:8px;padding:2px 8px;font-size:8px;font-weight:900;letter-spacing:1px;color:#111;background:var(--y);clip-path:polygon(3px 0,100% 0,calc(100% - 3px) 100%,0 100%)}.gfl-target-name{font-size:12px;font-weight:900;color:#eee;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.gfl-target-stars{font-size:10px;color:var(--y);letter-spacing:1px;margin-top:2px}.gfl-target-statline{font-size:9px;color:#aaa;line-height:1.35;margin-top:5px}.gfl-target-note{font-size:10px;color:var(--gr2);line-height:1.35;margin-top:5px}.gfl-target-card.active .gfl-target-name,.gfl-target-card.active .gfl-target-note{color:var(--y)}.gfl-target-card[disabled]{opacity:.42;cursor:not-allowed}.gfl-target-preview{font-size:12px;color:var(--gr);line-height:1.7}.gfl-target-preview strong{color:var(--y)}
+.gfl-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.gfl-status{min-height:18px;margin-top:12px;font-size:12px;color:#aaa}
+.gfl-status.ok{color:var(--ok)}
+.gfl-status.err{color:#ff9a9a}
+.gfl-detail-empty{color:#777;padding:18px;text-align:center;border:1px dashed #333}
+.gfl-overlay{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.86);padding:16px}.gfl-overlay.open{display:flex}.gfl-modal{position:relative;width:min(820px,100%);background:rgba(14,14,14,.96);border:1px solid rgba(232,200,64,.55);box-shadow:0 24px 70px rgba(0,0,0,.72);overflow:hidden}.gfl-modal-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:linear-gradient(90deg,rgba(232,200,64,.18),rgba(255,255,255,.03));border-bottom:1px solid rgba(232,200,64,.28)}.gfl-modal-title{font-size:15px;color:var(--y);font-weight:900;letter-spacing:2px}.gfl-modal-close{background:none;border:1px solid var(--gr3);color:var(--gr);padding:5px 12px;cursor:pointer}.gfl-modal-body{display:grid;grid-template-columns:1fr 260px;gap:16px;padding:16px}.gfl-confirm-row{display:flex;justify-content:flex-end;gap:8px;padding:0 16px 16px}@media(max-width:760px){.gfl-modal-body{grid-template-columns:1fr}.gfl-targets{max-height:320px}}
+@media(max-width:860px){.gfl-page{padding:10px}.gfl-layout{grid-template-columns:1fr}.gfl-grid{grid-template-columns:1fr}.gfl-head h1{font-size:17px}}
+</style>
+</head>
+<body>
+<div class="gfl-page">
+  <div class="gfl-wrap">
+    <div class="gfl-head"><h1>装备仓库</h1></div>
+    <div class="gfl-res" id="res-row"></div>
+    <div class="gfl-layout">
+      <section class="gfl-panel">
+        <div class="gfl-title"><span>装备列表</span><span id="count"></span></div>
+        <div class="gfl-body">
+          <div class="gfl-tools" id="filters"></div>
+          <div class="gfl-grid" id="grid"></div>
+        </div>
+      </section>
+      <aside class="gfl-panel">
+        <div class="gfl-title"><span>装备详情</span></div>
+        <div class="gfl-body" id="detail"><div class="gfl-detail-empty">选择装备查看详情</div></div>
+      </aside>
+    </div>
+  </div>
+</div>
+<div class="gfl-overlay" id="target-overlay">
+  <div class="gfl-modal">
+    <div class="gfl-modal-head"><div class="gfl-modal-title" id="target-title">选择人形</div><button class="gfl-modal-close" id="target-close">关闭</button></div>
+    <div class="gfl-target-controls">
+      <input class="gfl-search" id="target-search" type="search" placeholder="搜索人形名 / 枪种 / 星级，例如 FAL、AR、5">
+      <div class="gfl-target-filters" id="target-filters"></div>
+    </div>
+    <div class="gfl-modal-body">
+      <div class="gfl-targets" id="target-list"></div>
+      <div class="gfl-target-preview" id="target-preview">先选择一名人形。</div>
+    </div>
+    <div class="gfl-confirm-row"><button class="gfl-btn" id="target-cancel">取消</button><button class="gfl-btn primary" id="target-confirm">确认装备</button></div>
+  </div>
+</div>
+<script src="gfl-data-bridge.js"></script>
+<script>
+(function(){
+  'use strict';
+
+  var Bridge = window.GFLDataBridge;
+  var filter = 'ALL';
+  var selected = '';
+  var busy = false;
+  var statusText = '';
+  var statusKind = '';
+  var selectedTarget = '';
+  var targetPickerOpen = false;
+  var targetSearch = '';
+  var targetType = 'ALL';
+  var filters = ['ALL','配件','弹匣','人形','特殊','已装备','未装备','锁定'];
+  var targetTypes = ['ALL','HG','SMG','RF','AR','MG','SG'];
+
+  if(!Bridge){
+    document.getElementById('grid').innerHTML = '<div class="gfl-detail-empty">缺少数据桥接层</div>';
+    return;
+  }
+
+  function esc(value){ return Bridge.esc(value); }
+  function sqlValue(value){ return value == null ? 'NULL' : "'" + String(value).replace(/'/g, "''") + "'"; }
+  function run(sql, keys){ return Bridge.executeSqlBatch({sql:sql, targetSheetKeys:keys}); }
+  function stars(n){ var s=''; for(var i=0;i<(n||0);i++) s+='★'; return s; }
+  function statValue(stats, key){ return stats && stats[key] != null ? stats[key] : 0; }
+
+  function data(){
+    return {
+      res: Bridge.resourceState(),
+      eq: Bridge.equipmentWarehouseRows(),
+      tdolls: Bridge.ownedTdolls(),
+      rels: Bridge.equipmentRelationRows()
+    };
+  }
+
+  function setStatus(text, kind){
+    statusText = text || '';
+    statusKind = kind || '';
+    var el = document.getElementById('status');
+    if(el){
+      el.textContent = statusText;
+      el.className = 'gfl-status ' + statusKind;
+    }
+  }
+
+  function setBusy(value){
+    busy = !!value;
+    refresh();
+    if(targetPickerOpen) renderTargetOverlay();
+  }
+
+  function selectedEq(){
+    var d = data();
+    for(var i=0;i<d.eq.length;i++) if(String(d.eq[i].rowId) === String(selected)) return d.eq[i];
+    return d.eq[0] || null;
+  }
+
+  function current(){ return selectedEq(); }
+
+  function renderRes(d){
+    document.getElementById('res-row').innerHTML = [
+      '<span>强化材料 <strong>' + esc(d.res.enhanceMaterial || 0) + '</strong></span>',
+      '<span>校准券 <strong>' + esc(d.res.calibrationTicket || 0) + '</strong></span>',
+      '<span>人力 ' + esc(d.res.manpower) + '</span>',
+      '<span>弹药 ' + esc(d.res.ammo) + '</span>',
+      '<span>口粮 ' + esc(d.res.ration) + '</span>',
+      '<span>零件 ' + esc(d.res.parts) + '</span>'
+    ].join('');
+  }
+
+  function list(d){
+    return d.eq.filter(function(e){
+      if(filter === 'ALL') return true;
+      if(filter === '已装备') return !!e.equippedBy;
+      if(filter === '未装备') return !e.equippedBy;
+      if(filter === '锁定') return e.locked;
+      return e.slotType === filter;
+    });
+  }
+
+  function renderFilters(){
+    document.getElementById('filters').innerHTML = filters.map(function(f){
+      return '<button class="' + (filter === f ? 'active' : '') + '" data-filter="' + esc(f) + '">' + esc(f === 'ALL' ? '全部' : f) + '</button>';
+    }).join('');
+  }
+
+  function renderGrid(d){
+    var rows = list(d);
+    document.getElementById('count').textContent = rows.length + '/' + d.eq.length;
+    if(!rows.length){
+      document.getElementById('grid').innerHTML = '<div class="gfl-detail-empty">没有符合条件的装备</div>';
+      return;
+    }
+    document.getElementById('grid').innerHTML = rows.map(function(e){
+      return '<article class="gfl-card ' + (String(selected) === String(e.rowId) ? 'active' : '') + '" data-id="' + esc(e.rowId) + '">'
+        + '<h3>' + esc(e.name) + '</h3>'
+        + '<div class="gfl-meta"><span class="gfl-tag">' + esc(e.rarity || '-') + '</span><span class="gfl-tag dim">' + esc(e.slotType || '-') + '</span><span class="gfl-tag dim">Lv.' + esc(e.level) + '</span></div>'
+        + '<p>' + esc(e.statsText || '无属性') + '</p>'
+        + '<p>' + (e.locked ? '锁定 · ' : '') + esc(e.equippedBy ? '装备给 ' + e.equippedBy : '未装备') + '</p>'
+        + '</article>';
+    }).join('');
+  }
+
+  function equipOptions(e, d){
+    return d.tdolls.map(function(t){
+      var check = Bridge.tdollCanEquip(t, e);
+      var used = d.rels.some(function(r){ return r.tdollName === t.name && r.slotType === e.slotType; });
+      return {tdoll:t, ok:check.ok, reason:used ? '该槽位已有装备' : check.reason, used:used};
+    });
+  }
+
+  function canEnhance(e, d){
+    return e && e.catalog && e.level < e.catalog.maxLevel && (d.res.enhanceMaterial >= 1 || d.res.manpower >= 100 && d.res.ammo >= 100 && d.res.ration >= 100 && d.res.parts >= 100);
+  }
+
+  function canCalibrate(e, d){
+    var cost = e ? Math.max(1, e.stars - 2) * 200 : 200;
+    return e && e.catalog && e.catalog.calibrationFields.length && (d.res.calibrationTicket >= Math.max(1, e.stars - 2) || d.res.manpower >= cost && d.res.ammo >= cost && d.res.ration >= cost && d.res.parts >= cost);
+  }
+
+  function equippedSameSlot(tdollName, d){
+    var e = current();
+    if(!e) return null;
+    for(var i=0;i<d.eq.length;i++) if(d.eq[i].equippedBy === tdollName && d.eq[i].slotType === e.slotType) return d.eq[i];
+    return null;
+  }
+
+  function statsOf(t){ return (t && t.modded && t.modStats) ? t.modStats : (t ? t.baseStats : {}); }
+
+  function equipmentListFor(tdollName, d){
+    return d.eq.filter(function(e){ return e.equippedBy === tdollName; });
+  }
+
+  function combatStatKeys(){
+    return [
+      ['生命','hp',true],['伤害','damage',true],['命中','accuracy',true],['回避','evasion',true],['射速','rof',true],['护甲','armor',true],['移速','movement',true],
+      ['穿甲','armorPiercing'],['暴击','critRate'],['弹链','ammoChain'],['暴伤','critDamage'],['夜战抵消','nightAccuracyOffset'],['换弹','reloadSpeed'],['前置冷却','initialCooldown'],['全队命中','teamAccuracy']
+    ];
+  }
+
+  function visibleCombatStatKeys(before, after){
+    return combatStatKeys().filter(function(k){
+      var a = statValue(before, k[1]), b = statValue(after, k[1]);
+      return k[2] || a || b || a !== b;
+    });
+  }
+
+  function targetStatPreviewHtml(tdoll, equip, d){
+    var currentList = equipmentListFor(tdoll.name, d);
+    var nextList = currentList.filter(function(item){ return item.slotType !== equip.slotType; });
+    nextList.push(equip);
+    var before = Bridge.applyEquipmentStats ? Bridge.applyEquipmentStats(statsOf(tdoll), currentList) : statsOf(tdoll);
+    var after = Bridge.applyEquipmentStats ? Bridge.applyEquipmentStats(statsOf(tdoll), nextList) : statsOf(tdoll);
+    return '<div class="gfl-target-statline">' + visibleCombatStatKeys(before, after).map(function(k){
+      var oldValue = statValue(before, k[1]), newValue = statValue(after, k[1]), delta = newValue - oldValue;
+      return '<div>' + esc(k[0]) + '：<strong>' + esc(newValue) + '</strong>' + (delta ? '<span class="gfl-status ok">（' + esc(oldValue) + '）' + (delta > 0 ? '+' : '') + esc(delta) + '</span>' : '') + '</div>';
+    }).join('') + '</div>';
+  }
+
+  function tdollSkinGroup(t){
+    return t.currentSkinGroup || (Bridge.skinImageGroup ? Bridge.skinImageGroup(t.name, t.currentSkin || '默认立绘') : '');
+  }
+
+  function hydrateTargetImages(){
+    var root = document.getElementById('target-list');
+    if(!root || !Bridge.applyImageFromSkin) return;
+    root.querySelectorAll('img[data-skin-image]').forEach(function(img){
+      Bridge.applyImageFromSkin(img, img.getAttribute('data-skin-image'), false).then(function(url){
+        if(!url) img.style.display = 'none';
+      });
+    });
+  }
+
+  function targetCardHtml(o, e){
+    var t = o.tdoll;
+    var active = selectedTarget === t.name;
+    var note = o.used ? '将替换同槽位装备' : '可装备到 ' + e.slotType + ' 槽';
+    var st = t.baseStats || {};
+    return '<button class="gfl-target-card ' + (active ? 'active' : '') + '" data-equip-target="' + esc(t.name) + '">'
+      + '<div class="gfl-target-img-wrap"><img class="gfl-target-img" loading="lazy" data-skin-image="' + esc(tdollSkinGroup(t)) + '" alt="' + esc(t.name) + '"><div class="gfl-target-noimg">NO IMAGE</div></div>'
+      + '<span class="gfl-target-type">' + esc(t.type || '-') + '</span>'
+      + '<div class="gfl-target-body"><div class="gfl-target-name">' + esc(t.name) + '</div><div class="gfl-target-stars">' + stars(t.stars) + '</div><div class="gfl-target-note">' + esc(note) + '</div></div>'
+      + '<div class="gfl-target-body"><div class="gfl-target-statline">HP ' + esc(statValue(st,'hp')) + ' · 伤害 ' + esc(statValue(st,'damage')) + ' · 命中 ' + esc(statValue(st,'accuracy')) + '<br>回避 ' + esc(statValue(st,'evasion')) + ' · 射速 ' + esc(statValue(st,'rof')) + ' · 护甲 ' + esc(statValue(st,'armor')) + '</div></div>'
+      + '</button>';
+  }
+
+  function renderTargetFilters(){
+    document.getElementById('target-filters').innerHTML = targetTypes.map(function(t){ return '<button class="gfl-btn ' + (targetType === t ? 'primary' : '') + '" data-target-type="' + esc(t) + '">' + esc(t === 'ALL' ? '全部' : t) + '</button>'; }).join('');
+  }
+
+  function filterTargetOptions(opts){
+    var q = targetSearch.toLowerCase();
+    return opts.filter(function(o){
+      var t = o.tdoll;
+      if(targetType !== 'ALL' && t.type !== targetType) return false;
+      if(!q) return true;
+      return String(t.name || '').toLowerCase().indexOf(q) >= 0 || String(t.type || '').toLowerCase().indexOf(q) >= 0 || String(t.stars || '').indexOf(q) >= 0;
+    });
+  }
+
+  function renderTargetOverlay(){
+    var e = current(), d = data();
+    if(!e) return;
+    var opts = filterTargetOptions(equipOptions(e, d).filter(function(o){ return o.ok; }));
+    if(!opts.some(function(o){ return o.tdoll.name === selectedTarget; })) selectedTarget = '';
+    document.getElementById('target-title').textContent = '选择人形 · ' + e.name + ' · ' + e.slotType;
+    renderTargetFilters();
+    document.getElementById('target-list').innerHTML = opts.length ? opts.map(function(o){
+      return targetCardHtml(o, e);
+    }).join('') : '<button class="gfl-target-card" disabled><strong>没有可装备人形</strong><span>当前没有符合 ' + esc(e.slotType) + ' / ' + esc(e.name) + ' 规则的人形。</span></button>';
+    hydrateTargetImages();
+    updateTargetSelection();
+  }
+
+  function updateTargetSelection(){
+    var e = current(), d = data();
+    if(!e) return;
+    var opts = filterTargetOptions(equipOptions(e, d).filter(function(o){ return o.ok; }));
+    if(!opts.some(function(o){ return o.tdoll.name === selectedTarget; })) selectedTarget = '';
+    var picked = null;
+    opts.forEach(function(o){ if(o.tdoll.name === selectedTarget) picked = o; });
+    document.querySelectorAll('#target-list [data-equip-target]').forEach(function(card){
+      card.classList.toggle('active', card.getAttribute('data-equip-target') === selectedTarget);
+    });
+    var preview = document.getElementById('target-preview');
+    if(picked){
+      var old = equippedSameSlot(picked.tdoll.name, d);
+      preview.innerHTML = '<strong>' + esc(e.name) + '</strong><br>装备给 ' + esc(picked.tdoll.name) + '。<br>' + (old ? '将替换当前 ' + esc(old.name) + '。<br>' : '') + (e.equippedBy && e.equippedBy !== picked.tdoll.name ? '将先从 ' + esc(e.equippedBy) + ' 身上卸下。<br>' : '') + targetStatPreviewHtml(picked.tdoll, e, d);
+    } else {
+      preview.textContent = '先选择一名人形。';
+    }
+    document.getElementById('target-confirm').disabled = busy || !selectedTarget;
+  }
+
+  function openTargetPicker(){
+    selectedTarget = '';
+    targetSearch = '';
+    targetType = 'ALL';
+    targetPickerOpen = true;
+    document.getElementById('target-overlay').classList.add('open');
+    document.getElementById('target-search').value = '';
+    renderTargetOverlay();
+  }
+
+  function closeTargetPicker(){
+    if(busy) return;
+    targetPickerOpen = false;
+    selectedTarget = '';
+    document.getElementById('target-overlay').classList.remove('open');
+  }
+
+  function renderDetail(d){
+    var e = selectedEq();
+    if(!e){
+      document.getElementById('detail').innerHTML = '<div class="gfl-detail-empty">暂无装备</div>';
+      return;
+    }
+    selected = e.rowId;
+    document.getElementById('detail').innerHTML = '<div class="gfl-detail">'
+      + '<h2>' + esc(e.name) + '</h2>'
+      + '<div class="gfl-info">仓库行号：#' + esc(e.rowId)
+      + '<br>类别：' + esc(e.category) + ' / ' + esc(e.slotType) + ' / ' + esc(e.rarity)
+      + '<br>属性：<strong>' + esc(e.statsText) + '</strong>'
+      + '<br>基础：' + esc(e.baseStatsText)
+      + '<br>强化：Lv.' + esc(e.level) + '/' + esc(e.catalog ? e.catalog.maxLevel : 10) + '，经验 ' + esc(e.exp)
+      + '<br>校准：' + esc(e.calibration || '无')
+      + '<br>规则标签：' + esc(e.catalog ? e.catalog.ruleTags.join(',') : '')
+      + '<br>装备者：' + esc(e.equippedBy || '未装备') + '</div>'
+      + '<div class="gfl-actions">'
+      + '<button class="gfl-btn" id="toggle-lock" ' + (busy ? 'disabled' : '') + '>' + (e.locked ? '解锁' : '锁定') + '</button>'
+      + '<button class="gfl-btn primary" id="open-target-picker" ' + (busy ? 'disabled' : '') + '>装备给人形</button>'
+      + '<button class="gfl-btn" id="enhance-btn" ' + (busy || !canEnhance(e,d) ? 'disabled' : '') + '>强化</button>'
+      + '<button class="gfl-btn" id="calibrate-btn" ' + (busy || !canCalibrate(e,d) ? 'disabled' : '') + '>校准</button>'
+      + '<button class="gfl-btn" id="unequip-btn" ' + (busy || !e.equippedBy ? 'disabled' : '') + '>卸下</button>'
+      + '<button class="gfl-btn danger" id="dismantle-btn" ' + (busy || e.locked || e.equippedBy ? 'disabled' : '') + '>分解</button>'
+      + '</div><div class="gfl-status ' + esc(statusKind) + '" id="status">' + esc(statusText) + '</div></div>';
+  }
+
+  function refresh(){
+    var d = data();
+    if(!selected && d.eq[0]) selected = d.eq[0].rowId;
+    renderRes(d);
+    renderFilters();
+    renderGrid(d);
+    renderDetail(d);
+  }
+
+  function bridgeResult(action, okText, failPrefix, after){
+    setBusy(true);
+    action().then(function(result){
+      busy = false;
+      if(result && result.ok === false){
+        setStatus(failPrefix + '：' + (result.reason || result.code || '未知错误'), 'err');
+      }else{
+        if(after) after(result);
+        setStatus(okText(result), 'ok');
+        closeTargetPicker();
+      }
+      refresh();
+    }).catch(function(err){
+      busy = false;
+      setStatus(failPrefix + '：' + (err && err.message ? err.message : err), 'err');
+      refresh();
+    });
+  }
+
+  function toggleLock(){
+    var e = current();
+    if(!e) return;
+    setBusy(true);
+    run('UPDATE equipment_warehouse SET locked = ' + sqlValue(e.locked ? '否' : '是') + ' WHERE row_id = ' + sqlValue(e.rowIndex) + ';', ['sheet_equipment_warehouse'])
+      .then(function(){ busy = false; setStatus(e.locked ? '已解锁。' : '已锁定。', 'ok'); refresh(); })
+      .catch(function(err){ busy = false; setStatus('写入失败：' + (err && err.message ? err.message : err), 'err'); refresh(); });
+  }
+
+  function enhance(){
+    var e = current();
+    var d = data();
+    if(!canEnhance(e, d)) return;
+    var materials = d.res.enhanceMaterial >= 1 ? {enhanceMaterial:1} : {resources:{manpower:100, ammo:100, ration:100, parts:100}};
+    bridgeResult(function(){
+      return Bridge.enhanceEquipment(e.rowId, materials);
+    }, function(result){
+      return '强化完成，等级 ' + (result && result.level != null ? result.level : '已更新') + '。';
+    }, '强化失败');
+  }
+
+  function calibrate(){
+    var e = current();
+    var d = data();
+    if(!canCalibrate(e, d)) return;
+    var field = e.catalog.calibrationFields[0];
+    var resourceCost = Math.max(1, e.stars - 2) * 200;
+    var input = d.res.calibrationTicket >= Math.max(1, e.stars - 2) ? {field:field, useTickets:true} : {field:field, useTickets:false, resources:{manpower:resourceCost, ammo:resourceCost, ration:resourceCost, parts:resourceCost}};
+    bridgeResult(function(){
+      return Bridge.calibrateEquipment(e.rowId, input);
+    }, function(){
+      return '校准完成：' + field + ' +1。';
+    }, '校准失败');
+  }
+
+  function equip(){
+    var e = current();
+    var target = selectedTarget;
+    if(!e || !target){ setStatus('请先点击一个可装备人形卡片。', 'err'); return; }
+    bridgeResult(function(){
+      return Bridge.equipToTdoll(target, e.rowId);
+    }, function(){
+      return '已装备给 ' + target + '。';
+    }, '装备失败');
+  }
+
+  function unequip(){
+    var e = current();
+    if(!e || !e.equippedBy) return;
+    bridgeResult(function(){
+      return Bridge.unequipFromTdoll(e.equippedBy, e.slotType);
+    }, function(){
+      return '已卸下装备。';
+    }, '卸下失败');
+  }
+
+  function dismantle(){
+    var e = current();
+    if(!e || e.locked || e.equippedBy) return;
+    if(!confirm('确认分解 ' + e.name + '？')) return;
+    bridgeResult(function(){
+      return Bridge.dismantleEquipment(e.rowId);
+    }, function(result){
+      var yieldMap = result && result.yield || {};
+      return '分解完成，返还强化材料 ' + (yieldMap['强化材料'] || 0) + '、校准券 ' + (yieldMap['校准券'] || 0) + '。';
+    }, '分解失败', function(){ selected = ''; });
+  }
+
+  document.addEventListener('click', function(event){
+    var filterButton = event.target.closest('[data-filter]');
+    if(filterButton){ filter = filterButton.dataset.filter; refresh(); return; }
+    var targetCard = event.target.closest('[data-equip-target]');
+    if(targetCard){ selectedTarget = targetCard.dataset.equipTarget; updateTargetSelection(); return; }
+    var card = event.target.closest('[data-id]');
+    if(card){ selected = card.dataset.id; selectedTarget = ''; refresh(); return; }
+    if(event.target.id === 'open-target-picker') openTargetPicker();
+    if(event.target.id === 'target-close' || event.target.id === 'target-cancel' || event.target.id === 'target-overlay') closeTargetPicker();
+    if(event.target.id === 'target-confirm') equip();
+    var targetTypeBtn = event.target.closest('[data-target-type]');
+    if(targetTypeBtn){ targetType = targetTypeBtn.dataset.targetType; renderTargetOverlay(); return; }
+    if(event.target.id === 'toggle-lock') toggleLock();
+    if(event.target.id === 'enhance-btn') enhance();
+    if(event.target.id === 'calibrate-btn') calibrate();
+    if(event.target.id === 'unequip-btn') unequip();
+    if(event.target.id === 'dismantle-btn') dismantle();
+  });
+
+  document.getElementById('target-search').addEventListener('input', function(event){ targetSearch = String(event.target.value || '').trim(); renderTargetOverlay(); });
+
+  refresh();
+})();
+</script>
+</body>
+</html>

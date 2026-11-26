@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SillyTavern Quick Reply Set",
+  "type": "object",
+  "required": ["version", "name", "qrList", "idIndex"],
+  "properties": {
+    "version": { "type": "number" },
+    "name": { "type": "string" },
+    "disableSend": { "type": "boolean" },
+    "placeBeforeInput": { "type": "boolean" },
+    "injectInput": { "type": "boolean" },
+    "color": { "type": "string" },
+    "onlyBorderColor": { "type": "boolean" },
+    "qrList": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "label", "message"],
+        "properties": {
+          "id": { "type": "number" },
+          "label": { "type": "string" },
+          "message": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "idIndex": { "type": "number" }
+  },
+  "additionalProperties": true
+}

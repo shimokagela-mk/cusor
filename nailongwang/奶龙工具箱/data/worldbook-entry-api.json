@@ -1,0 +1,87 @@
+{
+  "$schema": "./worldbook-entry-api.schema.json",
+  "name": "Worldbook Entry Format Knowledge Base",
+  "language": "zh-CN",
+  "updated_at": "2026-06-08",
+  "sources": [
+    "https://docs.sillytavern.app/usage/worldinfo/"
+  ],
+  "source_audit": {
+    "checked_at": "2026-06-08",
+    "upstream_refs": [
+      "SillyTavern/SillyTavern-Docs:Usage/worldinfo.md"
+    ]
+  },
+  "scope_note": "本知识库只描述单条世界书条目的字段、YAML/JSON 骨架与 SillyTavern 完整世界书 entries 项之间的映射。它不负责批量修改整本世界书，也不执行角色卡解包/回包。",
+  "fields": {
+    "keys": "单条格式主关键词数组；映射到 ST JSON 的 key。至少保留一个关键词。",
+    "secondary_keys": "次级关键词数组；映射到 keysecondary。通常配合 selective=true。",
+    "content": "条目触发后插入上下文的内容。样例中只允许 placeholder。",
+    "comment": "条目备注/显示名；映射到 comment。",
+    "constant": "常驻条目开关；true 时不依赖关键词。",
+    "selective": "选择性触发开关；true 时主关键词和 secondary_keys 的关系由 selectiveLogic 决定。",
+    "enabled": "单条维护格式的启用开关；映射到 ST JSON 时通常为 disable = !enabled。",
+    "position": "插入位置枚举；不同 ST 版本数值含义可能变化，需保留原值。",
+    "depth": "插入深度，position 为聊天深度相关模式时生效。",
+    "order": "排序权重；同类条目中数值影响插入顺序。",
+    "insertion_order": "维护用插入顺序字段；可映射到 displayIndex 或保留为扩展字段。",
+    "probability": "触发概率百分比，通常配合 useProbability。",
+    "use_regex": "关键词是否按正则解释；映射时可能对应 useRegex 或扩展字段。",
+    "group": "条目分组名。",
+    "group_override": "是否覆盖分组行为；映射到 groupOverride。",
+    "group_weight": "分组权重；映射到 groupWeight。",
+    "group_scoring": "分组评分/Use Group Scoring；按命中 key 数量筛选同组候选。",
+    "prioritize_inclusion": "优先纳入/Prioritize Inclusion；同组多条触发时可按更高 order 选择。",
+    "automation_id": "Automation ID；可与 Quick Reply/STscript 自动化联动。",
+    "triggers": "可触发的生成类型集合；为空时通常适用于全部生成类型。",
+    "outlet": "Outlet 插入位置的命名出口；内容不会自动注入，而是通过 {{outlet::Name}} 宏拉取。",
+    "vectorized": "Vector Storage Matching 标记；允许向量匹配参与激活，但仍需满足概率、角色过滤、分组等附加条件。",
+    "sticky": "触发后保持激活的轮数。",
+    "cooldown": "触发后的冷却轮数。",
+    "delay": "延迟触发轮数。",
+    "scan_depth": "扫描聊天历史深度；映射到 scanDepth。",
+    "case_sensitive": "大小写敏感；映射到 caseSensitive。",
+    "match_whole_words": "整词匹配；映射到 matchWholeWords。"
+  },
+  "mappings": [
+    { "single_entry": "keys", "st_worldbook": "key", "note": "数组直传；ST 导出常用 key。" },
+    { "single_entry": "secondary_keys", "st_worldbook": "keysecondary", "note": "数组直传。" },
+    { "single_entry": "enabled", "st_worldbook": "disable", "note": "布尔取反：enabled=true → disable=false。" },
+    { "single_entry": "group_override", "st_worldbook": "groupOverride", "note": "camelCase 映射。" },
+    { "single_entry": "group_weight", "st_worldbook": "groupWeight", "note": "camelCase 映射。" },
+    { "single_entry": "group_scoring", "st_worldbook": "useGroupScoring", "note": "camelCase 映射；null/缺省表示使用全局分组评分设置。" },
+    { "single_entry": "prioritize_inclusion", "st_worldbook": "groupOverride", "note": "语义别名；ST 导出字段为 groupOverride。" },
+    { "single_entry": "automation_id", "st_worldbook": "automationId", "note": "用于与 Quick Reply 自动化 ID 关联。" },
+    { "single_entry": "triggers", "st_worldbook": "triggers", "note": "生成类型过滤数组；空数组表示不额外限制生成类型。" },
+    { "single_entry": "outlet", "st_worldbook": "outletName", "note": "仅在 Outlet 插入位置时有意义；宏名区分大小写。" },
+    { "single_entry": "vectorized", "st_worldbook": "vectorized", "note": "向量匹配标记；具体字段名以 ST 导出为准，未知字段需保留。" },
+    { "single_entry": "scan_depth", "st_worldbook": "scanDepth", "note": "null 表示使用全局默认。" },
+    { "single_entry": "case_sensitive", "st_worldbook": "caseSensitive", "note": "null 表示使用全局默认。" },
+    { "single_entry": "match_whole_words", "st_worldbook": "matchWholeWords", "note": "null 表示使用全局默认。" },
+    { "single_entry": "insertion_order", "st_worldbook": "displayIndex", "note": "用于显示/维护顺序时可映射。" }
+  ],
+  "position_values": [
+    { "value": 0, "meaning": "按当前 SillyTavern 版本解释；常见为 before/after character definitions 相关位置。" },
+    { "value": 1, "meaning": "按当前 SillyTavern 版本解释；可能与聊天深度插入相关。" },
+    { "value": 4, "meaning": "常见为作者注释/特殊位置，需以导出原值为准。" }
+  ],
+  "compatibility_notes": [
+    "单条 YAML 适合人工维护；ST 完整世界书 JSON 以 entries 对象承载多条。",
+    "不要在单条任务里批量改整本世界书；批量修改应路由到奶龙王一键制卡或等待用户确认。",
+    "use_regex=true 时必须审查关键词正则复杂度，避免误触发或性能问题。",
+    "Chat Lore、Persona Lore、Character Lore 与全局 World Info 会按当前 ST 的插入策略合并；单条审查不要假设只有全局世界书参与。",
+    "Outlet 宏不能放在世界书条目内部递归展开；Character Card 字段和 Author's Note 也不一定能解析 outlet。",
+    "Vector Storage Matching 只替代关键词匹配；触发概率、角色过滤、分组、预算等规则仍会继续生效。",
+    "Timed Effects 包括 sticky、cooldown、delay；sticky 后的再次扫描通常跳过概率检查，cooldown 会阻止再次激活。",
+    "保留未知字段，避免 ST 新版本字段在往返编辑时丢失。"
+  ],
+  "related_examples": [
+    "examples/worldbook-entry/minimal-entry.json",
+    "examples/worldbook-entry/st-json-entry.json",
+    "examples/sillytavern-assets/worldbook-format.json"
+  ],
+  "related_schemas": [
+    "schemas/worldbook-entry.schema.json",
+    "schemas/sillytavern-worldbook.schema.json"
+  ]
+}

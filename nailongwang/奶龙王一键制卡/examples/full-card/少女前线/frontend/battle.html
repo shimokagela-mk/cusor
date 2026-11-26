@@ -1,0 +1,1858 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>少女前方 - 独立战斗模拟</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--y:#e8c840;--y-light:#f0d860;--y-dark:#b89820;--k:#111;--wh:#f0f0f0;--gr:#999;--gr2:#666;--gr3:#444;--warn:#e04040;--ally:#6bb7ff;--enemy:#e74c3c;--ok:#78e0d0;--panel:rgba(18,18,18,.86)}
+body{font-family:'Microsoft YaHei','PingFang SC','Noto Sans SC',sans-serif;background:#000;color:var(--wh);font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.gfl-page{position:relative;width:100%;min-height:100vh;min-height:100dvh;background:#080808;overflow:hidden}.gfl-bg{position:fixed;inset:0;background:radial-gradient(circle at 30% 18%,rgba(224,64,64,.16),transparent 34%),linear-gradient(135deg,#151010 0%,#080808 56%,#1a0505 100%);background-position:center;background-size:cover;background-repeat:no-repeat;opacity:.13}.gfl-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.56),rgba(50,0,0,.2) 34%,rgba(0,0,0,.9))}.gfl-content{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:20px 16px 36px}
+.gfl-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;padding-bottom:12px;border-bottom:2px solid var(--warn)}.gfl-title{display:flex;flex-direction:column;gap:2px}.gfl-title h1{font-size:20px;letter-spacing:3px;color:var(--warn);text-shadow:0 0 12px rgba(224,64,64,.25)}.gfl-title small{font-size:10px;color:var(--gr);letter-spacing:1px}.gfl-head-actions{display:flex;gap:8px;flex-wrap:wrap}.gfl-btn{border:1px solid var(--gr3);background:rgba(255,255,255,.035);color:var(--gr);padding:7px 13px;font-size:11px;font-weight:800;letter-spacing:1px;cursor:pointer;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%);transition:.15s}.gfl-btn:hover:not(:disabled){border-color:var(--y);color:var(--y);background:rgba(232,200,64,.06)}.gfl-btn.primary{border-color:var(--y);background:linear-gradient(180deg,var(--y),var(--y-dark));color:#111}.gfl-btn.danger{border-color:var(--warn);color:#ffb0b0}.gfl-btn.ok{border-color:var(--ok);color:var(--ok)}.gfl-btn:disabled{opacity:.45;cursor:not-allowed}
+.gfl-status{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:12px}.gfl-chip{background:var(--panel);border:1px solid rgba(255,255,255,.08);border-left:3px solid var(--y);padding:9px 11px}.gfl-chip-label{font-size:9px;color:var(--gr2);letter-spacing:1px}.gfl-chip-val{font-size:13px;font-weight:800;margin-top:2px;color:var(--wh)}.gfl-chip.enemy{border-left-color:var(--enemy)}.gfl-chip.ally{border-left-color:var(--ally)}.gfl-chip.ok{border-left-color:var(--ok)}
+.gfl-battle-shell{display:grid;grid-template-columns:230px minmax(0,1fr) 230px;gap:12px;align-items:start}.gfl-panel{background:var(--panel);border:1px solid rgba(255,255,255,.08);box-shadow:0 12px 32px rgba(0,0,0,.34);overflow:hidden}.gfl-panel-title{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 13px;background:linear-gradient(90deg,rgba(224,64,64,.18),rgba(255,255,255,.03));border-bottom:1px solid rgba(224,64,64,.22);font-size:13px;font-weight:900;letter-spacing:2px;color:var(--warn)}.gfl-panel-title .tag{font-size:9px;color:var(--gr2);letter-spacing:1px}.gfl-panel-body{padding:12px}.gfl-map-box{height:610px;border:1px solid rgba(232,200,64,.22);background:linear-gradient(135deg,#181818,#0c0c0c);overflow:hidden;position:relative;cursor:grab}.gfl-map-box.dragging-unit{cursor:grabbing}.gfl-map-box:active{cursor:grabbing}.gfl-map-box svg{width:100%;height:100%;display:block;transform-origin:0 0;transition:transform .08s linear}.cm{cursor:pointer}.cm:hover .marker-core,.cm:hover rect,.cm:hover polygon{filter:brightness(1.2) drop-shadow(0 0 8px rgba(232,200,64,.35))}.gfl-range-circle{pointer-events:none}.gfl-drag-ghost{pointer-events:none;filter:drop-shadow(0 0 12px rgba(232,200,64,.45))}.gfl-broken-marker{pointer-events:none;filter:drop-shadow(0 0 8px rgba(224,64,64,.7))}.gfl-broken-marker text{fill:#ff4040;stroke:#fff;stroke-width:.8;font-size:13px;font-weight:900;paint-order:stroke}.gfl-shot-line{stroke:var(--y);stroke-width:4;stroke-linecap:round;filter:drop-shadow(0 0 8px rgba(232,200,64,.85));animation:gfl-shot .42s ease-out forwards}.gfl-impact{fill:rgba(224,64,64,.18);stroke:rgba(255,255,255,.95);stroke-width:3;animation:gfl-impact .42s ease-out forwards}.gfl-break-text{fill:#ff4040;stroke:#fff;stroke-width:1.2;font-size:34px;font-weight:900;letter-spacing:4px;paint-order:stroke;animation:gfl-break .9s ease-out forwards}.gfl-break-ring{fill:rgba(224,64,64,.14);stroke:#ff4040;stroke-width:4;animation:gfl-break-ring .9s ease-out forwards}
+@keyframes gfl-shot{0%{stroke-dasharray:0 900;opacity:0}20%{opacity:1}100%{stroke-dasharray:900 0;opacity:0}}@keyframes gfl-impact{0%{r:2;opacity:0}25%{opacity:1}100%{r:34;opacity:0}}@keyframes gfl-break{0%{opacity:0;transform:translateY(18px) scale(.8)}20%{opacity:1;transform:translateY(0) scale(1.2)}100%{opacity:0;transform:translateY(-26px) scale(1)}}@keyframes gfl-break-ring{0%{r:10;opacity:0}20%{opacity:1}100%{r:60;opacity:0}}
+.gfl-unit-list{display:flex;flex-direction:column;gap:8px;max-height:610px;overflow:auto}.gfl-unit-card{border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.24);padding:8px 9px;cursor:pointer;transition:.12s}.gfl-unit-card:hover,.gfl-unit-card.active{border-color:var(--y);background:rgba(232,200,64,.06)}.gfl-unit-card.dead{opacity:.45}.gfl-unit-card.broken{border-color:rgba(224,64,64,.7);box-shadow:inset 3px 0 0 var(--warn),0 0 18px rgba(224,64,64,.15);animation:gfl-card-break .8s ease-out}.gfl-unit-name{display:flex;justify-content:space-between;gap:8px;font-size:12px;font-weight:900}.gfl-unit-name .side-ally{color:var(--ally)}.gfl-unit-name .side-enemy{color:var(--enemy)}.gfl-hpbar{height:7px;margin:6px 0;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08)}.gfl-hpbar span{display:block;height:100%;background:linear-gradient(90deg,var(--warn),var(--y));transition:width .2s}.gfl-unit-meta{font-size:10px;color:var(--gr);display:flex;gap:5px;flex-wrap:wrap}.gfl-note{font-size:11px;color:var(--gr);line-height:1.7;margin-top:8px}.gfl-selected{margin-top:10px;padding:8px;border-left:3px solid var(--y);background:rgba(232,200,64,.06);font-size:11px;color:#ddd}.gfl-map-toolbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;color:var(--gr);font-size:11px;letter-spacing:1px;flex-wrap:wrap}.gfl-map-controls{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.gfl-round-input{width:54px;border:1px solid rgba(232,200,64,.35);background:rgba(0,0,0,.32);color:var(--y);padding:5px 6px;font-size:12px;font-weight:900}.gfl-zoom-btn{min-width:30px;border:1px solid rgba(232,200,64,.42);background:rgba(0,0,0,.36);color:var(--y);padding:5px 8px;font-size:13px;font-weight:900;cursor:pointer}.gfl-zoom-btn:disabled{opacity:.45;cursor:not-allowed}.gfl-send-status{margin-top:12px;font-size:11px;color:var(--gr);min-height:18px}.gfl-send-status.ok{color:var(--ok)}.gfl-send-status.err{color:#ff9b9b}@keyframes gfl-card-break{0%,100%{transform:translateX(0)}18%{transform:translateX(-5px)}36%{transform:translateX(5px)}54%{transform:translateX(-3px)}72%{transform:translateX(3px)}}
+.gfl-map-hp-drawer{display:none}.gfl-map-hp-toggle{display:none}.gfl-map-hp-card{display:flex;align-items:center;gap:7px;padding:5px 6px;border:1px solid rgba(255,255,255,.07);border-radius:999px;background:linear-gradient(90deg,rgba(0,0,0,.54),rgba(0,0,0,.28));box-shadow:0 6px 18px rgba(0,0,0,.25)}.gfl-map-hp-card.active{border-color:rgba(232,200,64,.72);background:linear-gradient(90deg,rgba(232,200,64,.18),rgba(0,0,0,.38))}.gfl-map-hp-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 auto;overflow:hidden;background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.18),rgba(0,0,0,.64));border:2px solid rgba(232,200,64,.62);box-shadow:0 0 0 1px rgba(0,0,0,.72),0 0 10px rgba(232,200,64,.16)}.gfl-map-hp-avatar img{width:100%;height:100%;object-fit:contain;object-position:center bottom}.gfl-map-hp-avatar span{font-size:10px;font-weight:900;color:var(--y)}.gfl-map-hp-info{min-width:0;flex:1}.gfl-map-hp-name{display:flex;justify-content:space-between;gap:5px;font-size:9px;font-weight:900;line-height:1.05;text-shadow:0 1px 2px #000}.gfl-map-hp-name span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.gfl-map-hp-name .dead{color:var(--gr2)}.gfl-map-hp-mini{height:4px;margin-top:4px;background:rgba(255,255,255,.12);overflow:hidden;border-radius:999px}.gfl-map-hp-mini span{display:block;height:100%;background:linear-gradient(90deg,var(--warn),var(--y))}
+.gfl-modal-mask{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.82);padding:16px}.gfl-modal-mask.open{display:flex}.gfl-modal{width:min(720px,100%);max-height:86vh;background:rgba(14,14,14,.98);border:1px solid rgba(232,200,64,.5);box-shadow:0 20px 60px rgba(0,0,0,.65);display:flex;flex-direction:column}.gfl-modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 14px;border-bottom:1px solid rgba(232,200,64,.22);background:linear-gradient(90deg,rgba(232,200,64,.18),rgba(255,255,255,.03))}.gfl-modal-title{font-weight:900;color:var(--y);letter-spacing:2px}.gfl-modal-body{padding:14px;overflow:auto}.gfl-log{min-height:240px;max-height:62vh;overflow:auto;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.08);padding:10px;font-size:12px;color:#ddd;white-space:pre-wrap}
+.gfl-tracer{stroke:var(--y);stroke-width:3;stroke-linecap:round;filter:drop-shadow(0 0 6px rgba(232,200,64,.75));animation:gfl-tracer .38s ease-out forwards}.gfl-tracer.smg{stroke-width:2;stroke:#f5d76e}.gfl-tracer.ar{stroke-width:3;stroke:#e8c840}.gfl-tracer.rf{stroke-width:5;stroke:#fff1a8;filter:drop-shadow(0 0 12px rgba(232,200,64,.95));animation-duration:.52s}.gfl-tracer.sg{stroke-width:2;stroke:#ffdf7a}.gfl-tracer.mg{stroke-width:2.5;stroke:#ffd45a}.gfl-muzzle{fill:#fff1a8;stroke:#e8c840;stroke-width:2;filter:drop-shadow(0 0 10px rgba(232,200,64,.9));animation:gfl-muzzle .32s ease-out forwards}.gfl-pellet{fill:#ffdf7a;filter:drop-shadow(0 0 5px rgba(232,200,64,.7));animation:gfl-pellet .42s ease-out forwards}.gfl-impact.hit{fill:rgba(224,64,64,.22);stroke:rgba(255,255,255,.95)}.gfl-impact.miss{fill:rgba(255,255,255,.06);stroke:rgba(180,180,180,.75);stroke-dasharray:4 4}.gfl-cutin-mask{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;background:radial-gradient(circle at center,rgba(120,0,0,.28),rgba(0,0,0,.88));overflow:hidden}.gfl-cutin-mask.open{display:flex}.gfl-cutin{position:relative;width:min(920px,94vw);height:min(620px,82vh);border:1px solid rgba(224,64,64,.55);background:linear-gradient(135deg,rgba(20,0,0,.96),rgba(0,0,0,.86));box-shadow:0 0 60px rgba(224,64,64,.35);overflow:hidden;animation:gfl-cutin-in .28s ease-out}.gfl-cutin::before{content:'DAMAGE';position:absolute;left:-24px;top:26px;font-size:88px;font-weight:900;letter-spacing:8px;color:rgba(224,64,64,.12);transform:rotate(-8deg)}.gfl-cutin-img{position:absolute;right:-4%;bottom:-10%;height:112%;max-width:82%;object-fit:contain;filter:drop-shadow(0 0 22px rgba(255,255,255,.18));animation:gfl-cutin-img 1.9s ease-out forwards}.gfl-cutin-info{position:absolute;left:34px;bottom:36px;z-index:2}.gfl-cutin-label{font-size:14px;letter-spacing:4px;color:#ffaaaa;font-weight:900}.gfl-cutin-name{margin-top:8px;font-size:34px;letter-spacing:3px;color:#fff;font-weight:900;text-shadow:0 0 14px rgba(224,64,64,.85)}.gfl-cutin-break{margin-top:12px;display:inline-block;padding:8px 18px;background:#e04040;color:#fff;font-size:28px;font-weight:900;letter-spacing:6px;box-shadow:0 0 20px rgba(224,64,64,.55);animation:gfl-cutin-break .7s ease-out infinite alternate}.gfl-cutin-scan{position:absolute;inset:0;background:repeating-linear-gradient(180deg,rgba(255,255,255,.05) 0,rgba(255,255,255,.05) 1px,transparent 1px,transparent 8px);mix-blend-mode:screen;opacity:.45;pointer-events:none}
+@keyframes gfl-tracer{0%{opacity:0;stroke-dasharray:0 80}18%{opacity:1}100%{opacity:0;stroke-dasharray:80 0}}@keyframes gfl-muzzle{0%{r:3;opacity:0}30%{opacity:1}100%{r:18;opacity:0}}@keyframes gfl-pellet{0%{opacity:0;transform:scale(.6)}35%{opacity:1}100%{opacity:0;transform:scale(1.35)}}@keyframes gfl-cutin-in{0%{opacity:0;transform:scale(.94) translateY(18px)}100%{opacity:1;transform:scale(1) translateY(0)}}@keyframes gfl-cutin-img{0%{opacity:0;transform:translateX(80px) scale(1.04)}18%{opacity:1}100%{opacity:1;transform:translateX(0) scale(1)}}@keyframes gfl-cutin-break{0%{transform:translateX(0);filter:brightness(1)}100%{transform:translateX(6px);filter:brightness(1.35)}}
+
+@media(max-width:1020px){.gfl-battle-shell{grid-template-columns:1fr}.gfl-unit-list{max-height:280px}.gfl-status{grid-template-columns:1fr 1fr}.gfl-map-box{height:520px}}@media(max-width:560px){.gfl-content{padding:12px 8px 24px}.gfl-header{align-items:flex-start;flex-direction:column}.gfl-side-panel{display:none}.gfl-map-box{height:520px}.gfl-map-toolbar span:first-child{display:none}.gfl-head-actions{width:100%}.gfl-btn{flex:1}.gfl-title h1{font-size:17px}.gfl-status{grid-template-columns:1fr 1fr}.gfl-chip{padding:7px 8px}.gfl-chip-label{font-size:8px}.gfl-chip-val{font-size:12px}.gfl-note{display:none}.gfl-map-hp-drawer{display:block;position:absolute;top:52px;bottom:52px;z-index:12;width:min(178px,58vw);background:linear-gradient(180deg,rgba(6,6,6,.62),rgba(6,6,6,.28));border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(5px);box-shadow:0 14px 32px rgba(0,0,0,.46);transition:transform .22s ease,opacity .18s ease;pointer-events:auto}.gfl-map-hp-drawer.ally{left:0;border-left:0;border-right:2px solid rgba(107,183,255,.75);transform:translateX(-100%)}.gfl-map-hp-drawer.enemy{right:0;border-right:0;border-left:2px solid rgba(231,76,60,.82);transform:translateX(100%)}.gfl-map-hp-drawer:not(.open){opacity:.96}.gfl-map-hp-drawer.open{transform:translateX(0);opacity:1}.gfl-map-hp-toggle{display:flex;position:absolute;top:50%;width:30px;height:46px;align-items:center;justify-content:center;border:1px solid rgba(232,200,64,.5);background:rgba(5,5,5,.78);color:var(--y);font-size:21px;font-weight:900;line-height:1;z-index:2;cursor:pointer;transform:translateY(-50%)}.gfl-map-hp-drawer.ally .gfl-map-hp-toggle{right:-30px;border-left:0;border-radius:0 999px 999px 0}.gfl-map-hp-drawer.enemy .gfl-map-hp-toggle{left:-30px;border-right:0;border-radius:999px 0 0 999px}.gfl-map-hp-title{padding:7px 9px 6px;border-bottom:1px solid rgba(255,255,255,.08);font-size:9px;font-weight:900;letter-spacing:2px;color:var(--gr);display:flex;justify-content:space-between;text-shadow:0 1px 2px #000}.gfl-map-hp-list{height:calc(100% - 30px);overflow:auto;padding:7px;display:flex;flex-direction:column;gap:6px}.gfl-map-hp-drawer.ally .gfl-map-hp-avatar{border-color:rgba(107,183,255,.75)}.gfl-map-hp-drawer.enemy .gfl-map-hp-avatar{border-color:rgba(231,76,60,.85)}.gfl-map-hp-drawer.ally .gfl-map-hp-mini span{background:linear-gradient(90deg,var(--ally),var(--ok))}.gfl-map-hp-drawer.enemy .gfl-map-hp-mini span{background:linear-gradient(90deg,var(--warn),#ffb0b0)}}
+</style>
+</head>
+<body>
+<div class="gfl-page">
+  <div class="gfl-bg"></div>
+  <div class="gfl-content">
+    <header class="gfl-header">
+      <div class="gfl-title"><h1>独立战斗模拟</h1><small>BATTLE SIMULATOR / STANDALONE PAGE</small></div>
+      <div class="gfl-head-actions">
+        <button class="gfl-btn" id="reset-view-btn">复位视图</button>
+        <button class="gfl-btn" id="reset-position-btn">重置站位</button>
+        <button class="gfl-btn" id="open-log-btn">战斗日志</button>
+        <button class="gfl-btn primary" id="ready-btn">准备就绪</button>
+        <button class="gfl-btn ok" id="finish-btn" disabled>结束战斗</button>
+        <button class="gfl-btn danger" id="restart-btn">重开战斗</button>
+      </div>
+    </header>
+
+    <section class="gfl-status">
+      <div class="gfl-chip ally"><div class="gfl-chip-label">我方存活</div><div class="gfl-chip-val" id="ally-count">-</div></div>
+      <div class="gfl-chip enemy"><div class="gfl-chip-label">敌方存活</div><div class="gfl-chip-val" id="enemy-count">-</div></div>
+      <div class="gfl-chip"><div class="gfl-chip-label">战斗阶段</div><div class="gfl-chip-val" id="phase-val">站位调整</div></div>
+      <div class="gfl-chip ok"><div class="gfl-chip-label">中断条件</div><div class="gfl-chip-val" id="stop-val">存活单位最少攻击 3 次</div></div>
+    </section>
+
+    <div class="gfl-battle-shell">
+      <aside class="gfl-panel gfl-side-panel">
+        <div class="gfl-panel-title"><span><span class="tag">ALLY</span> 我方血量</span></div>
+        <div class="gfl-panel-body"><div class="gfl-unit-list" id="ally-list"></div></div>
+      </aside>
+
+      <main class="gfl-panel">
+        <div class="gfl-panel-title"><span><span class="tag">SVG</span> 战斗地图</span><span id="map-count"></span></div>
+        <div class="gfl-panel-body">
+          <div class="gfl-map-toolbar">
+            <span>拖动友方单位时显示可达圆；释放后落点会被限制在移动速度 ×10 的范围内。</span>
+            <div class="gfl-map-controls">
+              <label>回合 <input class="gfl-round-input" id="round-limit-input" type="number" min="1" max="10" step="1" value="3"></label>
+              <button class="gfl-zoom-btn" id="tactical-range-btn" type="button">战术范围</button>
+              <button class="gfl-zoom-btn" id="zoom-out-btn" type="button">−</button>
+              <button class="gfl-zoom-btn" id="zoom-in-btn" type="button">＋</button>
+            </div>
+            <span id="selected-label">未选择单位</span>
+          </div>
+          <div class="gfl-map-box" id="map-box"></div>
+          <div class="gfl-selected" id="selected-detail">战斗开始前可拖动友方单位调整站位。点击“准备就绪”后锁定站位并执行一轮战斗。</div>
+          <div class="gfl-note">战斗目标选择按地图坐标最近敌方单位计算。战斗日志只通过“战斗日志”按钮查看；扩写提示词不会展示，点击“结束战斗”后只会填入酒馆输入框。</div>
+          <div class="gfl-send-status" id="send-status"></div>
+        </div>
+      </main>
+
+      <aside class="gfl-panel gfl-side-panel">
+        <div class="gfl-panel-title"><span><span class="tag">ENEMY</span> 敌方血量</span></div>
+        <div class="gfl-panel-body"><div class="gfl-unit-list" id="enemy-list"></div></div>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<div class="gfl-modal-mask" id="log-modal">
+  <div class="gfl-modal">
+    <div class="gfl-modal-head"><div class="gfl-modal-title">战斗日志</div><button class="gfl-btn" id="close-log-btn">关闭</button></div>
+    <div class="gfl-modal-body"><div class="gfl-log" id="battle-log">等待准备就绪。</div></div>
+  </div>
+</div>
+
+<div class="gfl-cutin-mask" id="damage-cutin" aria-hidden="true">
+  <div class="gfl-cutin">
+    <div class="gfl-cutin-scan"></div>
+    <img class="gfl-cutin-img" id="damage-cutin-img" alt="大破立绘">
+    <div class="gfl-cutin-info"><div class="gfl-cutin-label">TACTICAL DOLL DAMAGED</div><div class="gfl-cutin-name" id="damage-cutin-name">-</div><div class="gfl-cutin-break">大破</div></div>
+  </div>
+</div>
+
+<script src="gfl-data-bridge.js"></script>
+<script src="gfl-battle-enemy-catalog.js"></script>
+<script src="gfl-tactical-map.js"></script>
+<script>
+(function(){
+  'use strict';
+
+  var MAX_X = 755;
+  var MIN_X = 45;
+  var MAX_Y = 545;
+  var MIN_Y = 95;
+  var DAMAGE_CUTIN_DURATION_MS = 3800;
+  var phase = 'setup';
+  var selectedId = null;
+  var mapZoom = 1;
+  var mapPan = {x:0,y:0};
+  var mapDrag = false;
+  var unitDrag = null;
+  var pendingUnitDrag = null;
+  var mapStart = {x:0,y:0};
+  var panStart = {x:0,y:0};
+  var units = [];
+  var battleLog = [];
+  var promptText = '';
+  var battleCommitted = false;
+  var activeFx = null;
+  var battleRunToken = 0;
+  var resetInProgress = false;
+  var battleActionInProgress = '';
+  var hpDrawerOpen = {ally:false, enemy:false};
+  var mapRenderKey = '';
+  var tacticalRangeVisible = false;
+  var selectedTacticalIndex = null;
+  var preloadedImages = {};
+  var Bridge = window.GFLDataBridge;
+  var BUBBLE_BG_GROUP = '少女前线待机背景';
+
+  function getNativeUpdaterApi(){
+    try{ if(window.AutoCardUpdaterAPI) return window.AutoCardUpdaterAPI; }catch(e){}
+    try{ if(window.parent && window.parent.AutoCardUpdaterAPI) return window.parent.AutoCardUpdaterAPI; }catch(e){}
+    try{ if(window.top && window.top.AutoCardUpdaterAPI) return window.top.AutoCardUpdaterAPI; }catch(e){}
+    return null;
+  }
+  function getTopApi(name){
+    try{ if(window.top && window.top[name]) return window.top[name]; }catch(e){}
+    try{ if(window.parent && window.parent[name]) return window.parent[name]; }catch(e){}
+    try{ if(window[name]) return window[name]; }catch(e){}
+    return null;
+  }
+
+  function waitForTopApi(name, attempt){
+    attempt = attempt || 0;
+    var api = getTopApi(name);
+    if(api) return Promise.resolve(api);
+    if(attempt >= 20) return Promise.resolve(null);
+    return new Promise(function(resolve){
+      window.setTimeout(function(){ resolve(waitForTopApi(name, attempt + 1)); }, 250);
+    });
+  }
+
+  function applyBubbleBackground(){
+    var bg = document.querySelector('.gfl-bg');
+    if(!bg) return;
+    waitForTopApi('BubbleCG').then(function(api){
+      if(!api || typeof api.getImage !== 'function') return '';
+      return api.getImage(BUBBLE_BG_GROUP, 1);
+    }).then(function(url){
+      if(!url || !bg) return;
+      bg.style.backgroundImage = 'url("' + String(url).replace(/"/g, '%22') + '")';
+      bg.style.backgroundPosition = 'center';
+      bg.style.backgroundSize = 'cover';
+      bg.style.backgroundRepeat = 'no-repeat';
+    }).catch(function(error){
+      console.warn('战斗背景气泡图片加载失败:', error);
+    });
+  }
+
+  function esc(s){return window.GFLTacticalMap.esc(s);}
+  function num(v, def){return window.GFLTacticalMap.num(v, def);}
+  function clamp(v, min, max){return Math.max(min, Math.min(max, v));}
+  function dist(a,b){var dx=a.x-b.x,dy=a.y-b.y;return Math.sqrt(dx*dx+dy*dy);}
+  function movementRange(u){return Math.max(0, u.movement * 10);}
+  function alive(side){return units.filter(function(u){return u.side===side && u.hp>0;});}
+  function byId(id){for(var i=0;i<units.length;i++){if(units[i].id===id)return units[i];}return null;}
+  function statLine(u){return '生命 '+u.hp+'/'+u.maxHp+' · 伤害 '+u.damage+' · 命中 '+u.accuracy+' · 回避 '+u.evasion+' · 射速 '+u.rof+' · 护甲 '+u.armor+' · 移动 '+u.movement+' · 穿甲 '+u.armorPiercing+' · 暴击 '+u.critRate+' · 弹链 '+u.ammoChain;}
+  function uniqueList(list){var seen={};return (list||[]).filter(function(it){if(!it||seen[it])return false;seen[it]=true;return true;});}
+  function hasAny(list, names){for(var i=0;i<names.length;i++){if(list.indexOf(names[i])>=0)return true;}return false;}
+  function damagedPortraitOf(portrait){
+    if(!portrait) return '';
+    if(/_D(_HD)?\.png$/i.test(portrait)) return portrait;
+    if(/_HD\.png$/i.test(portrait)) return portrait.replace(/_HD\.png$/i, '_D_HD.png');
+    if(/\.png$/i.test(portrait)) return portrait.replace(/\.png$/i, '_D.png');
+    return '';
+  }
+  function currentPortrait(u){return u && u.broken && u.damagedPortrait ? u.damagedPortrait : (u ? u.portrait : '');}
+  function preloadImage(url){
+    if(!url || preloadedImages[url]) return;
+    preloadedImages[url] = true;
+    try{ var img = new Image(); img.decoding = 'async'; img.src = url; }catch(e){}
+  }
+  function currentSkinOf(tdoll){
+    if(!tdoll) return '';
+    var label = Bridge.normalizeSkinName(tdoll.currentSkin || '默认立绘') || '默认立绘';
+    if(tdoll.skins){
+      for(var i=0;i<tdoll.skins.length;i++){
+        if(tdoll.skins[i].label === label) return tdoll.skins[i].imageGroup || Bridge.skinImageGroup(tdoll.name, tdoll.skins[i].label);
+      }
+    }
+    if(tdoll.currentSkinGroup) return tdoll.currentSkinGroup;
+    if(tdoll.skins && tdoll.skins[0] && tdoll.skins[0].label) return tdoll.skins[0].imageGroup || Bridge.skinImageGroup(tdoll.name, tdoll.skins[0].label);
+    return '';
+  }
+  function bridgeField(row, names, fallback){return Bridge ? Bridge.field(row, names, fallback) : fallback;}
+  function statFromRow(row, zh, en, fallback){return num(bridgeField(row, [zh,en], fallback), fallback);}
+  function tdollFromWarehouse(name, tables){var rows=Bridge?Bridge.warehouseTdolls(tables):[];for(var i=0;i<rows.length;i++){if(rows[i].name===name)return rows[i];}return null;}
+  function warehouseRowsByName(tables){
+    var out = {};
+    if(!Bridge || typeof Bridge.rows !== 'function') return out;
+    Bridge.rows('tdollWarehouse', tables).forEach(function(row){
+      var name = String(bridgeField(row, ['人形名称','tdoll_name','name'], '')).trim();
+      if(name && !out[name]) out[name] = row;
+    });
+    return out;
+  }
+  function mapRowByName(tables){
+    var out = {};
+    if(!Bridge || typeof Bridge.rows !== 'function') return out;
+    Bridge.rows('mapElements', tables).forEach(function(row){
+      var name = String(bridgeField(row, ['元素名称','element_name','name'], '')).trim();
+      if(name && !out[name]) out[name] = row;
+    });
+    return out;
+  }
+  function unitFromBattleRow(side, row, i, tables){
+    var name = String(bridgeField(row, side === 'ally' ? ['人形名称','tdoll_name','name'] : ['敌人名称','enemy_name','name'], '')).trim();
+    if(!name) return null;
+    var tdoll = side === 'ally' ? tdollFromWarehouse(name, tables) : null;
+    var baseStats = tdoll ? ((tdoll.modded && tdoll.modStats) ? tdoll.modStats : tdoll.baseStats) : {};
+    var equipmentList = side === 'ally' && Bridge && Bridge.equipmentForTdoll ? Bridge.equipmentForTdoll(name, tables) : [];
+    var stats = side === 'ally' && Bridge && Bridge.applyEquipmentStats ? Bridge.applyEquipmentStats(baseStats, equipmentList) : baseStats;
+    var fallback = {
+      type: side === 'ally' && tdoll ? tdoll.type : (side === 'enemy' ? 'ENEMY' : ''),
+      hp: statFromRow(row, '最大生命', 'max_hp', stats.hp || (side === 'enemy' ? 360 : 400)),
+      damage: statFromRow(row, '伤害', 'damage', stats.damage || 36),
+      accuracy: statFromRow(row, '命中', 'accuracy', stats.accuracy || 45),
+      evasion: statFromRow(row, '回避', 'evasion', stats.evasion || 45),
+      rof: statFromRow(row, '射速', 'rate_of_fire', stats.rof || 45),
+      armor: statFromRow(row, '护甲', 'armor', stats.armor || 0),
+      movement: statFromRow(row, '移动', 'movement', stats.movement || 10),
+      armorPiercing: statFromRow(row, '穿甲', 'armor_piercing', stats.armorPiercing || 15),
+      critRate: statFromRow(row, '暴击', 'critical_rate', stats.critRate || 20),
+      ammoChain: statFromRow(row, '弹链', 'ammo_chain', stats.ammoChain || 0),
+      critDamage: stats.critDamage || 150,
+      nightAccuracyOffset: stats.nightAccuracyOffset || 0,
+      reloadSpeed: stats.reloadSpeed || 0,
+      initialCooldown: stats.initialCooldown || 0,
+      teamAccuracy: stats.teamAccuracy || 0,
+      equipmentTags: stats.equipmentTags || [],
+      equipmentSummary: stats.equipmentSummary || ''
+    };
+    fallback.portrait = bridgeField(row, ['头像','portrait','avatar'], '');
+    fallback.damagedPortrait = bridgeField(row, ['大破头像','damaged_portrait','damagedAvatar'], '');
+    fallback.portraitSkin = side === 'ally' ? currentSkinOf(tdoll) : '';
+    var slot = statFromRow(row, '出战位', 'battle_slot', i + 1) - 1;
+    var mapRow = mapRowByName(tables)[name] || null;
+    var defaultX = side === 'ally' ? 164 + (slot % 5) * 54 : 586 + (slot % 5) * 38;
+    var defaultY = side === 'ally' ? 404 + (slot % 2) * 38 : 164 + (slot % 5) * 72;
+    var x = mapRow ? num(bridgeField(mapRow, ['X坐标','pos_x','x'], defaultX), defaultX) : defaultX;
+    var y = mapRow ? num(bridgeField(mapRow, ['Y坐标','pos_y','y'], defaultY), defaultY) : defaultY;
+    var currentHp = statFromRow(row, '当前生命', 'current_hp', fallback.hp);
+    var u = makeUnit(side, name, x, y, fallback);
+    u.hp = Math.max(0, Math.min(u.maxHp, currentHp));
+    u.damageState = tdoll && tdoll.damageState ? tdoll.damageState : '正常';
+    u.broken = side === 'ally' && u.damageState === '大破';
+    u.rawRowIndex = row.__rowIndex__;
+    return u;
+  }
+  function unitsFromTables(){
+    if(!Bridge) return [];
+    var allies = [], enemies = [];
+    try{
+      allies = Bridge.rows('battleConfig').map(function(r,i){return unitFromBattleRow('ally', r, i, null);}).filter(Boolean);
+      enemies = Bridge.rows('enemyConfig').map(function(r,i){return unitFromBattleRow('enemy', r, i, null);}).filter(Boolean);
+    }catch(error){
+      console.warn('战斗页读取配置表失败，将使用默认演示单位:', error);
+      return [];
+    }
+    if(allies.length && !enemies.length && !readEncounterText()) enemies = defaultEnemyUnits();
+    return applyTeamEquipmentAuras(allies.concat(enemies));
+  }
+  function applyTeamEquipmentAuras(list){
+    var allyAccuracyBonus = list.filter(function(u){return u.side === 'ally';}).reduce(function(sum,u){return sum + (u.teamAccuracy || 0);}, 0);
+    if(allyAccuracyBonus > 0) battleLog.push('装备光环：信号弹为我方全队提供命中 +' + allyAccuracyBonus + '。');
+    list.forEach(function(u){ if(u.side === 'ally') u.accuracy += allyAccuracyBonus; });
+    return list;
+  }
+  function readEncounterText(){
+    var selectors = ['.gfl-encounter-source'];
+    for(var i=0;i<selectors.length;i++){
+      var node = document.querySelector(selectors[i]);
+      if(node){
+        var value = node.value || node.textContent || '';
+        var found = extractValidEncounterText(value);
+        if(found) return found;
+      }
+    }
+    try{
+      if(window.parent && window.parent.document && window.parent.document !== document){
+        var nodes = window.parent.document.querySelectorAll('.gfl-encounter-source');
+        if(nodes && nodes.length){
+          var parentNode = nodes[nodes.length - 1];
+          var parentValue = parentNode.value || parentNode.textContent || '';
+          var parentFound = extractValidEncounterText(parentValue);
+          if(parentFound) return parentFound;
+        }
+      }
+    }catch(e){}
+    var bodyText = document.body ? document.body.textContent || '' : '';
+    return extractValidEncounterText(bodyText);
+  }
+  function isValidEncounterBlock(block){
+    var body = String(block || '').replace(/<\/?(?:custom-)?gfl-battle-encounter>/g, '').trim();
+    if(!body) return false;
+    try{
+      var parsed = JSON.parse(body);
+      return !!(parsed && parsed.version === 1 && Array.isArray(parsed.current) && Array.isArray(parsed.additions));
+    }catch(e){
+      return false;
+    }
+  }
+  function extractValidEncounterText(text){
+    var value = String(text || '');
+    var openRe = /<(?:custom-)?gfl-battle-encounter>/g;
+    var closeRe = /<\/(?:custom-)?gfl-battle-encounter>/g;
+    var match;
+    var lastValid = '';
+    while((match = openRe.exec(value))){
+      closeRe.lastIndex = openRe.lastIndex;
+      var closeMatch = closeRe.exec(value);
+      if(!closeMatch) continue;
+      var block = value.slice(match.index, closeMatch.index + closeMatch[0].length);
+      if(isValidEncounterBlock(block)) lastValid = block;
+    }
+    return lastValid;
+  }
+  function parseKeyValueLine(line){
+    var out = {};
+    String(line || '').split(';').forEach(function(part){
+      var pair = part.split('=');
+      if(pair.length < 2) return;
+      var key = pair.shift().trim();
+      var value = pair.join('=').trim();
+      if(key) out[key] = value;
+    });
+    return out;
+  }
+  function parseEncounter(text){
+    var body = String(text || '').replace(/<\/?(?:custom-)?gfl-battle-encounter>/g, '').trim();
+    var result = {current:[], additions:[], total:null, errors:[]};
+    if(!body) return result;
+    var parsed;
+    try{
+      parsed = JSON.parse(body);
+    }catch(error){
+      throw new Error('战斗遭遇标签必须是严格 JSON，不能使用自然语言行格式：'+(error&&error.message?error.message:error));
+    }
+    if(!parsed || parsed.version !== 1) throw new Error('战斗遭遇 JSON 缺少 version=1');
+    if(!Array.isArray(parsed.current)) throw new Error('战斗遭遇 JSON 的 current 必须是数组');
+    if(!Array.isArray(parsed.additions)) throw new Error('战斗遭遇 JSON 的 additions 必须是数组');
+    parsed.current.forEach(function(item){
+      result.current.push({
+        slot: num(item && item.slot, 0),
+        name: String(item && item.enemyName || '').trim(),
+        type: String(item && item.enemyType || item && item.enemyName || '').trim(),
+        status: String(item && item.status || '').trim()
+      });
+    });
+    parsed.additions.forEach(function(item){
+      result.additions.push({
+        name: String(item && item.enemyName || '').trim(),
+        type: String(item && item.enemyType || item && item.enemyName || '').trim(),
+        count: Math.max(1, num(item && item.count, 1)),
+        threatLevel: String(item && item.threatLevel || '').trim(),
+        reason: String(item && item.reason || '').trim()
+      });
+    });
+    result.total = num(parsed.total, -1);
+    return result;
+  }
+  function chapterPhase(chapterName){
+    var name = String(chapterName || '').trim();
+    if(name === '终章') return '终章';
+    var early = ['一苏醒·零种子','二回声','三沉默','四苏醒','五火种','魔方行动+','六彗星','七同伴','失温症','八火花'];
+    var middle = ['深层映射','九迷失','十炼狱','塌缩点'];
+    var late = ['有序紊流','十一狩猎','异构体','裂变链接','十二喘息','偏振光','十三归墟','双联乱数','镜像论'];
+    if(early.indexOf(name) >= 0) return '早期章节';
+    if(middle.indexOf(name) >= 0) return '中期章节';
+    if(late.indexOf(name) >= 0) return '后期章节';
+    return '终局章节';
+  }
+  function gradeValue(grades, zh, fallback){
+    var text = String(grades || '');
+    var match = text.match(new RegExp(zh + '\\s*([A-SD])', 'i'));
+    return match ? match[1].toUpperCase() : fallback;
+  }
+  function hashSeed(text){
+    var h = 2166136261;
+    text = String(text || '');
+    for(var i=0;i<text.length;i++){
+      h ^= text.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return h >>> 0;
+  }
+  function seededRange(seed, min, max){
+    var x = Math.sin((seed >>> 0) * 12.9898) * 43758.5453;
+    var ratio = x - Math.floor(x);
+    return Math.round(min + ratio * (max - min));
+  }
+  function statFromGrade(grade, statName, seed){
+    var ranges = {
+      '生命': {D:[180,320], C:[321,520], B:[521,850], A:[851,1250], S:[1251,1650]},
+      '伤害': {D:[12,22], C:[23,38], B:[39,58], A:[59,85], S:[86,120]},
+      '命中': {D:[10,20], C:[21,36], B:[37,56], A:[57,78], S:[79,102]},
+      '回避': {D:[4,12], C:[13,28], B:[29,50], A:[51,78], S:[79,110]},
+      '射速': {D:[20,35], C:[36,55], B:[56,78], A:[79,98], S:[99,120]},
+      '护甲': {D:[0,0], C:[1,8], B:[9,18], A:[19,30], S:[31,45]},
+      '移动': {D:[4,6], C:[7,9], B:[10,12], A:[13,15], S:[16,18]},
+      '穿甲': {D:[0,5], C:[6,12], B:[13,20], A:[21,30], S:[31,42]},
+      '暴击': {D:[0,5], C:[6,15], B:[16,30], A:[31,45], S:[46,60]},
+      '弹链': {D:[0,0], C:[0,1], B:[1,2], A:[2,4], S:[4,6]}
+    };
+    var byGrade = ranges[statName] || ranges['伤害'];
+    var range = byGrade[grade] || byGrade.C;
+    return seededRange(seed, range[0], range[1]);
+  }
+  function parseStatTemplate(text){
+    return Bridge && Bridge.parseStats ? Bridge.parseStats(text) : {};
+  }
+  function rowFromEnemyData(enemyRow, slot, chapterName, threatLevel){
+    var template = parseStatTemplate(enemyRow.statTemplate);
+    var seedBase = chapterName + '|' + enemyRow.enemyName + '|' + slot + '|' + readEncounterText().slice(0, 120);
+    function value(zh, key, fallbackGrade){
+      if(template[key] != null) return num(template[key], 0);
+      var grade = gradeValue(enemyRow.baseGrade, zh, fallbackGrade);
+      return Math.max(0, statFromGrade(grade, zh, hashSeed(seedBase + '|' + zh)));
+    }
+    var maxHp = value('生命', 'hp', 'C');
+    return {
+      '敌人名称': enemyRow.enemyName,
+      '出战位': slot,
+      '当前生命': maxHp,
+      '最大生命': maxHp,
+      '伤害': value('伤害', 'damage', 'C'),
+      '命中': value('命中', 'accuracy', 'C'),
+      '回避': value('回避', 'evasion', 'C'),
+      '射速': value('射速', 'rof', 'C'),
+      '护甲': value('护甲', 'armor', 'D'),
+      '移动': value('移动', 'movement', 'C'),
+      '穿甲': value('穿甲', 'armorPiercing', 'D'),
+      '暴击': value('暴击', 'critRate', 'C'),
+      '弹链': value('弹链', 'ammoChain', 'D')
+    };
+  }
+  function campaignEnemyCatalog(){
+    return (window.GFLBattleEnemyCatalog && window.GFLBattleEnemyCatalog.catalog) || {};
+  }
+  function fallbackEnemyTemplates(){
+    return (window.GFLBattleEnemyCatalog && window.GFLBattleEnemyCatalog.fallbackTemplates) || {};
+  }
+  function chapterEnemyMap(chapterName){
+    var catalog = campaignEnemyCatalog();
+    return catalog[String(chapterName || '').trim()] || {};
+  }
+  function cloneEnemyRow(row){
+    var out = {};
+    Object.keys(row || {}).forEach(function(key){ out[key] = row[key]; });
+    return out;
+  }
+  function fallbackKeyCandidates(enemyName, threatLevel){
+    var text = String(enemyName || '') + ' ' + String(threatLevel || '');
+    var templates = fallbackEnemyTemplates();
+    var matches = [];
+    Object.keys(templates).forEach(function(key){
+      if(key === 'unknown') return;
+      var keywords = templates[key].matchKeywords || [];
+      for(var i=0;i<keywords.length;i++){
+        if(keywords[i] && text.indexOf(keywords[i]) >= 0){
+          matches.push(key);
+          return;
+        }
+      }
+    });
+    if(matches.length) return matches;
+    if(/Boss|章节Boss|极高/.test(String(threatLevel || ''))) return ['sangvis_elite', 'military', 'paradeus'];
+    if(/高|精英/.test(String(threatLevel || ''))) return ['sangvis_elite', 'military', 'paradeus'];
+    return ['sangvis_grunt', 'military', 'paradeus', 'infected', 'unknown'];
+  }
+  function fallbackEnemyData(enemyName, chapterName, threatLevel){
+    var templates = fallbackEnemyTemplates();
+    var candidates = fallbackKeyCandidates(enemyName, threatLevel).filter(function(key){ return templates[key] && templates[key].row; });
+    var key = candidates.length ? candidates[hashSeed(chapterName + '|' + enemyName + '|' + threatLevel) % candidates.length] : 'unknown';
+    var template = templates[key] && templates[key].row ? templates[key].row : (templates.unknown && templates.unknown.row);
+    if(!template) return null;
+    var row = cloneEnemyRow(template);
+    row.enemyName = String(enemyName || '').trim() || row.enemyName || '临时未知敌人';
+    row.chapterBinding = chapterName || '*';
+    row.threatLevel = threatLevel || row.threatLevel || '中';
+    row.tags = String(row.tags || '') + ',临时生成,原名未匹配';
+    row.storyRole = '正文遭遇生成了未固化敌人名「' + row.enemyName + '」，战斗前端使用“' + ((templates[key] && templates[key].label) || key) + '”模板临时创建。';
+    row.dataSource = '战斗前端容错模板:' + key;
+    return row;
+  }
+  function enemyDataForChapter(enemyName, chapterName, threatLevel){
+    var map = chapterEnemyMap(chapterName);
+    var exact = map[String(enemyName || '').trim()] || null;
+    return exact || fallbackEnemyData(enemyName, chapterName, threatLevel);
+  }
+  function nextEnemySlot(existing, used){
+    for(var slot=1;slot<=5;slot++){
+      var occupied = existing.some(function(row){ return num(bridgeField(row, ['出战位','battle_slot'], 0), 0) === slot; });
+      if(!occupied && used.indexOf(slot) < 0) return slot;
+    }
+    return 0;
+  }
+  async function applyEncounterToEnemyConfig(){
+    if(!Bridge) return {applied:false};
+    var encounterText = readEncounterText();
+    if(!encounterText) return {applied:false};
+    var encounter = parseEncounter(encounterText);
+    var existing = Bridge.rows('enemyConfig');
+    var currentCount = existing.length;
+    var addCount = encounter.additions.reduce(function(sum, item){return sum + item.count;}, 0);
+    var hasDeclaredTotal = encounter.total != null && encounter.total >= 0;
+    var declaredTotal = hasDeclaredTotal ? encounter.total : currentCount + addCount;
+    if(declaredTotal > 5) throw new Error('敌方单位超过上限：最多 5 个');
+    var remainingAddCount = addCount;
+    if(hasDeclaredTotal){
+      remainingAddCount = Math.max(0, declaredTotal - currentCount);
+      if(currentCount >= declaredTotal && addCount > 0){
+        battleLog.push('遭遇标签目标敌人总数为 '+declaredTotal+'，当前敌人配置表已有 '+currentCount+' 个敌人；本楼层新增敌人已应用，未重复插入。');
+      }else if(remainingAddCount < addCount){
+        battleLog.push('遭遇标签声明敌人总数 '+declaredTotal+'，当前已有 '+currentCount+' 个敌人；本次仅补入 '+remainingAddCount+' 个新增敌人。');
+      }
+    }
+    if(currentCount + remainingAddCount > 5) throw new Error('敌方单位超过上限：最多 5 个');
+    var progress = Bridge.currentChapterProgress ? Bridge.currentChapterProgress() : {current:{}, chapter:null};
+    var chapterName = progress.current.chapterName || (progress.chapter && progress.chapter.chapterName) || '';
+    if(!chapterName) throw new Error('无法确定当前章节，不能从战役敌人池生成敌人');
+    encounter.current.forEach(function(item){
+      if(!item.name) throw new Error('当前敌人缺少敌人名称');
+      var found = existing.some(function(row){
+        return String(bridgeField(row, ['敌人名称','enemy_name','name'], '')).trim() === item.name && (!item.slot || num(bridgeField(row, ['出战位','battle_slot'], 0), 0) === item.slot);
+      });
+      if(!found) battleLog.push('遭遇标签中的当前敌人「' + item.name + '」未在敌人配置表中找到，已忽略该校验并继续处理新增敌人。');
+    });
+    var usedSlots = [];
+    var insertedCount = 0;
+    var insertStatements = [];
+    var pendingExisting = [];
+    for(var i=0;i<encounter.additions.length;i++){
+      if(insertedCount >= remainingAddCount) break;
+      var addition = encounter.additions[i];
+      if(!addition.name) throw new Error('新增敌人缺少唯一敌人名称 enemyName');
+      if(!addition.type) throw new Error('新增敌人缺少兵种类型 enemyType：' + addition.name);
+      for(var dup=0;dup<addition.count;dup++){
+        var candidateName = addition.count > 1 ? addition.name + '-' + (dup + 1) : addition.name;
+        var duplicate = existing.some(function(row){ return String(bridgeField(row, ['敌人名称','enemy_name','name'], '')).trim() === candidateName; });
+        if(duplicate) throw new Error('新增敌人实例名重复：' + candidateName + '；enemyName 必须在当前战斗内唯一');
+      }
+      var enemyRow = enemyDataForChapter(addition.type, chapterName, addition.threatLevel);
+      if(!enemyRow) throw new Error('无法为未知敌人生成默认模板：' + addition.type + ' / ' + chapterName);
+      if(String(enemyRow.dataSource || '').indexOf('战斗前端容错模板') === 0){
+        battleLog.push('遭遇标签中的兵种「' + addition.type + '」未命中当前章节敌人池，已按默认属性模板临时创建为「' + addition.name + '」。');
+      }
+      for(var n=0;n<addition.count;n++){
+        if(insertedCount >= remainingAddCount) break;
+        var slot = nextEnemySlot(existing, usedSlots);
+        if(!slot) throw new Error('敌方出战位已满');
+        usedSlots.push(slot);
+        var data = rowFromEnemyData(enemyRow, slot, chapterName, addition.threatLevel);
+        data['敌人名称'] = addition.count > 1 ? addition.name + '-' + (n + 1) : addition.name;
+        insertStatements.push(sqlInsert('enemy_config', {enemy_name:data['敌人名称'], battle_slot:data['出战位'], current_hp:data['当前生命'], max_hp:data['最大生命'], damage:data['伤害'], accuracy:data['命中'], evasion:data['回避'], rate_of_fire:data['射速'], armor:data['护甲'], movement:data['移动'], armor_piercing:data['穿甲'], critical_rate:data['暴击'], ammo_chain:data['弹链']}));
+        pendingExisting.push(Object.assign({__rowIndex__: 0}, data));
+        existing.push(Object.assign({__rowIndex__: 0}, data));
+        insertedCount++;
+      }
+    }
+    if(insertStatements.length){
+      var batch = runBattleSqlBatch(insertStatements, ['sheet_enemy_config']);
+      if(!batch) throw new Error('AutoCardUpdaterAPI.executeSqlBatch 不可用，无法批量写入敌人配置表');
+      await batch;
+    }
+    return {applied:insertedCount > 0, added:insertedCount};
+  }
+  function makeUnit(side, name, x, y, fallback){
+    var data = {};
+    var stats = fallback || {};
+    var maxHp = num(stats.hp != null ? stats.hp : data.hp, 400);
+    var portrait = stats.portrait || data.portrait || '';
+    return {
+      id: side + '-' + name.replace(/\s+/g,'-') + '-' + x + '-' + y,
+      side: side,
+      name: name,
+      type: stats.type || data.type || (side === 'enemy' ? 'ENEMY' : 'AR'),
+      x: x,
+      y: y,
+      startX: x,
+      startY: y,
+      maxHp: maxHp,
+      hp: maxHp,
+      damage: num(stats.damage != null ? stats.damage : data.damage, 36),
+      accuracy: num(stats.accuracy != null ? stats.accuracy : data.accuracy, 49),
+      evasion: num(stats.evasion != null ? stats.evasion : data.evasion, 76),
+      rof: Math.max(1, num(stats.rof != null ? stats.rof : data.rof, 47)),
+      armor: num(stats.armor != null ? stats.armor : data.armor, 0),
+      movement: Math.max(0, num(stats.movement != null ? stats.movement : data.movement, 15)),
+      armorPiercing: num(stats.armorPiercing != null ? stats.armorPiercing : data.armorPiercing, 15),
+      critRate: num(stats.critRate != null ? stats.critRate : data.critRate, 20),
+      ammoChain: num(stats.ammoChain != null ? stats.ammoChain : data.ammoChain, 0),
+      critDamage: num(stats.critDamage != null ? stats.critDamage : data.critDamage, 150),
+      nightAccuracyOffset: num(stats.nightAccuracyOffset != null ? stats.nightAccuracyOffset : data.nightAccuracyOffset, 0),
+      reloadSpeed: num(stats.reloadSpeed != null ? stats.reloadSpeed : data.reloadSpeed, 0),
+      initialCooldown: num(stats.initialCooldown != null ? stats.initialCooldown : data.initialCooldown, 0),
+      teamAccuracy: num(stats.teamAccuracy != null ? stats.teamAccuracy : data.teamAccuracy, 0),
+      equipmentTags: stats.equipmentTags || [],
+      equipmentSummary: stats.equipmentSummary || '',
+      portrait: portrait,
+      damagedPortrait: stats.damagedPortrait || data.damagedPortrait || damagedPortraitOf(portrait),
+      portraitSkin: stats.portraitSkin || data.portraitSkin || '',
+      portraitHydrating: false,
+      attackCount: 0,
+      broken: false
+    };
+  }
+  function defaultEnemyUnits(){
+    return [
+      makeUnit('enemy','铁血侦察者',586,164,{hp:260,damage:28,accuracy:48,evasion:62,rof:58,armor:0,movement:18,armorPiercing:10,critRate:10,ammoChain:0}),
+      makeUnit('enemy','铁血突击兵',642,244,{hp:420,damage:36,accuracy:52,evasion:40,rof:48,armor:4,movement:13,armorPiercing:12,critRate:15,ammoChain:0}),
+      makeUnit('enemy','铁血盾卫',556,326,{hp:680,damage:24,accuracy:38,evasion:20,rof:35,armor:22,movement:8,armorPiercing:8,critRate:5,ammoChain:0}),
+      makeUnit('enemy','铁血狙击手',694,384,{hp:300,damage:70,accuracy:82,evasion:32,rof:30,armor:0,movement:10,armorPiercing:35,critRate:35,ammoChain:0})
+    ];
+  }
+  function defaultUnits(){
+    var tableUnits = unitsFromTables();
+    if(tableUnits.length) return tableUnits;
+    return [
+      makeUnit('ally','M950A',164,404,{hp:400,damage:36,accuracy:49,evasion:76,rof:47,armor:0,movement:15,armorPiercing:15,critRate:20,ammoChain:0}),
+      makeUnit('ally','G36C',232,358,{hp:520,damage:30,accuracy:42,evasion:68,rof:52,armor:8,movement:13,armorPiercing:15,critRate:20,ammoChain:0}),
+      makeUnit('ally','64式自',314,396,{hp:430,damage:42,accuracy:55,evasion:52,rof:60,armor:0,movement:15,armorPiercing:15,critRate:20,ammoChain:0}),
+      makeUnit('ally','DSR-50',372,448,{hp:360,damage:82,accuracy:88,evasion:34,rof:32,armor:0,movement:10,armorPiercing:40,critRate:40,ammoChain:0})
+    ].concat(defaultEnemyUnits());
+  }
+  function rowForUnit(u, index){
+    return {
+      '出战位': index + 1,
+      '当前生命': u.hp,
+      '最大生命': u.maxHp,
+      '伤害': u.damage,
+      '命中': u.accuracy,
+      '回避': u.evasion,
+      '射速': u.rof,
+      '护甲': u.armor,
+      '移动': u.movement,
+      '穿甲': u.armorPiercing,
+      '暴击': u.critRate,
+      '弹链': u.ammoChain
+    };
+  }
+  function sqlLiteral(value){
+    if(value == null) return 'NULL';
+    if(typeof value === 'number' && isFinite(value)) return String(value);
+    if(typeof value === 'boolean') return value ? '1' : '0';
+    return '\'' + String(value).replace(/'/g, "''") + '\'';
+  }
+  function sqlUpdate(table, rowIndex, data){
+    var keys = Object.keys(data || {});
+    if(!keys.length) return '';
+    return 'UPDATE ' + table + ' SET ' + keys.map(function(key){ return key + ' = ' + sqlLiteral(data[key]); }).join(', ') + ' WHERE row_id = ' + sqlLiteral(rowIndex);
+  }
+  function sqlInsert(table, data){
+    var keys = Object.keys(data || {});
+    if(!keys.length) return '';
+    return 'INSERT INTO ' + table + ' (' + keys.join(', ') + ') VALUES (' + keys.map(function(key){ return sqlLiteral(data[key]); }).join(', ') + ')';
+  }
+  function sqlDelete(table, rowIndex){
+    return 'DELETE FROM ' + table + ' WHERE row_id = ' + sqlLiteral(rowIndex);
+  }
+  function runBattleSqlBatch(statements, targetSheetKeys){
+    if(!statements.length) return Promise.resolve({success:true});
+    if(!Bridge || typeof Bridge.executeSqlBatch !== 'function') throw new Error('GFLDataBridge.executeSqlBatch 不可用');
+    return Bridge.executeSqlBatch({
+      sql: statements.filter(Boolean).join(';\n') + ';',
+      targetSheetKeys: targetSheetKeys || ['sheet_tdoll_warehouse','sheet_battle_config','sheet_enemy_config','sheet_MapElements','sheet_map_elements']
+    });
+  }
+  function persistBattleTables(){
+    if(!Bridge) return Promise.resolve([]);
+    var warehouseByName = warehouseRowsByName();
+    var allies = units.filter(function(u){return u.side==='ally';});
+    var enemies = units.filter(function(u){return u.side==='enemy';});
+    var statements = [];
+    allies.forEach(function(u){
+      var row = warehouseByName[u.name];
+      if(!row || !row.__rowIndex__) return;
+      var nextState = u.hp <= 0 ? '损坏' : (u.hp / Math.max(1, u.maxHp) < .4 ? '大破' : '正常');
+      if(nextState === '正常') return;
+      statements.push(sqlUpdate('tdoll_warehouse', row.__rowIndex__, {damage_state:nextState}));
+      battleLog.push(u.name + ' 战后状态已写入人形仓库表：' + nextState + '。');
+    });
+    function persistSide(tableName, sqlTableName, nameKey, sideUnits){
+      sideUnits.filter(function(u){return u.hp > 0;}).forEach(function(u, i){
+        var data = rowForUnit(u, i);
+        data[nameKey] = u.name;
+        if(u.rawRowIndex){
+          var sqlData = {
+            battle_slot:data['出战位'], current_hp:data['当前生命'], max_hp:data['最大生命'], damage:data['伤害'], accuracy:data['命中'], evasion:data['回避'], rate_of_fire:data['射速'], armor:data['护甲'], movement:data['移动'], armor_piercing:data['穿甲'], critical_rate:data['暴击'], ammo_chain:data['弹链']
+          };
+          sqlData[nameKey === '人形名称' ? 'tdoll_name' : 'enemy_name'] = u.name;
+          statements.push(sqlUpdate(sqlTableName, u.rawRowIndex, sqlData));
+        }
+      });
+      sideUnits.filter(function(u){return u.hp <= 0 && u.rawRowIndex;}).sort(function(a,b){return b.rawRowIndex - a.rawRowIndex;}).forEach(function(u){
+        statements.push(sqlDelete(sqlTableName, u.rawRowIndex));
+        battleLog.push(u.name + ' 生命归零，已移出' + tableName + '。');
+      });
+    }
+    persistSide('出战配置表', 'battle_config', '人形名称', allies);
+    persistSide('敌人配置表', 'enemy_config', '敌人名称', enemies);
+    var deadNames = {};
+    units.filter(function(u){return u.hp <= 0;}).forEach(function(u){deadNames[u.name]=true;});
+    if(Object.keys(deadNames).length && Bridge && typeof Bridge.rows === 'function'){
+      (Bridge.rows('mapElements') || []).filter(function(row){
+        var name = String(bridgeField(row, ['元素名称','element_name','name'], '')).trim();
+        var type = String(bridgeField(row, ['元素类型','element_type','type'], '')).trim();
+        return row.__rowIndex__ && deadNames[name] && ['友方','敌方','ally','enemy'].indexOf(type) >= 0;
+      }).sort(function(a,b){return b.__rowIndex__ - a.__rowIndex__;}).forEach(function(row){
+        statements.push(sqlDelete('map_elements', row.__rowIndex__));
+      });
+    }
+    var batch = runBattleSqlBatch(statements);
+    if(batch) return batch.then(function(result){ return [result]; });
+    return Promise.resolve([]);
+  }
+  function mapElementRowForUnit(u){
+    return {
+      '元素名称': u.name,
+      '元素类型': u.side === 'ally' ? '友方' : '敌方',
+      'X坐标': Math.round(u.x),
+      'Y坐标': Math.round(u.y),
+      '状态': unitBattleState(u),
+      '描述': u.side === 'ally' ? '我方战斗单位' : '敌方战斗单位',
+      '所属区域': u.side === 'ally' ? '我方梯队' : '敌方阵地',
+      '战术背景': '战斗开始时由战斗地图前端同步当前位置'
+    };
+  }
+  function mapElementFromRow(row, i){
+    return {
+      '元素名称': String(bridgeField(row, ['元素名称','element_name','name'], '')).trim() || ('环境元素' + (i + 1)),
+      '元素类型': String(bridgeField(row, ['元素类型','element_type','type'], '')).trim() || '地标',
+      'X坐标': num(bridgeField(row, ['X坐标','pos_x','x'], 120 + (i % 5) * 130), 120 + (i % 5) * 130),
+      'Y坐标': num(bridgeField(row, ['Y坐标','pos_y','y'], 180 + Math.floor(i / 5) * 90), 180 + Math.floor(i / 5) * 90),
+      '状态': bridgeField(row, ['状态','element_status','status'], ''),
+      '描述': bridgeField(row, ['描述','element_desc','desc'], ''),
+      '所属区域': bridgeField(row, ['所属区域','region'], ''),
+      '战术背景': bridgeField(row, ['战术背景','legend'], '')
+    };
+  }
+  function tacticalTagOf(row){
+    var text = [row && row['状态'], row && row['描述'], row && row['战术背景'], row && row['元素类型'], row && row['元素名称']].join('\n');
+    var tags = [];
+    String(text || '').replace(/[\[【]([^\]】]{1,16})[\]】]/g, function(_, tag){tags.push(String(tag || '').trim());return _;});
+    var keywords = ['掩体','重掩体','高地','火力点','烟雾','电磁干扰','危险地形','火焰','积水','毒雾','伏击点','集结点','封锁','通路','狭窄通道','塌陷区','建筑','载具残骸','压制区','爆炸范围','物资','我方部署点','敌方部署点','入口','撤离点','巡逻路线','狙击线','火力覆盖区','自动炮塔','终端','门禁','控制台','电源','通信装置','数据核心','爆破点','开关','锁定目标','增援点','警戒装置','陷阱','地雷','倒计时事件','突破口','辐射区'];
+    keywords.forEach(function(tag){if(String(text || '').indexOf(tag) >= 0) tags.push(tag);});
+    return uniqueList(tags);
+  }
+  function allowedEnvironmentType(type){
+    var allowed = {
+      '地形':1,'环境':1,'火力':1,'交互':1,'部署':1,'事件':1,'出口':1,'地标':1,'障碍物':1,
+      terrain:1,environment:1,fire:1,interactive:1,deployment:1,event:1,exit:1,landmark:1,obstacle:1
+    };
+    return !!allowed[String(type || '').trim()];
+  }
+  function environmentRowsFromMapElements(){
+    if(!Bridge || typeof Bridge.rows !== 'function') return [];
+    try{
+      return (Bridge.rows('mapElements') || []).map(mapElementFromRow).filter(function(it){ return allowedEnvironmentType(it['元素类型']); });
+    }catch(error){
+      console.warn('战斗页读取地图元素表失败，将使用默认战术环境:', error);
+      return [];
+    }
+  }
+  function tacticalPoints(){
+    return environmentRowsFromMapElements().map(function(row){
+      var copy = {};
+      Object.keys(row).forEach(function(k){copy[k]=row[k];});
+      copy.tags = tacticalTagOf(row);
+      copy.x = num(row['X坐标'], 0);
+      copy.y = num(row['Y坐标'], 0);
+      return copy;
+    }).filter(function(row){return row.tags.length > 0;});
+  }
+  function tacticalRadius(tag){
+    if(['烟雾','电磁干扰','压制区','爆炸范围'].indexOf(tag) >= 0) return 90;
+    if(['巡逻路线','狙击线','火力覆盖区'].indexOf(tag) >= 0) return 100;
+    if(['封锁','通路','狭窄通道','塌陷区','积水'].indexOf(tag) >= 0) return 62;
+    if(['火力点','高地','伏击点','集结点','物资'].indexOf(tag) >= 0) return 76;
+    if(['自动炮塔','终端','门禁','控制台','电源','通信装置','数据核心','爆破点','开关','锁定目标','增援点','警戒装置','陷阱','地雷','倒计时事件','突破口','辐射区'].indexOf(tag) >= 0) return 68;
+    return 68;
+  }
+  function unitNearPoint(unit, point){
+    if(!unit || !point) return false;
+    return point.tags.some(function(tag){return dist(unit, point) <= tacticalRadius(tag);});
+  }
+  function segmentDistanceToPoint(a, b, p){
+    var vx = b.x - a.x, vy = b.y - a.y;
+    var wx = p.x - a.x, wy = p.y - a.y;
+    var len2 = vx*vx + vy*vy;
+    var t = len2 > 0 ? Math.max(0, Math.min(1, (wx*vx + wy*vy) / len2)) : 0;
+    var proj = {x:a.x + vx*t, y:a.y + vy*t};
+    return dist(proj, p);
+  }
+  function tagsNearUnit(unit){
+    var out = [];
+    tacticalPoints().forEach(function(point){
+      point.tags.forEach(function(tag){if(dist(unit, point) <= tacticalRadius(tag)) out.push(tag);});
+    });
+    return uniqueList(out);
+  }
+  function tagsNearSegment(a, b){
+    var out = [];
+    tacticalPoints().forEach(function(point){
+      point.tags.forEach(function(tag){if(segmentDistanceToPoint(a, b, point) <= tacticalRadius(tag)) out.push(tag);});
+    });
+    return uniqueList(out);
+  }
+  function tacticalAttackContext(attacker, target){
+    var attackerTags = tagsNearUnit(attacker);
+    var targetTags = tagsNearUnit(target);
+    var lineTags = tagsNearSegment(attacker, target);
+    var ctx = {hitMultiplier:1, damageMultiplier:1, critBonus:0, notes:[], attackerTags:attackerTags, targetTags:targetTags, lineTags:lineTags};
+    if(hasAny(targetTags, ['重掩体'])){ctx.hitMultiplier*=.72;ctx.damageMultiplier*=.82;ctx.notes.push(target.name+'依托重掩体削弱来袭火力');}
+    else if(hasAny(targetTags, ['掩体','建筑','载具残骸'])){ctx.hitMultiplier*=.84;ctx.damageMultiplier*=.92;ctx.notes.push(target.name+'附近掩体影响命中窗口');}
+    if(hasAny(attackerTags, ['高地'])){ctx.hitMultiplier*=1.12;ctx.damageMultiplier*=1.04;ctx.critBonus+=5;ctx.notes.push(attacker.name+'占据高地修正射界');}
+    if(hasAny(attackerTags, ['火力点'])){ctx.damageMultiplier*=1.12;ctx.critBonus+=7;ctx.notes.push(attacker.name+'借火力点提高压制强度');}
+    if(hasAny(lineTags, ['烟雾'])){ctx.hitMultiplier*=.72;ctx.notes.push('烟雾遮蔽双方弹道视线');}
+    if(hasAny(lineTags.concat(attackerTags).concat(targetTags), ['电磁干扰'])){ctx.hitMultiplier*=.84;ctx.damageMultiplier*=.96;ctx.notes.push('电磁干扰扰乱火控与感测');}
+    if(hasAny(targetTags, ['危险地形','火焰','毒雾','爆炸范围'])){ctx.damageMultiplier*=1.08;ctx.notes.push(target.name+'处于危险地形边缘，承受额外压迫');}
+    if(hasAny(targetTags, ['压制区'])){ctx.hitMultiplier*=1.06;ctx.notes.push(target.name+'位于压制区，闪避空间受限');}
+    return ctx;
+  }
+  function tacticalMoveContext(unit, targetPoint){
+    var start = {x:unit.startX,y:unit.startY};
+    var lineTags = tagsNearSegment(start, targetPoint);
+    var targetTags = tagsNearUnit({x:targetPoint.x,y:targetPoint.y});
+    var ctx = {rangeMultiplier:1, notes:[], lineTags:lineTags, targetTags:targetTags};
+    if(hasAny(lineTags.concat(targetTags), ['封锁'])){ctx.rangeMultiplier*=.55;ctx.notes.push('封锁点压缩可达范围');}
+    if(hasAny(lineTags.concat(targetTags), ['积水','塌陷区','狭窄通道'])){ctx.rangeMultiplier*=.75;ctx.notes.push('复杂地形降低移动效率');}
+    if(hasAny(lineTags.concat(targetTags), ['危险地形','火焰','毒雾'])){ctx.rangeMultiplier*=.85;ctx.notes.push('危险地形迫使单位减速通过');}
+    if(hasAny(lineTags.concat(targetTags), ['通路','集结点','我方部署点'])){ctx.rangeMultiplier*=1.15;ctx.notes.push('通路或集结点提供移动修正');}
+    ctx.effectiveRange = Math.max(0, Math.round(movementRange(unit) * ctx.rangeMultiplier));
+    return ctx;
+  }
+  function tacticalMoveSummary(unit, ctx){
+    if(!unit || !ctx || !ctx.notes.length) return '';
+    return '移动倍率×'+ctx.rangeMultiplier.toFixed(2)+'，有效范围 '+ctx.effectiveRange+'/'+movementRange(unit);
+  }
+  function tacticalLogNotes(context){return uniqueList((context && context.notes) || []).slice(0, 2).join('；');}
+  function tacticalPromptSummary(){
+    var points = tacticalPoints();
+    if(!points.length) return '本轮地图元素表没有可识别的战术标签。';
+    return points.slice(0, 10).map(function(p){return p['元素名称']+'('+p.tags.join('/')+'，坐标 '+Math.round(p.x)+','+Math.round(p.y)+')';}).join('；');
+  }
+  function tacticalPointFromMapItem(item){
+    if(!item || !allowedEnvironmentType(item['元素类型'])) return null;
+    var tags = tacticalTagOf(item);
+    if(!tags.length) return null;
+    return {name:item['元素名称'], type:item['元素类型'], x:num(item['X坐标'], 0), y:num(item['Y坐标'], 0), tags:tags};
+  }
+  function tacticalPointFromMapIndex(idx){return tacticalPointFromMapItem(mapItems()[idx]);}
+  function tacticalTagEffectSummary(tag){
+    var attack = {
+      '重掩体':'目标附近：命中×0.72，伤害×0.82',
+      '掩体':'目标附近：命中×0.84，伤害×0.92',
+      '建筑':'目标附近：命中×0.84，伤害×0.92',
+      '载具残骸':'目标附近：命中×0.84，伤害×0.92',
+      '高地':'攻击者附近：命中×1.12，伤害×1.04，暴击+5',
+      '火力点':'攻击者附近：伤害×1.12，暴击+7',
+      '烟雾':'射线附近：命中×0.72',
+      '电磁干扰':'攻击者/目标/射线附近：命中×0.84，伤害×0.96',
+      '危险地形':'目标附近：伤害×1.08；移动路径/落点：移动×0.85',
+      '火焰':'目标附近：伤害×1.08；移动路径/落点：移动×0.85',
+      '毒雾':'目标附近：伤害×1.08；移动路径/落点：移动×0.85',
+      '爆炸范围':'目标附近：伤害×1.08',
+      '压制区':'目标附近：命中×1.06'
+    };
+    var move = {
+      '封锁':'移动路径/落点：移动×0.55',
+      '积水':'移动路径/落点：移动×0.75',
+      '塌陷区':'移动路径/落点：移动×0.75',
+      '狭窄通道':'移动路径/落点：移动×0.75',
+      '通路':'移动路径/落点：移动×1.15',
+      '集结点':'移动路径/落点：移动×1.15',
+      '我方部署点':'移动路径/落点：移动×1.15'
+    };
+    return attack[tag] || move[tag] || '显示/叙事标签：当前无数值修正';
+  }
+  function describeTacticalPoint(point){
+    if(!point) return '';
+    return point.name+'｜'+point.tags.map(function(tag){return '['+tag+'] 半径 '+tacticalRadius(tag)+'，'+tacticalTagEffectSummary(tag);}).join('；');
+  }
+  function syncStartPositionsToMapElements(){
+    if(!Bridge || typeof Bridge.rows !== 'function') return Promise.reject(new Error('GFLDataBridge.rows 不可用，无法读取地图元素表'));
+    var currentRows = Bridge.rows('mapElements') || [];
+    var rowByName = {};
+    var configuredEnemyNames = {};
+    units.filter(function(u){return u.side === 'enemy';}).forEach(function(u){ configuredEnemyNames[u.name] = true; });
+    currentRows.forEach(function(row){
+      var name = String(bridgeField(row, ['元素名称','element_name','name'], '')).trim();
+      if(name && row.__rowIndex__ && !rowByName[name]) rowByName[name] = row;
+    });
+    var statements = [];
+    units.forEach(function(u){
+      var data = mapElementRowForUnit(u);
+      var oldRow = rowByName[u.name];
+      if(oldRow && oldRow.__rowIndex__){
+        statements.push(sqlUpdate('map_elements', oldRow.__rowIndex__, {element_name:data['元素名称'], element_type:data['元素类型'], pos_x:data['X坐标'], pos_y:data['Y坐标'], element_status:data['状态'], element_desc:data['描述'], region:data['所属区域'], legend:data['战术背景']}));
+      }else{
+        statements.push(sqlInsert('map_elements', {element_name:data['元素名称'], element_type:data['元素类型'], pos_x:data['X坐标'], pos_y:data['Y坐标'], element_status:data['状态'], element_desc:data['描述'], region:data['所属区域'], legend:data['战术背景']}));
+      }
+    });
+    currentRows.filter(function(row){
+      var name = String(bridgeField(row, ['元素名称','element_name','name'], '')).trim();
+      var type = String(bridgeField(row, ['元素类型','element_type','type'], '')).trim();
+      return row.__rowIndex__ && name && ['敌方','enemy'].indexOf(type) >= 0 && !configuredEnemyNames[name];
+    }).sort(function(a,b){ return b.__rowIndex__ - a.__rowIndex__; }).forEach(function(row){
+      statements.push(sqlDelete('map_elements', row.__rowIndex__));
+    });
+    var batch = runBattleSqlBatch(statements, ['sheet_MapElements']);
+    if(batch) return batch.then(function(result){ return [result]; });
+    return Promise.resolve([]);
+  }
+  function mapItems(){
+    var landmarks = environmentRowsFromMapElements();
+    if(!landmarks.length) landmarks = [
+      {'元素名称':'废弃补给站','元素类型':'地标','X坐标':140,'Y坐标':222,'状态':'可作为临时掩体，内部残留弹药箱。','所属区域':'西侧补给区','描述':'战场资源点'},
+      {'元素名称':'塌陷天桥','元素类型':'障碍物','X坐标':404,'Y坐标':286,'状态':'桥体断裂，仅轻装单位可快速穿越。','所属区域':'中央断桥','描述':'中央地形障碍'},
+      {'元素名称':'通讯中继塔','元素类型':'地标','X坐标':474,'Y坐标':122,'状态':'控制后可提升区域通信稳定性。','所属区域':'北侧高地','描述':'战术目标'},
+      {'元素名称':'撤离信标','元素类型':'出口','X坐标':106,'Y坐标':520,'状态':'撤退与伤员后送坐标。','所属区域':'西南撤离点','描述':'撤退出口'}
+    ];
+    return landmarks.concat(units.map(function(u){
+      preloadImage(currentPortrait(u));
+      return {
+        '元素名称':u.name,
+        '元素类型':u.side==='ally'?'友方':'敌方',
+        'X坐标':Math.round(u.x),
+        'Y坐标':Math.round(u.y),
+        '状态':u.hp>0?'HP '+u.hp+'/'+u.maxHp:'已失去战斗能力',
+        '所属区域':u.side==='ally'?'我方梯队':'敌方阵地',
+        '描述':statLine(u),
+        '头像':currentPortrait(u),
+        '血量文本':'HP '+u.hp+'/'+u.maxHp
+      };
+    }));
+  }
+  function hydrateUnitPortraits(){
+    if(!Bridge || typeof Bridge.getSkinImage !== 'function') return;
+    var pending = units.filter(function(u){return u.side==='ally' && u.portraitSkin && !u.portraitHydrating && (!u.portrait || !u.damagedPortrait);});
+    if(!pending.length) return;
+    pending.forEach(function(u){
+      u.portraitHydrating = true;
+      Promise.all([
+        u.portrait ? Promise.resolve(u.portrait) : Bridge.getSkinImage(u.portraitSkin, false),
+        u.damagedPortrait ? Promise.resolve(u.damagedPortrait) : Bridge.getSkinImage(u.portraitSkin, true)
+      ]).then(function(urls){
+        var changed = false;
+        if(urls[0] && !u.portrait){ u.portrait = urls[0]; changed = true; }
+        if(urls[1] && !u.damagedPortrait){ u.damagedPortrait = urls[1]; changed = true; }
+        u.portraitHydrating = false;
+        if(changed) render();
+      }).catch(function(error){
+        u.portraitHydrating = false;
+        console.warn('战斗单位立绘加载失败:', u.name, u.portraitSkin, error);
+      });
+    });
+  }
+  function hpPercent(u){return u.maxHp>0?Math.max(0,Math.min(100,Math.round(u.hp/u.maxHp*100))):0;}
+  function renderUnitList(side, elId){
+    var html = units.filter(function(u){return u.side===side;}).map(function(u){
+      var sideClass = side==='ally'?'side-ally':'side-enemy';
+      return '<div class="gfl-unit-card '+(selectedId===u.id?'active ':'')+(u.hp<=0?'dead ':'')+(u.broken?'broken':'')+'" data-id="'+esc(u.id)+'">'
+        + '<div class="gfl-unit-name"><span>'+esc(u.name)+'</span><span class="'+sideClass+'">'+(u.hp<=0?'战损':(u.broken?'大破':'存活'))+'</span></div>'
+        + '<div class="gfl-hpbar"><span style="width:'+hpPercent(u)+'%"></span></div>'
+        + '<div class="gfl-unit-meta"><span>HP '+u.hp+'/'+u.maxHp+'</span><span>射速 '+u.rof+'</span><span>移动 '+u.movement+'</span><span>可移动 '+movementRange(u)+'</span></div>'
+        + '</div>';
+    }).join('');
+    document.getElementById(elId).innerHTML = html || '<div class="gfl-unit-card">暂无单位</div>';
+  }
+  function renderMapHpOverlay(){
+    function sideBlock(side, title){
+      var list = units.filter(function(u){return u.side===side;});
+      var aliveCount = list.filter(function(u){return u.hp>0;}).length;
+      var arrow = side === 'ally' ? '>' : '<';
+      var rows = list.map(function(u){
+        var dead = u.hp <= 0;
+        var portrait = currentPortrait(u);
+        var avatar = portrait ? '<img src="'+esc(portrait)+'" alt="'+esc(u.name)+'">' : '<span>'+esc(String(u.name||'?').slice(0,1))+'</span>';
+        return '<div class="gfl-map-hp-card '+(selectedId===u.id?'active':'')+'" data-id="'+esc(u.id)+'"><div class="gfl-map-hp-avatar">'+avatar+'</div><div class="gfl-map-hp-info"><div class="gfl-map-hp-name"><span class="'+(dead?'dead':'')+'">'+esc(u.name)+'</span><span>'+esc(u.hp)+'/'+esc(u.maxHp)+'</span></div><div class="gfl-map-hp-mini"><span style="width:'+hpPercent(u)+'%"></span></div></div></div>';
+      }).join('');
+      return '<div class="gfl-map-hp-drawer '+side+(hpDrawerOpen[side]?' open':'')+'"><button class="gfl-map-hp-toggle" type="button" data-hp-drawer="'+side+'">'+arrow+'</button><div class="gfl-map-hp-title"><span>'+title+'</span><span>'+aliveCount+'/'+list.length+'</span></div><div class="gfl-map-hp-list">'+(rows || '<div class="gfl-map-hp-card"><div class="gfl-map-hp-avatar"><span>-</span></div><div class="gfl-map-hp-info"><div class="gfl-map-hp-name"><span>暂无单位</span><span>-</span></div></div></div>')+'</div></div>';
+    }
+    return sideBlock('ally','我方')+sideBlock('enemy','敌方');
+  }
+  function selectedDetail(){
+    var point = selectedTacticalIndex == null ? null : tacticalPointFromMapIndex(selectedTacticalIndex);
+    if(point) return '战术点：'+esc(describeTacticalPoint(point))+'｜开启“战术范围”可同时显示全部战术点影响圈；再次点击该地标取消高亮。';
+    var u = byId(selectedId);
+    if(!u) return '战斗开始前可点选友方单位，再点击蓝色移动范围内的位置完成移动。点击“准备就绪”后锁定站位并执行一轮战斗。';
+    var moved = Math.round(dist({x:u.startX,y:u.startY}, u));
+    return esc(u.name)+'｜坐标 ('+Math.round(u.x)+', '+Math.round(u.y)+')｜已移动 '+moved+'/'+movementRange(u)+'｜'+esc(statLine(u));
+  }
+  function applyTransform(){var svg=document.querySelector('#map-box svg');if(svg)svg.style.transform='translate('+mapPan.x+'px,'+mapPan.y+'px) scale('+mapZoom+')';}
+  function injectMovementRange(){
+    var u = byId(selectedId);
+    if(!u || u.side !== 'ally' || phase !== 'setup') return;
+    var svg = document.querySelector('#map-box svg');
+    if(!svg) return;
+    var ns = 'http://www.w3.org/2000/svg';
+    var range = document.createElementNS(ns, 'circle');
+    range.setAttribute('class', 'gfl-range-circle');
+    range.setAttribute('cx', u.startX);
+    range.setAttribute('cy', u.startY);
+    range.setAttribute('r', movementRange(u));
+    range.setAttribute('fill', 'rgba(107,183,255,.10)');
+    range.setAttribute('stroke', 'rgba(107,183,255,.75)');
+    range.setAttribute('stroke-width', '2');
+    range.setAttribute('stroke-dasharray', '8 6');
+    svg.appendChild(range);
+    var ghost = document.createElementNS(ns, 'circle');
+    ghost.setAttribute('class', 'gfl-drag-ghost');
+    ghost.setAttribute('cx', u.x);
+    ghost.setAttribute('cy', u.y);
+    ghost.setAttribute('r', '34');
+    ghost.setAttribute('fill', 'none');
+    ghost.setAttribute('stroke', 'rgba(232,200,64,.85)');
+    ghost.setAttribute('stroke-width', '2');
+    svg.appendChild(ghost);
+  }
+  function injectTacticalRangeOverlay(){
+    if(phase !== 'setup') return;
+    var svg = document.querySelector('#map-box svg');
+    if(!svg) return;
+    var ns = 'http://www.w3.org/2000/svg';
+    var items = mapItems();
+    var points = [];
+    items.forEach(function(item, idx){
+      var point = tacticalPointFromMapItem(item);
+      if(!point) return;
+      point.index = idx;
+      if(tacticalRangeVisible || selectedTacticalIndex === idx) points.push(point);
+    });
+    if(!points.length) return;
+    var layer = document.createElementNS(ns, 'g');
+    layer.setAttribute('class', 'gfl-tactical-range-layer');
+    points.forEach(function(point){
+      var active = selectedTacticalIndex === point.index;
+      point.tags.forEach(function(tag, tagIdx){
+        var ring = document.createElementNS(ns, 'circle');
+        ring.setAttribute('cx', point.x);
+        ring.setAttribute('cy', point.y);
+        ring.setAttribute('r', tacticalRadius(tag));
+        ring.setAttribute('fill', active ? 'rgba(232,200,64,.13)' : 'rgba(120,224,208,.055)');
+        ring.setAttribute('stroke', active ? 'rgba(232,200,64,.95)' : 'rgba(120,224,208,.55)');
+        ring.setAttribute('stroke-width', active ? '3' : '1.6');
+        ring.setAttribute('stroke-dasharray', tagIdx % 2 ? '4 7' : '10 6');
+        ring.setAttribute('pointer-events', 'none');
+        layer.appendChild(ring);
+      });
+      var label = document.createElementNS(ns, 'text');
+      label.setAttribute('x', point.x);
+      label.setAttribute('y', point.y - Math.max.apply(null, point.tags.map(tacticalRadius)) - 8);
+      label.setAttribute('text-anchor', 'middle');
+      label.setAttribute('fill', active ? '#e8c840' : '#78e0d0');
+      label.setAttribute('stroke', 'rgba(0,0,0,.78)');
+      label.setAttribute('stroke-width', '3');
+      label.setAttribute('paint-order', 'stroke');
+      label.setAttribute('font-size', active ? '12' : '10');
+      label.setAttribute('font-weight', '900');
+      label.setAttribute('pointer-events', 'none');
+      label.textContent = point.name + ' ' + point.tags.map(function(tag){return '['+tag+']';}).join('');
+      layer.appendChild(label);
+    });
+    svg.appendChild(layer);
+  }
+  function injectBrokenMarkers(){
+    var svg = document.querySelector('#map-box svg');
+    if(!svg) return;
+    var ns = 'http://www.w3.org/2000/svg';
+    units.forEach(function(u){
+      if(u.side !== 'ally' || !u.broken || u.hp <= 0) return;
+      var g = document.createElementNS(ns, 'g');
+      g.setAttribute('class', 'gfl-broken-marker');
+      var ring = document.createElementNS(ns, 'circle');
+      ring.setAttribute('cx', u.x);
+      ring.setAttribute('cy', u.y);
+      ring.setAttribute('r', '38');
+      ring.setAttribute('fill', 'none');
+      ring.setAttribute('stroke', 'rgba(224,64,64,.85)');
+      ring.setAttribute('stroke-width', '2.5');
+      ring.setAttribute('stroke-dasharray', '6 5');
+      var label = document.createElementNS(ns, 'text');
+      label.setAttribute('x', u.x);
+      label.setAttribute('y', u.y - 42);
+      label.setAttribute('text-anchor', 'middle');
+      label.textContent = '大破';
+      g.appendChild(ring);
+      g.appendChild(label);
+      svg.appendChild(g);
+    });
+  }
+  function injectBattleFx(){
+    if(!activeFx) return;
+    var svg = document.querySelector('#map-box svg');
+    if(!svg) return;
+    var ns = 'http://www.w3.org/2000/svg';
+    var g = document.createElementNS(ns, 'g');
+    g.setAttribute('class', 'gfl-battle-fx');
+    if(activeFx.attacker && activeFx.target){
+      var type = String(activeFx.weaponType || '').toLowerCase();
+      var shots = activeFx.shots || 1;
+      var spread = activeFx.spread || 0;
+      var dx = activeFx.target.x - activeFx.attacker.x;
+      var dy = activeFx.target.y - activeFx.attacker.y;
+      var len = Math.max(1, Math.sqrt(dx*dx + dy*dy));
+      var nx = -dy / len;
+      var ny = dx / len;
+      var muzzle = document.createElementNS(ns, 'circle');
+      muzzle.setAttribute('class', 'gfl-muzzle');
+      muzzle.setAttribute('cx', activeFx.attacker.x);
+      muzzle.setAttribute('cy', activeFx.attacker.y);
+      muzzle.setAttribute('r', '5');
+      g.appendChild(muzzle);
+      for(var s=0;s<shots;s++){
+        var offset = shots === 1 ? 0 : (s - (shots-1)/2) * spread;
+        var jitter = activeFx.jitter ? ((s % 2 === 0 ? 1 : -1) * activeFx.jitter) : 0;
+        var x1 = activeFx.attacker.x + nx * offset * .25;
+        var y1 = activeFx.attacker.y + ny * offset * .25;
+        var x2 = activeFx.target.x + nx * (offset + jitter);
+        var y2 = activeFx.target.y + ny * (offset + jitter);
+        if(type === 'sg'){
+          var pellet = document.createElementNS(ns, 'circle');
+          pellet.setAttribute('class', 'gfl-pellet');
+          pellet.setAttribute('cx', x2);
+          pellet.setAttribute('cy', y2);
+          pellet.setAttribute('r', '4');
+          g.appendChild(pellet);
+        }
+        var line = document.createElementNS(ns, 'line');
+        line.setAttribute('class', 'gfl-tracer '+(type || 'ar'));
+        line.setAttribute('x1', x1);
+        line.setAttribute('y1', y1);
+        line.setAttribute('x2', x2);
+        line.setAttribute('y2', y2);
+        line.setAttribute('style', 'animation-delay:'+(s*35)+'ms');
+        g.appendChild(line);
+      }
+      var impact = document.createElementNS(ns, 'circle');
+      impact.setAttribute('class', 'gfl-impact '+(activeFx.hit ? 'hit' : 'miss'));
+      impact.setAttribute('cx', activeFx.target.x);
+      impact.setAttribute('cy', activeFx.target.y);
+      impact.setAttribute('r', activeFx.hit ? '6' : '3');
+      g.appendChild(impact);
+    }
+    svg.appendChild(g);
+  }
+  function renderMap(){
+    var items = mapItems();
+    var key = JSON.stringify({
+      activeFx:activeFx ? {a:activeFx.attacker&&activeFx.attacker.name,t:activeFx.target&&activeFx.target.name,hit:activeFx.hit,broken:activeFx.broken} : null,
+      drawers:hpDrawerOpen,
+      units:units.map(function(u){return [u.id,u.hp,u.maxHp,u.broken,currentPortrait(u)].join('|');})
+    });
+    var rebuilt = key !== mapRenderKey;
+    if(rebuilt){
+      mapRenderKey = key;
+      document.getElementById('map-box').innerHTML = window.GFLTacticalMap.renderCombatSvg(items, '独立战斗页面 / 共用地图绘制') + renderMapHpOverlay();
+    }
+    document.getElementById('map-count').textContent = units.length + ' 单位';
+    if(rebuilt){
+      injectBrokenMarkers();
+      injectBattleFx();
+    }
+    updateTacticalRangeOverlay();
+    updateMovementRangeOverlay();
+    updateMapHpSelection();
+    updateAllUnitMarkers();
+    applyTransform();
+  }
+  function updateMovementRangeOverlay(){
+    document.querySelectorAll('#map-box .gfl-range-circle,#map-box .gfl-drag-ghost').forEach(function(el){el.remove();});
+    injectMovementRange();
+  }
+  function updateTacticalRangeOverlay(){
+    document.querySelectorAll('#map-box .gfl-tactical-range-layer').forEach(function(el){el.remove();});
+    injectTacticalRangeOverlay();
+  }
+  function updateMapHpSelection(){
+    document.querySelectorAll('#map-box .gfl-map-hp-card[data-id]').forEach(function(card){
+      card.classList.toggle('active', card.getAttribute('data-id') === selectedId);
+    });
+  }
+  function updateAllUnitMarkers(){
+    units.forEach(function(u){updateDraggedUnitMarker(u);});
+  }
+  function updateDraggedUnitMarker(u){
+    var items = mapItems();
+    var idx = -1;
+    for(var i=0;i<items.length;i++){
+      if(items[i]['元素名称'] === u.name){idx = i; break;}
+    }
+    if(idx < 0) return;
+    var marker = document.querySelector('#map-box .cm[data-idx="'+idx+'"]');
+    if(!marker) return;
+    if(!marker.__gflBasePos){ marker.__gflBasePos = {x:parseFloat(marker.getAttribute('data-x')) || u.x, y:parseFloat(marker.getAttribute('data-y')) || u.y}; }
+    marker.setAttribute('transform', 'translate('+(u.x-marker.__gflBasePos.x)+','+(u.y-marker.__gflBasePos.y)+')');
+    var ghost = document.querySelector('#map-box .gfl-drag-ghost');
+    if(ghost){ ghost.setAttribute('cx', u.x); ghost.setAttribute('cy', u.y); }
+  }
+  function renderLog(){document.getElementById('battle-log').textContent = battleLog.length ? battleLog.join('\n') : '等待准备就绪。';}
+  function setSendStatus(text, kind){var el=document.getElementById('send-status');el.textContent=text||'';el.className='gfl-send-status '+(kind||'');}
+  function renderStatus(){
+    document.getElementById('ally-count').textContent = alive('ally').length + '/' + units.filter(function(u){return u.side==='ally';}).length;
+    document.getElementById('enemy-count').textContent = alive('enemy').length + '/' + units.filter(function(u){return u.side==='enemy';}).length;
+    document.getElementById('phase-val').textContent = phase==='setup'?'站位调整':(phase==='running'?'战斗演算':(phase==='resolved'?'战斗结束':'本轮中断'));
+    document.getElementById('selected-label').textContent = byId(selectedId) ? byId(selectedId).name : '未选择单位';
+    document.getElementById('selected-detail').innerHTML = selectedDetail();
+    document.getElementById('stop-val').textContent = '存活单位最少攻击 '+battleRoundLimit()+' 次';
+    var busy = !!battleActionInProgress || resetInProgress;
+    var readyBtn = document.getElementById('ready-btn');
+    if(readyBtn){ readyBtn.disabled = busy || phase !== 'setup'; readyBtn.textContent = battleActionInProgress === 'ready' ? '同步中...' : (phase === 'running' ? '演算中...' : '准备就绪'); }
+    var finishBtn = document.getElementById('finish-btn');
+    if(finishBtn){ finishBtn.disabled = busy || !promptText; finishBtn.textContent = battleActionInProgress === 'finish' ? '写入中...' : '结束战斗'; }
+    var restartBtn = document.getElementById('restart-btn');
+    if(restartBtn){ restartBtn.disabled = busy; restartBtn.textContent = (resetInProgress || battleActionInProgress === 'reset') ? '重置中...' : '重开战斗'; }
+    var tacticalBtn = document.getElementById('tactical-range-btn');
+    if(tacticalBtn){ tacticalBtn.disabled = busy || phase !== 'setup'; tacticalBtn.textContent = tacticalRangeVisible ? '隐藏范围' : '战术范围'; }
+    var roundInput = document.getElementById('round-limit-input');
+    if(roundInput) roundInput.disabled = busy || phase !== 'setup';
+  }
+  function render(){renderMap();renderUnitList('ally','ally-list');renderUnitList('enemy','enemy-list');renderLog();renderStatus();bindUnitClicks();bindMapClicks();bindHpDrawers();}
+  function bindUnitClicks(){
+    document.querySelectorAll('.gfl-unit-card[data-id]').forEach(function(el){
+      el.onclick = function(){selectedTacticalIndex = null;selectedId = this.getAttribute('data-id');render();};
+    });
+  }
+  function unitFromMapItemIndex(idx){
+    var item = mapItems()[idx];
+    if(!item) return null;
+    for(var i=0;i<units.length;i++){if(units[i].name===item['元素名称'])return units[i];}
+    return null;
+  }
+  function bindMapClicks(){
+    document.querySelectorAll('#map-box .cm').forEach(function(el){
+      el.onclick = function(e){
+        if(unitDrag) return;
+        var idx = parseInt(this.getAttribute('data-idx'), 10);
+        var point = tacticalPointFromMapIndex(idx);
+        if(point && phase === 'setup'){
+          e.preventDefault();
+          e.stopPropagation();
+          selectedTacticalIndex = selectedTacticalIndex === idx ? null : idx;
+          selectedId = null;
+          setSendStatus(selectedTacticalIndex === null ? '已取消战术点范围高亮。' : '已高亮战术点范围：'+describeTacticalPoint(point)+'。', 'ok');
+          render();
+          return;
+        }
+        if(moveSelectedUnitToPoint(e)) {
+          e.preventDefault();
+          e.stopPropagation();
+          return;
+        }
+        e.stopPropagation();
+        var u = unitFromMapItemIndex(idx);
+        if(u){
+          selectedTacticalIndex = null;
+          selectedId = selectedId === u.id ? null : u.id;
+          render();
+        }
+      };
+      el.onmousedown = function(e){beginUnitDrag(e, this);};
+      el.ontouchstart = function(e){beginUnitDrag(e, this);};
+    });
+  }
+  function moveSelectedUnitToPoint(e){
+    if(phase !== 'setup' || unitDrag) return false;
+    var u = byId(selectedId);
+    if(!u || u.side !== 'ally' || u.hp <= 0) return false;
+    var pt = eventPoint(e);
+    var raw = clientToMap(pt.clientX, pt.clientY);
+    var moveCtx = tacticalMoveContext(u, raw);
+    var effectiveRange = moveCtx.effectiveRange;
+    var d = dist({x:u.startX,y:u.startY}, raw);
+    if(d > effectiveRange) {
+      selectedId = null;
+      setSendStatus('已取消移动选择。'+(moveCtx.notes.length ? '战术地形：'+tacticalLogNotes(moveCtx)+'；'+tacticalMoveSummary(u, moveCtx)+'。' : ''), 'ok');
+      render();
+      return true;
+    }
+    var next = constrainToRange(u, raw, effectiveRange);
+    u.x = next.x;
+    u.y = next.y;
+    setSendStatus(u.name + (d > effectiveRange ? ' 已移动到最大可达位置。' : ' 已移动到指定位置。') + (moveCtx.notes.length ? '战术地形：'+tacticalLogNotes(moveCtx)+'；'+tacticalMoveSummary(u, moveCtx)+'。' : ''), 'ok');
+    render();
+    return true;
+  }
+  function bindHpDrawers(){
+    document.querySelectorAll('#map-box [data-hp-drawer]').forEach(function(btn){
+      btn.onclick = function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        var side = this.getAttribute('data-hp-drawer');
+        hpDrawerOpen[side] = !hpDrawerOpen[side];
+        renderMap();
+        bindMapClicks();
+        bindHpDrawers();
+      };
+    });
+    document.querySelectorAll('#map-box .gfl-map-hp-card[data-id]').forEach(function(card){
+      card.onclick = function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        selectedTacticalIndex = null;
+        selectedId = this.getAttribute('data-id');
+        renderStatus();
+      };
+    });
+  }
+  function eventPoint(e){
+    var p = e.touches && e.touches.length ? e.touches[0] : (e.changedTouches && e.changedTouches.length ? e.changedTouches[0] : e);
+    return {clientX:p.clientX, clientY:p.clientY};
+  }
+  function clientToMap(clientX, clientY){
+    var svg = document.querySelector('#map-box svg');
+    if(svg && svg.createSVGPoint && svg.getScreenCTM){
+      var matrix = svg.getScreenCTM();
+      if(matrix){
+        var point = svg.createSVGPoint();
+        point.x = clientX;
+        point.y = clientY;
+        var mapped = point.matrixTransform(matrix.inverse());
+        return {x:clamp(mapped.x, MIN_X, MAX_X), y:clamp(mapped.y, MIN_Y, MAX_Y)};
+      }
+    }
+    var box = document.getElementById('map-box');
+    var rect = box.getBoundingClientRect();
+    var x = (clientX - rect.left) / Math.max(1, rect.width) * 800;
+    var y = (clientY - rect.top) / Math.max(1, rect.height) * 600;
+    return {x:clamp(x, MIN_X, MAX_X), y:clamp(y, MIN_Y, MAX_Y)};
+  }
+  function constrainToRange(u, p, effectiveRange){
+    var r = effectiveRange == null ? movementRange(u) : effectiveRange;
+    var next = {x:clamp(p.x, MIN_X, MAX_X), y:clamp(p.y, MIN_Y, MAX_Y)};
+    var d = dist({x:u.startX,y:u.startY}, next);
+    if(d <= r || r <= 0) return next;
+    var ratio = r / d;
+    return {x:clamp(u.startX + (next.x-u.startX)*ratio, MIN_X, MAX_X), y:clamp(u.startY + (next.y-u.startY)*ratio, MIN_Y, MAX_Y)};
+  }
+  function beginUnitDrag(e, el){
+    if(phase !== 'setup') return;
+    var u = unitFromMapItemIndex(parseInt(el.getAttribute('data-idx'), 10));
+    if(!u || u.side !== 'ally' || u.hp <= 0) return;
+    e.stopPropagation();
+    var pt = eventPoint(e);
+    pendingUnitDrag = {id:u.id, startX:pt.clientX, startY:pt.clientY};
+    mapDrag = false;
+  }
+  function updateUnitDrag(e){
+    if(!unitDrag && pendingUnitDrag){
+      var startPt = eventPoint(e);
+      if(Math.abs(startPt.clientX - pendingUnitDrag.startX) <= 4 && Math.abs(startPt.clientY - pendingUnitDrag.startY) <= 4) return;
+      unitDrag = {id:pendingUnitDrag.id};
+      pendingUnitDrag = null;
+      document.getElementById('map-box').classList.add('dragging-unit');
+    }
+    if(!unitDrag) return;
+    e.preventDefault();
+    var u = byId(unitDrag.id);
+    if(!u) return;
+    if(e.touches && e.touches.length) return;
+    var pt = eventPoint(e);
+    var raw = clientToMap(pt.clientX, pt.clientY);
+    var next = constrainToRange(u, raw, tacticalMoveContext(u, raw).effectiveRange);
+    selectedId = u.id;
+    u.x = next.x;
+    u.y = next.y;
+    updateDraggedUnitMarker(u);
+    renderUnitList('ally','ally-list');
+    renderStatus();
+    bindUnitClicks();
+  }
+  function endUnitDrag(){
+    pendingUnitDrag = null;
+    if(!unitDrag) return;
+    unitDrag = null;
+    document.getElementById('map-box').classList.remove('dragging-unit');
+    renderUnitList('ally','ally-list');
+    renderStatus();
+    bindUnitClicks();
+  }
+  function nearestTarget(actor){
+    var targets = alive(actor.side === 'ally' ? 'enemy' : 'ally');
+    var best = null;
+    var bestD = Infinity;
+    targets.forEach(function(t){var d=dist(actor,t);if(d<bestD){bestD=d;best=t;}});
+    return best;
+  }
+  function pseudoRoll(seed){
+    var x = Math.sin(seed * 999.17) * 10000;
+    return x - Math.floor(x);
+  }
+  function hitChance(attacker, target){
+    var ctx = tacticalAttackContext(attacker, target);
+    var accuracy = effectiveAccuracy(attacker);
+    var raw = accuracy / Math.max(1, accuracy + target.evasion);
+    raw *= ctx.hitMultiplier;
+    return Math.max(.1, Math.min(.95, raw));
+  }
+  function battleIsNight(){
+    var text = '';
+    try{ text += ' ' + (Bridge.currentStatus().currentTime || ''); }catch(e){}
+    try{ text += ' ' + tacticalPromptSummary(); }catch(e){}
+    var hour = (String(text).match(/\s(\d{2}):\d{2}/) || [])[1];
+    return String(text).indexOf('夜战') >= 0 || (hour != null && (parseInt(hour,10) >= 20 || parseInt(hour,10) < 6));
+  }
+  function effectiveAccuracy(attacker){
+    var accuracy = attacker.accuracy;
+    if(battleIsNight() && attacker.side === 'ally'){
+      var offset = Math.max(0, Math.min(100, attacker.nightAccuracyOffset || 0));
+      accuracy = accuracy * (1 - 0.9 * (1 - offset / 100));
+    }
+    return Math.max(1, accuracy);
+  }
+  function weaponFxProfile(unit){
+    var type = String(unit.type || '').toUpperCase();
+    if(type === 'HG') return {weaponType:'hg', shots:2, spread:5, jitter:2, duration:360};
+    if(type === 'SMG') return {weaponType:'smg', shots:5, spread:6, jitter:5, duration:500};
+    if(type === 'RF') return {weaponType:'rf', shots:1, spread:0, jitter:0, duration:620};
+    if(type === 'MG') return {weaponType:'mg', shots:8, spread:8, jitter:7, duration:640};
+    if(type === 'SG') return {weaponType:'sg', shots:7, spread:12, jitter:10, duration:540};
+    if(type === 'ENEMY') return {weaponType:'smg', shots:3, spread:7, jitter:5, duration:440};
+    return {weaponType:'ar', shots:4, spread:6, jitter:4, duration:460};
+  }
+  function attack(attacker, tick){
+    if(attacker.hp <= 0) return;
+    var target = nearestTarget(attacker);
+    if(!target) return;
+    attacker.attackCount += 1;
+    var tactical = tacticalAttackContext(attacker, target);
+    var chance = hitChance(attacker, target);
+    var roll = pseudoRoll(tick + attacker.rof + attacker.attackCount * 13 + target.evasion);
+    var profile = weaponFxProfile(attacker);
+    var fx = {attacker:{x:attacker.x,y:attacker.y,name:attacker.name}, target:{x:target.x,y:target.y,name:target.name, portrait:target.damagedPortrait || currentPortrait(target)}, hit:false, broken:false};
+    Object.keys(profile).forEach(function(k){fx[k]=profile[k];});
+    if(roll > chance){
+      battleLog.push(attacker.name+' 攻击 '+target.name+'，弹道偏移，未形成有效命中。'+(tactical.notes.length ? '战术环境：'+tacticalLogNotes(tactical)+'。' : ''));
+      return fx;
+    }
+    var effectiveArmor = Math.max(0, target.armor - attacker.armorPiercing);
+    var baseDamage = Math.max(1, attacker.damage - effectiveArmor);
+    var critRoll = pseudoRoll(tick + attacker.critRate * 7 + attacker.attackCount * 31);
+    var crit = critRoll < Math.max(0, Math.min(.95, (attacker.critRate + tactical.critBonus) / 100));
+    var chainBonus = attacker.ammoChain > 0 ? Math.floor(attacker.damage * attacker.ammoChain / 100) : 0;
+    var damage = Math.max(1, Math.round((baseDamage + chainBonus) * tactical.damageMultiplier));
+    if(crit) damage = Math.round(damage * (attacker.critDamage || 150) / 100);
+    if(hasAny(attacker.equipmentTags || [], ['armor_break'])){
+      target.armor = Math.max(0, target.armor - 1);
+      battleLog.push(attacker.name+' 的破甲装备削弱 '+target.name+' 当前护甲。');
+    }
+    var wasAboveBrokenLine = target.hp / Math.max(1, target.maxHp) >= .4;
+    target.hp = Math.max(0, target.hp - damage);
+    var nowBroken = target.side === 'ally' && target.hp > 0 && wasAboveBrokenLine && target.hp / Math.max(1, target.maxHp) < .4 && !target.broken;
+    if(nowBroken) target.broken = true;
+    if(target.side === 'ally'){
+      if(target.hp <= 0) target.damageState = '损坏';
+      else if(target.hp / Math.max(1, target.maxHp) < .4 && target.damageState !== '损坏') target.damageState = '大破';
+    }
+    battleLog.push(attacker.name+' 攻击 '+target.name+'，'+(crit?'打出关键命中，':'形成有效命中，')+target.name+' '+unitBattleState(target)+'。'+(tactical.notes.length ? '战术环境：'+tacticalLogNotes(tactical)+'。' : ''));
+    if(nowBroken) battleLog.push(target.name+' 生命低于 40%，进入大破状态。');
+    if(target.hp <= 0) battleLog.push(target.name+' 失去战斗能力。');
+    if(hasAny(attacker.equipmentTags || [], ['knockback']) && target.hp > 0){
+      var dir = attacker.side === 'ally' ? 1 : -1;
+      target.x = Math.max(40, Math.min(760, target.x + dir * 28));
+      battleLog.push(attacker.name+' 的震退霰弹迫使 '+target.name+' 后撤。');
+    }
+    if(hasAny(attacker.equipmentTags || [], ['aoe_pellet']) && target.hp > 0){
+      alive(target.side).filter(function(u){return u.id !== target.id && dist(u,target) <= 92;}).slice(0,2).forEach(function(u){var splash=Math.max(1,Math.round(damage*.25));u.hp=Math.max(0,u.hp-splash);battleLog.push(attacker.name+' 的霰弹溅射擦伤 '+u.name+'。');});
+    }
+    fx.hit = true;
+    fx.broken = nowBroken;
+    fx.target.portrait = target.damagedPortrait || currentPortrait(target);
+    return fx;
+  }
+  function livingCombatUnits(){return alive('ally').concat(alive('enemy'));}
+  function battleRoundLimit(){
+    var input = document.getElementById('round-limit-input');
+    return clamp(num(input && input.value, 3), 1, 10);
+  }
+  function minLivingAttackCount(){
+    var living = livingCombatUnits();
+    if(!living.length) return 0;
+    return Math.min.apply(null, living.map(function(u){return u.attackCount || 0;}));
+  }
+  function slowestLivingAttackers(){
+    var living = livingCombatUnits();
+    if(!living.length) return [];
+    var minCount = minLivingAttackCount();
+    return living.filter(function(u){return (u.attackCount || 0) === minCount;});
+  }
+  function buildTimeline(maxAttacksPerUnit){
+    var living = livingCombatUnits();
+    if(!living.length) return [];
+    var minRof = Math.max(1, Math.min.apply(null, living.map(function(u){return u.rof;})));
+    var timeline = [];
+    var maxOrder = Math.max(3, maxAttacksPerUnit || 8);
+    living.forEach(function(u){
+      for(var n=1;n<=maxOrder;n++) timeline.push({unit:u, tick:Math.max(1, Math.round((minRof/u.rof)*1000*n) + (n === 1 ? Math.min(0, (u.initialCooldown || 0) * 10) : 0)), order:n});
+    });
+    timeline.sort(function(a,b){return a.tick-b.tick || b.unit.rof-a.unit.rof || a.unit.name.localeCompare(b.unit.name);});
+    return timeline;
+  }
+  function unitBattleState(u){
+    if(u.hp <= 0) return '失去战斗能力';
+    if(u.broken) return '大破';
+    return '可战斗';
+  }
+  function unitPromptState(u){
+    return u.name+' 状态 '+unitBattleState(u);
+  }
+  function compactBattleLog(){
+    var out = [];
+    var missByTarget = {};
+    function pushMissSummary(){
+      Object.keys(missByTarget).forEach(function(target){
+        var attackers = [];
+        Object.keys(missByTarget[target]).forEach(function(name){attackers.push(name);});
+        if(attackers.length) out.push('压制与规避：'+attackers.join('、')+' 对 '+target+' 的射击受烟尘、机动或掩体干扰，未取得明确战果。');
+      });
+      missByTarget = {};
+    }
+    battleLog.forEach(function(line){
+      var text = String(line || '');
+      if(!text) return;
+      if(text.indexOf('战斗开始。') === 0) return;
+      var miss = text.match(/^(.+?) 攻击 (.+?)，弹道偏移，未形成有效命中。$/);
+      if(miss){
+        if(!missByTarget[miss[2]]) missByTarget[miss[2]] = {};
+        missByTarget[miss[2]][miss[1]] = true;
+        return;
+      }
+      if(text.indexOf('攻击') >= 0 || text.indexOf('失去战斗能力') >= 0 || text.indexOf('大破状态') >= 0 || text.indexOf('战斗结果：') === 0){
+        pushMissSummary();
+        out.push(text);
+      }
+    });
+    pushMissSummary();
+    return out.slice(-24);
+  }
+  function buildPrompt(reason){
+    var allies = units.filter(function(u){return u.side==='ally';}).map(unitPromptState).join('；');
+    var enemies = units.filter(function(u){return u.side==='enemy';}).map(unitPromptState).join('；');
+    var ongoing = phase !== 'resolved';
+    return '请把下面这份【简要战斗日志】渲染成一段真实、连贯、有临场感的少女前线战场描写。\n'
+      + '你只能基于日志进行表现，不得改写胜负、命中结果、阵营关系、死亡/大破状态或角色位置；不得新增日志中不存在的战果。\n'
+      + '禁止输出具体伤害数值、HP 数值、命中率、距离数字或数值表；只能用轻伤、重创、压制、擦过、击倒、失去行动能力等自然语言描述战果。\n'
+      + (ongoing ? '本场战斗尚未结束：正文结尾必须继续输出一个新的 <gfl-battle-encounter> JSON 协议块，current 必须列出仍在场继续战斗的敌人；如有新增敌人则写入 additions，没有新增则 additions 为 []；total 必须等于当前仍在场敌人总数。\n' : '本场战斗已经结束：正文结尾不要再输出新的战斗遭遇协议块。\n')
+      + '渲染重点：\n'
+      + '1. 用战场空间感表现双方坐标、距离、掩体、交叉火线和移动压迫感。\n'
+      + '2. 命中要写出弹道、冲击、护甲削弱、穿甲和暴击的差异；未命中要写出闪避、压制或弹着偏移，而不是简单说“打空”。\n'
+      + '3. 角色受伤、大破、失去战斗能力必须严格对应日志和战后状态，不要夸大战果。\n'
+      + '4. 保留战术因果：谁因为最近目标原则攻击了谁，距离如何影响交火节奏，最后为什么中断、失败或胜利。\n'
+      + '5. 输出为自然剧情正文，不要列表，不要复述规则，不要显示数值表；但要让读者能感受到日志里的关键攻击都发生过。\n\n'
+      + '【战斗结果】\n'+reason+'\n\n'
+      + '【战后我方状态】\n'+allies+'\n\n'
+      + '【战后敌方状态】\n'+enemies+'\n\n'
+      + '【本轮地图战术点】\n'+tacticalPromptSummary()+'\n\n'
+      + '【简要战斗日志】\n'+compactBattleLog().join('\n');
+  }
+  function sleep(ms){return new Promise(function(resolve){setTimeout(resolve, ms);});}
+  async function playAttackFx(fx, token){
+    if(!fx || token !== battleRunToken) return;
+    activeFx = fx;
+    render();
+    await sleep(fx.duration || 460);
+    if(token !== battleRunToken) return;
+    activeFx = null;
+    render();
+  }
+  async function playDamageCutin(fx, token){
+    if(!fx || !fx.broken || !fx.target || token !== battleRunToken) return;
+    var mask = document.getElementById('damage-cutin');
+    var img = document.getElementById('damage-cutin-img');
+    var name = document.getElementById('damage-cutin-name');
+    if(!mask || !img || !name) return;
+    img.src = fx.target.portrait || '';
+    name.textContent = fx.target.name || '战术人形';
+    mask.classList.add('open');
+    mask.setAttribute('aria-hidden', 'false');
+    await sleep(DAMAGE_CUTIN_DURATION_MS);
+    if(token !== battleRunToken) return;
+    mask.classList.remove('open');
+    mask.setAttribute('aria-hidden', 'true');
+    img.removeAttribute('src');
+  }
+  async function runBattleRound(){
+    if(battleActionInProgress || resetInProgress){setSendStatus('战斗操作正在处理中，请等待当前操作完成。','err');return;}
+    if(phase !== 'setup') return;
+    battleActionInProgress = 'ready';
+    renderStatus();
+    var token = ++battleRunToken;
+    unitDrag = null;
+    selectedId = null;
+    activeFx = null;
+    setSendStatus('正在同步战斗地图当前位置……', '');
+    try{
+      await syncStartPositionsToMapElements();
+    }catch(error){
+      setSendStatus('开始战斗失败：地图元素表同步失败，'+(error && error.message ? error.message : error), 'err');
+      battleActionInProgress = '';
+      render();
+      return;
+    }
+    if(token !== battleRunToken){battleActionInProgress = '';renderStatus();return;}
+    phase = 'running';
+    units.forEach(function(u){u.attackCount=0;});
+    battleLog = ['战斗开始。战斗地图前端已将开战坐标同步到地图元素表，双方按地图相对位置锁定最近敌方单位。'];
+    battleLog.push('地图战术点：'+tacticalPromptSummary()+'。');
+    promptText = '';
+    battleCommitted = false;
+    setSendStatus('', '');
+    if(!livingCombatUnits().length){phase='resolved';promptText=buildPrompt('无可行动单位');battleActionInProgress='';render();return;}
+    render();
+    var timeline = buildTimeline(8);
+    var roundLimit = battleRoundLimit();
+    var reason = '所有存活单位均完成至少 '+roundLimit+' 次攻击，本轮暂时中断';
+    var cursor = 0;
+    var maxAttacksPerUnit = 8;
+    while(phase === 'running'){
+      if(token !== battleRunToken){battleActionInProgress='';renderStatus();return;}
+      if(!alive('ally').length || !alive('enemy').length){
+        reason = !alive('ally').length ? '战斗失败：我方全灭' : '战斗胜利：敌方全灭';
+        phase = 'resolved';
+        break;
+      }
+      if(minLivingAttackCount() >= roundLimit){
+        var slowestNames = slowestLivingAttackers().map(function(u){return u.name;}).join('、');
+        reason = '所有存活单位均完成至少 '+roundLimit+' 次攻击；当前最慢攻击次数单位：' + (slowestNames || '无');
+        phase = 'interrupted';
+        break;
+      }
+      if(cursor >= timeline.length){
+        maxAttacksPerUnit += 4;
+        timeline = buildTimeline(maxAttacksPerUnit);
+        if(cursor >= timeline.length){
+          reason = '没有可继续执行的攻击事件，本轮暂时中断';
+          phase = 'interrupted';
+          break;
+        }
+      }
+      var event = timeline[cursor++];
+      if(!event.unit || event.unit.hp <= 0) continue;
+      var fx = attack(event.unit, event.tick + cursor);
+      await playAttackFx(fx, token);
+      await playDamageCutin(fx, token);
+    }
+    if(phase === 'running') phase = 'interrupted';
+    if(!alive('ally').length || !alive('enemy').length){
+      reason = !alive('ally').length ? '战斗失败：我方全灭' : '战斗胜利：敌方全灭';
+      phase = 'resolved';
+    }
+    battleLog.push('战斗结果：'+reason+'。');
+    promptText = buildPrompt(reason);
+    battleActionInProgress = '';
+    render();
+  }
+  function sendToTavern(message){
+    try{
+      var roots = [window, parent, top];
+      for(var i=0;i<roots.length;i++){
+        try{
+          var doc = roots[i] && roots[i].document;
+          var textarea = doc && doc.getElementById && doc.getElementById('send_textarea');
+          if(textarea){
+            textarea.value = message;
+            try{ textarea.dispatchEvent(new Event('input', {bubbles:true})); }catch(e){}
+            try{ textarea.dispatchEvent(new Event('change', {bubbles:true})); }catch(e){}
+            return {success:true, filled:true};
+          }
+        }catch(innerError){}
+      }
+      return {success:false, message:'无法找到酒馆输入框'};
+    }catch(e){
+      return {success:false, message:'填入提示词失败：'+(e && e.message ? e.message : e)};
+    }
+  }
+  function closeBattlePanel(){
+    var roots = [window.parent, window.top];
+    for(var i=0;i<roots.length;i++){
+      try{
+        var doc = roots[i] && roots[i].document;
+        var panel = doc && doc.getElementById && doc.getElementById('gfl-battle-console-panel');
+        if(panel){
+          panel.classList.remove('open');
+          return true;
+        }
+      }catch(e){}
+    }
+    return false;
+  }
+  async function finishBattle(){
+    if(battleActionInProgress || resetInProgress){setSendStatus('战斗操作正在处理中，请等待当前操作完成。','err');return;}
+    if(!promptText){setSendStatus('暂无可发送的战斗扩写提示词，请先点击准备就绪执行战斗。','err');return;}
+    if(phase === 'running'){setSendStatus('战斗仍在演算中，无法结束。','err');return;}
+    battleActionInProgress = 'finish';
+    renderStatus();
+    try{
+      if(!battleCommitted){
+        setSendStatus('正在写入本场战斗结果并生成扩写提示词……', '');
+        await persistBattleTables();
+        battleCommitted = true;
+      }
+      var result = sendToTavern(promptText);
+      if(result.success){setSendStatus('战斗结果已写入，完整日志渲染提示词已填入酒馆输入框，请确认或修改后手动发送。','ok');closeBattlePanel();}
+      else{setSendStatus(result.message || '填入提示词失败。','err');}
+    }catch(error){
+      setSendStatus('结束战斗失败：'+(error && error.message ? error.message : error),'err');
+    }finally{
+      battleActionInProgress = '';
+      renderStatus();
+    }
+  }
+  async function resetBattle(){
+    if(battleActionInProgress || resetInProgress){setSendStatus('战斗操作正在处理中，请等待当前操作完成。','err');return;}
+    resetInProgress = true;
+    battleActionInProgress = 'reset';
+    setSendStatus('正在重置战斗并同步遭遇敌人，请等待……','');
+    renderStatus();
+    battleRunToken++;
+    phase = 'setup';
+    selectedId = null;
+    unitDrag = null;
+    activeFx = null;
+    var cutin = document.getElementById('damage-cutin');
+    var cutinImg = document.getElementById('damage-cutin-img');
+    if(cutin) cutin.classList.remove('open');
+    if(cutinImg) cutinImg.removeAttribute('src');
+    battleLog = [];
+    promptText = '';
+    battleCommitted = false;
+    try{
+      var applied = await applyEncounterToEnemyConfig();
+      units = defaultUnits();
+      if(applied && applied.added) battleLog.push('遭遇标签已生成 '+applied.added+' 个新增敌方单位。');
+      hydrateUnitPortraits();
+      resetView(false);
+      setSendStatus(applied && applied.added ? '遭遇敌人已同步，战斗已重置。' : '战斗已重置。','ok');
+      render();
+    }catch(error){
+      units = defaultUnits();
+      battleLog = ['遭遇标签处理失败：' + (error && error.message ? error.message : error)];
+      setSendStatus(battleLog[0], 'err');
+      resetView(false);
+      render();
+    }finally{
+      resetInProgress = false;
+      battleActionInProgress = '';
+      renderStatus();
+    }
+  }
+  function resetPositions(){
+    if(battleActionInProgress || resetInProgress){setSendStatus('战斗操作正在处理中，暂不能重置站位。','err');return;}
+    if(phase !== 'setup') return;
+    units.forEach(function(u){u.x=u.startX;u.y=u.startY;});
+    setSendStatus('站位已重置。','ok');
+    render();
+  }
+  function resetView(doRender){
+    mapZoom=1;mapPan={x:0,y:0};
+    if(doRender !== false) setSendStatus('视图已复位。','ok');
+    if(doRender !== false) render();
+  }
+  function setZoom(nextZoom){
+    mapZoom = Math.max(.6, Math.min(3, nextZoom));
+    applyTransform();
+  }
+  function initPanZoom(){
+    var box=document.getElementById('map-box');
+    box.addEventListener('wheel',function(e){e.preventDefault();var d=e.deltaY<0?.12:-.12;setZoom(mapZoom+d);},{passive:false});
+    box.addEventListener('click',function(e){
+      if(unitDrag || e.target.closest('.gfl-map-hp-drawer')) return;
+      if(moveSelectedUnitToPoint(e)) return;
+      if(e.target.closest('.cm')) return;
+      selectedTacticalIndex=null;
+      selectedId=null;
+      render();
+    });
+    function beginMapDrag(e){
+      if(unitDrag || e.target.closest('.cm') || e.target.closest('.gfl-map-hp-drawer'))return;
+      var selected = byId(selectedId);
+      if(phase === 'setup' && selected && selected.side === 'ally' && selected.hp > 0) return;
+      e.preventDefault();
+      if(selectedId){selectedId=null;renderStatus();}
+      if(selectedTacticalIndex !== null){selectedTacticalIndex=null;renderStatus();}
+      var pt=eventPoint(e);
+      mapDrag=true;
+      mapStart={x:pt.clientX,y:pt.clientY};
+      panStart={x:mapPan.x,y:mapPan.y};
+    }
+    function updateMapDrag(e){
+      if(!mapDrag)return;
+      e.preventDefault();
+      var pt=eventPoint(e);
+      mapPan={x:panStart.x+pt.clientX-mapStart.x,y:panStart.y+pt.clientY-mapStart.y};
+      applyTransform();
+    }
+    function endMapDrag(){mapDrag=false;}
+    box.addEventListener('mousedown',function(e){
+      beginMapDrag(e);
+    });
+    box.addEventListener('touchstart',function(e){
+      beginMapDrag(e);
+    },{passive:false});
+    document.addEventListener('mousemove',function(e){if(unitDrag){updateUnitDrag(e);return;}updateMapDrag(e);});
+    document.addEventListener('mouseup',function(){if(unitDrag)endUnitDrag();endMapDrag();});
+    document.addEventListener('touchmove',function(e){if(unitDrag){updateUnitDrag(e);return;}updateMapDrag(e);},{passive:false});
+    document.addEventListener('touchend',function(){if(unitDrag)endUnitDrag();endMapDrag();});
+    document.addEventListener('touchcancel',function(){if(unitDrag)endUnitDrag();endMapDrag();});
+  }
+  document.getElementById('ready-btn').onclick=runBattleRound;
+  document.getElementById('finish-btn').onclick=finishBattle;
+  document.getElementById('restart-btn').onclick=resetBattle;
+  document.getElementById('reset-position-btn').onclick=resetPositions;
+  document.getElementById('reset-view-btn').onclick=function(){if(battleActionInProgress||resetInProgress){setSendStatus('战斗操作正在处理中，暂不能复位视图。','err');return;}resetView(true);};
+  document.getElementById('tactical-range-btn').onclick=function(){
+    if(battleActionInProgress||resetInProgress||phase!=='setup'){setSendStatus('只有站位调整阶段可以查看战术范围。','err');return;}
+    tacticalRangeVisible = !tacticalRangeVisible;
+    if(!tacticalRangeVisible) selectedTacticalIndex = null;
+    setSendStatus(tacticalRangeVisible ? '已显示所有战术点影响范围。点击单个地标可高亮具体范围。' : '已隐藏战术点影响范围。','ok');
+    render();
+  };
+  document.getElementById('zoom-in-btn').onclick=function(){setZoom(mapZoom+.2);setSendStatus('地图已放大。','ok');};
+  document.getElementById('zoom-out-btn').onclick=function(){setZoom(mapZoom-.2);setSendStatus('地图已缩小。','ok');};
+  document.getElementById('round-limit-input').onchange=function(){this.value=battleRoundLimit();renderStatus();};
+  document.getElementById('open-log-btn').onclick=function(){document.getElementById('log-modal').classList.add('open');renderLog();setSendStatus('战斗日志已打开。','ok');};
+  document.getElementById('close-log-btn').onclick=function(){document.getElementById('log-modal').classList.remove('open');setSendStatus('战斗日志已关闭。','ok');};
+  document.getElementById('log-modal').addEventListener('click',function(e){if(e.target===this){this.classList.remove('open');setSendStatus('战斗日志已关闭。','ok');}});
+  applyBubbleBackground();
+  initPanZoom();
+  resetBattle();
+})();
+</script>
+</body>
+</html>

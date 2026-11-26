@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SillyTavern Theme UI",
+  "type": "object",
+  "required": ["name"],
+  "properties": {
+    "name": { "type": "string" },
+    "blur_strength": { "type": "number" },
+    "main_text_color": { "type": "string" },
+    "blur_tint_color": { "type": "string" },
+    "chat_tint_color": { "type": "string" },
+    "font_scale": { "type": "number" },
+    "chat_display": { "type": "number" },
+    "custom_css": { "type": "string" }
+  },
+  "additionalProperties": true
+}

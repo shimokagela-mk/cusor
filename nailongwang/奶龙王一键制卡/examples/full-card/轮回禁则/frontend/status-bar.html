@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>轮回禁则 - 状态栏</title>
+    <style>
+        :root {
+            --bg-primary: #07090f;
+            --bg-secondary: #0f1724;
+            --bg-card: #131d2c;
+            --bg-soft: #0b1320;
+            --text-primary: #edf2ff;
+            --text-secondary: #9aa7c2;
+            --accent-cyan: #7dd3fc;
+            --accent-red: #ef4444;
+            --accent-yellow: #f59e0b;
+            --accent-green: #22c55e;
+            --accent-gray: #64748b;
+            --border-color: rgba(125, 211, 252, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            padding: 10px;
+            font-size: 13px;
+        }
+
+        .status-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 100%;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-card));
+            border: 1px solid var(--border-color);
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .topbar-title {
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .topbar-meta {
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        .status-pill {
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-soft);
+            white-space: nowrap;
+        }
+
+        .status-pill.alive {
+            color: var(--accent-green);
+            border-color: rgba(34, 197, 94, 0.35);
+        }
+
+        .status-pill.danger {
+            color: var(--accent-yellow);
+            border-color: rgba(245, 158, 11, 0.35);
+        }
+
+        .status-pill.dead {
+            color: #fecaca;
+            border-color: rgba(239, 68, 68, 0.35);
+            background: rgba(127, 29, 29, 0.3);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .card {
+            background: linear-gradient(180deg, var(--bg-card), var(--bg-secondary));
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px;
+            min-width: 0;
+        }
+
+        .card-title {
+            font-size: 12px;
+            color: var(--accent-cyan);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .info-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .info-label {
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        .info-value {
+            color: var(--text-primary);
+            text-align: right;
+            word-break: break-word;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .stat-box {
+            background: var(--bg-soft);
+            border: 1px solid rgba(125, 211, 252, 0.10);
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 11px;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .progress-wrap {
+            margin-top: 8px;
+        }
+
+        .progress-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-secondary);
+            font-size: 11px;
+            margin-bottom: 6px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            border-radius: 999px;
+            background: var(--bg-soft);
+            overflow: hidden;
+            border: 1px solid rgba(125, 211, 252, 0.10);
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
+            transition: width 0.3s ease;
+        }
+
+        .rule-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .rule-item {
+            background: var(--bg-soft);
+            border: 1px solid rgba(125, 211, 252, 0.10);
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .rule-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 6px;
+            align-items: center;
+        }
+
+        .rule-id {
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+
+        .rule-title {
+            color: var(--text-primary);
+            margin-bottom: 6px;
+            line-height: 1.5;
+        }
+
+        .rule-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .mini-tag {
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 11px;
+            background: rgba(100, 116, 139, 0.18);
+            color: var(--text-secondary);
+            border: 1px solid rgba(100, 116, 139, 0.18);
+        }
+
+        .mini-tag.confirmed {
+            color: #bbf7d0;
+            border-color: rgba(34, 197, 94, 0.35);
+            background: rgba(20, 83, 45, 0.30);
+        }
+
+        .mini-tag.pending {
+            color: #fde68a;
+            border-color: rgba(245, 158, 11, 0.35);
+            background: rgba(120, 53, 15, 0.26);
+        }
+
+        .mini-tag.false {
+            color: #fecaca;
+            border-color: rgba(239, 68, 68, 0.35);
+            background: rgba(127, 29, 29, 0.28);
+        }
+
+        .empty-tip {
+            color: var(--text-secondary);
+            font-size: 12px;
+            padding: 8px 0;
+        }
+
+        @media (max-width: 760px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="status-container" id="statusContainer"></div>
+
+    <script>
+    const State = {
+        loop: '1',
+        worldId: 'W-001',
+        scene: '未知',
+        identity: '未知',
+        goal: '未知',
+        difficulty: '待生成',
+        phase: '开局生成',
+        location: '未知',
+        time: '未知',
+        survival: '存活',
+        ruleTotal: 0,
+        ruleVerified: 0,
+        rules: []
+    };
+
+    function getAutoCardAPI() {
+        if (typeof parent !== 'undefined' && parent.AutoCardUpdaterAPI) {
+            return parent.AutoCardUpdaterAPI;
+        }
+        if (window.AutoCardUpdaterAPI) {
+            return window.AutoCardUpdaterAPI;
+        }
+        return null;
+    }
+
+    async function loadTableData() {
+        const api = getAutoCardAPI();
+        if (!api) {
+            console.log('[状态栏] API不可用，使用默认数据');
+            renderUI();
+            return;
+        }
+
+        try {
+            const jsonData = await api.exportTableAsJson();
+            const tables = typeof jsonData === 'string' ? JSON.parse(jsonData) : jsonData;
+            parseTables(tables);
+            renderUI();
+        } catch (e) {
+            console.error('[状态栏] 加载数据失败:', e);
+            renderUI();
+        }
+    }
+
+    function parseTables(tables) {
+        State.rules = [];
+
+        for (const uid in tables) {
+            const sheet = tables[uid];
+            if (!sheet || !sheet.content || sheet.content.length < 2) continue;
+
+            const headers = sheet.content[0];
+            const rows = sheet.content.slice(1);
+            const get = (row, colName) => {
+                const idx = headers.indexOf(colName);
+                return idx !== -1 && idx < row.length ? row[idx] : undefined;
+            };
+
+            if (sheet.name === '全局轮回状态表' && rows.length > 0) {
+                const row = rows[0];
+                State.loop = get(row, '当前轮次') || '1';
+                State.worldId = get(row, '当前世界编号') || 'W-001';
+                State.scene = get(row, '当前场景') || '未知';
+                State.identity = get(row, '当前身份') || '未知';
+                State.goal = get(row, '当前目标') || '未知';
+                State.difficulty = get(row, '当前难度') || '待生成';
+                State.phase = get(row, '当前阶段') || '开局生成';
+                State.location = get(row, '当前地点') || '未知';
+                State.time = get(row, '当前时间') || '未知';
+                State.survival = get(row, '存活状态') || '存活';
+                State.ruleTotal = parseInt(get(row, '规则总数') || '0', 10) || 0;
+                State.ruleVerified = parseInt(get(row, '已验证规则数') || '0', 10) || 0;
+            }
+
+            if (sheet.name === '规则追踪表') {
+                State.rules = rows.map(row => ({
+                    id: get(row, '规则编号') || '未知',
+                    summary: get(row, '规则摘要') || '未知',
+                    type: get(row, '规则类型') || '未知',
+                    trust: get(row, '可信度') || '待验证',
+                    status: get(row, '生效状态') || '未触发',
+                    trigger: get(row, '触发条件') || '未知',
+                    consequence: get(row, '违背后果') || '未知'
+                })).filter(rule => rule.id && rule.id !== '');
+            }
+        }
+    }
+
+    function countBy(predicate) {
+        return State.rules.filter(predicate).length;
+    }
+
+    function getSurvivalClass(value) {
+        if (value === '消失') return 'dead';
+        if (value === '濒危') return 'danger';
+        return 'alive';
+    }
+
+    function getTrustClass(value) {
+        if (value === '已确认') return 'confirmed';
+        if (value === '已证伪') return 'false';
+        return 'pending';
+    }
+
+    function escapeHtml(text) {
+        const map = {
+            '&': String.fromCharCode(38, 97, 109, 112, 59),
+            '<': String.fromCharCode(38, 108, 116, 59),
+            '>': String.fromCharCode(38, 103, 116, 59),
+            '"': String.fromCharCode(38, 113, 117, 111, 116, 59),
+            "'": String.fromCharCode(38, 35, 51, 57, 59)
+        };
+        return String(text ?? '').replace(/[&<>"']/g, ch => map[ch]);
+    }
+
+    function renderTopRules() {
+        if (!State.rules.length) {
+            return '<div class="empty-tip">当前世界尚未建立规则条目。</div>';
+        }
+
+        return State.rules.slice(-4).reverse().map(rule => {
+            return `
+                <div class="rule-item">
+                    <div class="rule-head">
+                        <div class="rule-id">${escapeHtml(rule.id)}</div>
+                        <div class="mini-tag ${getTrustClass(rule.trust)}">${escapeHtml(rule.trust)}</div>
+                    </div>
+                    <div class="rule-title">${escapeHtml(rule.summary)}</div>
+                    <div class="rule-meta">
+                        <div class="mini-tag">${escapeHtml(rule.type)}</div>
+                        <div class="mini-tag">${escapeHtml(rule.status)}</div>
+                        <div class="mini-tag">触发：${escapeHtml(rule.trigger)}</div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function renderUI() {
+        const confirmedCount = countBy(rule => rule.trust === '已确认');
+        const pendingCount = countBy(rule => rule.trust === '待验证' || rule.trust === '未知' || rule.trust === '较高');
+        const falseCount = countBy(rule => rule.trust === '已证伪');
+        const lethalCount = countBy(rule => rule.type === '致命禁则');
+        const denominator = Math.max(State.ruleTotal, State.rules.length, 1);
+        const progress = Math.max(0, Math.min(100, Math.round((State.ruleVerified / denominator) * 100)));
+
+        const html = `
+            <div class="topbar">
+                <div class="topbar-left">
+                    <div class="topbar-title">轮回禁则</div>
+                    <div class="topbar-meta">第 ${escapeHtml(State.loop)} 轮 · 世界 ${escapeHtml(State.worldId)}</div>
+                </div>
+                <div class="status-pill ${getSurvivalClass(State.survival)}">${escapeHtml(State.survival)}</div>
+            </div>
+
+            <div class="grid">
+                <section class="card">
+                    <div class="card-title">◆ 世界配置</div>
+                    <div class="info-list">
+                        <div class="info-row"><div class="info-label">当前场景</div><div class="info-value">${escapeHtml(State.scene)}</div></div>
+                        <div class="info-row"><div class="info-label">当前身份</div><div class="info-value">${escapeHtml(State.identity)}</div></div>
+                        <div class="info-row"><div class="info-label">当前目标</div><div class="info-value">${escapeHtml(State.goal)}</div></div>
+                        <div class="info-row"><div class="info-label">当前难度</div><div class="info-value">${escapeHtml(State.difficulty)}</div></div>
+                        <div class="info-row"><div class="info-label">当前阶段</div><div class="info-value">${escapeHtml(State.phase)}</div></div>
+                    </div>
+                </section>
+
+                <section class="card">
+                    <div class="card-title">◆ 当前位置</div>
+                    <div class="info-list">
+                        <div class="info-row"><div class="info-label">当前地点</div><div class="info-value">${escapeHtml(State.location)}</div></div>
+                        <div class="info-row"><div class="info-label">当前时间</div><div class="info-value">${escapeHtml(State.time)}</div></div>
+                        <div class="info-row"><div class="info-label">规则总数</div><div class="info-value">${escapeHtml(State.ruleTotal)}</div></div>
+                        <div class="info-row"><div class="info-label">已验证规则数</div><div class="info-value">${escapeHtml(State.ruleVerified)}</div></div>
+                    </div>
+                </section>
+
+                <section class="card">
+                    <div class="card-title">◆ 规则进度</div>
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-label">已确认</div>
+                            <div class="stat-value">${confirmedCount}</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">待验证</div>
+                            <div class="stat-value">${pendingCount}</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">已证伪</div>
+                            <div class="stat-value">${falseCount}</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">致命禁则</div>
+                            <div class="stat-value">${lethalCount}</div>
+                        </div>
+                    </div>
+                    <div class="progress-wrap">
+                        <div class="progress-meta">
+                            <span>验证进度</span>
+                            <span>${progress}%</span>
+                        </div>
+                        <div class="progress-bar"><div class="progress-fill" style="width:${progress}%"></div></div>
+                    </div>
+                </section>
+
+                <section class="card">
+                    <div class="card-title">◆ 最新规则</div>
+                    <div class="rule-list">${renderTopRules()}</div>
+                </section>
+            </div>
+        `;
+
+        document.getElementById('statusContainer').innerHTML = html;
+    }
+
+    loadTableData();
+    </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+// MVU 更新指令在 AI 回复中的形态范例
+// 仅展示格式：标签、命令路径、新值、原因。具体路径请按你的 [InitVar] 结构来写。
+
+<UpdateVariable>
+- path.to.var: Y/N
+- another.path: Y
+
+_.set('path.to.var', 0, 1);// reason for change
+_.set('another.path.array', '空', '新值');// reason
+</UpdateVariable>
+
+<JSONPatch>
+[
+  { "op": "replace", "path": "/path/to/var", "value": 1 },
+  { "op": "add", "path": "/another/path/array/-", "value": "新元素" }
+]
+</JSONPatch>
+
+<initvar>
+{
+  "日期": ["01月01日", "格式 mm月dd日"],
+  "user": {
+    "身份": ["占位身份", "随剧情更新"]
+  }
+}
+</initvar>

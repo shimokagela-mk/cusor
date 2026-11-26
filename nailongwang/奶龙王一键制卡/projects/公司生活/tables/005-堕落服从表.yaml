@@ -1,0 +1,100 @@
+uid: sheet_Corruption
+name: 堕落服从表
+sourceData:
+  note: |-
+    记录三人黑深渊进度。一行一个角色。与好感表分离：好感≠服从。
+    - 列0: 角色名 - 业务主键。
+    - 列1: 堕落 - 0到100。性羞耻被突破、公开风险、把柄累积程度。
+    - 列2: 服从 - 0到100。对玩家指令的即时听从程度。
+    - 列3: 当前玩法标记 - 短词，如：无 / 上班玩具 / 通话NTR / 公开边缘 / 把柄锁死。
+    - 列4: 备注 - 把柄与阶段笔记（≤60字）。
+
+    档位提示（可被用户对话越级，不要死挡）：
+    - 0-20 日常试探
+    - 21-40 私下越界
+    - 41-60 上班玩具/公开调戏
+    - 61-80 做时打电话/近公开潮吹/NTR加码
+    - 81-100 常态化深渊
+
+    变化口径：有效黑化互动 +3~12；强烈公开/强制成功 +8~15；成功反制可令服从-5~10（堕落未必降）。无互动不涨。
+  initNode: |-
+    初始化三人各一行，堕落0，服从0，当前玩法标记「无」。
+    SQL示例: INSERT INTO corruption (row_id, char_name, corruption, obedience, play_flag, note) VALUES (1, '尹安琪', 0, 0, '无', '');
+  deleteNode: 禁止删除。
+  updateNode: |-
+    本轮出现有效黑化/强制/公开/玩具/通话NTR等时更新堕落、服从、玩法标记与备注。
+    SQL示例: UPDATE corruption SET corruption = 45, obedience = 38, play_flag = '上班玩具', note = '绿色遥控；开会差点出声' WHERE char_name = '尹安琪';
+  insertNode: |-
+    仅当新的长期黑化对象进入核心线时添加。
+    SQL示例: INSERT INTO corruption (row_id, char_name, corruption, obedience, play_flag, note) VALUES ((SELECT COALESCE(MAX(row_id),0)+1 FROM corruption), '新角色', 0, 0, '无', '');
+  ddl: |-
+    CREATE TABLE corruption ( -- 堕落服从表
+      row_id INTEGER PRIMARY KEY, -- 行号
+      char_name TEXT NOT NULL UNIQUE, -- 角色名
+      corruption INTEGER NOT NULL DEFAULT 0 CHECK(corruption >= 0 AND corruption <= 100), -- 堕落
+      obedience INTEGER NOT NULL DEFAULT 0 CHECK(obedience >= 0 AND obedience <= 100), -- 服从
+      play_flag TEXT NOT NULL DEFAULT '无', -- 当前玩法标记
+      note TEXT -- 备注
+    );
+content:
+  - - row_id
+    - 角色名
+    - 堕落
+    - 服从
+    - 当前玩法标记
+    - 备注
+  - - 1
+    - 尹安琪
+    - 0
+    - 0
+    - 无
+    - ""
+  - - 2
+    - 陈亦勤
+    - 0
+    - 0
+    - 无
+    - ""
+  - - 3
+    - 丁丁
+    - 0
+    - 0
+    - 无
+    - ""
+updateConfig:
+  uiSentinel: -1
+  contextDepth: 4
+  updateFrequency: 2
+  batchSize: 3
+  skipFloors: -1
+  groupId: 2
+exportConfig:
+  enabled: false
+  splitByRow: false
+  entryName: 堕落服从表
+  entryType: constant
+  keywords: ""
+  preventRecursion: true
+  injectionTemplate: ""
+  extraIndexEnabled: false
+  extraIndexEntryName: 堕落服从表-索引
+  extraIndexColumns: []
+  extraIndexColumnModes: {}
+  extraIndexInjectionTemplate: ""
+  entryPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 10040
+  extraIndexPlacement:
+    position: at_depth_as_system
+    depth: 2
+    order: 10050
+  fixedEntryPlacement:
+    position: before_char
+    depth: 2
+    order: 99987
+  fixedIndexPlacement:
+    position: before_char
+    depth: 2
+    order: 99988
+orderNo: 5

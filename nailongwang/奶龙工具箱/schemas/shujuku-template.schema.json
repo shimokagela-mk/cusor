@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "shujuku Template",
+  "type": "object",
+  "anyOf": [
+    { "type": "object", "required": ["mate"] },
+    { "type": "object", "requireKeyPattern": "^sheet_" }
+  ],
+  "properties": {
+    "mate": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "chatSheets" },
+        "version": { "type": "number" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "patternProperties": {
+    "^sheet_": {
+      "type": "object",
+      "required": ["name", "content"],
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "sourceData": { "type": "object" },
+        "content": { "type": "array", "items": { "type": "array" } },
+        "updateConfig": { "type": "object" },
+        "exportConfig": { "type": "object" },
+        "orderNo": { "type": "number" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}
